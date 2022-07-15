@@ -4,7 +4,7 @@
 
 
 GraphicsEngine::GraphicsEngine() {
-
+	
 };
 
 bool GraphicsEngine::onUserCreate() {
@@ -28,7 +28,11 @@ bool GraphicsEngine::onUserCreate() {
 		{ 0.0f, 0.0f, 0.0f,   0.0f, 0.0f, 1.0f,  1.0f, 0.0f, 0.0f },
 		{ 0.0f, 0.0f, 0.0f,   1.0f, 0.0f, 1.0f,  1.0f, 0.0f, 0.0f }
 	};
-
+	// PROJECTION MATRIX
+	float f_near = 0.1f;
+	float f_far = 1000.f;
+	float f_fov = 90.f;
+	//float f_aspectRatio = 
 
 	return true;
 }
@@ -45,3 +49,10 @@ void GraphicsEngine::clearScreen() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
+// Only works when on window is on primary monitor
+float GraphicsEngine::getScreenSize() {
+	GLFWmonitor* monitor = glfwGetPrimaryMonitor();
+	const GLFWvidmode* mode = glfwGetVideoMode(monitor);
+	this->height = mode->height;
+	this->width = mode->width;
+}

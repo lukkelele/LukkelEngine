@@ -20,7 +20,7 @@ x' = x/z  <-> y' = y/z <br>
 <br>
 Matrix multiplication for the vector -> 
 [ afx/z , fy/z , zp - Z_NEAR\*p] -> requires a fourth element
-for matrix multiplication, a 1 which also introduces a fourth column.
+for matrix multiplication, a 1 which introduces a fourth row.
 <br>
 -Z_NEAR \* p -> q
 

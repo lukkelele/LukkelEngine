@@ -26,8 +26,9 @@ for matrix multiplication, a 1 which also introduces a fourth column.
 
 ## Projection matrix
 
-`[ x, y, z, 1 ]` \* [[   af   0   0   0   ]<br>
-\tab\tab\tab		 [   0    f   0   0   ]<br>
-\tab\tab\tab		 [   0    0   p   1   ]<br>
-\tab\tab\tab		 [   0    0   q   0   ]]<br>
+`[ x, y, z, 1 ]` \*<br>
+[[   af   0   0   0   ]<br>
+ [   0    f   0   0   ]<br>
+ [   0    0   p   1   ]<br>
+ [   0    0   q   0   ]]<br>
 <br>

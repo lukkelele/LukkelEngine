@@ -25,13 +25,13 @@ public:
 	bool onUserUpdate(float elapsedTime);
 	void clearScreen();
 	void getScreenSize();
+	void multiplyMatrix(vec3d& a, vec3d& b, mat4x4& mat);
+	void drawLine(vec3d vec1, vec3d vec2); /* Draw a line from vec1 -> vec2 */
 	float degreeToRadian(float degrees);
 	float getAspectRatio();
-	void multiplyMatrix(vec3d &a, vec3d &b, mat4x4 &mat);
 
 
 };
-
 
 
 #endif // _GRAPHICS_ENGINE_H

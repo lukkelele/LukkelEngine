@@ -34,4 +34,4 @@ for matrix multiplication, a 1 which introduces a fourth row.
 <br>
 
 
-![](./img/math_matrices.png)
+![](./img/math_matrices.PNG)

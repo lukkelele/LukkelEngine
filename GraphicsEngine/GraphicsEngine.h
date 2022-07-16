@@ -19,16 +19,17 @@ public:
 	
 
 public:
-	int width;
-	int height;
+
 	struct vec3d { float x, y, z; };
 	struct triangle { vec3d p[3]; };
 	struct mesh { std::vector<triangle> tris; };
 	struct mat4x4 { float m[4][4] = { 0 }; };
 
 private:
+	int width;
+	int height;
 	mesh meshCube;
-	GLFWvidmode* videoMode;
+
 };
 
 

@@ -3,9 +3,25 @@
 #include "GraphicsEngine.h"
 
 GraphicsEngine::GraphicsEngine() {
+	initGLFW();
 	this->height = 0;
 	this->width = 0;
 };
+
+int GraphicsEngine::initGLFW() {
+	if (!glfwInit())
+		return -1;
+	return 1;
+}
+
+int GraphicsEngine::createWindow(int width, int height, const char* title, GLFWmonitor* monitor, GLFWwindow* share) {
+	this->window = glfwCreateWindow(width, height, title, monitor, share);
+	if (!window) {
+		glfwTerminate();
+		return -1;
+	}
+}
+
 
 bool GraphicsEngine::onUserCreate() {
 	meshCube.tris = {
@@ -46,7 +62,6 @@ bool GraphicsEngine::onUserCreate() {
 	return true;
 }
 
-
 float GraphicsEngine::degreeToRadian(float degrees) {
 	// 180 degrees = 1 rad --> 1 degree = 1/180 rad
 	return degrees * (1 / 180.0f) * 3.14f;
@@ -56,12 +71,14 @@ bool GraphicsEngine::onUserUpdate(float elapsedTime) {
 	clearScreen();
 	
 	for (auto tri : meshCube.tris) {
-		triangle triProj;
+		triangle triProj, triTranslated;
 		for (int i = 0; i < 3; i++) {
-			multiplyMatrix(tri.p[i], triProj.p[i], matProj);
+			triTranslated.p[i].z = tri.p[0].z + 3.0f;
+			multiplyMatrix(triTranslated.p[i], triProj.p[i], matProj);
+			if (i < 2)	// TODO: Fix draw line
+				drawLine(triTranslated.p[i], triTranslated.p[i+1]);
 		}
 	}
-
 	return true;
 }
 
@@ -94,7 +111,7 @@ void GraphicsEngine::getScreenSize() {
 
 float GraphicsEngine::getAspectRatio() {
 	getScreenSize();
-	return this->height / this->width;
+	return (float)(this->height / this->width);
 }
 
 /* Draw a line from vec1 -> vec2 */
@@ -104,4 +121,9 @@ void GraphicsEngine::drawLine(vec3d vec1, vec3d vec2) {
 		vec2.x, vec2.y, vec2.z
 	};
 	// DRAW LINE
+	glBegin(GL_LINES);
+	glVertex3f(vec1.x, vec1.y, vec1.z);
+	glVertex3f(vec2.x, vec2.y, vec2.z);
+	glEnd();
+
 }

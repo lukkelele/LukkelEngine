@@ -1,6 +1,7 @@
 #ifndef _GRAPHICS_ENGINE_H
 #define _GRAPHICS_ENGINE_H
 #include <vector>
+#include <GLFW/glfw3.h>
 
 
 class GraphicsEngine {
@@ -13,6 +14,7 @@ public:
 	struct triangle { vec3d p[3]; };
 	struct mesh { std::vector<triangle> tris; };
 	struct mat4x4 { float m[4][4] = { 0 }; };
+	GLFWwindow* window;
 
 private:
 	int height;
@@ -21,6 +23,8 @@ private:
 	mat4x4 matProj;
 
 public:
+	int initGLFW();
+	int createWindow(int width, int height, const char* title, GLFWmonitor* monitor, GLFWwindow* share);
 	bool onUserCreate();
 	bool onUserUpdate(float elapsedTime);
 	void clearScreen();

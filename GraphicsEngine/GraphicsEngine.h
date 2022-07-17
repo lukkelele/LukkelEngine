@@ -10,11 +10,12 @@ public:
 	GraphicsEngine();
 
 public:
+	GLFWwindow* window;
+	//	olc::PixelGameEngine olcEngine;
 	struct vec3d { float x, y, z; };
 	struct triangle { vec3d p[3]; };
 	struct mesh { std::vector<triangle> tris; };
 	struct mat4x4 { float m[4][4] = { 0 }; };
-	GLFWwindow* window;
 
 private:
 	int height;
@@ -24,6 +25,7 @@ private:
 
 public:
 	int initGLFW();
+//	int initOLC();
 	int createWindow(int width, int height, const char* title, GLFWmonitor* monitor, GLFWwindow* share);
 	bool onUserCreate();
 	bool onUserUpdate(float elapsedTime);

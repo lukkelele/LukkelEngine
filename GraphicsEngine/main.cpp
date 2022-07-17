@@ -1,28 +1,36 @@
+#define OLC_PGE_APPLICATION
+#include "olcPixelGameEngine.h"
 
-#include "GraphicsEngine.h"
+class Example : public olc::PixelGameEngine {
+public:
+	Example()
+	{
+		sAppName = "Example";
+	}
+
+public:
+	bool OnUserCreate() override
+	{
+		// Called once at the start, so create things here
+		return true;
+	}
+
+	bool OnUserUpdate(float fElapsedTime) override
+	{
+		// called once per frame
+		for (int x = 0; x < ScreenWidth(); x++)
+			for (int y = 0; y < ScreenHeight(); y++)
+				Draw(x, y, olc::Pixel(rand() % 255, rand() % 255, rand() % 255));
+		return true;
+	}
+};
 
 
-int main() {
+int main()
+{
+	Example demo;
+	if (demo.Construct(256, 240, 4, 4))
+		demo.Start();
 
-	GraphicsEngine Engine = GraphicsEngine();
-	Engine.createWindow(640, 480, "Lukkelele Game Engine", NULL, NULL);
-	Engine.onUserUpdate(0);
-	Engine.onUserCreate();
-
-    /* Make the window's context current */
-    glfwMakeContextCurrent(Engine.window);
-
-    /* Loop until the user closes the window */
-    while (!glfwWindowShouldClose(Engine.window))
-    {
-        /* Render here */
-        glClear(GL_COLOR_BUFFER_BIT);
-
-        /* Swap front and back buffers */
-        glfwSwapBuffers(Engine.window);
-
-        /* Poll for and process events */
-        glfwPollEvents();
-    }
 	return 0;
 }

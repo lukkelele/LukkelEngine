@@ -1,18 +1,26 @@
-#include <iostream>
-#include <GLFW/glfw3.h>
+
 #include "GraphicsEngine.h"
 
 GraphicsEngine::GraphicsEngine() {
-	initGLFW();
 	this->height = 0;
 	this->width = 0;
+//	initOLC();
 };
 
 int GraphicsEngine::initGLFW() {
 	if (!glfwInit())
 		return -1;
-	return 1;
+	return 0;
 }
+
+/*
+int GraphicsEngine::initOLC() {
+	if (this->olcEngine.Construct(640, 480, 4, 4))
+		this->olcEngine.Start();
+	return 0;
+}
+*/
+
 
 int GraphicsEngine::createWindow(int width, int height, const char* title, GLFWmonitor* monitor, GLFWwindow* share) {
 	this->window = glfwCreateWindow(width, height, title, monitor, share);
@@ -21,7 +29,6 @@ int GraphicsEngine::createWindow(int width, int height, const char* title, GLFWm
 		return -1;
 	}
 }
-
 
 bool GraphicsEngine::onUserCreate() {
 	meshCube.tris = {
@@ -121,9 +128,6 @@ void GraphicsEngine::drawLine(vec3d vec1, vec3d vec2) {
 		vec2.x, vec2.y, vec2.z
 	};
 	// DRAW LINE
-	glBegin(GL_LINES);
-	glVertex3f(vec1.x, vec1.y, vec1.z);
-	glVertex3f(vec2.x, vec2.y, vec2.z);
-	glEnd();
+	
 
 }

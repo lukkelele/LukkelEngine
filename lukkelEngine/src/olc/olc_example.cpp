@@ -25,7 +25,7 @@ public:
 	}
 };
 
-
+/*
 int main()
 {
 	Example demo;
@@ -34,3 +34,4 @@ int main()
 
 	return 0;
 }
+*/

@@ -13,16 +13,16 @@ public:
 public:
     GLFWwindow* window;
     //    olc::PixelGameEngine olcEngine;
-    struct vec3d { float x, y, z; };
-    struct triangle { vec3d p[3]; };
+    struct vec3 { float x, y, z; };
+    struct triangle { vec3 p[3]; };
     struct mesh { std::vector<triangle> tris; };
-    struct mat4x4 { float m[4][4] = { 0 }; };
+    struct mat4 { float m[4][4] = { 0 }; };
 
 private:
     int height;
     int width;
     mesh meshCube;
-    mat4x4 matProj;
+    mat4 matProj;
 
 public:
     int initGLFW();
@@ -32,8 +32,8 @@ public:
     bool onUserUpdate(float elapsedTime);
     void clearScreen();
     void getScreenSize();
-    void multiplyMatrix(vec3d& a, vec3d& b, mat4x4& mat);
-    void drawLine(vec3d vec1, vec3d vec2); /* Draw a line from vec1 -> vec2 */
+    void multiplyMatrix(vec3& a, vec3& b, mat4& mat);
+    void drawLine(vec3 vec1, vec3 vec2); /* Draw a line from vec1 -> vec2 */
     float degreeToRadian(float degrees);
     float getAspectRatio();
     bool createCube();

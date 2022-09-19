@@ -47,7 +47,8 @@ bool Engine::onUserCreate() {
 	float fov = 90.f;
 	float aspectRatio = getAspectRatio();
 	float fovRad = degreeToRadian(fov);
-	float fovRadian = 1.0f / tanf(fovRad * 0.5f); // might reuse fovRad here
+	float fovRadian = 1.0f / tanf(fovRad * 0.5f); 
+
 	// matProj.m[ROW][COLUMN]
 	matProj.m[0][0] = aspectRatio * fovRadian;
 	matProj.m[1][1] = fovRadian;
@@ -83,7 +84,7 @@ bool Engine::onUserUpdate(float elapsedTime) {
 /* Matrix multiplication -> a*mat = b
    Input vector: a
    Output vector: b  */
-void Engine::multiplyMatrix(vec3d& a, vec3d& b, mat4x4& mat) {
+void Engine::multiplyMatrix(vec3& a, vec3& b, mat4& mat) {
 	b.x = a.x * mat.m[0][0] + a.y * mat.m[1][0] + a.z * mat.m[2][0] + mat.m[3][0];
 	b.y = a.x * mat.m[0][1] + a.y * mat.m[1][1] + a.z * mat.m[2][1] + mat.m[3][1];
 	b.z = a.x * mat.m[0][2] + a.y * mat.m[1][2] + a.z * mat.m[2][2] + mat.m[3][2];
@@ -136,7 +137,7 @@ float Engine::getAspectRatio() {
 }
 
 /* Draw a line from vec1 -> vec2 */
-void Engine::drawLine(vec3d vec1, vec3d vec2) {
+void Engine::drawLine(vec3 vec1, vec3 vec2) {
 	std::vector<float> vertices = {
 		vec1.x, vec1.y, vec1.z,
 		vec2.x, vec2.y, vec2.z

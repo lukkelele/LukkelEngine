@@ -1,5 +1,6 @@
 ﻿#include "Engine.h"
 
+
 Engine::Engine() {
 	this->width = 800;
 	this->height = 600;
@@ -144,6 +145,83 @@ void Engine::drawLine(vec3 vec1, vec3 vec2) {
 	};
 	// DRAW LINE
 
+}
 
+int Engine::getHeight() {
+	return this->height;
+}
+
+int Engine::getWidth() {
+	return this->width;
+}
+
+
+bool Engine::LoadFromObjectFile(std::string sFilename, bool bHasTexture) {
+	std::ifstream f(sFilename);
+	if (!f.is_open())
+		return false;
+
+	// Local cache of verts
+	std::vector<Engine::vec3> verts;
+	std::vector<Engine::vec2> texs;
+	std::vector<triangle> tris;
+
+	while (!f.eof())
+	{
+		char line[128];
+		f.getline(line, 128);
+		std::strstream s;
+		s << line;
+
+		char junk;
+
+		if (line[0] == 'v') {
+			if (line[1] == 't') {
+				Engine::vec2 v;
+				s >> junk >> junk >> v.u >> v.v;
+				// A little hack for the spyro texture
+				//v.u = 1.0f - v.u;
+				//v.v = 1.0f - v.v;
+				texs.push_back(v);
+			}
+			else {
+				Engine::vec3 v;
+				s >> junk >> v.x >> v.y >> v.z;
+				verts.push_back(v);
+			}
+		}
+		if (!bHasTexture)
+		{
+			if (line[0] == 'f')
+			{
+				int f[3];
+				s >> junk >> f[0] >> f[1] >> f[2];
+				tris.push_back({ verts[f[0] - 1], verts[f[1] - 1], verts[f[2] - 1] });
+			}
+		}
+		else {
+			if (line[0] == 'f')
+			{
+				s >> junk;
+				std::string tokens[6];
+				int nTokenCount = -1;
+
+
+				while (!s.eof())
+				{
+					char c = s.get();
+					if (c == ' ' || c == '/')
+						nTokenCount++;
+					else
+						tokens[nTokenCount].append(1, c);
+				}
+				tokens[nTokenCount].pop_back();
+
+				//tris.push_back({ verts[stoi(tokens[0]) - 1], verts[stoi(tokens[2]) - 1], verts[stoi(tokens[4]) - 1],
+				//	texs[stoi(tokens[1]) - 1], texs[stoi(tokens[3]) - 1], texs[stoi(tokens[5]) - 1] });
+			}
+		}
+	}
+	return true;
 }
 

@@ -1,5 +1,6 @@
 #ifndef _ENGINE_H
 #define _ENGINE_H
+#include "../i"
 #include <vector>
 #include <GLFW/glfw3.h>
 #include <fstream>
@@ -53,7 +54,6 @@ public:
     void drawLine(vec3 vec1, vec3 vec2); /* Draw a line from vec1 -> vec2 */
     float degreeToRadian(float degrees);
     float getAspectRatio();
-    bool createCube();
     bool LoadFromObjectFile(std::string sFilename, bool bHasTexture = false);
     int getHeight();
     int getWidth();

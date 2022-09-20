@@ -93,7 +93,7 @@ void Engine::multiplyMatrix(vec3& a, vec3& b, mat4& mat) {
 	// Fourth element needs to be set to 1 to get back to 3D, divide xyz with w
 	if (w != 0.0f) { b.x /= w; b.y /= w; b.z /= w; }
 }
-
+/*
 bool Engine::createCube() {
 	meshCube.tris = {
 		// South
@@ -116,7 +116,7 @@ bool Engine::createCube() {
 		{ 0.0f, 0.0f, 0.0f,   1.0f, 0.0f, 1.0f,  1.0f, 0.0f, 0.0f }
 	};
 	return true;
-}
+} */
 
 
 void Engine::clearScreen() {

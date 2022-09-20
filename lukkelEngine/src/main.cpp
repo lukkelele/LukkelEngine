@@ -67,7 +67,6 @@ int main(void)
     while (!glfwWindowShouldClose(window))
     {
         glClear(GL_COLOR_BUFFER_BIT);
-
         // Render OpenGL here
         glEnable(GL_LINE_SMOOTH);
         glEnable(GL_LINE_STIPPLE);

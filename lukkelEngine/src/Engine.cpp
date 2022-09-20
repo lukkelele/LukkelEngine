@@ -1,4 +1,5 @@
 ﻿#include "Engine.h"
+#include "Matrix.h"
 
 
 Engine::Engine() {
@@ -41,7 +42,7 @@ int Engine::createWindow(int width, int height, const char* title, GLFWmonitor* 
 
 bool Engine::onUserCreate() {
 
-	createCube();
+	//Matrix::createCube();
 	// PROJECTION MATRIX
 	float z_near = 0.1f;
 	float z_far = 1000.f;

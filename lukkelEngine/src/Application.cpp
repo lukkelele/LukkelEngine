@@ -2,10 +2,12 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-#include <imgui/imgui.h>
-#include <imgui/imgui_impl_glfw_gl3.h>
+//#include <imgui/imgui.h>
+//#include <imgui/imgui_impl_glfw_gl3.h>
 
+/* Tests */
 #include <TestClearColor.h>
+#include <TestTexture2D.h>
 
 #include <iostream>
 #include <fstream>
@@ -45,6 +47,7 @@ int main(void)
 
 	// Register new test
 	testMenu->registerTest<test::ClearColor>("Clear Color");
+	testMenu->registerTest<test::Texture2D>("2D Texture");
 
 	while (!glfwWindowShouldClose(window))
 	{

@@ -7,9 +7,16 @@
 
 #define WIDTH  1600
 #define HEIGHT 1024
-#define TITLE  "Lukkelele"
+#define TITLE  "lukkelEngine"
 #define MAJOR_VERSION 3
 #define MINOR_VERSION 3
+
+/*
+=================================================
+DEPRECATED 
+NOT TO BE USED!
+=================================================
+*/
 
 class Display
 {
@@ -19,18 +26,28 @@ public:
 	Display();
 	~Display();
 
+	GLFWwindow* window;
+	
 	GLFWwindow* getWindow();
 	const char* getTitle();
+	bool setVersion(unsigned int MAJOR, unsigned int MINOR);
+	int initGlew();
+
+	GLFWwindow* initDisplay();
 
 private:
 	int glfwStatus;
 	int width;
 	int height;
 	const char* title;
-	GLFWwindow* window;
 
-	int initGlew();
-	bool setVersion(unsigned int MAJOR, unsigned int MINOR);
 };
+
+int initGlew();
+bool setVersion(unsigned int MAJOR, unsigned int MINOR);
+const char* getTitle();
+
+GLFWwindow* initDisplay(int width, int height, const char* title, unsigned int major_version, unsigned int minor_version);
+GLFWwindow* getWindow();
 
 #endif _DISPLAY_H  /* _DISPLAY_H */

@@ -44,13 +44,13 @@
 #define DEFAULT_SCREEN_HEIGHT    1024
 
 
-class lukkelEngine
+class LukkelEngine
 {
 public:
-	lukkelEngine();
-	lukkelEngine(unsigned int mode);
-	lukkelEngine(unsigned int mode, unsigned int blending);
-	~lukkelEngine();
+	LukkelEngine();
+	LukkelEngine(unsigned int mode);
+	LukkelEngine(unsigned int mode, unsigned int blending);
+	~LukkelEngine();
 
 	test::Test* currentTest = nullptr;
 	test::TestMenu* testMenu;

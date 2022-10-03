@@ -2,7 +2,7 @@
 #define _DISPLAY_H
 
 #include <Renderer.h>
-#include <gl/glew.h>
+#include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
 #define WIDTH  1600

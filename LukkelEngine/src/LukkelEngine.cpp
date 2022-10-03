@@ -1,22 +1,22 @@
-#include <lukkelEngine.h>
+#include <LukkelEngine.h>
 
 
-lukkelEngine::lukkelEngine()
+LukkelEngine::LukkelEngine()
 {
 	status = init(DEFAULT_GRAPHICS_MODE, DEFAULT_BLENDING_MODE);
 }
 
-lukkelEngine::lukkelEngine(unsigned int graphicsMode)
+LukkelEngine::LukkelEngine(unsigned int graphicsMode)
 {
 	status = init(graphicsMode, DEFAULT_BLENDING_MODE);
 }
 
-lukkelEngine::lukkelEngine(unsigned int graphicsMode, unsigned int blending)
+LukkelEngine::LukkelEngine(unsigned int graphicsMode, unsigned int blending)
 {
 	status = init(graphicsMode, blending);
 }
 
-lukkelEngine::~lukkelEngine()
+LukkelEngine::~LukkelEngine()
 {
 	// TERMINATE ALL 
 	delete currentTest;
@@ -28,9 +28,9 @@ lukkelEngine::~lukkelEngine()
 	glfwTerminate();
 }
 
-GLFWwindow* lukkelEngine::getWindow() {	return window; }
+GLFWwindow* LukkelEngine::getWindow() {	return window; }
 
-int lukkelEngine::init(unsigned int graphicsMode, unsigned int blending)
+int LukkelEngine::init(unsigned int graphicsMode, unsigned int blending)
 {
     // Initiate GLFW and GLEW
 	glfwInit();
@@ -50,14 +50,14 @@ int lukkelEngine::init(unsigned int graphicsMode, unsigned int blending)
 	return 1;
 }
 
-void lukkelEngine::screenUpdate()
+void LukkelEngine::screenUpdate()
 {
 	GLCall(glClearColor(0.0f, 0.0f, 0.0f, 1.0f));
 	renderer.clear();
 	ImGui_ImplGlfwGL3_NewFrame();
 }
 
-int lukkelEngine::initImGui()
+int LukkelEngine::initImGui()
 {
 	ImGui::CreateContext();
 	ImGui_ImplGlfwGL3_Init(window, true);
@@ -65,20 +65,20 @@ int lukkelEngine::initImGui()
 	return 1;
 }
 
-void lukkelEngine::renderImGuiData()
+void LukkelEngine::renderImGuiData()
 {
 	ImGui::Render();
 	ImGui_ImplGlfwGL3_RenderDrawData(ImGui::GetDrawData());
 }
 
-void lukkelEngine::render()
+void LukkelEngine::render()
 {
 	renderImGuiData();
 	GLCall(glfwSwapBuffers(window));
 	GLCall(glfwPollEvents());
 }
 
-void lukkelEngine::setMode(unsigned int setting)
+void LukkelEngine::setMode(unsigned int setting)
 {
 	graphicsMode = setting;
 	if (graphicsMode == GRAPHICS_MODE_3D)   // 1
@@ -87,7 +87,7 @@ void lukkelEngine::setMode(unsigned int setting)
 		GLCall(glDisable(GL_DEPTH_TEST));
 }
 
-void lukkelEngine::setBlending(unsigned int setting)
+void LukkelEngine::setBlending(unsigned int setting)
 {
 	if (setting > 1)
 		setting = DEFAULT_BLENDING_MODE;
@@ -96,7 +96,7 @@ void lukkelEngine::setBlending(unsigned int setting)
 	GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
 }
 
-void lukkelEngine::testRunner(float updateFrequency)
+void LukkelEngine::testRunner(float updateFrequency)
 {
 	if (currentTest) {
 		currentTest->onUpdate(0.0f);

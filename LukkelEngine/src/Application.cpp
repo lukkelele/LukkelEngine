@@ -1,4 +1,5 @@
-#include <lukkelEngine.h>
+#include <LukkelEngine.h>
+
 
 #define LOG(x) std::cout << "LOG: " << x << std::endl;
 
@@ -6,7 +7,7 @@
 int main(void)
 {
 	Cube cube; // unit cube
-	lukkelEngine Engine = lukkelEngine::lukkelEngine(GRAPHICS_MODE_2D, BLENDING_ENABLED);
+	LukkelEngine Engine = LukkelEngine(GRAPHICS_MODE_2D, BLENDING_ENABLED);
 	GLFWwindow* window = Engine.getWindow();
 
 	// Create the test menu

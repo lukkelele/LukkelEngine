@@ -1,7 +1,5 @@
 #include <LukkelEngine.h>
-
-
-#define LOG(x) std::cout << "LOG: " << x << std::endl;
+#include <LukkeLallish.cpp>
 
 
 int main(void)
@@ -22,5 +20,5 @@ int main(void)
 		Engine.render();
 	}
 
-    return 0;
+	return 0;
 }

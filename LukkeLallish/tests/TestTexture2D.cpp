@@ -42,10 +42,10 @@ namespace test {
 		m_IBO = std::make_unique<IndexBuffer>(indices, 6);
 
 		// Shader creation
-		m_Shader = std::make_unique<Shader>("lukkelEngine/res/shaders/basic.shader");
+		m_Shader = std::make_unique<Shader>("res/shaders/basic.shader");
 		m_Shader->bind();
 		m_Shader->setUniform4f("u_Color", 0.8f, 0.3f, 0.8f, 1.0f);
-		m_Texture = std::make_unique<Texture>("lukkelEngine/res/textures/tinder_logo.png");
+		m_Texture = std::make_unique<Texture>("res/textures/tinder_logo.png");
 		m_Shader->setUniform1i("u_Texture", 0); // pass slot
 
 

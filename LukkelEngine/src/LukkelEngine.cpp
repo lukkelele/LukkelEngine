@@ -46,6 +46,7 @@ int LukkelEngine::init(unsigned int graphicsMode, unsigned int blending)
 	currentTest = testMenu;
 	testMenu->registerTest<test::ClearColor>("Clear Color");
 	testMenu->registerTest<test::Texture2D>("2D Texture");
+	testMenu->registerTest<test::DrawTriangle>("Draw 2D triangle");
 
 	return 1;
 }

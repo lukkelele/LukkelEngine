@@ -9,6 +9,7 @@
 #include <Test.h>			
 #include <TestClearColor.h>
 #include <TestTexture2D.h>
+#include <TestDrawTriangle.h>
 
 #include <iostream>
 #include <fstream>
@@ -43,6 +44,7 @@
 #define DEFAULT_SCREEN_WIDTH     1600
 #define DEFAULT_SCREEN_HEIGHT    1024
 
+#define LOG(x) std::cout << "LOG: " << x << std::endl;
 
 class LukkelEngine
 {

@@ -1,5 +1,6 @@
 #include <Shader.h>
 
+Shader::Shader() { }
 
 Shader::Shader(const std::string& filePath)
 	: m_filePath(filePath)   // keep for debug purposes

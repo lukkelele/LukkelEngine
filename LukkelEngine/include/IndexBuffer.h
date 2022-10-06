@@ -8,6 +8,7 @@ private:
 	unsigned int m_Count;
 	
 public:
+	IndexBuffer();
 	IndexBuffer(const void* data, unsigned int count);
 	~IndexBuffer();
 

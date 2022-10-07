@@ -10,3 +10,4 @@ clang
 -Ilib/glfw/include
 -Ilib/glm/
 -Ilib/imgui/
+-Ilib/

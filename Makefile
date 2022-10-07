@@ -39,7 +39,7 @@ all: $(PROJECTS)
 LukkelEngine: GLFW GLM GLAD ImGui
 ifneq (,$(LukkelEngine_config))
 	@echo "==== Building LukkelEngine ($(LukkelEngine_config)) ===="
-	@${MAKE} --no-print-directory -C . -f LukkelEngine.make config=$(LukkelEngine_config)
+	@${MAKE} --no-print-directory -C build/LukkelEngine -f Makefile config=$(LukkelEngine_config)
 endif
 
 GLAD:
@@ -67,7 +67,7 @@ ifneq (,$(ImGui_config))
 endif
 
 clean:
-	@${MAKE} --no-print-directory -C . -f LukkelEngine.make clean
+	@${MAKE} --no-print-directory -C build/LukkelEngine -f Makefile clean
 	@${MAKE} --no-print-directory -C lib -f GLAD.make clean
 	@${MAKE} --no-print-directory -C lib -f GLFW.make clean
 	@${MAKE} --no-print-directory -C lib -f GLM.make clean

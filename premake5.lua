@@ -21,11 +21,12 @@ workspace "LukkelEngine"
 project "LukkelEngine"
     kind "ConsoleApp"
     language "C++"
+    location "build/%{prj.name}"
     cppdialect "C++17"
         architecture "x86_64"
 
     targetdir "bin/%{cfg.buildcfg}"
-    objdir    "bin/obj/%{cfg.buildcfg}"
+    objdir    "obj/%{cfg.buildcfg}"
 
     includedirs
     {
@@ -34,12 +35,11 @@ project "LukkelEngine"
         "lib/glfw/include/",
         "lib/glm/",
         "lib/imgui/",
-        "lib/imgui/examples"
+        "lib/imgui/examples",
+        "lib/",
     }
 
-    files {
-        "LukkelEngine/src/*.cpp",
-        }
+    files { "LukkelEngine/src/*.cpp" }
 
     links { "GLFW", "GLM", "GLAD", "ImGui" }
 

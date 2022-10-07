@@ -12,18 +12,18 @@ endif
 
 ifeq ($(config),debug)
   RESCOMP = windres
-  TARGETDIR = bin/Debug
+  TARGETDIR = ../../bin/Debug
   TARGET = $(TARGETDIR)/LukkelEngine
-  OBJDIR = bin/obj/Debug
+  OBJDIR = ../../obj/Debug/Debug/LukkelEngine
   DEFINES += -DLK_DEBUG -D_X11
-  INCLUDES += -ILukkelEngine/include -Ilib/glad/include -Ilib/glfw/include -Ilib/glm -Ilib/imgui -Ilib/imgui/examples
+  INCLUDES += -I../../LukkelEngine/include -I../../lib/glad/include -I../../lib/glfw/include -I../../lib/glm -I../../lib/imgui -I../../lib/imgui/examples -I../../lib
   FORCE_INCLUDE +=
   ALL_CPPFLAGS += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)
   ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -g
   ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -g -std=c++17
   ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
-  LIBS += bin/Debug/libGLFW.a bin/Debug/libGLM.a bin/Debug/libGLAD.a bin/Debug/libImGui.a -ldl -lpthread
-  LDDEPS += bin/Debug/libGLFW.a bin/Debug/libGLM.a bin/Debug/libGLAD.a bin/Debug/libImGui.a
+  LIBS += ../../bin/Debug/libGLFW.a ../../bin/Debug/libGLM.a ../../bin/Debug/libGLAD.a ../../bin/Debug/libImGui.a -ldl -lpthread
+  LDDEPS += ../../bin/Debug/libGLFW.a ../../bin/Debug/libGLM.a ../../bin/Debug/libGLAD.a ../../bin/Debug/libImGui.a
   ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64
   LINKCMD = $(CXX) -o "$@" $(OBJECTS) $(RESOURCES) $(ALL_LDFLAGS) $(LIBS)
   define PREBUILDCMDS
@@ -39,18 +39,18 @@ endif
 
 ifeq ($(config),release)
   RESCOMP = windres
-  TARGETDIR = bin/Release
+  TARGETDIR = ../../bin/Release
   TARGET = $(TARGETDIR)/LukkelEngine
-  OBJDIR = bin/obj/Release
+  OBJDIR = ../../obj/Release/Release/LukkelEngine
   DEFINES += -DLK_RELEASE -D_X11
-  INCLUDES += -ILukkelEngine/include -Ilib/glad/include -Ilib/glfw/include -Ilib/glm -Ilib/imgui -Ilib/imgui/examples
+  INCLUDES += -I../../LukkelEngine/include -I../../lib/glad/include -I../../lib/glfw/include -I../../lib/glm -I../../lib/imgui -I../../lib/imgui/examples -I../../lib
   FORCE_INCLUDE +=
   ALL_CPPFLAGS += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)
   ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -O2
   ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -O2 -std=c++17
   ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
-  LIBS += bin/Release/libGLFW.a bin/Release/libGLM.a bin/Release/libGLAD.a bin/Release/libImGui.a -ldl -lpthread
-  LDDEPS += bin/Release/libGLFW.a bin/Release/libGLM.a bin/Release/libGLAD.a bin/Release/libImGui.a
+  LIBS += ../../bin/Release/libGLFW.a ../../bin/Release/libGLM.a ../../bin/Release/libGLAD.a ../../bin/Release/libImGui.a -ldl -lpthread
+  LDDEPS += ../../bin/Release/libGLFW.a ../../bin/Release/libGLM.a ../../bin/Release/libGLAD.a ../../bin/Release/libImGui.a
   ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64 -s
   LINKCMD = $(CXX) -o "$@" $(OBJECTS) $(RESOURCES) $(ALL_LDFLAGS) $(LIBS)
   define PREBUILDCMDS
@@ -66,18 +66,18 @@ endif
 
 ifeq ($(config),dist)
   RESCOMP = windres
-  TARGETDIR = bin/Dist
+  TARGETDIR = ../../bin/Dist
   TARGET = $(TARGETDIR)/LukkelEngine
-  OBJDIR = bin/obj/Dist
+  OBJDIR = ../../obj/Dist/Dist/LukkelEngine
   DEFINES += -DLK_DIST -D_X11
-  INCLUDES += -ILukkelEngine/include -Ilib/glad/include -Ilib/glfw/include -Ilib/glm -Ilib/imgui -Ilib/imgui/examples
+  INCLUDES += -I../../LukkelEngine/include -I../../lib/glad/include -I../../lib/glfw/include -I../../lib/glm -I../../lib/imgui -I../../lib/imgui/examples -I../../lib
   FORCE_INCLUDE +=
   ALL_CPPFLAGS += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)
   ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -O2
   ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -O2 -std=c++17
   ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
-  LIBS += bin/Dist/libGLFW.a bin/Dist/libGLM.a bin/Dist/libGLAD.a bin/Dist/libImGui.a -ldl -lpthread
-  LDDEPS += bin/Dist/libGLFW.a bin/Dist/libGLM.a bin/Dist/libGLAD.a bin/Dist/libImGui.a
+  LIBS += ../../bin/Dist/libGLFW.a ../../bin/Dist/libGLM.a ../../bin/Dist/libGLAD.a ../../bin/Dist/libImGui.a -ldl -lpthread
+  LDDEPS += ../../bin/Dist/libGLFW.a ../../bin/Dist/libGLM.a ../../bin/Dist/libGLAD.a ../../bin/Dist/libImGui.a
   ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64 -s
   LINKCMD = $(CXX) -o "$@" $(OBJECTS) $(RESOURCES) $(ALL_LDFLAGS) $(LIBS)
   define PREBUILDCMDS
@@ -151,7 +151,7 @@ else
 $(OBJECTS): | $(OBJDIR)
 endif
 
-$(OBJDIR)/Main.o: LukkelEngine/src/Main.cpp
+$(OBJDIR)/Main.o: ../../LukkelEngine/src/Main.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 

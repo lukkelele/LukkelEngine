@@ -1,3 +1,6 @@
+# Ignore directories
+bin
+
 # Prerequisites
 *.d
 

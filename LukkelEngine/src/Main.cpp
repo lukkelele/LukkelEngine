@@ -1,35 +1,15 @@
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-#include <GL/gl.h>
-#include <imgui/imgui.h>
-#include <imgui/imgui_impl_glfw.h>
-#include <examples/imgui_impl_opengl3.h>
+#include <LukkelEngine.h>
+#include <Window.h>
 
-#include <glm/glm.hpp>
-#include <glm/gtc/type_ptr.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-
-#include <iostream>
-#include <stdio.h>
-
-#define WIDTH 800
+#define WIDTH  800
 #define HEIGHT 600
-
 
 int main()
 {
-    
+    //LOG("Starting LukkelEngine");    
     glfwInit();
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-    printf("GLFW version %s\n", glfwGetVersionString());
-
-
-    GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Window", nullptr, nullptr);
-    glfwMakeContextCurrent(window);
-
+    Window Window(WIDTH, HEIGHT, "LukkelEngine");
+    
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
         fprintf(stderr, "Failed to init GLAD\n");
@@ -40,7 +20,7 @@ int main()
     
     glViewport(0, 0, WIDTH, HEIGHT);
 
-    while (!glfwWindowShouldClose(window))
+    while (!glfwWindowShouldClose(Window.m_Window))
     {
         // Check if any events have been activated (key pressed, mouse moved etc.) and call corresponding response functions
         glfwPollEvents();
@@ -51,13 +31,10 @@ int main()
         glClear(GL_COLOR_BUFFER_BIT);
 
         // Swap the screen buffers
-        glfwSwapBuffers(window);
+        glfwSwapBuffers(Window.m_Window);
     }
 
     // Terminates GLFW, clearing any resources allocated by GLFW.
     glfwTerminate();
     return 0;
 }
-
-
-

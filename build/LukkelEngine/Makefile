@@ -92,7 +92,9 @@ all: prebuild prelink $(TARGET)
 endif
 
 OBJECTS := \
+	$(OBJDIR)/LukkelEngine.o \
 	$(OBJDIR)/Main.o \
+	$(OBJDIR)/Window.o \
 
 RESOURCES := \
 
@@ -151,7 +153,13 @@ else
 $(OBJECTS): | $(OBJDIR)
 endif
 
+$(OBJDIR)/LukkelEngine.o: ../../LukkelEngine/src/LukkelEngine.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Main.o: ../../LukkelEngine/src/Main.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/Window.o: ../../LukkelEngine/src/Window.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 

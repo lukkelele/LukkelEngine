@@ -2,7 +2,7 @@ clang
 %h -x c++-header
 -Wall
 -Wextra
-%cpp -std=c++11
+%cpp -std=c++17
 %c -std=c11
 -ILukkelEngine/include
 -ILukkelEngine/src

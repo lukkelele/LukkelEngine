@@ -1,0 +1,12 @@
+clang
+%h -x c++-header
+-Wall
+-Wextra
+%cpp -std=c++11
+%c -std=c11
+-ILukkelEngine/include
+-ILukkelEngine/src
+-Ilib/glad/include
+-Ilib/glfw/include
+-Ilib/glm/
+-Ilib/imgui/

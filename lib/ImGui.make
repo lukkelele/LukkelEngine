@@ -15,7 +15,7 @@ ifeq ($(config),debug)
   TARGETDIR = ../bin/Debug
   TARGET = $(TARGETDIR)/libImGui.a
   OBJDIR = ../obj/Debug/Debug/ImGui
-  DEFINES += -DIMGUI_IMPL_OPENGL_LOADER_GLAD -D_IMGUI_X11
+  DEFINES += -DLK_DEBUG -DIMGUI_IMPL_OPENGL_LOADER_GLAD -D_IMGUI_X11
   INCLUDES += -Iimgui -Iimgui/examples -Iglad/include -Iglfw/include
   FORCE_INCLUDE +=
   ALL_CPPFLAGS += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)
@@ -42,7 +42,34 @@ ifeq ($(config),release)
   TARGETDIR = ../bin/Release
   TARGET = $(TARGETDIR)/libImGui.a
   OBJDIR = ../obj/Release/Release/ImGui
-  DEFINES += -DIMGUI_IMPL_OPENGL_LOADER_GLAD -D_IMGUI_X11
+  DEFINES += -DLK_RELEASE -DIMGUI_IMPL_OPENGL_LOADER_GLAD -D_IMGUI_X11
+  INCLUDES += -Iimgui -Iimgui/examples -Iglad/include -Iglfw/include
+  FORCE_INCLUDE +=
+  ALL_CPPFLAGS += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)
+  ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -O2 -fPIC
+  ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -O2 -fPIC
+  ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
+  LIBS +=
+  LDDEPS +=
+  ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64 -s
+  LINKCMD = $(AR) -rcs "$@" $(OBJECTS)
+  define PREBUILDCMDS
+  endef
+  define PRELINKCMDS
+  endef
+  define POSTBUILDCMDS
+  endef
+all: prebuild prelink $(TARGET)
+	@:
+
+endif
+
+ifeq ($(config),dist)
+  RESCOMP = windres
+  TARGETDIR = ../bin/Dist
+  TARGET = $(TARGETDIR)/libImGui.a
+  OBJDIR = ../obj/Dist/Dist/ImGui
+  DEFINES += -DLK_DIST -DIMGUI_IMPL_OPENGL_LOADER_GLAD -D_IMGUI_X11
   INCLUDES += -Iimgui -Iimgui/examples -Iglad/include -Iglfw/include
   FORCE_INCLUDE +=
   ALL_CPPFLAGS += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)

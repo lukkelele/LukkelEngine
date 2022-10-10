@@ -7,14 +7,14 @@
 #define DEFAULT_HEIGHT  768
 #define DEFAULT_TITLE   "LukkelEngine"
 
-#define DEFAULT_VERSION_MAJOR   4
+#define DEFAULT_VERSION_MAJOR   3
 #define DEFAULT_VERSION_MINOR   3
 
 class Window
 {
 public:
     Window();
-    Window(unsigned int width, unsigned int height, const char* title);
+    Window(unsigned int width, unsigned int height, const char* title, unsigned int majorVersion, unsigned int minorVersion);
     ~Window();
 
     GLFWwindow*  m_Window;

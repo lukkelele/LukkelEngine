@@ -8,8 +8,8 @@ int main()
 {
     //LOG("Starting LukkelEngine");    
     glfwInit();
-    Window Window(WIDTH, HEIGHT, "LukkelEngine");
-    
+    Window Window(WIDTH, HEIGHT, "LukkelEngine", 4, 3);
+    glfwMakeContextCurrent(Window.m_Window);    
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
         fprintf(stderr, "Failed to init GLAD\n");

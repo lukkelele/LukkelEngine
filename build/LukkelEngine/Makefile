@@ -92,9 +92,13 @@ all: prebuild prelink $(TARGET)
 endif
 
 OBJECTS := \
+	$(OBJDIR)/IndexBuffer.o \
 	$(OBJDIR)/LukkelEngine.o \
 	$(OBJDIR)/Main.o \
+	$(OBJDIR)/Renderer.o \
 	$(OBJDIR)/Shader.o \
+	$(OBJDIR)/VertexArray.o \
+	$(OBJDIR)/VertexBuffer.o \
 	$(OBJDIR)/Window.o \
 
 RESOURCES := \
@@ -154,13 +158,25 @@ else
 $(OBJECTS): | $(OBJDIR)
 endif
 
+$(OBJDIR)/IndexBuffer.o: ../../LukkelEngine/src/IndexBuffer.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/LukkelEngine.o: ../../LukkelEngine/src/LukkelEngine.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Main.o: ../../LukkelEngine/src/Main.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/Renderer.o: ../../LukkelEngine/src/Renderer.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Shader.o: ../../LukkelEngine/src/Shader.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/VertexArray.o: ../../LukkelEngine/src/VertexArray.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/VertexBuffer.o: ../../LukkelEngine/src/VertexBuffer.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Window.o: ../../LukkelEngine/src/Window.cpp

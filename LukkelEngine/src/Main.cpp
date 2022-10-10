@@ -1,6 +1,7 @@
 #include <ErrorHandler.h>
 #include <LukkelEngine.h>
 #include <Window.h>
+#include <Shader.h>
 
 #define WIDTH  800
 #define HEIGHT 600
@@ -50,9 +51,15 @@ int main()
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2*sizeof(float), 0);
 
+    Shader shader = Shader("res/shaders/uColor.shader");
+    //Shader shader = Shader("../../res/shaders/basic.shader");
+    shader.bind();
+    shader.setUniform4f("u_Color", 0.2f, 0.5f, 0.8f, 1.0f);
+
     while (!glfwWindowShouldClose(Window.m_Window))
     {
         glClear(GL_COLOR_BUFFER_BIT);
+        shader.bind();
 
         glDrawArrays(GL_TRIANGLES, 0, 3);
 

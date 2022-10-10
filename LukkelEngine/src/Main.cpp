@@ -1,12 +1,32 @@
+#include <ErrorHandler.h>
 #include <LukkelEngine.h>
 #include <Window.h>
 
 #define WIDTH  800
 #define HEIGHT 600
+#define ASSERT(x) //if (!(x)) __debugbreak();
+#define LCall(x); //GLClearError(); x ; ASSERT(GLLogCall(#x, __FILE__, __LINE__))
+#define LOG(x) std::cout << x << std::endl;
 
+
+void GLClearError()
+{
+    while (glGetError() != GL_NO_ERROR);
+}
+
+bool GLLogCall(const char* function, const char* file, int line)
+{
+    while (GLenum error = glGetError())
+    {
+        std::cout << "[OpenGL Error] (" << error << ")\nFUNCTION: " << function <<
+            "\nFILE: " << file << "\nLINE: " << line << std::endl;
+        return false;
+    }
+    return true;
+}
 int main()
 {
-    //LOG("Starting LukkelEngine");    
+
     glfwInit();
     Window Window(WIDTH, HEIGHT, "LukkelEngine", 4, 3);
     glfwMakeContextCurrent(Window.m_Window);    
@@ -15,23 +35,29 @@ int main()
         fprintf(stderr, "Failed to init GLAD\n");
         return 1;
     }
-
     printf("OpenGL version: %s\n", glGetString(GL_VERSION));
-    
-    glViewport(0, 0, WIDTH, HEIGHT);
+   
+    float positions[6] = {
+        -0.5f, -0.5f,
+         0.5f, -0.5f,
+        -0.5f,  0.5f
+    };
+    unsigned int buffer;
+    glGenBuffers(1, &buffer);
+    glBindBuffer(GL_ARRAY_BUFFER, buffer);
+    glBufferData(GL_ARRAY_BUFFER, 6*sizeof(float), positions, GL_STATIC_DRAW);
+
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2*sizeof(float), 0);
 
     while (!glfwWindowShouldClose(Window.m_Window))
     {
-        // Check if any events have been activated (key pressed, mouse moved etc.) and call corresponding response functions
-        glfwPollEvents();
-
-        // Render
-        // Clear the colorbuffer
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        // Swap the screen buffers
+        glDrawArrays(GL_TRIANGLES, 0, 3);
+
         glfwSwapBuffers(Window.m_Window);
+        glfwPollEvents();
     }
 
     // Terminates GLFW, clearing any resources allocated by GLFW.

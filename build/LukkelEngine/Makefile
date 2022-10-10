@@ -94,6 +94,7 @@ endif
 OBJECTS := \
 	$(OBJDIR)/LukkelEngine.o \
 	$(OBJDIR)/Main.o \
+	$(OBJDIR)/Shader.o \
 	$(OBJDIR)/Window.o \
 
 RESOURCES := \
@@ -157,6 +158,9 @@ $(OBJDIR)/LukkelEngine.o: ../../LukkelEngine/src/LukkelEngine.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Main.o: ../../LukkelEngine/src/Main.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/Shader.o: ../../LukkelEngine/src/Shader.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Window.o: ../../LukkelEngine/src/Window.cpp

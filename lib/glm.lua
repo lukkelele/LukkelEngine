@@ -1,11 +1,4 @@
-project "GLM"
-	kind "StaticLib"
-	language "C"
-	architecture "x86_64"
 
-	targetdir "../bin/%{cfg.buildcfg}"
-	objdir "../obj/%{cfg.buildcfg}"
-	
 	includedirs { "glm/" }
 
 	files

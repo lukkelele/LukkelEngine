@@ -46,10 +46,8 @@ project "LukkelEngine"
     files
 	{ 
 	"LukkelEngine/src/**.cpp",
-	"LukkelEngine/include/**.h",
-
-	}
-    
+	"LukkelEngine/include/**.h"
+   	}
     -- lib links
     links 
     {
@@ -75,6 +73,7 @@ project "LukkelEngine"
 
     filter "system:windows"
         defines { "_WINDOWS" }
+        
 	filter "architecture:x64"
 	  libdirs
 	  {
@@ -83,7 +82,8 @@ project "LukkelEngine"
 	  }
 
 
--- include "lib/glad.lua"
--- include "lib/glfw.lua"
--- include "lib/glm.lua"
--- include "lib/imgui.lua"
+include "lib/glad.lua"
+include "lib/glfw.lua"
+include "lib/glm.lua"
+include "lib/imgui.lua"
+include "lib/stb_image.lua"

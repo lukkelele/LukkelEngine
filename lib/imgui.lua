@@ -1,18 +1,24 @@
-project "ImGui"
-	kind "StaticLib"
-	language "C"
-	architecture "x86_64"
-
-	targetdir "../bin/%{cfg.buildcfg}"
-	objdir "../obj/%{cfg.buildcfg}"
-	
-	includedirs { "imgui/", "imgui/examples/", "glad/include", "glfw/include/" }
+	includedirs
+	{ 
+		"imgui/", 
+		-- "imgui/examples/",
+		"glad/include",
+		"glfw/include/"
+	}
 
 	files
 	{
 		"imgui/*.cpp",
-		"imgui/examples/imgui_impl_glfw.cpp",
-		"imgui/examples/imgui_impl_opengl3.cpp"
+		"imgui/imgui.h",
+		"imgui/imgui_impl_glfw.cpp",
+		"imgui/imgui_impl_glfw.h",
+		"imgui/imgui_impl_glfw_gl3.cpp",
+		"imgui/imgui_impl_glfw_gl3.h",
+		-- "imgui/examples/imgui_impl_glfw.cpp",
+		-- "imgui/examples/imgui_impl_glfw.h",
+		-- "imgui/examples/imgui_impl_glfw_gl3.cpp",
+		-- "imgui/examples/imgui_impl_glfw_gl3.h",
+		-- "imgui/examples/imgui_impl_opengl3.cpp"
 	}
 
 	defines 

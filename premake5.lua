@@ -21,9 +21,10 @@ workspace "LukkelEngine"
 project "LukkelEngine"
     kind "ConsoleApp"
     language "C++"
-    location "build/%{prj.name}"
-    cppdialect "C++17"
+--    location "build/%{prj.name}"
+--   location "%{prj.name}/"
 
+    cppdialect "C++17"
 
     targetdir "bin/%{cfg.buildcfg}"
     objdir    "obj/%{cfg.buildcfg}"
@@ -42,13 +43,18 @@ project "LukkelEngine"
         "lib/",
     }
 
-    files { "LukkelEngine/src/*.cpp" }
+    files
+	{ 
+	"LukkelEngine/src/**.cpp",
+	"LukkelEngine/include/**.h",
+
+	}
     
     -- lib links
     links 
     {
         "glfw3",
-	-- "glfw",
+	    -- "glfw",
         -- "GLM",
         "opengl32",
         "glew32",
@@ -69,6 +75,12 @@ project "LukkelEngine"
 
     filter "system:windows"
         defines { "_WINDOWS" }
+	filter "architecture:x64"
+	  libdirs
+	  {
+	  "lib/glfw/lib/",
+	  "lib/glew/lib/"
+	  }
 
 
 -- include "lib/glad.lua"

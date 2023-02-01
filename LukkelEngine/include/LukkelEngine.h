@@ -14,6 +14,7 @@
 #include <Test/TestDrawCube.h>
 #include <Test/TestShader.h>
 #include <Test/TestTexture.h>
+#include <Test/TestKeyInput.h>
 
 #include <iostream>
 #include <fstream>
@@ -78,10 +79,8 @@ public:
 	void RenderImGuiData();
 	void TestUpdate(float updateFrequency);
 	void TestRunner(float updateFrequency);
-	void Tick();
 	void KeyInput(GLFWwindow* window, int key, int scanCode, int action, int mods);
 
-// FIXME: CHANGE TO PRIVATE
 private:
 	Renderer renderer;
 	GLFWwindow* window;

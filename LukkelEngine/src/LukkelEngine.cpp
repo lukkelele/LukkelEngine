@@ -36,7 +36,8 @@ int LukkelEngine::Init(unsigned int graphicsMode, unsigned int blending)
 	SCREEN_HEIGHT = DEFAULT_SCREEN_HEIGHT;
     // Initiate GLFW and GLEW
 	glfwInit();
-	window = initDisplay(DEFAULT_SCREEN_WIDTH, DEFAULT_SCREEN_HEIGHT, "LukkelEngine",  3, 3);
+	window = initDisplay(DEFAULT_SCREEN_WIDTH, DEFAULT_SCREEN_HEIGHT, "LukkelEngine", 3, 3);
+	// m_Window = std::make_shared<GLFWwindow*>(initDisplay(DEFAULT_SCREEN_WIDTH, DEFAULT_SCREEN_HEIGHT, "LukkelEngine",  3, 3));
     initGlew();
 	
 	SetMode(graphicsMode);		// GRAPHICS MODE
@@ -44,7 +45,19 @@ int LukkelEngine::Init(unsigned int graphicsMode, unsigned int blending)
 	// FIXME
 	status_ImGui = InitImGui(); // IMGUI
 
-	// TEST MENU
+	// TESTS
+	RegisterTests();
+
+	// USER INPUT
+	GLCall(glfwSetWindowUserPointer(window, this));
+	GLCall(glfwSetInputMode(window, GLFW_STICKY_KEYS, 1));
+	GLCall(glfwGetFramebufferSize(window, &SCREEN_WIDTH, &SCREEN_HEIGHT));
+	GLCall(glOrtho(0, SCREEN_WIDTH, 0, SCREEN_HEIGHT, 0, 1000));
+	return 1;
+}
+
+int LukkelEngine::RegisterTests()
+{
 	testMenu = new test::TestMenu(currentTest);
 	currentTest = testMenu;
 	testMenu->registerTest<test::TestClearColor>("Clear Color");
@@ -54,14 +67,10 @@ int LukkelEngine::Init(unsigned int graphicsMode, unsigned int blending)
 	testMenu->registerTest<test::TestDrawCube>("Draw 3D cube");
 	testMenu->registerTest<test::TestShader>("Shader test");
 	testMenu->registerTest<test::TestTexture>("Texture testing");
+	testMenu->registerTest<test::TestKeyInput>("Key input");
+	// test::TestKeyInput* TestKeyInput_ptr = dynamic_cast<test::TestKeyInput*>(currentTest);
+	// TestKeyInput_ptr->SetWindow(window);
 	LOG("Tests created!");
-
-	// USER INPUT
-	GLCall(glfwSetWindowUserPointer(window, this));
-	GLCall(glfwSetInputMode(window, GLFW_STICKY_KEYS, 1));
-	GLCall(glfwGetFramebufferSize(window, &SCREEN_WIDTH, &SCREEN_HEIGHT));
-	GLCall(glOrtho(0, SCREEN_WIDTH, 0, SCREEN_HEIGHT, 0, 1000));
-
 	return 1;
 }
 
@@ -88,9 +97,12 @@ void LukkelEngine::TestUpdate(float updateFrequency) {}
 
 void LukkelEngine::Render()
 {
-	RenderImGuiData();
-	GLCall(glfwSwapBuffers(window));
-	GLCall(glfwPollEvents());
+	int focused = glfwGetWindowAttrib(window, GLFW_FOCUSED);
+	if (glfwGetCurrentContext() == window) {
+		RenderImGuiData();
+		GLCall(glfwSwapBuffers(window));
+		GLCall(glfwPollEvents());
+	}
 }
 
 void LukkelEngine::SetMode(unsigned int setting)

@@ -10,12 +10,6 @@
 #define MAJOR_VERSION 3
 #define MINOR_VERSION 3
 
-/*
-=================================================
-DEPRECATED 
-NOT TO BE USED!
-=================================================
-*/
 
 class Display
 {
@@ -25,7 +19,8 @@ public:
 	Display();
 	~Display();
 
-	GLFWwindow* window; // TODO: Might change
+	GLFWwindow* window;
+	// std::shared_ptr<GLFWwindow*> window; // TODO: Might change
 	
 	GLFWwindow* getWindow();
 	const char* getTitle();

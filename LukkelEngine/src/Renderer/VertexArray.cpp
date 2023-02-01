@@ -1,6 +1,5 @@
 #include <Renderer.h>
 #include <VertexArray.h>
-
 #include <VertexBufferLayout.h>
 
 

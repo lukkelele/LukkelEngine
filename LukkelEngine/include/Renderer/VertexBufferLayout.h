@@ -24,10 +24,12 @@ struct VertexBufferElement
 
 class VertexBufferLayout
 {
-private:
+protected:
 	std::vector<VertexBufferElement> m_Elements;
 	unsigned int m_Stride;
-
+  virtual const char* GetPlatform() = 0;
+};
+/*
 public:
 	VertexBufferLayout()
 		: m_Stride(0) {}
@@ -63,4 +65,4 @@ public:
 	inline const std::vector<VertexBufferElement> getElements() const& { return m_Elements; }
 	inline unsigned int getStride() const { return m_Stride;  }
 };
-
+*/

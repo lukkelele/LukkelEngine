@@ -21,7 +21,8 @@ workspace "LukkelEngine"
 project "LukkelEngine"
     kind "ConsoleApp"
     language "C++"
---    location "build/%{prj.name}"
+    architecture "x64"
+--   location "build/%{prj.name}"
 --   location "%{prj.name}/"
 
     cppdialect "C++17"
@@ -29,23 +30,33 @@ project "LukkelEngine"
     targetdir "bin/%{cfg.buildcfg}"
     objdir    "obj/%{cfg.buildcfg}"
 
+    defines { "GLEW_STATIC" }
+
+    libdirs -- REMOVE ME
+    {
+        "lib/glfw/lib/",
+        "lib/glew/lib/"
+    }
+
+
     includedirs
     {
         "LukkelEngine/include/",
         "LukkelEngine/include/Renderer",
         "LukkelEngine/include/Renderer/Test",
         "lib",
-        "lib/glm"
+        "lib/glm",
+        "lib/stb_image"
     }
 
     files
 	{ 
         "LukkelEngine/src/**.cpp",
         "LukkelEngine/include/**.h",
+        "lib/stb_image/**",
 
         -- ImGui
-		-- "lib/imgui/*.cpp",
-		-- "lib/imgui/*.cpp",
+		"lib/imgui/*.cpp",
 		-- "lib/imgui/imgui.h",
 		-- "lib/imgui/imgui_impl_glfw.cpp",
 		-- "lib/imgui/imgui_impl_glfw.h",
@@ -54,18 +65,14 @@ project "LukkelEngine"
 
    	}
 
-    -- lib links
     links 
     {
         "glfw3",
-	    -- "glfw",
-        -- "GLM",
         "opengl32",
-        "glew32",
-        -- "glad", 
-        -- "ImGui"
+        "glew32s",
     }
 
+    -- LINUX    
     filter "system:linux"
         links { "dl", "pthread" }
         defines { "_X11" }
@@ -73,25 +80,25 @@ project "LukkelEngine"
         filter "architecture:x64"
         libdirs
         {
-        "lib/glfw/lib/",
-        "lib/glew/lib/"
+            "lib/glfw/lib/",
+            "lib/glew/lib/"
         }
 
+    -- WINDOWS
     filter "system:windows"
-        defines { "_WINDOWS" }
+        defines { "_WINDOWS", }
         
         filter "architecture:x64"
         libdirs
         {
-        "lib/glfw/lib/",
-        "lib/glew/lib/"
+            "lib/glfw/lib/",
+            "lib/glew/lib/"
         }
 
 
 include "lib/glew.lua"
 include "lib/glfw.lua"
-include "lib/glad.lua"
-
+-- include "lib/glad.lua"
 include "lib/imgui.lua"
-include "lib/stb_image.lua"
+-- include "lib/stb_image.lua"
 include "lib/glm.lua"

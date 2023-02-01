@@ -1,4 +1,8 @@
-includedirs { "glew/include/", "glew/include/GL/" }
+includedirs
+{
+	"glew/include/",
+	"glew/include/GL/"
+}
 
 files 
 {
@@ -6,4 +10,4 @@ files
 }
 
 libdirs { "glew/lib/" }
-links { "glew32" }
+-- links { "glew32s" }

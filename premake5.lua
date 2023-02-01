@@ -34,20 +34,26 @@ project "LukkelEngine"
         "LukkelEngine/include/",
         "LukkelEngine/include/Renderer",
         "LukkelEngine/include/Renderer/Test",
-        "lib/glad/include/",
-        "lib/glfw/include/",
-        "lib/glew/include/",
-        "lib/glm/",
-        "lib/imgui/",
-        "lib/imgui/examples",
-        "lib/",
+        "lib",
+        "lib/glm"
     }
 
     files
 	{ 
-	"LukkelEngine/src/**.cpp",
-	"LukkelEngine/include/**.h"
+        "LukkelEngine/src/**.cpp",
+        "LukkelEngine/include/**.h",
+
+        -- ImGui
+		-- "lib/imgui/*.cpp",
+		-- "lib/imgui/*.cpp",
+		-- "lib/imgui/imgui.h",
+		-- "lib/imgui/imgui_impl_glfw.cpp",
+		-- "lib/imgui/imgui_impl_glfw.h",
+		-- "lib/imgui/imgui_impl_glfw_gl3.cpp",
+		-- "lib/imgui/imgui_impl_glfw_gl3.h",
+
    	}
+
     -- lib links
     links 
     {
@@ -56,7 +62,7 @@ project "LukkelEngine"
         -- "GLM",
         "opengl32",
         "glew32",
-        -- "GLAD", 
+        -- "glad", 
         -- "ImGui"
     }
 
@@ -64,26 +70,28 @@ project "LukkelEngine"
         links { "dl", "pthread" }
         defines { "_X11" }
 	
-	filter "architecture:x64"
-	  libdirs
-	  {
-	  "lib/glfw/lib/",
-	  "lib/glew/lib/"
-	  }
+        filter "architecture:x64"
+        libdirs
+        {
+        "lib/glfw/lib/",
+        "lib/glew/lib/"
+        }
 
     filter "system:windows"
         defines { "_WINDOWS" }
         
-	filter "architecture:x64"
-	  libdirs
-	  {
-	  "lib/glfw/lib/",
-	  "lib/glew/lib/"
-	  }
+        filter "architecture:x64"
+        libdirs
+        {
+        "lib/glfw/lib/",
+        "lib/glew/lib/"
+        }
 
 
-include "lib/glad.lua"
+include "lib/glew.lua"
 include "lib/glfw.lua"
-include "lib/glm.lua"
+include "lib/glad.lua"
+
 include "lib/imgui.lua"
 include "lib/stb_image.lua"
+include "lib/glm.lua"

@@ -1,5 +1,5 @@
 
-includedirs { "stb_image" }
+includedirs { "stb_image/" }
 
 files
 {

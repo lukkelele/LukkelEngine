@@ -1,14 +1,14 @@
 	includedirs
 	{ 
-		"imgui/", 
-		-- "imgui/examples/",
-		"glad/include",
-		"glfw/include/"
+		"imgui/",
+		"lib/imgui/", 
+		"imgui/examples/",
 	}
 
 	files
 	{
 		"imgui/*.cpp",
+		"lib/imgui/*.cpp",
 		"imgui/imgui.h",
 		"imgui/imgui_impl_glfw.cpp",
 		"imgui/imgui_impl_glfw.h",

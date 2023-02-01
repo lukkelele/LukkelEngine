@@ -1,7 +1,7 @@
 -- premake5.lua
 workspace "LukkelEngine"
     configurations { "Debug", "Release", "Dist" }
-    --architecture "x64"
+    architecture "x64"
 
     flags { "MultiProcessorCompile" }
 
@@ -23,7 +23,7 @@ project "LukkelEngine"
     language "C++"
     location "build/%{prj.name}"
     cppdialect "C++17"
-        architecture "x86_64"
+
 
     targetdir "bin/%{cfg.buildcfg}"
     objdir    "obj/%{cfg.buildcfg}"
@@ -31,8 +31,11 @@ project "LukkelEngine"
     includedirs
     {
         "LukkelEngine/include/",
+        "LukkelEngine/include/Renderer",
+        "LukkelEngine/include/Renderer/Test",
         "lib/glad/include/",
         "lib/glfw/include/",
+        "lib/glew/include/",
         "lib/glm/",
         "lib/imgui/",
         "lib/imgui/examples",
@@ -40,18 +43,35 @@ project "LukkelEngine"
     }
 
     files { "LukkelEngine/src/*.cpp" }
-
-    links { "GLFW", "GLM", "GLAD", "ImGui" }
+    
+    -- lib links
+    links 
+    {
+        "glfw3",
+	-- "glfw",
+        -- "GLM",
+        "opengl32",
+        "glew32",
+        -- "GLAD", 
+        -- "ImGui"
+    }
 
     filter "system:linux"
         links { "dl", "pthread" }
         defines { "_X11" }
+	
+	filter "architecture:x64"
+	  libdirs
+	  {
+	  "lib/glfw/lib/",
+	  "lib/glew/lib/"
+	  }
 
     filter "system:windows"
         defines { "_WINDOWS" }
 
 
-include "lib/glad.lua"
-include "lib/glfw.lua"
-include "lib/glm.lua"
-include "lib/imgui.lua"
+-- include "lib/glad.lua"
+-- include "lib/glfw.lua"
+-- include "lib/glm.lua"
+-- include "lib/imgui.lua"

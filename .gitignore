@@ -1,5 +1,10 @@
-# Ignore directories
-bin
+# Files
+Makefile
+**/*/*.make
+**/*.vcxproj
+**/*.vcxproj.*
+**/*.ini
+**/*.sln
 
 # Prerequisites
 *.d
@@ -34,9 +39,14 @@ bin
 *.out
 *.app
 
-# Solutions and vscode stuff
-*.sln
-*.vcxproj
-*.filters
-*.user
-*.vs
+# Directories
+**/*.vs
+bin
+bin/
+build
+build/
+obj
+obj/
+x64
+**/*/x64
+**/x64

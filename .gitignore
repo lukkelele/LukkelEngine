@@ -1,5 +1,7 @@
 # Files
 Makefile
+*.make
+**/*.make
 **/*/*.make
 **/*.vcxproj
 **/*.vcxproj.*

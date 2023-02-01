@@ -5,7 +5,10 @@ clang
 %cpp -std=c++17
 %c -std=c11
 -ILukkelEngine/include
+-ILukkelEngine/include/Renderer
+-ILukkelEngine/include/Renderer/Test
 -ILukkelEngine/src
+-ILukkelEngine/src/Renderer
 -Ilib/glad/include
 -Ilib/glfw/include
 -Ilib/glm/

@@ -10,68 +10,28 @@ endif
 
 ifeq ($(config),debug)
   LukkelEngine_config = debug
-  GLAD_config = debug
-  GLFW_config = debug
-  GLM_config = debug
-  ImGui_config = debug
 endif
 ifeq ($(config),release)
   LukkelEngine_config = release
-  GLAD_config = release
-  GLFW_config = release
-  GLM_config = release
-  ImGui_config = release
 endif
 ifeq ($(config),dist)
   LukkelEngine_config = dist
-  GLAD_config = dist
-  GLFW_config = dist
-  GLM_config = dist
-  ImGui_config = dist
 endif
 
-PROJECTS := LukkelEngine GLAD GLFW GLM ImGui
+PROJECTS := LukkelEngine
 
 .PHONY: all clean help $(PROJECTS) 
 
 all: $(PROJECTS)
 
-LukkelEngine: GLFW GLM GLAD ImGui
+LukkelEngine:
 ifneq (,$(LukkelEngine_config))
 	@echo "==== Building LukkelEngine ($(LukkelEngine_config)) ===="
-	@${MAKE} --no-print-directory -C build/LukkelEngine -f Makefile config=$(LukkelEngine_config)
-endif
-
-GLAD:
-ifneq (,$(GLAD_config))
-	@echo "==== Building GLAD ($(GLAD_config)) ===="
-	@${MAKE} --no-print-directory -C lib -f GLAD.make config=$(GLAD_config)
-endif
-
-GLFW:
-ifneq (,$(GLFW_config))
-	@echo "==== Building GLFW ($(GLFW_config)) ===="
-	@${MAKE} --no-print-directory -C lib -f GLFW.make config=$(GLFW_config)
-endif
-
-GLM:
-ifneq (,$(GLM_config))
-	@echo "==== Building GLM ($(GLM_config)) ===="
-	@${MAKE} --no-print-directory -C lib -f GLM.make config=$(GLM_config)
-endif
-
-ImGui:
-ifneq (,$(ImGui_config))
-	@echo "==== Building ImGui ($(ImGui_config)) ===="
-	@${MAKE} --no-print-directory -C lib -f ImGui.make config=$(ImGui_config)
+	@${MAKE} --no-print-directory -C . -f LukkelEngine.make config=$(LukkelEngine_config)
 endif
 
 clean:
-	@${MAKE} --no-print-directory -C build/LukkelEngine -f Makefile clean
-	@${MAKE} --no-print-directory -C lib -f GLAD.make clean
-	@${MAKE} --no-print-directory -C lib -f GLFW.make clean
-	@${MAKE} --no-print-directory -C lib -f GLM.make clean
-	@${MAKE} --no-print-directory -C lib -f ImGui.make clean
+	@${MAKE} --no-print-directory -C . -f LukkelEngine.make clean
 
 help:
 	@echo "Usage: make [config=name] [target]"
@@ -85,9 +45,5 @@ help:
 	@echo "   all (default)"
 	@echo "   clean"
 	@echo "   LukkelEngine"
-	@echo "   GLAD"
-	@echo "   GLFW"
-	@echo "   GLM"
-	@echo "   ImGui"
 	@echo ""
 	@echo "For more information, see https://github.com/premake/premake-core/wiki"

@@ -51,43 +51,57 @@ project "LukkelEngine"
 
     -- LINUX    
     filter "system:linux"
-        links { "dl", "pthread" }
+        links {
+          "dl",
+          "pthread"
+        }
         defines {
             "_X11",
             "_IMGUI_X11"
         }
 	
+        -- LINUX 64 bit
         filter "architecture:x64"
+            defines { "_LINUX_x64" }
             libdirs {
                 "lib/glfw/lib/",
                 "lib/glew/lib/"
             }
+            links { "glfw3", "opengl32", "glew32s" }
 
-            links {
-                "glfw3",
-                "opengl32",
-                "glew32s",
+        -- LINUX 32 bit  FIXME
+        filter "architecture:x86"
+            defines { "_LINUX_x86" }
+            libdirs {
+                "lib/glfw/lib/",
+                "lib/glew/lib/"
             }
+            links { "glfw3", "opengl32", "glew32s" }
 
     -- WINDOWS
     filter "system:windows"
         defines { 
-            "_WINDOWS",
             "_IMGUI_WIN32",
             "_CRT_SECURE_NO_WARNINGS" -- ImGui
         }
-        
+       -- WINDOWS 64 bit 
         filter "architecture:x64"
+            defines { "_WINDOWS_x64" }
             libdirs {
                 "lib/glfw/lib/",
                 "lib/glew/lib/"
             }
-
-            links {
-                "glfw3",
-                "opengl32",
-                "glew32s",
+            links { "glfw3", "opengl32", "glew32s" }
+        -- WINDOWS 32 bit
+        filter "architecture:x86"
+            defines { "_WINDOWS_x86" }
+            libdirs {
+                "lib/glfw/lib/",
+                "lib/glew/lib/"
             }
+            links { "glfw3", "opengl32", "glew32s" }
+
+
 
 
 include "lib/glew.lua"

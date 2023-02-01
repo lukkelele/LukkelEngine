@@ -14,11 +14,6 @@
 		"imgui/imgui_impl_glfw.h",
 		"imgui/imgui_impl_glfw_gl3.cpp",
 		"imgui/imgui_impl_glfw_gl3.h",
-		-- "imgui/examples/imgui_impl_glfw.cpp",
-		-- "imgui/examples/imgui_impl_glfw.h",
-		-- "imgui/examples/imgui_impl_glfw_gl3.cpp",
-		-- "imgui/examples/imgui_impl_glfw_gl3.h",
-		-- "imgui/examples/imgui_impl_opengl3.cpp"
 	}
 
 	defines 

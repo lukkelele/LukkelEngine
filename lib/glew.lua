@@ -1,11 +1,9 @@
-includedirs
-{
+includedirs {
 	"glew/include/",
 	"glew/include/GL/"
 }
 
-files 
-{
+files {
 	"glew/include/GL/glew.h"
 }
 

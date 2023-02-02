@@ -51,8 +51,9 @@ int LukkelEngine::Init(unsigned int graphicsMode, unsigned int blending)
 	// USER INPUT
 	GLCall(glfwSetWindowUserPointer(window, this));
 	GLCall(glfwSetInputMode(window, GLFW_STICKY_KEYS, 1));
-	GLCall(glfwGetFramebufferSize(window, &SCREEN_WIDTH, &SCREEN_HEIGHT));
-	GLCall(glOrtho(0, SCREEN_WIDTH, 0, SCREEN_HEIGHT, 0, 1000));
+
+	// glfwSetKeyCallback(window, KeyInput);
+
 	return 1;
 }
 
@@ -68,8 +69,8 @@ int LukkelEngine::RegisterTests()
 	testMenu->registerTest<test::TestShader>("Shader test");
 	testMenu->registerTest<test::TestTexture>("Texture testing");
 	testMenu->registerTest<test::TestKeyInput>("Key input");
-	// test::TestKeyInput* TestKeyInput_ptr = dynamic_cast<test::TestKeyInput*>(currentTest);
-	// TestKeyInput_ptr->SetWindow(window);
+	test::TestKeyInput* TestKeyInput_ptr = dynamic_cast<test::TestKeyInput*>(currentTest);
+	// TestKeyInput_ptr->SetWindow(*window);
 	LOG("Tests created!");
 	return 1;
 }

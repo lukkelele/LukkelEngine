@@ -21,6 +21,7 @@
 #include <string>
 #include <sstream>
 
+/* RENDERER */
 #include <Display.h>			// TODO: Remove Display Class
 #include <Camera.h>
 #include <GLErrorHandler.h>
@@ -39,6 +40,9 @@
 #include <IndexBuffer.h>
 #include <Shader.h>
 #include <Texture.h>
+
+/* I/O */
+#include <Input/Keyboard.h>
 
 /* ENGINE DEFAULTS */
 #define BLENDING_DISABLED		 0  // DISABLE BLENDING		
@@ -69,7 +73,7 @@ public:
 	LukkelEngine(unsigned int mode, unsigned int blending);
 	~LukkelEngine();
 
-	int SCREEN_WIDTH, SCREEN_HEIGHT;
+	// int SCREEN_WIDTH, SCREEN_HEIGHT;
 	test::Test* currentTest = nullptr;
 	test::TestMenu* testMenu;
 
@@ -77,16 +81,18 @@ public:
 	void Render();
 	void ScreenUpdate();
 	void RenderImGuiData();
-	void TestUpdate(float updateFrequency);
 	void TestRunner(float updateFrequency);
 	void KeyInput(GLFWwindow* window, int key, int scanCode, int action, int mods);
 
 private:
-	Renderer renderer;
-	GLFWwindow* window;
-	unsigned int graphicsMode;
-	unsigned int blending; 
-	int status, status_GLFW, status_ImGui;
+	Renderer m_Renderer;
+	GLFWwindow* m_Window;
+	Keyboard m_Keyboard;
+	unsigned int m_GraphicsMode;
+	unsigned int m_Blending; 
+	int status;
+	int status_GLFW;
+	int status_ImGui;
 	int rotX, rotY, rotZ = 0.0f;
 
 	int  Init(unsigned int graphicsMode, unsigned int blending);

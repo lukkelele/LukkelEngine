@@ -8,9 +8,22 @@ Keyboard::Keyboard()
 
 Keyboard::~Keyboard(){}
 
-int Keyboard::keyPressed(){}
+void Keyboard::Bind(GLFWwindow* window)
+{
+	// GLCall(glfwSetWindowUserPointer(m_WindowReference, this));
+	// GLCall(glfwSetKeyCallback(m_WindowReference, Input_static));
+	GLCall(glfwSetWindowUserPointer(window, this));
+	GLCall(glfwSetKeyCallback(window, Input_static));
+}
 
-void Keyboard::keyInput(GLFWwindow* window, int key, int scanCode, int action, int mods)
+void Keyboard::Unbind(){}
+
+int Keyboard::KeyPressed()
+{
+	return 1;
+}
+
+void Keyboard::Input(GLFWwindow* window, int key, int scanCode, int action, int mods)
 {
 	LOG(key);
 	// actions are GLFW_PRESS, GLFW_RELEASE or GLFW_REPEAT
@@ -31,5 +44,11 @@ void Keyboard::keyInput(GLFWwindow* window, int key, int scanCode, int action, i
 			break;
 		}
 	}
-
 }
+
+void Keyboard::Input_static(GLFWwindow* window, int key, int scanCode, int action, int mods)
+{
+	Keyboard* Keyboard_ptr = static_cast<Keyboard*>(glfwGetWindowUserPointer(window));
+	Keyboard_ptr->Input(window, key, scanCode, action, mods);
+}
+

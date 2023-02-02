@@ -9,17 +9,19 @@ private:
 	float m_RotX = 0;
 	float m_RotY = 0;
 	float m_RotationSpeed = 5.0f;
+	GLFWwindow* m_WindowReference;
 
 public:
 	Keyboard();
+	Keyboard(GLFWwindow* window);
 	~Keyboard();
 
-	void bind();
-	void unbind();
+	void Bind(GLFWwindow* window);
+	void Unbind();
 
-	int keyPressed();
-	void keyInput(GLFWwindow* window, int key, int scanCode, int action, int mods);
-	static void keyInputStatic(GLFWwindow* window, int key, int scanCode, int action, int mods);
+	int KeyPressed();
+	void Input(GLFWwindow* window, int key, int scanCode, int action, int mods);
+	static void Input_static(GLFWwindow* window, int key, int scanCode, int action, int mods);
 };
 
 #endif /* _KEYBOARD_H */

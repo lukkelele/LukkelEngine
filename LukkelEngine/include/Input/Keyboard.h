@@ -2,26 +2,29 @@
 #define _KEYBOARD_H
 #include <GLErrorHandler.h>
 #include <glfw/glfw3.h>
+#include <Input/Keycodes.h>
 
-class Keyboard
-{
-private:
-	float m_RotX = 0;
-	float m_RotY = 0;
-	float m_RotationSpeed = 5.0f;
-	GLFWwindow* m_WindowReference;
+namespace LukkelEngine {
 
-public:
-	Keyboard();
-	Keyboard(GLFWwindow* window);
-	~Keyboard();
+	class Keyboard
+	{
+	private:
+		float m_RotX = 0;
+		float m_RotY = 0;
+		float m_RotationSpeed = 5.0f;
+		GLFWwindow* m_WindowReference;
 
-	void Bind(GLFWwindow* window);
-	void Unbind();
+	public:
+		Keyboard();
+		Keyboard(GLFWwindow* window);
+		~Keyboard();
 
-	int KeyPressed();
-	void Input(GLFWwindow* window, int key, int scanCode, int action, int mods);
-	static void Input_static(GLFWwindow* window, int key, int scanCode, int action, int mods);
-};
+		void Bind(GLFWwindow* window);
+		void Unbind();
 
+		int KeyPressed();
+		void Input(GLFWwindow* window, int key, int scanCode, int action, int mods);
+		static void Input_static(GLFWwindow* window, int key, int scanCode, int action, int mods);
+	};
+}
 #endif /* _KEYBOARD_H */

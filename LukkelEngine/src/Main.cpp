@@ -38,6 +38,7 @@ int WINDOW_HEIGHT = 600;
 
 int main()
 {
+	using LukkelEngine::LukkelEngine;
 	LukkelEngine Engine = LukkelEngine(GRAPHICS_MODE_2D, BLENDING_ENABLED);
 	GLFWwindow* window = Engine.GetWindow();
 	// Create the test menu

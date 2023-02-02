@@ -20,6 +20,7 @@
 #include <fstream>
 #include <string>
 #include <sstream>
+#include <cstdint>
 
 /* RENDERER */
 #include <Display.h>			// TODO: Remove Display Class
@@ -65,40 +66,43 @@
 
 #define LOG(x) std::cout << "LOG: " << x << std::endl;
 
-class LukkelEngine
-{
-public:
-	LukkelEngine();
-	LukkelEngine(unsigned int mode);
-	LukkelEngine(unsigned int mode, unsigned int blending);
-	~LukkelEngine();
+namespace LukkelEngine {
 
-	// int SCREEN_WIDTH, SCREEN_HEIGHT;
-	test::Test* currentTest = nullptr;
-	test::TestMenu* testMenu;
+	class LukkelEngine
+	{
+	public:
+		LukkelEngine();
+		LukkelEngine(unsigned int mode);
+		LukkelEngine(unsigned int mode, unsigned int blending);
+		~LukkelEngine();
 
-	GLFWwindow* GetWindow();
-	void Render();
-	void ScreenUpdate();
-	void RenderImGuiData();
-	void TestRunner(float updateFrequency);
-	void KeyInput(GLFWwindow* window, int key, int scanCode, int action, int mods);
+		// int SCREEN_WIDTH, SCREEN_HEIGHT;
+		test::Test* currentTest = nullptr;
+		test::TestMenu* testMenu;
 
-private:
-	Renderer m_Renderer;
-	GLFWwindow* m_Window;
-	Keyboard m_Keyboard;
-	unsigned int m_GraphicsMode;
-	unsigned int m_Blending; 
-	int status;
-	int status_GLFW;
-	int status_ImGui;
-	int rotX, rotY, rotZ = 0.0f;
+		GLFWwindow* GetWindow();
+		void Render();
+		void ScreenUpdate();
+		void RenderImGuiData();
+		void TestRunner(float updateFrequency);
+		void KeyInput(GLFWwindow* window, int key, int scanCode, int action, int mods);
 
-	int  Init(unsigned int graphicsMode, unsigned int blending);
-	int  InitImGui();
-	void SetMode(unsigned int setting);
-	void SetBlending(unsigned int setting);
-	int  RegisterTests();
-	
-};
+	private:
+		Renderer m_Renderer;
+		GLFWwindow* m_Window;
+		Keyboard m_Keyboard;
+		unsigned int m_GraphicsMode;
+		unsigned int m_Blending; 
+		int status;
+		int status_GLFW;
+		int status_ImGui;
+		float rotX, rotY, rotZ = 0.0f;
+
+		int  Init(unsigned int graphicsMode, unsigned int blending);
+		int  InitImGui();
+		void SetMode(unsigned int setting);
+		void SetBlending(unsigned int setting);
+		int  RegisterTests();
+		
+	};
+}

@@ -1,11 +1,9 @@
 includedirs {
 	"glew/include/",
-	"glew/include/GL/"
+	"lib/glew/include/"
 }
 
 files {
-	"glew/include/GL/glew.h"
+	"glew/include/GL/glew.h",
+	"lib/glew/include/GL/glew.h"
 }
-
-libdirs { "glew/lib/" }
--- links { "glew32s" }

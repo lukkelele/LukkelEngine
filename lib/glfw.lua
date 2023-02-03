@@ -1,5 +1,8 @@
 
-	includedirs { "glfw/include/" }
+	includedirs {
+		"glfw/include",
+		"lib/glfw/include"
+	}
 
 	files
 	{

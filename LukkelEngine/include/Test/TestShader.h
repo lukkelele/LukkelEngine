@@ -12,6 +12,7 @@
 #include <glm/ext.hpp>
 
 namespace test {
+	using namespace LukkelEngine;
 
 	class TestShader : public Test
 	{

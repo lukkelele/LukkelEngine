@@ -6,9 +6,12 @@
 #include <Shader.h>
 #include <LKErrorHandler.h>
 
-class Renderer
-{
-public:
-	void Clear() const;
-	void Draw(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const;
-};
+namespace LukkelEngine {
+
+	class Renderer
+	{
+	public:
+		void clear() const;
+		void draw(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const;
+	};
+}

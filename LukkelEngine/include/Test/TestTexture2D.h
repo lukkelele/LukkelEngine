@@ -22,6 +22,8 @@
 
 namespace test {
 
+	using namespace LukkelEngine;
+
 	class TestTexture2D : public Test
 	{
 	public:

@@ -1,5 +1,4 @@
 #pragma once
-#include <LKpch.h> /* Questionable if necessary */
 
 namespace LukkelEngine {
 

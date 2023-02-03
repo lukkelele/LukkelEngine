@@ -1,6 +1,7 @@
 #include <Test/TestDrawCube.h>
 
 namespace test {
+	using namespace LukkelEngine;
 
 	TestDrawCube::TestDrawCube()
 	{

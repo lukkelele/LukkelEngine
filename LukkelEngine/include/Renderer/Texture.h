@@ -2,21 +2,25 @@
 
 #include <Renderer.h>
 
-class Texture
-{
-private:
-	unsigned int m_RendererID;
-	std::string m_filePath;
-	unsigned char* m_localBuffer;
-	int m_width, m_height, m_bpp; // bits per pixel
+namespace LukkelEngine {
 
-public:
-	Texture(const std::string& path);
-	~Texture();
+	class Texture
+	{
+	private:
+		unsigned int m_RendererID;
+		std::string m_filePath;
+		unsigned char* m_localBuffer;
+		int m_width, m_height, m_bpp; // bits per pixel
 
-	void bind(unsigned int slot = 0) const;
-	void unbind() const;
+	public:
+		Texture(const std::string& path);
+		~Texture();
 
-	inline int getWidth() const { return m_width; }
-	inline int getHeight() const { return m_height; }
-};
+		void bind(unsigned int slot = 0) const;
+		void unbind() const;
+
+		inline int getWidth() const { return m_width; }
+		inline int getHeight() const { return m_height; }
+	};
+
+}

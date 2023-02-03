@@ -11,6 +11,7 @@
 #include <glm/ext.hpp>
 
 namespace test {
+	using namespace LukkelEngine;
 
 	class TestDrawCube : public Test
 	{

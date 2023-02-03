@@ -13,6 +13,7 @@
 
 
 namespace test {
+	using namespace LukkelEngine;
 
 	class TestTexture : public Test
 	{

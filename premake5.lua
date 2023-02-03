@@ -37,10 +37,10 @@ project "LukkelEngine"
     }
 
     includedirs {
-        "LukkelEngine/",
         "LukkelEngine/include/",
         "LukkelEngine/include/Renderer",
         "LukkelEngine/include/Test",
+        "LukkelEngine/include/Platform",
         "lib",
         "lib/glm",
         "lib/stb_image",

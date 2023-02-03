@@ -1,6 +1,7 @@
 #include <Test/TestShader.h>
 
 namespace test {
+	using namespace LukkelEngine;
 
 	TestShader::TestShader()
 	{

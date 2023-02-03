@@ -10,6 +10,7 @@
 #include <Renderer.h>
 
 namespace test {
+	using namespace LukkelEngine;
 
 	class TestDrawTriangle2 : public Test
 	{

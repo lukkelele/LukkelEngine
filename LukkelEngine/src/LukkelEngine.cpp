@@ -4,17 +4,17 @@ namespace LukkelEngine {
 
 	LukkelEngine::LukkelEngine()
 	{
-		status = Init(DEFAULT_GRAPHICS_MODE, DEFAULT_BLENDING_MODE);
+		status = init(DEFAULT_GRAPHICS_MODE, DEFAULT_BLENDING_MODE);
 	}
 
 	LukkelEngine::LukkelEngine(unsigned int graphicsMode)
 	{
-		status = Init(graphicsMode, DEFAULT_BLENDING_MODE);
+		status = init(graphicsMode, DEFAULT_BLENDING_MODE);
 	}
 
 	LukkelEngine::LukkelEngine(unsigned int graphicsMode, unsigned int blending)
 	{
-		status = Init(graphicsMode, blending);
+		status = init(graphicsMode, blending);
 	}
 
 	LukkelEngine::~LukkelEngine()
@@ -29,32 +29,27 @@ namespace LukkelEngine {
 		glfwTerminate();
 	}
 
-	GLFWwindow* LukkelEngine::GetWindow() {	return m_Window; }
+	GLFWwindow* LukkelEngine::getWindow() { return m_Window->getWindow(); }
 
-	int LukkelEngine::Init(unsigned int graphicsMode, unsigned int blending)
+	int LukkelEngine::init(unsigned int graphicsMode, unsigned int blending)
 	{
-		// Initiate GLFW and GLEW
-		glfwInit();
-		m_Window = initDisplay(DEFAULT_SCREEN_WIDTH, DEFAULT_SCREEN_HEIGHT, "LukkelEngine", 3, 3);
-		initGlew();
-		
-		SetMode(graphicsMode);		// GRAPHICS MODE
-		SetBlending(blending);		// BLENDING 
-		status_ImGui = InitImGui(); // IMGUI
+		// Check for PLATFORM
+		m_Window = std::unique_ptr<Window>(Window::create());
+		//m_Window = initDisplay(DEFAULT_SCREEN_WIDTH, DEFAULT_SCREEN_HEIGHT, "LukkelEngine", 3, 3);
 
 		// Initiate I/O
 		LOG("Creating I/O modules...");
 		Keyboard m_Keyboard;
-		m_Keyboard.Bind(m_Window);
+		m_Keyboard.Bind(m_Window->getWindow());
 		// GLCall(glfwSetKeyCallback(m_Window, m_Keyboard.));
 		
 		// Test registration
-		RegisterTests();
+		registerTests();
 
 		return 1;
 	}
 
-	int LukkelEngine::RegisterTests()
+	int LukkelEngine::registerTests()
 	{
 		testMenu = new test::TestMenu(currentTest);
 		currentTest = testMenu;
@@ -73,12 +68,12 @@ namespace LukkelEngine {
 		return 1;
 	}
 
-	void LukkelEngine::ScreenUpdate()
+	void LukkelEngine::screenUpdate()
 	{
-		m_Renderer.Clear();
+		m_Renderer.clear();
 	}
 
-	int LukkelEngine::InitImGui()
+	int LukkelEngine::initImGui()
 	{
 		ImGui::CreateContext();
 		ImGui_ImplGlfwGL3_Init(m_Window, true);
@@ -86,7 +81,7 @@ namespace LukkelEngine {
 		return 1;
 	}
 
-	void LukkelEngine::RenderImGuiData()
+	void LukkelEngine::renderImGuiData()
 	{
 		ImGui::Render();
 		ImGui_ImplGlfwGL3_RenderDrawData(ImGui::GetDrawData());
@@ -94,17 +89,14 @@ namespace LukkelEngine {
 
 	// void LukkelEngine::TestUpdate(float updateFrequency) {}
 
-	void LukkelEngine::Render()
+	void LukkelEngine::render()
 	{
-		int focused = glfwGetWindowAttrib(m_Window, GLFW_FOCUSED);
-		if (glfwGetCurrentContext() == m_Window) {
-			RenderImGuiData();
-			GLCall(glfwSwapBuffers(m_Window));
-			GLCall(glfwPollEvents());
-		}
+		// int focused = glfwGetWindowAttrib(m_Window, GLFW_FOCUSED);
+		renderImGuiData();
+		m_Window->onUpdate();
 	}
 
-	void LukkelEngine::SetMode(unsigned int setting)
+	void LukkelEngine::setMode(unsigned int setting)
 	{
 		m_GraphicsMode = setting;
 		if (m_GraphicsMode == GRAPHICS_MODE_3D)   // 1
@@ -113,7 +105,7 @@ namespace LukkelEngine {
 			GLCall(glDisable(GL_DEPTH_TEST));
 	}
 
-	void LukkelEngine::SetBlending(unsigned int setting)
+	void LukkelEngine::setBlending(unsigned int setting)
 	{
 		if (setting > 1)
 			setting = DEFAULT_BLENDING_MODE;
@@ -122,7 +114,7 @@ namespace LukkelEngine {
 		GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
 	}
 
-	void LukkelEngine::TestRunner(float updateFrequency)
+	void LukkelEngine::testRunner(float updateFrequency)
 	{
 		if (currentTest) {
 			ImGui_ImplGlfwGL3_NewFrame();

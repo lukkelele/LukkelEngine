@@ -17,7 +17,7 @@
 #include <Test/TestKeyInput.h>
 
 /* RENDERER */
-#include <Display.h>			// TODO: Remove Display Class
+#include <Display/Window.h>
 #include <Camera.h>
 #include <Renderer.h>
 #include <VertexBuffer.h>
@@ -30,6 +30,13 @@
 
 /* I/O */
 #include <Input/Keyboard.h>
+
+
+#define WIDTH 1600
+#define HEIGHT 1024
+#define TITLE "LukkelEngine"
+#define MAJOR_VERSION 3
+#define MINOR_VERSION 3
 
 /* ENGINE DEFAULTS */
 #define BLENDING_DISABLED		 0  // DISABLE BLENDING		
@@ -66,29 +73,28 @@ namespace LukkelEngine {
 		test::Test* currentTest = nullptr;
 		test::TestMenu* testMenu;
 
-		GLFWwindow* GetWindow();
-		void Render();
-		void ScreenUpdate();
-		void RenderImGuiData();
-		void TestRunner(float updateFrequency);
-		void KeyInput(GLFWwindow* window, int key, int scanCode, int action, int mods);
+		GLFWwindow* getWindow();
+		void render();
+		void screenUpdate();
+		void renderImGuiData();
+		void testRunner(float updateFrequency);
 
 	private:
 		Renderer m_Renderer;
-		GLFWwindow* m_Window;
+		std::unique_ptr<Window> m_Window;
 		Keyboard m_Keyboard;
 		unsigned int m_GraphicsMode;
 		unsigned int m_Blending; 
 		int status;
 		int status_GLFW;
 		int status_ImGui;
-		float rotX, rotY, rotZ = 0.0f;
+		// float rotX, rotY, rotZ = 0.0f;
 
-		int  Init(unsigned int graphicsMode, unsigned int blending);
-		int  InitImGui();
-		void SetMode(unsigned int setting);
-		void SetBlending(unsigned int setting);
-		int  RegisterTests();
+		int  init(unsigned int graphicsMode, unsigned int blending);
+		int  initImGui();
+		void setMode(unsigned int setting);
+		void setBlending(unsigned int setting);
+		int  registerTests();
 		
 	};
 }

@@ -1,18 +1,21 @@
 #pragma once
 
-class IndexBuffer
-{
-private:
-	unsigned int m_RendererID;
-	unsigned int m_Count;
-	
-public:
-	IndexBuffer();
-	IndexBuffer(const void* data, unsigned int count);
-	~IndexBuffer();
+namespace LukkelEngine {
 
-	void bind() const;
-	void unbind() const;
+	class IndexBuffer
+	{
+	private:
+		unsigned int m_RendererID;
+		unsigned int m_Count;
+		
+	public:
+		IndexBuffer();
+		IndexBuffer(const void* data, unsigned int count);
+		~IndexBuffer();
 
-	inline unsigned int getCount() const { return m_Count;  }
-};
+		void bind() const;
+		void unbind() const;
+
+		inline unsigned int getCount() const { return m_Count;  }
+	};
+}

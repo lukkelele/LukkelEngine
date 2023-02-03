@@ -1,6 +1,7 @@
 #include <Test/TestDrawTriangle2.h>
 
 namespace test {
+	using namespace LukkelEngine;
 
 	TestDrawTriangle2::TestDrawTriangle2()
 	{

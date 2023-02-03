@@ -6,35 +6,39 @@
 
 #define debug true
 
-struct ShaderProgramSource
-{
-    std::string VertexSource;
-    std::string FragmentSource;
-};
+namespace LukkelEngine {
 
-class Shader
-{
-private:
-	std::string m_filePath;
-	std::unordered_map<std::string, int> m_UniformLocationCache;
+	struct ShaderProgramSource
+	{
+		std::string VertexSource;
+		std::string FragmentSource;
+	};
 
-public:
-	unsigned int m_RendererID;
-	Shader(const std::string& filepath);
-	Shader();
-	~Shader();
+	class Shader
+	{
+	private:
+		std::string m_filePath;
+		std::unordered_map<std::string, int> m_UniformLocationCache;
 
-	void bind() const;
-	void unbind() const;
+	public:
+		unsigned int m_RendererID;
+		Shader(const std::string& filepath);
+		Shader();
+		~Shader();
 
-	int getUniformLocation(const std::string& name);
-	void setUniform1i(const std::string& name, int value);
-	void setUniform1f(const std::string& name, float value);
-	void setUniform4f(const std::string& name, float v0, float v1, float v2, float v3);
-	void setUniformMat4f(const std::string& name, const glm::mat4& matrix);
+		void bind() const;
+		void unbind() const;
 
-	ShaderProgramSource parseShader(const std::string& filepath);
-	unsigned int compileShader(unsigned int type, const std::string& source);
-	unsigned int createShader(const std::string& vertexShader, const std::string& fragmentShader);
-private:
-};
+		int getUniformLocation(const std::string& name);
+		void setUniform1i(const std::string& name, int value);
+		void setUniform1f(const std::string& name, float value);
+		void setUniform4f(const std::string& name, float v0, float v1, float v2, float v3);
+		void setUniformMat4f(const std::string& name, const glm::mat4& matrix);
+
+		ShaderProgramSource parseShader(const std::string& filepath);
+		unsigned int compileShader(unsigned int type, const std::string& source);
+		unsigned int createShader(const std::string& vertexShader, const std::string& fragmentShader);
+	private:
+	};
+
+}

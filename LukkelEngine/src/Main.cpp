@@ -37,16 +37,17 @@ int main()
 {
 	using LukkelEngine::LukkelEngine;
 	LukkelEngine Engine = LukkelEngine(GRAPHICS_MODE_2D, BLENDING_ENABLED);
-	GLFWwindow* window = Engine.GetWindow();
+	// GLFWwindow* window = Engine.getWindow();
+	Window window = Engine.getWindow();
 	// Create the test menu
 	test::Test* currentTest = Engine.currentTest;
 	test::TestMenu* testMenu = Engine.testMenu;
 	currentTest = testMenu;		// open menu initially
 
 	while (!glfwWindowShouldClose(window)) {
-		Engine.ScreenUpdate();
-		Engine.TestRunner(ZERO_UPDATE_FREQUENCY);
-		Engine.Render();
+		Engine.screenUpdate();
+		Engine.testRunner(ZERO_UPDATE_FREQUENCY);
+		Engine.render();
 	}
 
 	return 0;

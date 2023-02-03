@@ -1,7 +1,4 @@
 #include <LukkelEngine.h>
-#include <Shader.h>
-
-void KeyInput(GLFWwindow* window, int key, int scancode, int action, int mods);
 
 // Vertices coordinates
 float vertices[] = { 
@@ -54,31 +51,3 @@ int main()
 
 	return 0;
 }
-
-
-
-
-void KeyInput(GLFWwindow* window, int key, int scanCode, int action, int mods)
-{
-	const GLfloat rotationSpeed = 10;
-	LOG(key);
-	// actions are GLFW_PRESS, GLFW_RELEASE or GLFW_REPEAT
-	if (action == GLFW_PRESS || action == GLFW_REPEAT)
-	{
-		switch (key) {
-		case GLFW_KEY_UP:
-			rotX -= rotationSpeed;
-			break;
-		case GLFW_KEY_DOWN:
-			rotX += rotationSpeed;
-			break;
-		case GLFW_KEY_RIGHT:
-			rotY += rotationSpeed;
-			break;
-		case GLFW_KEY_LEFT:
-			rotY -= rotationSpeed;
-			break;
-		}
-	}
-}
-

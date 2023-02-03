@@ -6,9 +6,11 @@
 #include <fstream>
 #include <sstream>
 
-//#define ASSERT(x) if (!(x)) __debugbreak();
-#define ASSERT(x) //if (!(x)) __debugbreak();
+/* Assertion for debugging */
+#define ASSERT(x) if (!(x)) __debugbreak();
+/* Macro for clearing OpenGL errors */
 #define GLCall(x) GLClearError(); x ; ASSERT(GLLogCall(#x, __FILE__, __LINE__))
+/* Log functionality to terminal */
 #define LOG(x) std::cout << "LOG: " << x << std::endl;
 
 void GLClearError();

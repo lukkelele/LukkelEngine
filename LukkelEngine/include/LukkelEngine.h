@@ -16,31 +16,17 @@
 #include <Test/TestTexture.h>
 #include <Test/TestKeyInput.h>
 
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <sstream>
-#include <cstdint>
-
 /* RENDERER */
 #include <Display.h>			// TODO: Remove Display Class
 #include <Camera.h>
-#include <GLErrorHandler.h>
 #include <Renderer.h>
 #include <VertexBuffer.h>
-// #if defined _WINDOWS_x64 || _WINDOWS_x86
-//   #include <VertexBufferLayout_WINDOWS.h>
-//   typedef VertexBufferLayout_WINDOWS VertexBufferLayout;
-// #else
-//   #include <VertexBufferLayout_LINUX.h>
-//   typedef VertexBufferLayout_LINUX VertexBufferLayout;
-// #endif
-// #include <VertexBufferLayout.h>
 #include <VertexBufferLayout.h>
 #include <VertexArray.h>
 #include <IndexBuffer.h>
 #include <Shader.h>
 #include <Texture.h>
+#include <LKErrorHandler.h>
 
 /* I/O */
 #include <Input/Keyboard.h>
@@ -55,7 +41,7 @@
 
 /* CLIENT DEFAULTS */
 #define ZERO_UPDATE_FREQUENCY    0.0f
-#define DEFAULT_REFRESH_RATE	 60
+#define REFRESH_RATE_DEFAULT	 60
 #define REFRESH_RATE_SIGMA       144
 #define REFRESH_RATE_GIGACHAD    240
 #define DEFAULT_FOV				 90.0f

@@ -2,7 +2,6 @@
 #define _TEST_TEXTURE_H
 
 #include <Test/Test.h>
-#include <vector>
 #include <VertexBuffer.h>
 #include <VertexBufferLayout.h>
 #include <IndexBuffer.h>
@@ -11,6 +10,7 @@
 #include <Texture.h>
 #include <Renderer.h>
 #include <glm/ext.hpp>
+
 
 namespace test {
 

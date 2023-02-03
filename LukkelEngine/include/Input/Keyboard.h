@@ -1,6 +1,7 @@
 #ifndef _KEYBOARD_H
 #define _KEYBOARD_H
-#include <GLErrorHandler.h>
+
+#include <LKErrorHandler.h>
 #include <glfw/glfw3.h>
 #include <Input/Keycodes.h>
 

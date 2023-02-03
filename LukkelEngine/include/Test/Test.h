@@ -1,17 +1,11 @@
 #pragma once
 
-#include <GLErrorHandler.h>
+#include <LKErrorHandler.h>
 #include <imgui/imgui.h>
 #include <imgui/imgui_impl_glfw_gl3.h>
 #include <functional>
 #include <vector>
 #include <iostream> // FIXME
-
-#define LOG(x) std::cout << "LOG: " << x << std::endl;
-
-/* 
-	Test interface
-*/
 
 namespace test {
 

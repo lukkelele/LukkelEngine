@@ -1,6 +1,6 @@
 #pragma once
 
-#include <GLErrorHandler.h>
+#include <LKErrorHandler.h>
 #include <VertexBuffer.h>
 #include <VertexBufferLayout.h>
 

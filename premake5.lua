@@ -26,19 +26,26 @@ project "LukkelEngine"
 
     targetdir "bin/%{cfg.buildcfg}"
     objdir    "obj/%{cfg.buildcfg}"
+    
+    -- Precompiled Headers
+    -- pchheader "LKpch.h"
+    -- pchsource "./LukkelEngine/LKpch.cpp"
 
     defines {
-        "GLEW_STATIC",
+        "GLEW_STATIC"
        -- "IMGUI_IMPL_OPENGL_LOADER_GLAD"
     }
 
     includedirs {
+        "LukkelEngine/",
         "LukkelEngine/include/",
         "LukkelEngine/include/Renderer",
-        "LukkelEngine/include/Renderer/Test",
+        "LukkelEngine/include/Test",
         "lib",
         "lib/glm",
-        "lib/stb_image"
+        "lib/stb_image",
+        "lib/glfw/include",
+        "lib/glew/include"
     }
 
     files { 
@@ -46,6 +53,7 @@ project "LukkelEngine"
         "LukkelEngine/include/**.h",
         "lib/stb_image/*",
 		"lib/imgui/*.cpp"
+        -- "LukkelEngine/LKpch.cpp"
    	}
 
 
@@ -59,47 +67,70 @@ project "LukkelEngine"
             "_X11",
             "_IMGUI_X11"
         }
+
+	filter "system:windows"
+		defines { 
+        "GLEW_STATIC",
+		"_IMGUI_WIN32",
+		"_CRT_SECURE_NO_WARNINGS" -- ImGui
+		}
+		libdirs {
+			"lib/glfw/lib/",
+			"lib/glew/lib/"
+		}
+		links { "glfw3", "opengl32", "glew32s" }
+
+
 	
-        -- LINUX 64 bit
-        filter "architecture:x64"
-            defines { "_LINUX_x64" }
-            libdirs {
-                "lib/glfw/lib/",
-                "lib/glew/lib/"
-            }
-            links { "glfw3", "opengl32", "glew32s" }
-
-        -- LINUX 32 bit  FIXME
-        filter "architecture:x86"
-            defines { "_LINUX_x86" }
-            libdirs {
-                "lib/glfw/lib/",
-                "lib/glew/lib/"
-            }
-            links { "glfw3", "opengl32", "glew32s" }
-
-    -- WINDOWS
-    filter "system:windows"
-        defines { 
-            "_IMGUI_WIN32",
-            "_CRT_SECURE_NO_WARNINGS" -- ImGui
-        }
-       -- WINDOWS 64 bit 
-        filter "architecture:x64"
-            defines { "_WINDOWS_x64" }
-            libdirs {
-                "lib/glfw/lib/",
-                "lib/glew/lib/"
-            }
-            links { "glfw3", "opengl32", "glew32s" }
-        -- WINDOWS 32 bit
-        filter "architecture:x86"
-            defines { "_WINDOWS_x86" }
-            libdirs {
-                "lib/glfw/lib/",
-                "lib/glew/lib/"
-            }
-            links { "glfw3", "opengl32", "glew32s" }
+--        -- LINUX 64 bit
+--        filter "architecture:x64"
+--            defines { 
+--                "PLATFORM_LINUX_64",
+--				"GLEW_STATIC"
+--            }
+--            libdirs {
+--                "lib/glfw/lib/",
+--                "lib/glew/lib/"
+--            }
+--            links { "glfw3", "opengl32", "glew32s" }
+--
+--        -- LINUX 32 bit  FIXME
+--        filter "architecture:x86"
+--            defines {
+--                "PLATFORM_LINUX_32",
+--				"GLEW_STATIC"
+--            }
+--            libdirs {
+--                "lib/glfw/lib/",
+--                "lib/glew/lib/"
+--            }
+--            links { "glfw3", "opengl32", "glew32s" }
+--
+--    -- WINDOWS
+--    filter "system:windows"
+--        defines { 
+--            "_IMGUI_WIN32",
+--            "_CRT_SECURE_NO_WARNINGS" -- ImGui
+--        }
+--       -- WINDOWS 64 bit 
+--        filter "architecture:x64"
+--            defines { 
+--                "PLATFORM_WINDOWS_64",
+--				"GLEW_STATIC"
+--            }
+--            libdirs {
+--                "lib/glfw/lib/",
+--                "lib/glew/lib/"
+--            }
+--            links { "glfw3", "opengl32", "glew32s" }
+--        -- WINDOWS 32 bit
+--        filter "architecture:x86"
+--            defines { "PLATFORM_WINDOWS_32" }
+--            libdirs {
+--                "lib/glfw/lib/",
+--                "lib/glew/lib/"
+--            }
+--            links { "glfw3", "opengl32", "glew32s" }
 
 
 

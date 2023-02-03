@@ -1,5 +1,5 @@
 #pragma once
-#include <cstdint>
+#include <LKpch.h> /* Questionable if necessary */
 
 namespace LukkelEngine {
 

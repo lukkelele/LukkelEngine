@@ -1,6 +1,8 @@
 #include <Test/TestKeyInput.h>
 
-namespace test {
+namespace LukkelEngine {
+
+	using namespace test;
 
 	TestKeyInput::TestKeyInput()
 	{

@@ -1,7 +1,7 @@
 #include <Test/TestDrawCube.h>
 
-namespace test {
-	using namespace LukkelEngine;
+namespace LukkelEngine {
+	using namespace test;
 
 	TestDrawCube::TestDrawCube()
 	{
@@ -61,7 +61,7 @@ namespace test {
 
 	void TestDrawCube::onRender()
 	{
-		m_Renderer->Draw(*m_VAO, *m_IBO, *m_Shader);
+		m_Renderer->draw(*m_VAO, *m_IBO, *m_Shader);
 	}
 
 	void TestDrawCube::onImGuiRender()

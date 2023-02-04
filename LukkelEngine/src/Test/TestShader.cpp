@@ -1,7 +1,7 @@
 #include <Test/TestShader.h>
 
-namespace test {
-	using namespace LukkelEngine;
+namespace LukkelEngine {
+	using namespace test;
 
 	TestShader::TestShader()
 	{
@@ -15,7 +15,7 @@ namespace test {
 		m_Shader = std::make_unique<Shader>("res/shaders/basic2.shader");
 		m_Shader->bind();
 		m_Shader->setUniform4f("u_Color", 0.5f, 0.1f, 0.5f, 1.0f);
-		m_Renderer->Draw(*m_VAO, *m_IBO, *m_Shader);
+		// m_Renderer->draw(*m_VAO, *m_IBO, *m_Shader);
 	}
 
 	TestShader::~TestShader(){}
@@ -28,7 +28,7 @@ namespace test {
 
 		m_Shader->bind();
 		m_Shader->setUniform4f("u_Color", c, 0.35, c, 1.0);
-		m_Renderer->Draw(*m_VAO, *m_IBO, *m_Shader);
+		m_Renderer->draw(*m_VAO, *m_IBO, *m_Shader);
 	}
 
 	void TestShader::onImGuiRender(){}

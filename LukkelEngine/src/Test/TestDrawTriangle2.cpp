@@ -1,7 +1,7 @@
 #include <Test/TestDrawTriangle2.h>
 
-namespace test {
-	using namespace LukkelEngine;
+namespace LukkelEngine {
+	using namespace test;
 
 	TestDrawTriangle2::TestDrawTriangle2()
 	{
@@ -25,7 +25,7 @@ namespace test {
 
 		m_Shader = std::make_unique<Shader>("res/shaders/BasicTest.shader");
 		m_Shader->bind();
-		m_Renderer->Draw(*m_VAO, *m_IBO, *m_Shader);
+		m_Renderer->draw(*m_VAO, *m_IBO, *m_Shader);
 	}
 
 	TestDrawTriangle2::~TestDrawTriangle2() {}
@@ -34,7 +34,7 @@ namespace test {
 
 	void TestDrawTriangle2::onRender()
 	{
-		m_Renderer->Draw(*m_VAO, *m_IBO, *m_Shader);
+		m_Renderer->draw(*m_VAO, *m_IBO, *m_Shader);
 	}
 
 	void TestDrawTriangle2::onUpdate(float deltaTime)

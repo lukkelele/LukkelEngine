@@ -1,6 +1,7 @@
 #include <Test/TestTexture.h>
 
-namespace test {
+namespace LukkelEngine {
+	using namespace test;
 
 	TestTexture::TestTexture()
 	{
@@ -17,14 +18,14 @@ namespace test {
 		m_Shader->bind();
 		m_Texture->bind();
 		m_Shader->setUniform1i("u_Texture", 0);
-		m_Renderer->Draw(*m_VAO, *m_IBO, *m_Shader);
+		m_Renderer->draw(*m_VAO, *m_IBO, *m_Shader);
 	}
 
 	TestTexture::~TestTexture(){}
 
 	void TestTexture::onRender()
 	{
-		m_Renderer->Draw(*m_VAO, *m_IBO, *m_Shader);
+		m_Renderer->draw(*m_VAO, *m_IBO, *m_Shader);
 	}
 
 	void TestTexture::onImGuiRender() {}

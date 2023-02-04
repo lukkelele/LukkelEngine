@@ -2,20 +2,7 @@
 
 namespace LukkelEngine {
 
-	LukkelEngine::LukkelEngine()
-	{
-		status = init(DEFAULT_GRAPHICS_MODE, DEFAULT_BLENDING_MODE);
-	}
-
-	LukkelEngine::LukkelEngine(unsigned int graphicsMode)
-	{
-		status = init(graphicsMode, DEFAULT_BLENDING_MODE);
-	}
-
-	LukkelEngine::LukkelEngine(unsigned int graphicsMode, unsigned int blending)
-	{
-		status = init(graphicsMode, blending);
-	}
+	LukkelEngine::LukkelEngine(){}
 
 	LukkelEngine::~LukkelEngine()
 	{
@@ -23,19 +10,16 @@ namespace LukkelEngine {
 		delete currentTest;
 		if (currentTest != testMenu)
 			delete testMenu;
-		
+		// Move this to terminate ImGui and opengl inside Window
 		ImGui_ImplGlfwGL3_Shutdown(); // FIXME
 		ImGui::DestroyContext();
 		glfwTerminate();
 	}
 
-	GLFWwindow* LukkelEngine::getWindow() { return m_Window->getWindow(); }
-
-	int LukkelEngine::init(unsigned int graphicsMode, unsigned int blending)
+	void LukkelEngine::init(unsigned int graphicsMode, bool blending)
 	{
 		// Check for PLATFORM
 		m_Window = std::unique_ptr<Window>(Window::create());
-		//m_Window = initDisplay(DEFAULT_SCREEN_WIDTH, DEFAULT_SCREEN_HEIGHT, "LukkelEngine", 3, 3);
 
 		// Initiate I/O
 		LOG("Creating I/O modules...");
@@ -45,9 +29,9 @@ namespace LukkelEngine {
 		
 		// Test registration
 		registerTests();
-
-		return 1;
 	}
+
+	GLFWwindow* LukkelEngine::getWindow() { return m_Window->getWindow(); }
 
 	int LukkelEngine::registerTests()
 	{
@@ -76,7 +60,7 @@ namespace LukkelEngine {
 	int LukkelEngine::initImGui()
 	{
 		ImGui::CreateContext();
-		ImGui_ImplGlfwGL3_Init(m_Window, true);
+		ImGui_ImplGlfwGL3_Init(m_Window->getWindow(), true);
 		ImGui::StyleColorsDark();
 		return 1;
 	}

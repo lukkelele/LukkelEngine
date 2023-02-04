@@ -1,8 +1,6 @@
 #include <Windows/Windows_Window.h>
 
-
 namespace LukkelEngine {
-
 	static bool GLFW_initialized = false;
 
 	Windows_Window::Windows_Window(WindowProps& props)
@@ -10,9 +8,10 @@ namespace LukkelEngine {
 		init(props);
 	}
 
-	Window* Window::create(WindowProps& props)
+	Windows_Window::~Windows_Window()
 	{
-
+		// FIXME
+		// GLCall(glfwTerminate());
 	}
 
 	void Windows_Window::init(WindowProps& props)
@@ -37,7 +36,7 @@ namespace LukkelEngine {
 		GLCall(glfwSetWindowUserPointer(m_Window, &m_Data));
 		setVSync(true);
 	}
-	
+		
 	void Windows_Window::exit()
 	{
 		GLCall(glfwDestroyWindow(m_Window));
@@ -65,10 +64,23 @@ namespace LukkelEngine {
 
 	void Windows_Window::initImGui()
 	{
-		ImGui::CreateContext();
+		// ImGui::CreateContext();
 		// ImGui_ImplGlfwGL3_Init(m_Window, true);
-		ImGui::StyleColorsDark();
+		// ImGui::StyleColorsDark();
 	}
 
-	GLFWwindow* Windows_Window::getWindow() const { return this->m_Window; }
+	GLFWwindow* Windows_Window::getWindow() const { return m_Window; }
+
+	Window* Window::create(WindowProps& props)
+	{
+		Windows_Window window(props);
+		Window* win = dynamic_cast<Window*>(&window);
+		return win;
+	}
+
+	inline void Windows_Window::setCallback()
+	{
+
+	}
 }
+

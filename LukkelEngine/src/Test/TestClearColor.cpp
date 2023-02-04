@@ -1,6 +1,7 @@
 #include <Test/TestClearColor.h>
 
-namespace test {
+namespace LukkelEngine {
+	using namespace test;
 
 	TestClearColor::TestClearColor()
 		: m_clearColor { 0.2f, 0.3f, 0.8f, 1.0f }

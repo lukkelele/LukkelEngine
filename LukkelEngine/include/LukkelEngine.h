@@ -65,19 +65,18 @@ namespace LukkelEngine {
 	{
 	public:
 		LukkelEngine();
-		LukkelEngine(unsigned int mode);
-		LukkelEngine(unsigned int mode, unsigned int blending);
 		~LukkelEngine();
 
 		// int SCREEN_WIDTH, SCREEN_HEIGHT;
 		test::Test* currentTest = nullptr;
 		test::TestMenu* testMenu;
 
-		GLFWwindow* getWindow();
+		void init(unsigned int graphicsMode, bool blending);
 		void render();
 		void screenUpdate();
 		void renderImGuiData();
 		void testRunner(float updateFrequency);
+		GLFWwindow* getWindow();
 
 	private:
 		Renderer m_Renderer;
@@ -85,12 +84,10 @@ namespace LukkelEngine {
 		Keyboard m_Keyboard;
 		unsigned int m_GraphicsMode;
 		unsigned int m_Blending; 
-		int status;
 		int status_GLFW;
 		int status_ImGui;
 		// float rotX, rotY, rotZ = 0.0f;
 
-		int  init(unsigned int graphicsMode, unsigned int blending);
 		int  initImGui();
 		void setMode(unsigned int setting);
 		void setBlending(unsigned int setting);

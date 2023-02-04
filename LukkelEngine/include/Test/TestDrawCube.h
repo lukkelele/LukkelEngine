@@ -10,27 +10,29 @@
 #include <Renderer.h>
 #include <glm/ext.hpp>
 
-namespace test {
-	using namespace LukkelEngine;
+namespace LukkelEngine {
 
-	class TestDrawCube : public Test
-	{
-	public:
-		TestDrawCube();
-		~TestDrawCube();
+	namespace test {
 
-		std::unique_ptr<VertexArray> m_VAO;
-		std::unique_ptr<VertexBuffer> m_VBO;
-		std::unique_ptr<IndexBuffer> m_IBO;
-		std::unique_ptr<Shader> m_Shader;
-		std::unique_ptr<Renderer> m_Renderer;
+		class TestDrawCube : public Test
+		{
+		public:
+			TestDrawCube();
+			~TestDrawCube();
 
-		void onUpdate(float deltaTime) override;
-		void onRender() override;
-		void onImGuiRender() override;
+			std::unique_ptr<VertexArray> m_VAO;
+			std::unique_ptr<VertexBuffer> m_VBO;
+			std::unique_ptr<IndexBuffer> m_IBO;
+			std::unique_ptr<Shader> m_Shader;
+			std::unique_ptr<Renderer> m_Renderer;
 
-	private:
-		float m_clearColor[4];
-	};
+			void onUpdate(float deltaTime) override;
+			void onRender() override;
+			void onImGuiRender() override;
+
+		private:
+			float m_clearColor[4];
+		};
+	}
 }
 

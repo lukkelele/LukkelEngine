@@ -5,6 +5,7 @@ namespace LukkelEngine {
 	class Windows_Window : public Window
 	{
 	public:
+		Windows_Window();
 		Windows_Window(WindowProps& properties);
 		virtual ~Windows_Window(); // virtual deconstructor for derived class
 
@@ -15,14 +16,13 @@ namespace LukkelEngine {
 		inline void setCallback() override;
 		void setVSync(bool enabled) override;
 		bool isVSync() const override;
-		void initImGui() override;
 
 		GLFWwindow* getWindow() const override;
+		virtual void init(WindowProps& properties);
 
 	private:
 		GLFWwindow* m_Window;
 
-		virtual void init(WindowProps& properties);
 		virtual void exit();
 
 		struct WindowData

@@ -8,7 +8,7 @@
 #include <LKErrorHandler.h>
 #include <GLFW/glfw3.h>
 
-// #include <imgui/imgui.h>
+#include <imgui/imgui.h>
 
 namespace LukkelEngine {
 
@@ -35,7 +35,7 @@ namespace LukkelEngine {
 		virtual void setCallback() = 0; // FIXME
 		virtual void setVSync(bool enabled) = 0;
 		virtual bool isVSync() const = 0;
-		virtual void initImGui() = 0;
+		// virtual void initImGui() = 0;
 		virtual GLFWwindow* getWindow() const = 0;
 
 		static Window* create(WindowProps& props = WindowProps());

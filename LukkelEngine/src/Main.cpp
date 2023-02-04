@@ -4,7 +4,6 @@ int main()
 {
 	LukkelEngine::LukkelEngine Engine = LukkelEngine::LukkelEngine();
 	Engine.init(GRAPHICS_MODE_2D, BLENDING_ENABLED);
-	// GLFWwindow* window = Engine.getWindow();
 	GLFWwindow* window = Engine.getWindow();
 	// Create the test menu
 	LukkelEngine::test::Test* currentTest = Engine.currentTest;

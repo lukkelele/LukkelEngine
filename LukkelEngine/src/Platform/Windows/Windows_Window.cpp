@@ -2,6 +2,8 @@
 
 namespace LukkelEngine {
 	static bool GLFW_initialized = false;
+	
+	Windows_Window::Windows_Window(){}
 
 	Windows_Window::Windows_Window(WindowProps& props)
 	{
@@ -11,17 +13,28 @@ namespace LukkelEngine {
 	Windows_Window::~Windows_Window()
 	{
 		// FIXME
-		// GLCall(glfwTerminate());
+		GLCall(glfwTerminate());
 	}
 
 	void Windows_Window::init(WindowProps& props)
 	{
+		glfwInit();
+		/* Set core profile instead of compability one */
+		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+		/* Version 3.3 */
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+		glewExperimental = true;
 		m_Data.title = props.title;
 		m_Data.width = props.width;
 		m_Data.height = props.height;
-		LOG("Creating window");
+		m_Window = glfwCreateWindow(props.width, props.height, props.title.c_str(), nullptr, nullptr);
+		glfwMakeContextCurrent(m_Window);
+		GLCall(glfwSetWindowUserPointer(m_Window, &m_Data));
+		LOG("Checking to see if GLEW is up...");
 		if (!GLFW_initialized) {
-			GLCall(GLenum err = glewInit());
+			LOG("Initializing glew...");
+			GLenum err = glewInit();
 			if (err != GLEW_OK) {
 				/* if error occured, print error message */
 				printf("Error: %s\n", glewGetErrorString(err));
@@ -31,9 +44,8 @@ namespace LukkelEngine {
 				GLFW_initialized = false;
 			}
 		}
-		m_Window = glfwCreateWindow(props.width, props.height, props.title.c_str(), nullptr, nullptr);
-		GLCall(glfwMakeContextCurrent(m_Window));
-		GLCall(glfwSetWindowUserPointer(m_Window, &m_Data));
+		GLCall(glEnable(GL_BLEND));
+		GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
 		setVSync(true);
 	}
 		
@@ -52,8 +64,9 @@ namespace LukkelEngine {
 	{
 		if (enabled) {
 			GLCall(glfwSwapInterval(1));
-		} else
+		} else {
 			GLCall(glfwSwapInterval(0));
+		}
 		m_Data.VSync = enabled;
 	}
 
@@ -62,19 +75,15 @@ namespace LukkelEngine {
 		return m_Data.VSync;
 	}
 
-	void Windows_Window::initImGui()
-	{
-		// ImGui::CreateContext();
-		// ImGui_ImplGlfwGL3_Init(m_Window, true);
-		// ImGui::StyleColorsDark();
-	}
-
 	GLFWwindow* Windows_Window::getWindow() const { return m_Window; }
 
+	// FIXME
 	Window* Window::create(WindowProps& props)
 	{
-		Windows_Window window(props);
-		Window* win = dynamic_cast<Window*>(&window);
+		Windows_Window* window = new Windows_Window(props);
+		//window.init(props);
+		Window* win = dynamic_cast<Window*>(window);
+		LOG("Creating new window (Window* Window::create)");
 		return win;
 	}
 

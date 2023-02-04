@@ -19,7 +19,9 @@ namespace LukkelEngine {
 	void LukkelEngine::init(unsigned int graphicsMode, bool blending)
 	{
 		// Check for PLATFORM
+		LOG("LukkelEngine::init()");
 		m_Window = std::unique_ptr<Window>(Window::create());
+		initImGui();
 
 		// Initiate I/O
 		LOG("Creating I/O modules...");
@@ -29,6 +31,8 @@ namespace LukkelEngine {
 		
 		// Test registration
 		registerTests();
+		LOG("Tests registered!");
+		LOG(m_Window->isVSync());
 	}
 
 	GLFWwindow* LukkelEngine::getWindow() { return m_Window->getWindow(); }
@@ -46,8 +50,6 @@ namespace LukkelEngine {
 		testMenu->registerTest<test::TestShader>("Shader test");
 		testMenu->registerTest<test::TestTexture>("Texture testing");
 		testMenu->registerTest<test::TestKeyInput>("Key input");
-		test::TestKeyInput* TestKeyInput_ptr = dynamic_cast<test::TestKeyInput*>(currentTest);
-		// TestKeyInput_ptr->SetWindow(*window);
 		LOG("Tests created!");
 		return 1;
 	}
@@ -71,11 +73,8 @@ namespace LukkelEngine {
 		ImGui_ImplGlfwGL3_RenderDrawData(ImGui::GetDrawData());
 	}
 
-	// void LukkelEngine::TestUpdate(float updateFrequency) {}
-
 	void LukkelEngine::render()
 	{
-		// int focused = glfwGetWindowAttrib(m_Window, GLFW_FOCUSED);
 		renderImGuiData();
 		m_Window->onUpdate();
 	}

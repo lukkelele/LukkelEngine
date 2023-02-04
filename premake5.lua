@@ -37,10 +37,13 @@ project "LukkelEngine"
     }
 
     includedirs {
-        "LukkelEngine/include/",
-        "LukkelEngine/include/Renderer",
-        "LukkelEngine/include/Test",
-        "LukkelEngine/include/Platform",
+        "LukkelEngine/",
+        "LukkelEngine/src/",
+        "LukkelEngine/src/Renderer",
+        "LukkelEngine/src/Test",
+        "LukkelEngine/src/Platform",
+        "LukkelEngine/src/Display",
+        "LukkelEngine/src/Displ",
         "lib",
         "lib/glm",
         "lib/stb_image",
@@ -50,7 +53,7 @@ project "LukkelEngine"
 
     files { 
         "LukkelEngine/src/**.cpp",
-        "LukkelEngine/include/**.h",
+        "LukkelEngine/src/**.h",
         "lib/stb_image/*",
 		"lib/imgui/*.cpp"
         -- "LukkelEngine/LKpch.cpp"

@@ -19,7 +19,6 @@ namespace LukkelEngine {
 	void LukkelEngine::init(unsigned int graphicsMode, bool blending)
 	{
 		// Check for PLATFORM
-		LOG("LukkelEngine::init()");
 		m_Window = std::unique_ptr<Window>(Window::create());
 		initImGui();
 

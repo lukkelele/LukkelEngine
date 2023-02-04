@@ -12,19 +12,20 @@ namespace LukkelEngine {
 
 	Windows_Window::~Windows_Window()
 	{
-		// FIXME
 		GLCall(glfwTerminate());
 	}
 
 	void Windows_Window::init(WindowProps& props)
 	{
+		/* Initiate glfw */
 		glfwInit();
 		/* Set core profile instead of compability one */
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 		/* Version 3.3 */
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-		glewExperimental = true;
+		glewExperimental = true; // needed for profile(?)
+		/* Set window properties */
 		m_Data.title = props.title;
 		m_Data.width = props.width;
 		m_Data.height = props.height;

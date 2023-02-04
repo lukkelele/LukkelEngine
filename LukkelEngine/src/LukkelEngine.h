@@ -28,7 +28,6 @@
 #include <Texture.h>
 #include <LKErrorHandler.h>
 
-
 /* I/O */
 #include <Input/Keyboard.h>
 
@@ -82,7 +81,8 @@ namespace LukkelEngine {
 	private:
 		Renderer m_Renderer;
 		std::unique_ptr<Window> m_Window;
-		Keyboard m_Keyboard;
+		std::unique_ptr<Keyboard> m_Keyboard;
+		// Keyboard m_Keyboard;
 		unsigned int m_GraphicsMode;
 		unsigned int m_Blending; 
 		int status_GLFW;

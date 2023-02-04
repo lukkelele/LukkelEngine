@@ -60,8 +60,11 @@ project "LukkelEngine"
         "LukkelEngine/src/Platform/**.cpp",
         "LukkelEngine/src/Platform/**.h",
 
-        "lib/stb_image/*",
-		"lib/imgui/*.cpp"
+        "lib/stb_image/**.h",
+        "lib/stb_image/**.cpp",
+		"lib/imgui/*.cpp",
+        "lib/glm/glm/**.hpp",
+        "lib/glm/glm/**.inl"
         -- "LukkelEngine/LKpch.cpp"
    	}
 

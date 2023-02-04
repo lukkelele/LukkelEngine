@@ -1,4 +1,6 @@
 #pragma once
+#include <Core/PlatformDetection.h>
+#include <Core/Log.h>
 
 /* LIBRARIES */
 #include <GL/glew.h>
@@ -8,7 +10,6 @@
 #include <imgui/imgui.h>
 
 /* CORE FUNCTIONALITY */
-#include <Core/Log.h>
 #include <Core/LukkelCore.h>
 #include <Core/LKErrorHandler.h>
 #include <Core/Filesystem.h>
@@ -98,8 +99,8 @@ namespace LukkelEngine {
 		std::unique_ptr<Window> m_Window;
 		std::unique_ptr<Keyboard> m_Keyboard;
 		// Keyboard m_Keyboard;
-		unsigned int m_GraphicsMode;
-		unsigned int m_Blending; 
+		uint8_t m_GraphicsMode;
+		uint8_t m_Blending; 
 		int status_GLFW;
 		int status_ImGui;
 		// float rotX, rotY, rotZ = 0.0f;
@@ -107,7 +108,7 @@ namespace LukkelEngine {
 		int  initImGui();
 		void setMode(unsigned int setting);
 		void setBlending(unsigned int setting);
-		int  registerTests();
+		void registerTests();
 		
 	};
 }

@@ -34,14 +34,19 @@ namespace LukkelEngine {
 		GLCall(glfwSetWindowUserPointer(m_Window, &m_Data));
 
 		if (!GLFW_initialized) {
-			LOG("Initializing glew...");
+			// TODO: Fix here so Log is initialized
+			// LK_TRACE("Initializing glew");
 			GLenum err = glewInit();
 			if (err != GLEW_OK) {
 				/* if error occured, print error message */
 				printf("Error: %s\n", glewGetErrorString(err));
+				// LK_ERROR("Error: {0}", glewGetErrorString(err));
+				// TODO: Fix here so Log is initialized
 				GLFW_initialized = true;
 			} else {
+				// TODO: Fix here so Log is initialized
 				printf("openGL version: %s\n", glGetString(GL_VERSION)); /* output openGL version */
+				// LK_TRACE("OpenGL version: {0}", glGetString(GL_VERSION)); /* output openGL version */
 				GLFW_initialized = false;
 			}
 		}
@@ -78,14 +83,10 @@ namespace LukkelEngine {
 
 	GLFWwindow* Windows_Window::getWindow() const { return m_Window; }
 
-	// FIXME
 	Window* Window::create(WindowProps& props)
 	{
-		Windows_Window* window = new Windows_Window(props);
-		//window.init(props);
-		Window* win = dynamic_cast<Window*>(window);
-		LOG("Creating new window (Window* Window::create)");
-		return win;
+		Window* window = dynamic_cast<Window*>(new Windows_Window(props));
+		return window;
 	}
 
 	inline void Windows_Window::setCallback()

@@ -1,7 +1,6 @@
 #pragma once
 /* 
 	LukkelEngine core file.
-	Holds platform specific details and macros.
 
 	> GLFW
 		The GLCall macro does not function on some OpenGL functions.
@@ -32,17 +31,23 @@
 	#define LK_DEBUGBREAK()
 #endif
 
+#define LK_EXPAND_MACRO(x) x
+#define LK_STRINGIFY_MACRO(x) #x
+
 /* Bit field macro */
 #define LK_BIT_FIELD(x) (1 << x)
 
 namespace LukkelEngine {
 
 	/* Reference using smart shared pointer */
-	template<typename L>
-	using ref = std::shared_ptr<L>;
-	template<typename L, typename ... ARGS>
-	constexpr ref<L> createRef(ARGS&& ... args)
+	template<typename T>
+	using ref = std::shared_ptr<T>;
+	template<typename T, typename ... ARGS>
+	constexpr ref<T> createRef(ARGS&& ... args)
 	{
-		return std::make_shared<L>(std::forward<ARGS>(args)...);
+		return std::make_shared<T>(std::forward<ARGS>(args)...);
 	}
 }
+
+#include <Core/Log.h>
+#include <Core/Assert.h>

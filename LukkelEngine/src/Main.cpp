@@ -9,8 +9,12 @@ int main()
 	LukkelEngine::test::Test* currentTest = Engine.currentTest;
 	LukkelEngine::test::TestMenu* testMenu = Engine.testMenu;
 	currentTest = testMenu;	// open menu initially
+
+	/* Test event */
 	LukkelEngine::WindowResizeEvent e(1600, 1024);
-	// LukkelEngine::LK_TRACE(e);
+	LK_TRACE(e);
+	// auto logger = LukkelEngine::Log::getClientLogger();
+	// logger->debug(e);
 
 	while (!glfwWindowShouldClose(window)) {
 		Engine.screenUpdate();

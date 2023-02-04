@@ -1,4 +1,5 @@
 #include <Display/Window.h>
+#include <LukkelEngine/Core/Log.h>
 
 namespace LukkelEngine {
 

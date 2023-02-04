@@ -4,8 +4,6 @@
 #include <glm/glm.hpp>
 #include <LukkelEngine/Core/LKErrorHandler.h>
 
-#define debug true
-
 namespace LukkelEngine {
 
 	struct ShaderProgramSource

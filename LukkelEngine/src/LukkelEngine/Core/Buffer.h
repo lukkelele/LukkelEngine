@@ -1,5 +1,4 @@
-#ifndef _LK_BUFFER_H
-#define _LK_BUFFER_H
+#pragma once
 
 #include <cstring>
 #include <stdint.h>
@@ -87,4 +86,4 @@ namespace LukkelEngine {
 	};
 }
 
-#endif /* _LK_BUFFER_H */
+// #endif /* _LK_BUFFER_H */

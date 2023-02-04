@@ -1,9 +1,12 @@
+#pragma once
+
+#include <Core/Assert.h>
 #include <Core/LukkelCore.h>
+
 #include <stdint.h>
 #include <cstring>
 #include <memory>
 #include <sstream>
-#include <cstdint>
 
 #define GLM_ENABLE_EXPERIMENTAL
 #include "glm/gtx/string_cast.hpp"
@@ -22,7 +25,8 @@ namespace LukkelEngine {
 		static void init();
 		static ref<spdlog::logger>& getCoreLogger() { return s_CoreLogger; }
 		static ref<spdlog::logger>& getClientLogger() { return s_ClientLogger; }
-	private:
+		// static auto& getClientLogger() { return s_ClientLogger; }
+	public:
 		static ref<spdlog::logger> s_CoreLogger;
 		static ref<spdlog::logger> s_ClientLogger;
 	};

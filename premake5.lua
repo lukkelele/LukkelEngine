@@ -37,23 +37,29 @@ project "LukkelEngine"
     }
 
     includedirs {
-        "LukkelEngine/",
         "LukkelEngine/src/",
-        "LukkelEngine/src/Renderer",
-        "LukkelEngine/src/Test",
-        "LukkelEngine/src/Platform",
-        "LukkelEngine/src/Display",
-        "LukkelEngine/src/Displ",
+        "LukkelEngine/src/Platform/",
+        "LukkelEngine/src/LukkelEngine/",
+        "LukkelEngine/src/LukkelEngine/Renderer",
+        "LukkelEngine/src/LukkelEngine/Test/",
+        "LukkelEngine/src/LukkelEngine/Display",
         "lib",
         "lib/glm",
         "lib/stb_image",
         "lib/glfw/include",
-        "lib/glew/include"
+        "lib/glew/include",
+        "lib/spdlog/include"
     }
 
     files { 
         "LukkelEngine/src/**.cpp",
         "LukkelEngine/src/**.h",
+        "LukkelEngine/src/LukkelEngine/**.h",
+        "LukkelEngine/src/LukkelEngine/**.cpp",
+
+        "LukkelEngine/src/Platform/**.cpp",
+        "LukkelEngine/src/Platform/**.h",
+
         "lib/stb_image/*",
 		"lib/imgui/*.cpp"
         -- "LukkelEngine/LKpch.cpp"
@@ -62,17 +68,27 @@ project "LukkelEngine"
 
     -- LINUX    
     filter "system:linux"
-        links {
-          "dl",
-          "pthread"
-        }
         defines {
+            "LK_PLATFORM_LINUX",
             "_X11",
             "_IMGUI_X11"
         }
+		libdirs {
+			"lib/glfw/lib/",
+			"lib/glew/lib/"
+		}
+        links {
+            "dl",
+            "pthread",
+		    "glfw3",
+            "opengl32",
+            "glew32s"
+        }
+
 
 	filter "system:windows"
 		defines { 
+        "LK_PLATFORM_WINDOWS",
         "GLEW_STATIC",
 		"_IMGUI_WIN32",
 		"_CRT_SECURE_NO_WARNINGS" -- ImGui

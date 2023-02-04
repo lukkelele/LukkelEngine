@@ -1,4 +1,4 @@
-#include <LukkelEngine.h>
+#include <LukkelEngine/LukkelEngine.h>
 
 int main()
 {
@@ -8,7 +8,9 @@ int main()
 	// Create the test menu
 	LukkelEngine::test::Test* currentTest = Engine.currentTest;
 	LukkelEngine::test::TestMenu* testMenu = Engine.testMenu;
-	currentTest = testMenu;		// open menu initially
+	currentTest = testMenu;	// open menu initially
+	LukkelEngine::WindowResizeEvent e(1600, 1024);
+	// LukkelEngine::LK_TRACE(e);
 
 	while (!glfwWindowShouldClose(window)) {
 		Engine.screenUpdate();

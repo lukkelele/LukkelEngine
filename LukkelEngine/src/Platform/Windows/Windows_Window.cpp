@@ -32,7 +32,7 @@ namespace LukkelEngine {
 		m_Window = glfwCreateWindow(props.width, props.height, props.title.c_str(), nullptr, nullptr);
 		glfwMakeContextCurrent(m_Window);
 		GLCall(glfwSetWindowUserPointer(m_Window, &m_Data));
-		LOG("Checking to see if GLEW is up...");
+
 		if (!GLFW_initialized) {
 			LOG("Initializing glew...");
 			GLenum err = glewInit();

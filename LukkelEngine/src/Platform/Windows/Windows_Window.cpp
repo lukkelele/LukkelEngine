@@ -50,10 +50,16 @@ namespace LukkelEngine {
 		}
 		setVSync(true);
 
-		LK_CORE_WARN("Setting up window resize event");
-		WindowResizeEvent event(m_Data.width, m_Data.height);
-		LK_CORE_WARN("Setting window resize callback function");
-		m_Data.eventCallback(event);
+		glfwSetWindowSizeCallback(m_Window, [](GLFWwindow* window, int width, int height)
+		{
+			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+			data.width = width;
+			data.height = height;
+			LK_CORE_WARN("Setting up window resize event");
+			WindowResizeEvent event(data.width, data.height);
+			LK_CORE_WARN("Setting window resize callback function");
+			data.eventCallback(event);
+		});
 	}
 		
 	void Windows_Window::exit()
@@ -89,5 +95,12 @@ namespace LukkelEngine {
 		Window* window = dynamic_cast<Window*>(new Windows_Window(props));
 		return window;
 	}
+
+	/*
+	std::unique_ptr<Window> Window::create(WindowProps& props)
+	{
+		return std::make_unique<Window>(new Windows_Window(props));
+	}
+	*/
 }
 

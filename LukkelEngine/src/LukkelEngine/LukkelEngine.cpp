@@ -37,8 +37,8 @@ namespace LukkelEngine {
 
 		// Initiate I/O
 		LK_CORE_WARN("Attaching I/O modules...");
-		Keyboard m_Keyboard;
-		m_Keyboard.Bind(m_Window->getWindow());
+		// Keyboard m_Keyboard;
+		m_Keyboard->bind(m_Window->getWindow());
 		// GLCall(glfwSetKeyCallback(m_Window, m_Keyboard.));
 		
 		// Test registration

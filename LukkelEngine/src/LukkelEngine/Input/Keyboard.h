@@ -20,12 +20,12 @@ namespace LukkelEngine {
 		Keyboard(GLFWwindow* window);
 		~Keyboard();
 
-		void Bind(GLFWwindow* window);
-		void Unbind();
+		void bind(GLFWwindow* window);
+		void unbind();
 
-		int KeyPressed();
-		void Input(GLFWwindow* window, int key, int scanCode, int action, int mods);
-		static void Input_static(GLFWwindow* window, int key, int scanCode, int action, int mods);
+		int keyPressed();
+		void input(GLFWwindow* window, int key, int scanCode, int action, int mods);
+		static void input_static(GLFWwindow* window, int key, int scanCode, int action, int mods);
 	};
 }
 #endif /* _KEYBOARD_H */

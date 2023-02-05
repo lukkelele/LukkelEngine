@@ -26,8 +26,8 @@ namespace LukkelEngine {
 	class Window
 	{
 	public:
-		Window();
-		~Window();
+		// Window();
+		virtual ~Window() = default;
 
 		virtual void onUpdate() = 0;
 		virtual uint16_t getWidth() = 0;
@@ -38,6 +38,7 @@ namespace LukkelEngine {
 
 		virtual GLFWwindow* getWindow() const = 0;
 		static Window* create(WindowProps& props = WindowProps());
+		// static std::unique_ptr<Window> create(WindowProps& props = WindowProps());
 
 		/* Static for platform independent window creation */
 		using EventCallbackFn = std::function<void(Event&)>;

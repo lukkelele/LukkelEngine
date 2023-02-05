@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Core/Core.h>
+#include <LukkelEngine/Core/Base.h>
 
 #include <stdint.h>
 #include <cstring>

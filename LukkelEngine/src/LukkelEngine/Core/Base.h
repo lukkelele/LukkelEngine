@@ -14,6 +14,7 @@
 #include <memory>
 #include <sstream>
 #include <stdint.h>
+#include <filesystem>
 
 #ifdef LK_DEBUG
 	#if defined(LK_PLATFORM_WINDOWS)

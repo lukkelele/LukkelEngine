@@ -37,15 +37,14 @@ namespace LukkelEngine {
 		GLCall(glfwSetWindowUserPointer(m_Window, &m_Data));
 
 		if (!GLFW_initialized) {
-			// LK_TRACE("Initializing glew");
 			GLenum err = glewInit();
 			if (err != GLEW_OK) {
 				/* if error occured, print error message */
-				printf("Error: %s\n", glewGetErrorString(err));
-				GLFW_initialized = true;
+				printf("[ERROR] %s\n", glewGetErrorString(err));
+				GLFW_initialized = false;
 			} else {
 				printf("[OPENGL] Version: %s\n", glGetString(GL_VERSION)); /* output openGL version */
-				GLFW_initialized = false;
+				GLFW_initialized = true;
 			}
 		}
 		setVSync(true);

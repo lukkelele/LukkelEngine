@@ -1,5 +1,10 @@
+// #include <LukkelEngine/Core/Application.h>
+// #include <LukkelEngine/Core/Log.h>
+// #include <LukkelEngine/Renderer/Renderer.h>
+/* FIX IMPORTS FOR Application file*/
 #include <LukkelEngine/LukkelEngine.h>
 
+/*
 int main()
 {
 	LukkelEngine::LukkelEngine Engine = LukkelEngine::LukkelEngine();
@@ -10,7 +15,6 @@ int main()
 	LukkelEngine::test::TestMenu* testMenu = Engine.testMenu;
 	currentTest = testMenu;	// open menu initially
 
-	/* Test event */
 	LukkelEngine::WindowResizeEvent e(1600, 1024);
 	// LK_TRACE(e);
 
@@ -21,3 +25,4 @@ int main()
 	}
 	return 0;
 }
+*/

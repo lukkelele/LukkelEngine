@@ -11,8 +11,8 @@
 #include <imgui/imgui.h>
 
 /* CORE FUNCTIONALITY */
+#include <LukkelEngine/Core/Base.h>
 #include <LukkelEngine/Core/Application.h>
-#include <LukkelEngine/Core/Core.h>
 #include <LukkelEngine/Core/LKErrorHandler.h>
 #include <LukkelEngine/Core/Filesystem.h>
 #include <LukkelEngine/Core/Buffer.h>

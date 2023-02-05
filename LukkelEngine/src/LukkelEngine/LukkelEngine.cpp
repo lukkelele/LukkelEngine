@@ -27,6 +27,7 @@ namespace LukkelEngine {
 	void LukkelEngine::init(uint8_t graphicsMode, bool blending)
 	{
 		/* Enable logging */
+		m_Running = true;
 		Log::init();
 		LK_CORE_WARN("Starting LukkelEngine");
 
@@ -65,15 +66,15 @@ namespace LukkelEngine {
 
 	void LukkelEngine::screenUpdate()
 	{
-		m_Renderer.clear();
+		m_Renderer->clear();
 	}
 
-	int LukkelEngine::initImGui()
+	void LukkelEngine::initImGui()
 	{
 		ImGui::CreateContext();
 		ImGui_ImplGlfwGL3_Init(m_Window->getWindow(), true);
 		ImGui::StyleColorsDark();
-		return 1;
+		m_ImGuiInitialized = true;
 	}
 
 	void LukkelEngine::renderImGuiData()
@@ -130,5 +131,48 @@ namespace LukkelEngine {
 		}
 	}
 
+	void LukkelEngine::pushLayer(Layer* layer)
+	{
+		m_LayerStack.pushLayer(layer);
+		layer->onAttach();
+	}
+
+	void LukkelEngine::popLayer(Layer* layer)
+	{
+		m_LayerStack.popLayer(layer);
+		layer->onDetach();
+	}
+
+	bool LukkelEngine::onWindowClose(WindowCloseEvent& e)
+	{
+		m_Running = false;
+		return true;
+	}
+
+	bool LukkelEngine::onWindowResize(WindowResizeEvent& e)
+	{
+		if (e.getWidth() == 0 || e.getHeight() == 0) {
+			m_Minimized = true;
+			return false;
+		}
+		m_Minimized = false;
+		LK_CORE_WARN("Event: WindowResizeEvent -> onWindowResize");
+		Renderer::onWindowResize(e.getWidth(), e.getHeight());
+		return false;
+	}
+
+	void LukkelEngine::onEvent(Event& e)
+	{
+		LK_CORE_INFO("Event trigger: ", e);
+		EventDispatcher ed(e);
+		ed.dispatch<WindowCloseEvent>(LK_BIND_EVENT_FN(onWindowClose));
+		ed.dispatch<WindowResizeEvent>(LK_BIND_EVENT_FN(onWindowResize));
+		/* Handle events */
+		for (auto it = m_LayerStack.rbegin(); it != m_LayerStack.rend(); ++it) {
+			if (e.handled)
+				break;
+			(*it)->onEvent(e);
+		}
+	}
 
 }

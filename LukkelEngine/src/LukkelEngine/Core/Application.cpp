@@ -4,7 +4,7 @@
 /* FIX IMPORTS FOR Application file*/
 #include <LukkelEngine/LukkelEngine.h>
 
-/*
+
 int main()
 {
 	LukkelEngine::LukkelEngine Engine = LukkelEngine::LukkelEngine();
@@ -25,4 +25,3 @@ int main()
 	}
 	return 0;
 }
-*/

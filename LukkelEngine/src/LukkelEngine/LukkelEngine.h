@@ -12,7 +12,8 @@
 
 /* CORE FUNCTIONALITY */
 #include <LukkelEngine/Core/Base.h>
-#include <LukkelEngine/Core/Application.h>
+// #include <LukkelEngine/Core/Application.h>
+#include <LukkelEngine/Core/LayerStack.h>
 #include <LukkelEngine/Core/LKErrorHandler.h>
 #include <LukkelEngine/Core/Filesystem.h>
 #include <LukkelEngine/Core/Buffer.h>
@@ -96,19 +97,29 @@ namespace LukkelEngine {
 		GLFWwindow* getWindow();
 
 	private:
-		Renderer m_Renderer;
-		std::unique_ptr<Window> m_Window;
-		std::unique_ptr<Keyboard> m_Keyboard;
-		// Keyboard m_Keyboard;
+		bool m_Running = false;
+		bool m_Minimized = false; // TODO: Implement separate Application window
+
 		uint8_t m_GraphicsMode;
 		uint8_t m_Blending; 
-		int status_GLFW;
-		int status_ImGui;
+		bool m_ImGuiInitialized = false;
 
-		int  initImGui();
+		std::unique_ptr<Renderer> m_Renderer;
+		std::unique_ptr<Window> m_Window;
+		std::unique_ptr<Keyboard> m_Keyboard;
+		LayerStack m_LayerStack;
+
+		bool onWindowClose(WindowCloseEvent& e);
+		bool onWindowResize(WindowResizeEvent& e);
+
+		void initImGui();
 		void setMode(unsigned int setting);
 		void setBlending(unsigned int setting);
 		void registerTests();
+
+		void pushLayer(Layer* layer);
+		void popLayer(Layer* layer);
+		void onEvent(Event& e);
 		
 	};
 }

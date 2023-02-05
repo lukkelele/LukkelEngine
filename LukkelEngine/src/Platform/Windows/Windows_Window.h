@@ -1,4 +1,5 @@
 #include <LukkelEngine/Core/Window.h>
+#include <LukkelEngine/Event/ApplicationEvent.h>
 
 namespace LukkelEngine {
 
@@ -13,14 +14,15 @@ namespace LukkelEngine {
 		inline uint16_t getHeight() override { return m_Data.height; }
 
 		void onUpdate() override;
-		inline void setCallback() override;
+		void setEventCallback(const EventCallbackFn& callback) override { m_Data.eventCallback = callback; }
 		void setVSync(bool enabled) override;
 		bool isVSync() const override;
 
 		GLFWwindow* getWindow() const override;
 		virtual void init(WindowProps& properties);
 
-	private:
+	// FIXME: private 
+	public:
 		GLFWwindow* m_Window;
 
 		virtual void exit();
@@ -30,7 +32,7 @@ namespace LukkelEngine {
 			std::string title;
 			uint16_t width, height;
 			bool VSync;
-			// EVENT CALLBACK HERE
+			EventCallbackFn eventCallback;
 		};
 		WindowData m_Data;
 	};

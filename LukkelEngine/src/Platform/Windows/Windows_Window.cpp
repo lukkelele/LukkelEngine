@@ -35,6 +35,7 @@ namespace LukkelEngine {
 		m_Window = glfwCreateWindow(props.width, props.height, props.title.c_str(), nullptr, nullptr);
 		glfwMakeContextCurrent(m_Window);
 		GLCall(glfwSetWindowUserPointer(m_Window, &m_Data));
+		
 
 		if (!GLFW_initialized) {
 			GLenum err = glewInit();
@@ -48,6 +49,11 @@ namespace LukkelEngine {
 			}
 		}
 		setVSync(true);
+
+		LK_CORE_WARN("Setting up window resize event");
+		WindowResizeEvent event(m_Data.width, m_Data.height);
+		LK_CORE_WARN("Setting window resize callback function");
+		m_Data.eventCallback(event);
 	}
 		
 	void Windows_Window::exit()
@@ -82,11 +88,6 @@ namespace LukkelEngine {
 	{
 		Window* window = dynamic_cast<Window*>(new Windows_Window(props));
 		return window;
-	}
-
-	inline void Windows_Window::setCallback()
-	{
-
 	}
 }
 

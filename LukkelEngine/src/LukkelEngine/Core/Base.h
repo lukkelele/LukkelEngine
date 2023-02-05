@@ -37,7 +37,9 @@
 /* Bit field macro */
 #define LK_BIT_FIELD(x) (1 << x)
 
-#include <Core/Log.h>
+/* Bind event */
+#define LK_BIND_EVENT_FN(fn) [this](auto&&... args) -> decltype(auto) { return this->fn(std::forward<decltype(args)>(args)...); }
+
 namespace LukkelEngine {
 
 	/* Reference using smart shared pointer */
@@ -50,4 +52,5 @@ namespace LukkelEngine {
 	}
 }
 
-#include <Core/Assert.h>
+#include <LukkelEngine/Core/Log.h>
+#include <LukkelEngine/Core/Assert.h>

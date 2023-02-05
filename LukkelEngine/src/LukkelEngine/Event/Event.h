@@ -4,6 +4,7 @@
 /* Include in precompiled header */
 #include <string>
 #include <sstream>
+
 #include <functional>
 
 namespace LukkelEngine {

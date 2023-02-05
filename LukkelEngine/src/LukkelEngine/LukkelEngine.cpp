@@ -1,18 +1,20 @@
 #ifdef LK_USE_PRECOMPILED_HEADERS
 	#include <LKpch.h>
 #endif
-#include <LukkelEngine.h>
+#include <LukkelEngine/LukkelEngine.h>
 
 namespace LukkelEngine {
 
 	LukkelEngine::LukkelEngine()
 	{
-		m_Blending = 1;
+		m_Blending = LK_DEFAULT_BLENDING_MODE;
+		m_GraphicsMode = LK_GRAPHICS_MODE_3D;
 	}
 
 	LukkelEngine::~LukkelEngine()
 	{
 		// TERMINATE ALL 
+		LK_CORE_WARN("Terminating LukkelEngine");
 		delete currentTest;
 		if (currentTest != testMenu)
 			delete testMenu;
@@ -22,23 +24,27 @@ namespace LukkelEngine {
 		glfwTerminate();
 	}
 
-	void LukkelEngine::init(unsigned int graphicsMode, bool blending)
+	void LukkelEngine::init(uint8_t graphicsMode, bool blending)
 	{
 		/* Enable logging */
 		Log::init();
-		LK_TRACE("Creating window ({0}x{1})", DEFAULT_SCREEN_WIDTH, DEFAULT_SCREEN_HEIGHT);
+		LK_CORE_WARN("Starting LukkelEngine");
+
+		LK_CORE_TRACE("Creating window ({0}x{1})", DEFAULT_SCREEN_WIDTH, DEFAULT_SCREEN_HEIGHT);
 		m_Window = std::unique_ptr<Window>(Window::create());
 		initImGui();
 
 		// Initiate I/O
-		LK_TRACE("Attaching I/O modules...");
+		LK_CORE_WARN("Attaching I/O modules...");
 		Keyboard m_Keyboard;
 		m_Keyboard.Bind(m_Window->getWindow());
 		// GLCall(glfwSetKeyCallback(m_Window, m_Keyboard.));
 		
 		// Test registration
-		LK_TRACE("Registering tests...");
+		LK_CORE_WARN("Registering tests...");
 		registerTests();
+
+		setBlending(blending);
 	}
 
 	GLFWwindow* LukkelEngine::getWindow() { return m_Window->getWindow(); }
@@ -85,19 +91,25 @@ namespace LukkelEngine {
 	void LukkelEngine::setMode(unsigned int setting)
 	{
 		m_GraphicsMode = setting;
-		if (m_GraphicsMode == GRAPHICS_MODE_3D)   // 1
+		if (m_GraphicsMode == LK_GRAPHICS_MODE_3D)  // 1
 			GLCall(glEnable(GL_DEPTH_TEST));
-		if (m_GraphicsMode == GRAPHICS_MODE_2D)	// 0
+		if (m_GraphicsMode == LK_GRAPHICS_MODE_2D)	// 0
 			GLCall(glDisable(GL_DEPTH_TEST));
 	}
 
 	void LukkelEngine::setBlending(unsigned int setting)
 	{
-		if (setting > 1)
-			setting = DEFAULT_BLENDING_MODE;
 		m_Blending = setting;
-		GLCall(glEnable(GL_BLEND));
-		GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
+		if (m_Blending > 1)
+			m_Blending = LK_DEFAULT_BLENDING_MODE;
+		if (m_Blending == LK_BLENDING_ENABLED) {
+			LK_CORE_TRACE("Enabling blending");
+			GLCall(glEnable(GL_BLEND));
+			GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
+		} else {
+			LK_CORE_TRACE("Disabling blending");
+			GLCall(glDisable(GL_BLEND));
+		}
 	}
 
 	void LukkelEngine::testRunner(float updateFrequency)

@@ -13,7 +13,7 @@
 
 #include <memory>
 #include <sstream>
-#include <cstdint>
+#include <stdint.h>
 
 #ifdef LK_DEBUG
 	#if defined(LK_PLATFORM_WINDOWS)
@@ -36,6 +36,7 @@
 /* Bit field macro */
 #define LK_BIT_FIELD(x) (1 << x)
 
+#include <Core/Log.h>
 namespace LukkelEngine {
 
 	/* Reference using smart shared pointer */
@@ -48,5 +49,4 @@ namespace LukkelEngine {
 	}
 }
 
-#include <Core/Log.h>
 #include <Core/Assert.h>

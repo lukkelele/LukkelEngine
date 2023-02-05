@@ -4,8 +4,9 @@
 #include <string>
 #include <vector>
 
-#include <Display/Window.h>
-#include <Core/LKErrorHandler.h>
+#include <LukkelEngine/Core/Log.h>
+#include <LukkelEngine/Core/LKErrorHandler.h>
+
 #include <GLFW/glfw3.h>
 #include <imgui/imgui.h>
 
@@ -34,9 +35,9 @@ namespace LukkelEngine {
 		virtual void setCallback() = 0; // FIXME
 		virtual void setVSync(bool enabled) = 0;
 		virtual bool isVSync() const = 0;
-		// virtual void initImGui() = 0;
 		virtual GLFWwindow* getWindow() const = 0;
 
+		/* Static for platform independent window creation */
 		static Window* create(WindowProps& props = WindowProps());
 	};
 }

@@ -1,4 +1,6 @@
-#include <LKpch.h>
+#ifdef LK_USE_PRECOMPILED_HEADERS
+	#include <LKpch.h>
+#endif
 #include <Windows/Windows_Window.h>
 
 namespace LukkelEngine {
@@ -35,24 +37,17 @@ namespace LukkelEngine {
 		GLCall(glfwSetWindowUserPointer(m_Window, &m_Data));
 
 		if (!GLFW_initialized) {
-			// TODO: Fix here so Log is initialized
 			// LK_TRACE("Initializing glew");
 			GLenum err = glewInit();
 			if (err != GLEW_OK) {
 				/* if error occured, print error message */
 				printf("Error: %s\n", glewGetErrorString(err));
-				// LK_ERROR("Error: {0}", glewGetErrorString(err));
-				// TODO: Fix here so Log is initialized
 				GLFW_initialized = true;
 			} else {
-				// TODO: Fix here so Log is initialized
-				printf("openGL version: %s\n", glGetString(GL_VERSION)); /* output openGL version */
-				// LK_TRACE("OpenGL version: {0}", glGetString(GL_VERSION)); /* output openGL version */
+				printf("[OPENGL] Version: %s\n", glGetString(GL_VERSION)); /* output openGL version */
 				GLFW_initialized = false;
 			}
 		}
-		GLCall(glEnable(GL_BLEND));
-		GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
 		setVSync(true);
 	}
 		

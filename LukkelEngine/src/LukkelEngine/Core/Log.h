@@ -21,6 +21,8 @@ namespace LukkelEngine {
 	class Log
 	{
 	public:
+		// Log();
+		// ~Log();
 		static void init();
 		static ref<spdlog::logger>& getCoreLogger() { return s_CoreLogger; }
 		static ref<spdlog::logger>& getClientLogger() { return s_ClientLogger; }

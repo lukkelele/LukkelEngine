@@ -11,6 +11,9 @@ namespace LukkelEngine {
 	ref<spdlog::logger> Log::s_CoreLogger;
 	ref<spdlog::logger> Log::s_ClientLogger;
 
+	// Log::Log() { init(); }
+	// Log::~Log() {}
+
 	void Log::init()
 	{
 		std::vector<spdlog::sink_ptr> logSinks;

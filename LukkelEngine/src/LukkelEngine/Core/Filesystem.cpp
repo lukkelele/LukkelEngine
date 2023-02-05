@@ -1,5 +1,7 @@
 /* TODO: Insert precompiled header */
-// #include <LKpch.h>
+#ifdef LK_USE_PRECOMPILED_HEADERS
+	#include <LKpch.h>
+#endif
 #include <LukkelEngine/Core/Filesystem.h>
 
 namespace LukkelEngine {

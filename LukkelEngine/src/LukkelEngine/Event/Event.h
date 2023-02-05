@@ -79,7 +79,6 @@ namespace LukkelEngine {
 	private:
 		Event& m_Event;
 	};
-
 	/* Logging */
 	inline std::ostream& operator<<(std::ostream& os, const Event& e) { return os << e.toString(); }
 }

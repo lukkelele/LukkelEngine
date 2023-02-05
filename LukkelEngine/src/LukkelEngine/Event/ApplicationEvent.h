@@ -8,11 +8,13 @@ namespace LukkelEngine {
 	class WindowResizeEvent : public Event
 	{
 	public:
-		WindowResizeEvent(unsigned int width, unsigned int height)
+		WindowResizeEvent(uint16_t width, uint16_t height)
 			: m_Width(width), m_Height(height) {}
 
-		unsigned int getWidth() const { return m_Width; }
-		unsigned int getHeight() const { return m_Height; }
+		// unsigned int getWidth() const { return m_Width; }
+		// unsigned int getHeight() const { return m_Height; }
+		uint16_t getWidth() const { return m_Width; }
+		uint16_t getHeight() const { return m_Height; }
 
 		std::string toString() const override
 		{
@@ -24,7 +26,7 @@ namespace LukkelEngine {
 		EVENT_CLASS_TYPE(WindowResize)
 		EVENT_CLASS_CATEGORY(EventCategoryApplication)
 	private:
-		unsigned int m_Width, m_Height;
+		uint16_t m_Width, m_Height;
 	};
 
 	class WindowCloseEvent : public Event
@@ -52,7 +54,7 @@ namespace LukkelEngine {
 		AppUpdateEvent() = default;
 
 		EVENT_CLASS_TYPE(AppUpdate)
-			EVENT_CLASS_CATEGORY(EventCategoryApplication)
+		EVENT_CLASS_CATEGORY(EventCategoryApplication)
 	};
 
 	class AppRenderEvent : public Event
@@ -61,7 +63,7 @@ namespace LukkelEngine {
 		AppRenderEvent() = default;
 
 		EVENT_CLASS_TYPE(AppRender)
-			EVENT_CLASS_CATEGORY(EventCategoryApplication)
+		EVENT_CLASS_CATEGORY(EventCategoryApplication)
 	};
 
 }

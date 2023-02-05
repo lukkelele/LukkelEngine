@@ -7,7 +7,6 @@ namespace LukkelEngine {
 	static bool GLFW_initialized = false;
 	
 	Windows_Window::Windows_Window(){}
-
 	Windows_Window::Windows_Window(WindowProps& props)
 	{
 		init(props);
@@ -32,11 +31,10 @@ namespace LukkelEngine {
 		m_Data.title = props.title;
 		m_Data.width = props.width;
 		m_Data.height = props.height;
-		m_Window = glfwCreateWindow(props.width, props.height, props.title.c_str(), nullptr, nullptr);
+		m_Window = glfwCreateWindow((int)props.width, (int)props.height, props.title.c_str(), nullptr, nullptr);
 		glfwMakeContextCurrent(m_Window);
 		GLCall(glfwSetWindowUserPointer(m_Window, &m_Data));
 		
-
 		if (!GLFW_initialized) {
 			GLenum err = glewInit();
 			if (err != GLEW_OK) {
@@ -49,16 +47,13 @@ namespace LukkelEngine {
 			}
 		}
 		setVSync(true);
-
+		LK_CORE_TRACE("Setting window callback");
+		/* Currently only for one window */
+		// IMPLEMENT RESIZING HERE
 		glfwSetWindowSizeCallback(m_Window, [](GLFWwindow* window, int width, int height)
 		{
-			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
-			data.width = width;
-			data.height = height;
-			LK_CORE_WARN("Setting up window resize event");
-			WindowResizeEvent event(data.width, data.height);
-			LK_CORE_WARN("Setting window resize callback function");
-			data.eventCallback(event);
+			LK_CORE_WARN("RESIZING WINDOW");
+			glViewport(0, 0, width, height);
 		});
 	}
 		

@@ -26,7 +26,7 @@ namespace LukkelEngine {
 	class Window
 	{
 	public:
-		// Window();
+		Window();
 		virtual ~Window() = default;
 
 		virtual void onUpdate() = 0;

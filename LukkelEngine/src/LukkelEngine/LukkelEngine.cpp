@@ -37,7 +37,6 @@ namespace LukkelEngine {
 
 		// Initiate I/O
 		LK_CORE_WARN("Attaching I/O modules...");
-		// Keyboard m_Keyboard;
 		m_Keyboard->bind(m_Window->getWindow());
 		// GLCall(glfwSetKeyCallback(m_Window, m_Keyboard.));
 		
@@ -145,6 +144,7 @@ namespace LukkelEngine {
 
 	bool LukkelEngine::onWindowClose(WindowCloseEvent& e)
 	{
+		LK_CORE_WARN("Event: WindowCloseEvent -> onWindowClose");
 		m_Running = false;
 		return true;
 	}
@@ -157,13 +157,16 @@ namespace LukkelEngine {
 		}
 		m_Minimized = false;
 		LK_CORE_WARN("Event: WindowResizeEvent -> onWindowResize");
-		Renderer::onWindowResize(e.getWidth(), e.getHeight());
+		// resizeWindow(e.getWidth(), e.getHeight());
+		LK_CORE_TRACE("New window size is ({0}x{1})", e.getWidth(), e.getHeight());
+		glViewport(0, 0, e.getWidth(), e.getHeight());
+		// m_Renderer->onWindowResize(e.getWidth(), e.getHeight());
 		return false;
 	}
 
 	void LukkelEngine::onEvent(Event& e)
 	{
-		LK_CORE_INFO("Event trigger: ", e);
+		LK_CORE_WARN("[!] Event trigger: ", e);
 		EventDispatcher ed(e);
 		ed.dispatch<WindowCloseEvent>(LK_BIND_EVENT_FN(onWindowClose));
 		ed.dispatch<WindowResizeEvent>(LK_BIND_EVENT_FN(onWindowResize));
@@ -173,6 +176,12 @@ namespace LukkelEngine {
 				break;
 			(*it)->onEvent(e);
 		}
+	}
+
+
+	void LukkelEngine::resizeWindow(uint16_t width, uint16_t height)
+	{
+		glViewport(0, 0, width, height);
 	}
 
 }

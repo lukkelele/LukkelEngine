@@ -111,6 +111,7 @@ namespace LukkelEngine {
 
 		bool onWindowClose(WindowCloseEvent& e);
 		bool onWindowResize(WindowResizeEvent& e);
+		void resizeWindow(uint16_t width, uint16_t height);
 
 		void initImGui();
 		void setMode(unsigned int setting);

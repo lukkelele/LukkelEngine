@@ -8,6 +8,7 @@
 
 namespace LukkelEngine {
 
+	Window::Window(){}
 	/*
 	std::unique_ptr<Window> Window::create(WindowProps& props)
 	{

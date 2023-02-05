@@ -18,6 +18,8 @@
 	#define LK_INTERNAL_ASSERT_NO_MSG(type, check) LK_INTERNAL_ASSERT_IMPL(type, check, "Assertion '{0}' failed at {1}:{2}", LK_STRINGIFY_MACRO(check), std::filesystem::path(__FILE__).filename().string(), __LINE__)
 	#define LK_INTERNAL_ASSERT_GET_MACRO_NAME(arg1, arg2, macro, ...) macro
 	#define LK_INTERNAL_ASSERT_GET_MACRO(...) LK_EXPAND_MACRO( LK_INTERNAL_ASSERT_GET_MACRO_NAME(__VA_ARGS__, LK_INTERNAL_ASSERT_WITH_MSG, LK_INTERNAL_ASSERT_NO_MSG) )
+	#define LK_ASSERT(...) LK_EXPAND_MACRO( LK_INTERNAL_ASSERT_GET_MACRO(__VA_ARGS__)(_, __VA_ARGS__) )
+	#define LK_CORE_ASSERT(...) LK_EXPAND_MACRO( LK_INTERNAL_ASSERT_GET_MACRO(__VA_ARGS__)(_CORE_, __VA_ARGS__) )
 #else
 	#define LK_ASSERT(...)
 	#define LK_CORE_ASSERT(...)

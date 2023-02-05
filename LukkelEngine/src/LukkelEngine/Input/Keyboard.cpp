@@ -1,3 +1,6 @@
+#ifdef LK_USE_PRECOMPILED_HEADERS
+	#include <LKpch.h>
+#endif
 #include <Input/Keyboard.h>
 
 namespace LukkelEngine {

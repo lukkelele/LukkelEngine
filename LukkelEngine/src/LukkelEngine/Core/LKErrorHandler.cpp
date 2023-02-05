@@ -1,3 +1,4 @@
+// #include <LKpch.h>
 #include <Core/LKErrorHandler.h>
 
 void GLClearError()

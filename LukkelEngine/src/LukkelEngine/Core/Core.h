@@ -9,7 +9,6 @@
 			- glfwMakeContextCurrent(WINDOW);
 
 */
-
 #include <Core/PlatformDetection.h>
 
 #include <memory>

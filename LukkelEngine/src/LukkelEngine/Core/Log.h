@@ -1,7 +1,6 @@
 #pragma once
 
-#include <Core/Assert.h>
-#include <Core/LukkelCore.h>
+#include <Core/Core.h>
 
 #include <stdint.h>
 #include <cstring>

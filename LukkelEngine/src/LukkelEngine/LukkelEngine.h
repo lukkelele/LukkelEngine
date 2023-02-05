@@ -10,7 +10,7 @@
 #include <imgui/imgui.h>
 
 /* CORE FUNCTIONALITY */
-#include <Core/LukkelCore.h>
+#include <Core/Core.h>
 #include <Core/LKErrorHandler.h>
 #include <Core/Filesystem.h>
 #include <Core/Buffer.h>

@@ -1,3 +1,6 @@
+#ifdef LK_USE_PRECOMPILED_HEADERS
+	#include <LKpch.h>
+#endif
 #include <LukkelEngine/Core/Log.h>
 
 #include <spdlog/sinks/stdout_color_sinks.h>

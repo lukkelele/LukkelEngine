@@ -1,7 +1,7 @@
 #ifndef _EVENT_H
 #define _EVENT_H
 
-#include <LukkelEngine/Core/LukkelCore.h>
+#include <Core/Core.h>
 
 /* Include in precompiled header */
 #include <string>

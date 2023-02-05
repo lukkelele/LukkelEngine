@@ -15,7 +15,7 @@ ifeq ($(config),debug)
   TARGETDIR = ../bin/Debug
   TARGET = $(TARGETDIR)/libGLAD.a
   OBJDIR = ../obj/Debug/Debug/GLAD
-  DEFINES += -D_GLAD_X11
+  DEFINES += -DLK_DEBUG -D_GLAD_X11
   INCLUDES += -Iglad/include
   FORCE_INCLUDE +=
   ALL_CPPFLAGS += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)
@@ -42,7 +42,34 @@ ifeq ($(config),release)
   TARGETDIR = ../bin/Release
   TARGET = $(TARGETDIR)/libGLAD.a
   OBJDIR = ../obj/Release/Release/GLAD
-  DEFINES += -D_GLAD_X11
+  DEFINES += -DLK_RELEASE -D_GLAD_X11
+  INCLUDES += -Iglad/include
+  FORCE_INCLUDE +=
+  ALL_CPPFLAGS += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)
+  ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -O2 -fPIC
+  ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -O2 -fPIC
+  ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
+  LIBS +=
+  LDDEPS +=
+  ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64 -s
+  LINKCMD = $(AR) -rcs "$@" $(OBJECTS)
+  define PREBUILDCMDS
+  endef
+  define PRELINKCMDS
+  endef
+  define POSTBUILDCMDS
+  endef
+all: prebuild prelink $(TARGET)
+	@:
+
+endif
+
+ifeq ($(config),dist)
+  RESCOMP = windres
+  TARGETDIR = ../bin/Dist
+  TARGET = $(TARGETDIR)/libGLAD.a
+  OBJDIR = ../obj/Dist/Dist/GLAD
+  DEFINES += -DLK_DIST -D_GLAD_X11
   INCLUDES += -Iglad/include
   FORCE_INCLUDE +=
   ALL_CPPFLAGS += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)

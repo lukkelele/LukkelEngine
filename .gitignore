@@ -1,3 +1,16 @@
+# Files
+*.log
+**/*.log
+Makefile
+*.make
+**/*.make
+**/*/*.make
+**/*.vcxproj
+**/*.vcxproj.*
+**/*.ini
+**/*.sln
+**/*.html
+
 # Prerequisites
 *.d
 
@@ -31,9 +44,18 @@
 *.out
 *.app
 
-# Solutions and vscode stuff
-*.sln
-*.vcxproj
-*.filters
-*.user
-*.vs
+# Directories
+**/*.vs
+bin
+bin/
+build
+build/
+obj
+obj/
+x64
+**/*/x64
+**/x64
+doc
+doc/
+**/doc
+**/*/doc

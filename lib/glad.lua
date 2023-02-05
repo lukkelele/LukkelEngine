@@ -1,40 +1,38 @@
-project "GLAD"
-	kind "StaticLib"
-	language "C"
-	architecture "x86_64"
+includedirs { "glad/include/" }
 
-	targetdir "../bin/%{cfg.buildcfg}"
-	objdir "../obj/%{cfg.buildcfg}"
-    
-    includedirs { "glad/include/" }
+files 
+{
+	"glad/include/glad/glad.h",
+	"glad/src/glad.c"
+} 
+ 
+links { "glad" }
 
-	files { "glad/src/glad.c" }
-    
-	filter "system:linux"
-		pic "On"
+filter "system:linux"
+	pic "On"
 
-		systemversion "latest"
-		staticruntime "On"
+	systemversion "latest"
+	staticruntime "On"
 
-		defines
-		{
-			"_GLAD_X11"
-		}
+	defines
+	{
+		"_GLAD_X11"
+	}
 
-	filter "system:windows"
-		systemversion "latest"
-		staticruntime "On"
+filter "system:windows"
+	systemversion "latest"
+	staticruntime "On"
 
-		defines 
-		{ 
-			"_GLAD_WIN32",
-			"_CRT_SECURE_NO_WARNINGS"
-		}
+	defines 
+	{ 
+		"_GLAD_WIN32",
+		"_CRT_SECURE_NO_WARNINGS"
+	}
 
-	filter "configurations:Debug"
-		runtime "Debug"
-		symbols "on"
+filter "configurations:Debug"
+	runtime "Debug"
+	symbols "on"
 
-	filter "configurations:Release"
-		runtime "Release"
-		optimize "on"
+filter "configurations:Release"
+	runtime "Release"
+	optimize "on"

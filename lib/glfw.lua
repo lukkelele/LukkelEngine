@@ -1,17 +1,13 @@
-project "GLFW"
-	kind "StaticLib"
-	language "C"
-	architecture "x86_64"
 
-	targetdir "../bin/%{cfg.buildcfg}"
-	objdir "../obj/%{cfg.buildcfg}"
-	
-	includedirs { "glfw/include/" }
+	includedirs {
+		"glfw/include",
+		"lib/glfw/include"
+	}
 
 	files
 	{
-		"glfw/include/GLFW/glfw3.h",
-		"glfw/include/GLFW/glfw3native.h",
+		"glfw/include/GLFW/glfw3.h",	-- CARE
+		"glfw/include/GLFW/glfw3native.h", -- CARE
 		"glfw/src/glfw_config.h",
 		"glfw/src/context.c",
 		"glfw/src/init.c",

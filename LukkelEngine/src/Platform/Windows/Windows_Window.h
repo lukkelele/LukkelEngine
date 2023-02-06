@@ -6,7 +6,6 @@ namespace LukkelEngine {
 	class Windows_Window : public Window
 	{
 	public:
-		Windows_Window();
 		Windows_Window(WindowProps& properties);
 		virtual ~Windows_Window(); // virtual deconstructor for derived class
 

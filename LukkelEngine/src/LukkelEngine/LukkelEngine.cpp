@@ -32,9 +32,12 @@ namespace LukkelEngine {
 		LK_CORE_WARN("Starting LukkelEngine");
 
 		LK_CORE_TRACE("Creating window ({0}x{1})", DEFAULT_SCREEN_WIDTH, DEFAULT_SCREEN_HEIGHT);
-		m_Window = std::unique_ptr<Window>(Window::create());
+		m_Window = std::unique_ptr<Window>(Window::create()); // FIXME
+		// m_Window = Window::create();
+		// TODO: Event callback causes crashes -> create an application class to hold the engine
+		m_Window->setEventCallback(LK_BIND_EVENT_FN(onEvent));
 		initImGui();
-
+		m_Renderer;
 		// Initiate I/O
 		LK_CORE_WARN("Attaching I/O modules...");
 		m_Keyboard->bind(m_Window->getWindow());
@@ -43,11 +46,13 @@ namespace LukkelEngine {
 		// Test registration
 		LK_CORE_WARN("Registering tests...");
 		registerTests();
-
-		setBlending(blending);
+		Layer testLayer;
+		m_LayerStack.pushLayer(&testLayer);
 	}
 
 	GLFWwindow* LukkelEngine::getWindow() { return m_Window->getWindow(); }
+
+	LukkelEngine& LukkelEngine::getEngine() { return *this; }
 
 	void LukkelEngine::registerTests()
 	{
@@ -160,7 +165,6 @@ namespace LukkelEngine {
 		// resizeWindow(e.getWidth(), e.getHeight());
 		LK_CORE_TRACE("New window size is ({0}x{1})", e.getWidth(), e.getHeight());
 		glViewport(0, 0, e.getWidth(), e.getHeight());
-		// m_Renderer->onWindowResize(e.getWidth(), e.getHeight());
 		return false;
 	}
 

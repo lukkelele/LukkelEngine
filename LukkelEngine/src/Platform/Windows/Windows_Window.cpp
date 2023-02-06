@@ -6,7 +6,6 @@
 namespace LukkelEngine {
 	static bool GLFW_initialized = false;
 	
-	Windows_Window::Windows_Window(){}
 	Windows_Window::Windows_Window(WindowProps& props)
 	{
 		init(props);
@@ -52,8 +51,11 @@ namespace LukkelEngine {
 		// IMPLEMENT RESIZING HERE
 		glfwSetWindowSizeCallback(m_Window, [](GLFWwindow* window, int width, int height)
 		{
-			LK_CORE_WARN("RESIZING WINDOW");
-			glViewport(0, 0, width, height);
+			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+			data.width = width;
+			data.height = height;
+			WindowResizeEvent event(width, height);
+			data.eventCallback(event);
 		});
 	}
 		
@@ -95,6 +97,7 @@ namespace LukkelEngine {
 	std::unique_ptr<Window> Window::create(WindowProps& props)
 	{
 		return std::make_unique<Window>(new Windows_Window(props));
+		// return std::make_unique<Windows_Window>(new Windows_Window(props));
 	}
 	*/
 }

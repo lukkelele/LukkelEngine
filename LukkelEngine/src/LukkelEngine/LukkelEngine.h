@@ -12,8 +12,7 @@
 
 /* CORE FUNCTIONALITY */
 #include <LukkelEngine/Core/Base.h>
-// #include <LukkelEngine/Core/Application.h>
-#include <LukkelEngine/Core/LayerStack.h>
+#include <LukkelEngine/Layer/LayerStack.h>
 #include <LukkelEngine/Core/LKErrorHandler.h>
 #include <LukkelEngine/Core/Filesystem.h>
 #include <LukkelEngine/Core/Buffer.h>
@@ -95,6 +94,7 @@ namespace LukkelEngine {
 		void renderImGuiData();
 		void testRunner(float updateFrequency);
 		GLFWwindow* getWindow();
+		LukkelEngine& getEngine();
 
 	private:
 		bool m_Running = false;

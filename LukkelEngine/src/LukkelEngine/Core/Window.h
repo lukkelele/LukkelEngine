@@ -37,6 +37,7 @@ namespace LukkelEngine {
 		virtual bool isVSync() const = 0;
 
 		virtual GLFWwindow* getWindow() const = 0;
+		// virtual GLFWwindow& getWindow() const = 0;
 		static Window* create(WindowProps& props = WindowProps());
 		// static std::unique_ptr<Window> create(WindowProps& props = WindowProps());
 

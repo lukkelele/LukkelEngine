@@ -46,6 +46,7 @@ project "LukkelEngine"
         "lib",
         "lib/glm",
         "lib/imgui",
+        "lib/ImGuizmo",
         "lib/stb_image",
         "lib/glfw/include",
         "lib/glew/include",
@@ -70,6 +71,10 @@ project "LukkelEngine"
 		"lib/imgui/imgui_impl_glfw_gl3.cpp",
 		"lib/imgui/imgui_impl_glfw_gl3.h",
 		"lib/imgui/imgui_widgets.cpp",
+
+        "lib/ImGuizmo/*.cpp",
+        "lib/ImGuizmo/*.h",
+
         "lib/glm/glm/**.hpp",
         "lib/glm/glm/**.inl"
         -- "LukkelEngine/LKpch.cpp"

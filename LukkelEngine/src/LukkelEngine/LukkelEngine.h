@@ -12,7 +12,7 @@
 
 /* CORE FUNCTIONALITY */
 #include <LukkelEngine/Core/Base.h>
-#include <LukkelEngine/Layer/LayerStack.h>
+#include <LukkelEngine/Core/LayerStack.h>
 #include <LukkelEngine/Core/LKErrorHandler.h>
 #include <LukkelEngine/Core/Filesystem.h>
 #include <LukkelEngine/Core/Buffer.h>

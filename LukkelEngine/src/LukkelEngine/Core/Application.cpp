@@ -7,11 +7,17 @@ namespace LukkelEngine {
 		Log::init();
 		LK_CORE_CRITICAL("Starting application");
 		m_Window = Window::create();
+
 		ImGui::CreateContext();
 		ImGui_ImplGlfwGL3_Init(m_Window->getWindow(), true);
 		ImGui::StyleColorsDark();
 		m_ImGuiInitialized = true;
+
 		registerTests();
+
+		/* Layer stack testing */
+		Layer layer1;
+		m_LayerStack.pushLayer(&layer1);
 	}
 
 	Application::~Application()
@@ -23,10 +29,14 @@ namespace LukkelEngine {
 	{
 		LK_CORE_INFO("App->run()");
 		LK_CORE_INFO("Testing: {0}", test);
-		while (!glfwWindowShouldClose(m_Window->getWindow()))
+		while (!glfwWindowShouldClose(m_Window->getWindow())) // while m_Running 
 		{
 			m_Renderer->clear();
 			testRunner();
+			{
+				for (Layer* layer : m_LayerStack)
+					layer->onUpdate(1.0f);
+			}
 			m_Window->onUpdate();
 		}
 	}
@@ -64,5 +74,58 @@ namespace LukkelEngine {
 		testMenu->registerTest<test::TestKeyInput>("Key input");
 
 	}
+
+	void Application::pushLayer(Layer* layer)
+	{
+		m_LayerStack.pushLayer(layer);
+		layer->onAttach();
+	}
+
+	void Application::popLayer(Layer* layer)
+	{
+		m_LayerStack.popLayer(layer);
+		layer->onDetach();
+	}
+
+	bool Application::onWindowClose(WindowCloseEvent& e)
+	{
+		LK_CORE_WARN("Event: WindowCloseEvent -> onWindowClose");
+		m_Running = false;
+		return true;
+	}
+
+	bool Application::onWindowResize(WindowResizeEvent& e)
+	{
+		if (e.getWidth() == 0 || e.getHeight() == 0) {
+			m_Minimized = true;
+			return false;
+		}
+		m_Minimized = false;
+		LK_CORE_WARN("Event: WindowResizeEvent -> onWindowResize");
+		// resizeWindow(e.getWidth(), e.getHeight());
+		LK_CORE_TRACE("New window size is ({0}x{1})", e.getWidth(), e.getHeight());
+		glViewport(0, 0, e.getWidth(), e.getHeight());
+		return false;
+	}
+
+	void Application::onEvent(Event& e)
+	{
+		LK_CORE_WARN("[!] Event trigger: ", e);
+		EventDispatcher ed(e);
+		ed.dispatch<WindowCloseEvent>(LK_BIND_EVENT_FN(onWindowClose));
+		ed.dispatch<WindowResizeEvent>(LK_BIND_EVENT_FN(onWindowResize));
+		/* Handle events */
+		for (auto it = m_LayerStack.rbegin(); it != m_LayerStack.rend(); ++it) {
+			if (e.handled)
+				break;
+			(*it)->onEvent(e);
+		}
+	}
+
+	void Application::resizeWindow(uint16_t width, uint16_t height)
+	{
+		glViewport(0, 0, width, height);
+	}
+
 
 }

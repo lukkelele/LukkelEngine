@@ -95,5 +95,30 @@ namespace LukkelEngine {
 		Window* window = dynamic_cast<Window*>(new Windows_Window(props));
 		return window;
 	}
+	/*
+	void LukkelEngine::setMode(unsigned int setting)
+	{
+		m_GraphicsMode = setting;
+		if (m_GraphicsMode == LK_GRAPHICS_MODE_3D)  // 1
+			GLCall(glEnable(GL_DEPTH_TEST));
+		if (m_GraphicsMode == LK_GRAPHICS_MODE_2D)	// 0
+			GLCall(glDisable(GL_DEPTH_TEST));
+	}
+
+	void LukkelEngine::setBlending(unsigned int setting)
+	{
+		m_Blending = setting;
+		if (m_Blending > 1)
+			m_Blending = LK_DEFAULT_BLENDING_MODE;
+		if (m_Blending == LK_BLENDING_ENABLED) {
+			LK_CORE_TRACE("Enabling blending");
+			GLCall(glEnable(GL_BLEND));
+			GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
+		} else {
+			LK_CORE_TRACE("Disabling blending");
+			GLCall(glDisable(GL_BLEND));
+		}
+	}
+	*/
 }
 

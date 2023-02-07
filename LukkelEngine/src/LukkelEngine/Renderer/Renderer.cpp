@@ -2,6 +2,7 @@
 	#include <LKpch.h>
 #endif
 #include <Renderer.h>
+#include <imgui_impl_glfw_gl3.h> // FIXME
 
 namespace LukkelEngine {
 
@@ -11,6 +12,12 @@ namespace LukkelEngine {
 		va.bind();
 		ib.bind();
 		GLCall(glDrawElements(GL_TRIANGLES, ib.getCount(), GL_UNSIGNED_INT, nullptr));
+	}
+
+	void Renderer::drawImGui()
+	{
+		ImGui::Render();
+		ImGui_ImplGlfwGL3_RenderDrawData(ImGui::GetDrawData());
 	}
 
 	void Renderer::clear() const

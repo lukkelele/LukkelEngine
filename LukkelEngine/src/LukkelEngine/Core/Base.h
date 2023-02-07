@@ -42,6 +42,15 @@
 
 namespace LukkelEngine {
 
+	/* Unique pointer */
+	template<typename T>
+	using u_ptr = std::unique_ptr<T>;
+	template<typename T, typename ... ARGS>
+	constexpr u_ptr<T> create_u_ptr(ARGS&& ... args)
+	{
+		return std::make_unique<T>(std::forward<Args>(args)...);
+	}
+
 	/* Reference using smart shared pointer */
 	template<typename T>
 	using ref = std::shared_ptr<T>;

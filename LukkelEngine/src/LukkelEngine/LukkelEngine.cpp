@@ -39,7 +39,6 @@ namespace LukkelEngine {
 		// TODO: Event callback causes crashes -> create an application class to hold the engine
 		m_Window->setEventCallback(LK_BIND_EVENT_FN(onEvent));
 		initImGui();
-		m_Renderer;
 		// Initiate I/O
 		LK_CORE_WARN("Attaching I/O modules...");
 		m_Keyboard->bind(m_Window->getWindow());

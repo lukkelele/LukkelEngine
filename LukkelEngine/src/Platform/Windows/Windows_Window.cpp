@@ -13,7 +13,8 @@ namespace LukkelEngine {
 
 	Windows_Window::~Windows_Window()
 	{
-		GLCall(glfwTerminate());
+		LK_CORE_CRITICAL("Terminating Windows_Window");
+		glfwTerminate();
 	}
 
 	void Windows_Window::init(WindowProps& props)
@@ -89,18 +90,10 @@ namespace LukkelEngine {
 
 	GLFWwindow* Windows_Window::getWindow() const { return m_Window; }
 
-	/*
 	Window* Window::create(WindowProps& props)
 	{
 		Window* window = dynamic_cast<Window*>(new Windows_Window(props));
 		return window;
 	}
-	*/
-	/*
-	std::unique_ptr<Window> Window::create(WindowProps& props)
-	{
-		return std::make_unique<Windows_Window>(new Windows_Window(props));
-	}
-	*/
 }
 

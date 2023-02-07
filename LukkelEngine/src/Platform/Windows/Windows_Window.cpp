@@ -49,6 +49,7 @@ namespace LukkelEngine {
 		LK_CORE_TRACE("Setting window callback");
 		/* Currently only for one window */
 		// IMPLEMENT RESIZING HERE
+		/*
 		glfwSetWindowSizeCallback(m_Window, [](GLFWwindow* window, int width, int height)
 		{
 			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
@@ -57,6 +58,7 @@ namespace LukkelEngine {
 			WindowResizeEvent event(width, height);
 			data.eventCallback(event);
 		});
+		*/
 	}
 		
 	void Windows_Window::exit()
@@ -87,17 +89,17 @@ namespace LukkelEngine {
 
 	GLFWwindow* Windows_Window::getWindow() const { return m_Window; }
 
+	/*
 	Window* Window::create(WindowProps& props)
 	{
 		Window* window = dynamic_cast<Window*>(new Windows_Window(props));
 		return window;
 	}
-
+	*/
 	/*
 	std::unique_ptr<Window> Window::create(WindowProps& props)
 	{
-		return std::make_unique<Window>(new Windows_Window(props));
-		// return std::make_unique<Windows_Window>(new Windows_Window(props));
+		return std::make_unique<Windows_Window>(new Windows_Window(props));
 	}
 	*/
 }

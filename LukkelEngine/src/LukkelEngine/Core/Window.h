@@ -26,8 +26,9 @@ namespace LukkelEngine {
 	class Window
 	{
 	public:
-		Window();
 		virtual ~Window() = default;
+
+		using EventCallbackFn = std::function<void(Event&)>;
 
 		virtual void onUpdate() = 0;
 		virtual uint16_t getWidth() = 0;
@@ -37,12 +38,9 @@ namespace LukkelEngine {
 		virtual bool isVSync() const = 0;
 
 		virtual GLFWwindow* getWindow() const = 0;
-		// virtual GLFWwindow& getWindow() const = 0;
-		static Window* create(WindowProps& props = WindowProps());
 		// static std::unique_ptr<Window> create(WindowProps& props = WindowProps());
 
 		/* Static for platform independent window creation */
-		using EventCallbackFn = std::function<void(Event&)>;
 		virtual void setEventCallback(const EventCallbackFn& callback) = 0;
 	};
 }

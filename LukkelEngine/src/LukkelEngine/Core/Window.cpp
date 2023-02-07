@@ -8,12 +8,11 @@
 
 namespace LukkelEngine {
 
-	Window::Window(){}
-	/*
+	/* OVERLOAD ERROR!
 	std::unique_ptr<Window> Window::create(WindowProps& props)
 	{
 		#ifdef LK_PLATFORM_WINDOWS
-			return std::make_unique<Windows_Window>(props);
+			return std::make_unique<Windows_Window>(new Windows_Window(props));
 		#else
 			LK_CORE_ASSERT(false, "Platform not implemented yet");
 			return nullptr;

@@ -2,6 +2,7 @@
 	#include <LKpch.h>
 #endif
 #include <LukkelEngine/LukkelEngine.h>
+#include <Platform/Windows/Windows_Window.h> // FIXME
 
 namespace LukkelEngine {
 
@@ -32,7 +33,8 @@ namespace LukkelEngine {
 		LK_CORE_WARN("Starting LukkelEngine");
 
 		LK_CORE_TRACE("Creating window ({0}x{1})", DEFAULT_SCREEN_WIDTH, DEFAULT_SCREEN_HEIGHT);
-		m_Window = std::unique_ptr<Window>(Window::create()); // FIXME
+		// m_Window = std::unique_ptr<Window>(Window::create()); // FIXME
+		// m_Window = std::unique_ptr<Windows_Window>(new Windows_Window()); // FIXME
 		// m_Window = Window::create();
 		// TODO: Event callback causes crashes -> create an application class to hold the engine
 		m_Window->setEventCallback(LK_BIND_EVENT_FN(onEvent));
@@ -41,7 +43,6 @@ namespace LukkelEngine {
 		// Initiate I/O
 		LK_CORE_WARN("Attaching I/O modules...");
 		m_Keyboard->bind(m_Window->getWindow());
-		// GLCall(glfwSetKeyCallback(m_Window, m_Keyboard.));
 		
 		// Test registration
 		LK_CORE_WARN("Registering tests...");

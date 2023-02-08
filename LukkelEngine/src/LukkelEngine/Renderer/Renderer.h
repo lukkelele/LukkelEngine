@@ -20,7 +20,8 @@ namespace LukkelEngine {
 		void drawImGui() const;
 
 
-		void drawIndexed(VertexArray& va, uint32_t indexCount) const;
+		// void drawIndexed(VertexArray& va, uint32_t indexCount) const;
+		void drawIndexed(const s_ptr<VertexArray>& va, uint32_t indexCount) const;
 
 		void attachCamera(Camera* cam);
 

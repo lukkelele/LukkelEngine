@@ -28,10 +28,10 @@ namespace LukkelEngine {
 		ImGui_ImplGlfwGL3_RenderDrawData(ImGui::GetDrawData());
 	}
 
-	void Renderer::drawIndexed(VertexArray& va, uint32_t indexCount) const
+	void Renderer::drawIndexed(const s_ptr<VertexArray> &va, uint32_t indexCount) const
 	{
-		va.bind();
-		uint32_t count = indexCount ? indexCount : va.getIndexBuffer()->getCount();
+		va->bind();
+		uint32_t count = indexCount ? indexCount : va->getIndexBuffer()->getCount();
 		glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
 	}
 

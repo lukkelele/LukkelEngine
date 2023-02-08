@@ -12,7 +12,5 @@ namespace LukkelEngine {
 		m_ProjMat = glm::perspective(FOV, (width / height), nearPlane, farPlane);
 	}
 
-	glm::vec3 Camera::getCameraPosition() { return m_Pos; }
-	glm::mat4 Camera::getViewMatrix() { return m_ViewMat; }
-	glm::mat4 Camera::getProjectionMatrix() { return m_ProjMat; }
+	Camera::~Camera(){}
 }

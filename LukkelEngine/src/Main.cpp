@@ -16,10 +16,10 @@ unsigned int rect_indices[6] = {
 };
 // VERTEX COORD | TEXTURE COORDINATES
 float rectangle_Tex[16] = {
--0.5f, -0.5f, 0.0f, 0.0f,
- 0.5f, -0.5f, 1.0f, 0.0f,
- 0.5f,  0.5f, 1.0f, 1.0f,
--0.5f,  0.5f, 0.0f, 1.0f
+	 -50.0f, -50.0f, 1.0f, 0.0f,
+	  50.0f, -50.0f, 1.0f, 0.0f,
+	  50.0f,  50.0f, 1.0f, 1.0f,
+	 -50.0f,  50.0f, 0.0f, 1.0f
 };
 unsigned int rect_indices_Tex[6] = {
 0, 1, 2,
@@ -50,14 +50,25 @@ int main()
 
 	Texture texture = Texture("res/textures/tinder_logo.png");
 	Shader shader = Shader("res/shaders/default3D.shader");
-	glm::vec3 translationA(200, 200, 0);
+	// glm::vec3 translationA(200, 200, 0);
+	glm::vec3 translationA(1, 0, 0);
 	glm::vec3 translationB(400, 200, 0);
 
-	Camera cam();
-	glm::mat4 testMat = glm::translate(glm::mat4(0.5f), glm::vec3(1, 0, 0));
+	Camera cam;
+	glm::mat4 model = glm::translate(glm::mat4(1.0f), translationA);
+	glm::mat4 proj = cam.getProjectionMatrix();
+	glm::mat4 view = cam.getViewMatrix();
+
+	glm::mat4 mvp = proj * view * model;
+
+	ImGui::CreateContext();
+	ImGui_ImplGlfwGL3_Init(window, true);
+	ImGui::StyleColorsDark();
+
+
 
 	shader.bind();
-	shader.setUniformMat4f("camMatrix", testMat);
+	shader.setUniformMat4f("camMatrix", mvp);
 	texture.bind();
 	shader.setUniform1i("u_Texture", 0);
 	renderer.draw(vao, ibo, shader);
@@ -69,7 +80,20 @@ int main()
 	while (!glfwWindowShouldClose(window))
 	{
 		renderer.clear();
+		model = glm::translate(glm::mat4(1.0f), translationA);
+		mvp = proj * view * model;
+
+		ImGui_ImplGlfwGL3_NewFrame();
+		ImGui::SliderFloat3("Translation A", &translationA.x, 0.0f, 960.0f); 
+		ImGui::SliderFloat3("Translation B", &translationB.x, 0.0f, 960.0f);
+		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+
+		shader.bind();
+		shader.setUniformMat4f("camMatrix", mvp);
+
+
 		renderer.draw(vao, ibo, shader);
+		renderer.drawImGui();
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();

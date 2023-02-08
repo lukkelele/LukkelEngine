@@ -10,7 +10,7 @@ uniform mat4 camMatrix;
 void main()
 {
 	// gl_Position = pos;
-	gl_Position = camMatrix * vec4(pos);
+	gl_Position = camMatrix * pos;
 	v_TexCoord = texCoord;
 }
 
@@ -20,7 +20,7 @@ void main()
 layout(location = 0) out vec4 color;
 in vec2 v_TexCoord;
 
-uniform mat4 camMatrix;
+// uniform mat4 camMatrix;
 uniform sampler2D u_Texture;
 
 void main()

@@ -18,9 +18,10 @@ namespace LukkelEngine {
 			   float farPlane = 100.0f, glm::vec3 camPos = glm::vec3(0.0f, 4.0f, 6.0f));
 		~Camera();
 
-		glm::vec3 getCameraPosition();
-		glm::mat4 getProjectionMatrix();
-		glm::mat4 getViewMatrix();
+		glm::vec3 getCameraPosition() { return m_Pos; }
+		glm::mat4 getViewMatrix() { return m_ViewMat; }
+		glm::mat4 getProjectionMatrix() { return m_ProjMat; }
+
 
 	private:
 		glm::vec3 m_Pos;

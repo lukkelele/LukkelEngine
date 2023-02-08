@@ -9,7 +9,6 @@ Makefile
 **/*.vcxproj.*
 **/*.ini
 **/*.sln
-**/*.html
 
 # Prerequisites
 *.d

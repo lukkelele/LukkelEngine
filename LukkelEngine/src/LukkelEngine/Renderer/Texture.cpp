@@ -1,6 +1,3 @@
-#ifdef LK_USE_PRECOMPILED_HEADERS
-	#include <LKpch.h>
-#endif
 #include <Texture.h>
 #include <stb_image/stb_image.h>
 

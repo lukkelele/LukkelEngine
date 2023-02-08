@@ -27,8 +27,7 @@ namespace LukkelEngine {
 
 	void Application::run(bool test)
 	{
-		// LKLOG_INFO("App->run()");
-		// LKLOG_INFO("Testing: {0}", test);
+		LKLOG_INFO("Testing: {0}", test);
 		while (!glfwWindowShouldClose(m_Window->getWindow())) // while m_Running 
 		{
 			m_Renderer->clear();

@@ -1,4 +1,3 @@
-#include <LKpch.h>
 #include <Test/TestTexture.h>
 
 namespace LukkelEngine {

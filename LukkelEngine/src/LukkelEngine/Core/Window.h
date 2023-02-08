@@ -4,7 +4,6 @@
 #include <string>
 #include <vector>
 
-#include <LukkelEngine/Core/Log.h>
 #include <LukkelEngine/Core/LKErrorHandler.h>
 #include <LukkelEngine/Event/Event.h>
 

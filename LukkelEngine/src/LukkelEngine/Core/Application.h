@@ -40,6 +40,18 @@ namespace LukkelEngine {
 
 	class Application
 	{
+	public:
+		Application();
+		~Application();
+
+		void run(bool test = LK_DEBUG);
+		void shutdown();
+		void tick(uint8_t = 1);
+
+
+		/* DEBUGGING ONLY */
+		GLFWwindow* getWindow() { return m_Window->getWindow(); }
+
 	private:
 		ApplicationDetails details;
 		static Application* s_Instance;
@@ -67,15 +79,6 @@ namespace LukkelEngine {
 		void pushLayer(Layer* layer);
 		void popLayer(Layer* layer);
 		void onEvent(Event& e);
-
-	public:
-		Application();
-		~Application();
-
-		void run(bool test = LK_DEBUG);
-		void shutdown();
-		void tick(uint8_t = 1);
-
 
 	};
 }

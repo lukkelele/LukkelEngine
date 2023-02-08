@@ -53,14 +53,13 @@ namespace LukkelEngine {
 
 	/* Reference using smart shared pointer */
 	template<typename T>
-	using ref = std::shared_ptr<T>;
+	using s_ptr = std::shared_ptr<T>;
 	template<typename T, typename ... ARGS>
-	constexpr ref<T> createRef(ARGS&& ... args)
+	constexpr s_ptr<T> create_s_ptr(ARGS&& ... args)
 	{
 		return std::make_shared<T>(std::forward<ARGS>(args)...);
 	}
 }
 
 #include "LukkeLog/LukkeLog.h"
-// #include <LukkelEngine/Core/Log.h>
 #include <LukkelEngine/Core/Assert.h>

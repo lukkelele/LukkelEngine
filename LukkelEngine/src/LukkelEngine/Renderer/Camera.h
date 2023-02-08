@@ -14,8 +14,8 @@ namespace LukkelEngine {
 	class Camera
 	{
 	public:
-		Camera(float FOV, float width, float height, float nearPlane,
-			   float farPlane, glm::vec3 camPos);
+		Camera(float FOV = 90.0f, float width = 800, float height = 600, float nearPlane = 0.10f,
+			   float farPlane = 100.0f, glm::vec3 camPos = glm::vec3(0.0f, 4.0f, 6.0f));
 		~Camera();
 
 		glm::vec3 getCameraPosition();

@@ -9,8 +9,8 @@ uniform mat4 camMatrix;
 
 void main()
 {
-	gl_Position = pos;
-	// gl_Position = camMatrix * vec4(pos);
+	// gl_Position = pos;
+	gl_Position = camMatrix * vec4(pos);
 	v_TexCoord = texCoord;
 }
 

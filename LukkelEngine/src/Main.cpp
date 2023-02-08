@@ -2,6 +2,7 @@
 #include "Renderer/Renderer.h"
 #include "Renderer/VertexArray.h"
 #include "Platform/Windows/Windows_Window.h"
+#include "Renderer/Camera.h"
 
 float rectangle[8] = {
 	-0.5f, -0.5f,
@@ -33,6 +34,7 @@ int main()
 	Application app;
 	LKLOG_TRACE("Application created");
 	// app.run();
+	glEnable(GL_DEPTH_TEST);
 	GLFWwindow* window = app.getWindow(); // debugging
 	Renderer renderer;
 	VertexArray vao = VertexArray();
@@ -48,8 +50,14 @@ int main()
 
 	Texture texture = Texture("res/textures/tinder_logo.png");
 	Shader shader = Shader("res/shaders/default3D.shader");
+	glm::vec3 translationA(200, 200, 0);
+	glm::vec3 translationB(400, 200, 0);
+
+	Camera cam();
+	glm::mat4 testMat = glm::translate(glm::mat4(0.5f), glm::vec3(1, 0, 0));
 
 	shader.bind();
+	shader.setUniformMat4f("camMatrix", testMat);
 	texture.bind();
 	shader.setUniform1i("u_Texture", 0);
 	renderer.draw(vao, ibo, shader);

@@ -4,6 +4,7 @@
 #include <LukkelEngine/Core/LKErrorHandler.h>
 #include <VertexBuffer.h>
 #include <VertexBufferLayout.h>
+#include "LukkelEngine/Renderer/IndexBuffer.h"
 
 namespace LukkelEngine {
 
@@ -15,7 +16,7 @@ namespace LukkelEngine {
 		// std::vector<s_ptr<VertexBuffer>> m_VertexBuffers;
 		std::vector<VertexBuffer*> m_VertexBuffers;
 		// s_ptr<IndexBuffer> m_IndexBuffer;
-		IndexBuffer m_IndexBuffer;
+		IndexBuffer* m_IndexBuffer;
 
 	public:
 		VertexArray();
@@ -27,7 +28,7 @@ namespace LukkelEngine {
 		// std::vector<s_ptr<VertexBuffer>>& getVertexBuffers() { return m_VertexBuffers;  }
 		std::vector<VertexBuffer*> getVertexBuffers() { return m_VertexBuffers;  }
 		// std::shared_ptr<IndexBuffer>& getIndexBuffer() { return m_IndexBuffer; }
-		IndexBuffer* getIndexBuffer() { return &m_IndexBuffer; }
+		IndexBuffer* getIndexBuffer() { return m_IndexBuffer; }
 	};
 
 }

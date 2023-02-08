@@ -53,6 +53,7 @@ project "LukkelEngine"
         "lib/glfw/include",
         "lib/glew/include",
         "lib/spdlog/include",
+        "lib/entt/src"
     }
 
     files { 
@@ -80,7 +81,9 @@ project "LukkelEngine"
         "lib/glm/glm/**.inl",
 
         "lib/LukkeLog/LukkeLog.cpp",
-        "lib/LukkeLog/LukkeLog.h"
+        "lib/LukkeLog/LukkeLog.h",
+
+        "lib/entt/src/entt/entt.hpp"
         -- "LukkelEngine/LKpch.cpp"
    	}
 

@@ -16,6 +16,6 @@ namespace LukkelEngine {
 		void bind() const;
 		void unbind() const;
 
-		inline unsigned int getCount() const { return m_Count;  }
+		unsigned int getCount() const { return m_Count;  }
 	};
 }

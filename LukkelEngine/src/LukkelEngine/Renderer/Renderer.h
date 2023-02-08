@@ -17,7 +17,10 @@ namespace LukkelEngine {
 	public:
 		void clear() const;
 		void draw(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const;
-		void drawImGui();
+		void drawImGui() const;
+
+
+		void drawIndexed(VertexArray& va, uint32_t indexCount) const;
 
 		void attachCamera(Camera* cam);
 

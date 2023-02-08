@@ -22,10 +22,17 @@ namespace LukkelEngine {
 		GLCall(glDrawElements(GL_TRIANGLES, ib.getCount(), GL_UNSIGNED_INT, nullptr));
 	}
 
-	void Renderer::drawImGui()
+	void Renderer::drawImGui() const
 	{
 		ImGui::Render();
 		ImGui_ImplGlfwGL3_RenderDrawData(ImGui::GetDrawData());
+	}
+
+	void Renderer::drawIndexed(VertexArray& va, uint32_t indexCount) const
+	{
+		va.bind();
+		uint32_t count = indexCount ? indexCount : va.getIndexBuffer()->getCount();
+		glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
 	}
 
 

@@ -1,7 +1,7 @@
 ###############################################################################
 # Set default behavior to automatically normalize line endings.
 ###############################################################################
-* text=auto
+# * text=auto
 
 ###############################################################################
 # Set default behavior for command prompt diff.
@@ -72,6 +72,7 @@
 *.h     text diff=cpp
 *.h++   text diff=cpp
 *.hh    text diff=cpp
+# * *.lua text diff=lua
 
 # Compiled Object files
 *.slo   binary

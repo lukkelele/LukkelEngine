@@ -33,7 +33,8 @@ namespace LukkelEngine {
 		m_Data.height = props.height;
 		m_Window = glfwCreateWindow((int)props.width, (int)props.height, props.title.c_str(), nullptr, nullptr);
 		glfwMakeContextCurrent(m_Window);
-		GLCall(glfwSetWindowUserPointer(m_Window, &m_Data));
+		// GLCall(glfwSetWindowUserPointer(m_Window, &m_Data));
+		glfwSetWindowUserPointer(m_Window, &m_Data);
 		
 		if (!GLFW_initialized) {
 			GLenum err = glewInit();
@@ -47,7 +48,7 @@ namespace LukkelEngine {
 			}
 		}
 		setVSync(true);
-		LKLOG_TRACE("Setting window callback");
+		LKLOG_WARN("Setting window callback");
 		/* Currently only for one window */
 		// IMPLEMENT RESIZING HERE
 		/*
@@ -95,30 +96,5 @@ namespace LukkelEngine {
 		Window* window = dynamic_cast<Window*>(new Windows_Window(props));
 		return window;
 	}
-	/*
-	void LukkelEngine::setMode(unsigned int setting)
-	{
-		m_GraphicsMode = setting;
-		if (m_GraphicsMode == LK_GRAPHICS_MODE_3D)  // 1
-			GLCall(glEnable(GL_DEPTH_TEST));
-		if (m_GraphicsMode == LK_GRAPHICS_MODE_2D)	// 0
-			GLCall(glDisable(GL_DEPTH_TEST));
-	}
-
-	void LukkelEngine::setBlending(unsigned int setting)
-	{
-		m_Blending = setting;
-		if (m_Blending > 1)
-			m_Blending = LK_DEFAULT_BLENDING_MODE;
-		if (m_Blending == LK_BLENDING_ENABLED) {
-			LKLOG_TRACE("Enabling blending");
-			GLCall(glEnable(GL_BLEND));
-			GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
-		} else {
-			LKLOG_TRACE("Disabling blending");
-			GLCall(glDisable(GL_BLEND));
-		}
-	}
-	*/
 }
 

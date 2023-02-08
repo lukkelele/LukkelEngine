@@ -1,4 +1,8 @@
+#ifdef LK_USE_PRECOMPILED_HEADERS
+	#include <LKpch.h>
+#endif
 #include <Renderer.h>
+#include <imgui_impl_glfw_gl3.h> // FIXME
 
 namespace LukkelEngine {
 
@@ -10,10 +14,20 @@ namespace LukkelEngine {
 		GLCall(glDrawElements(GL_TRIANGLES, ib.getCount(), GL_UNSIGNED_INT, nullptr));
 	}
 
+	void Renderer::drawImGui()
+	{
+		ImGui::Render();
+		ImGui_ImplGlfwGL3_RenderDrawData(ImGui::GetDrawData());
+	}
+
 	void Renderer::clear() const
 	{
 		GLCall(glClearColor(0.0f, 0.0f, 0.0f, 1.0f));
 		GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 	}
 
+	void Renderer::onWindowResize(uint16_t width, uint16_t height)
+	{
+		glViewport(0, 0, width, height);
+	}
 }

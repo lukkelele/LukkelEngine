@@ -9,12 +9,12 @@
 			- glfwMakeContextCurrent(WINDOW);
 
 */
-
 #include <Core/PlatformDetection.h>
 
 #include <memory>
 #include <sstream>
-#include <cstdint>
+#include <stdint.h>
+#include <filesystem>
 
 #ifdef LK_DEBUG
 	#if defined(LK_PLATFORM_WINDOWS)
@@ -37,7 +37,19 @@
 /* Bit field macro */
 #define LK_BIT_FIELD(x) (1 << x)
 
+/* Bind event */
+#define LK_BIND_EVENT_FN(fn) [this](auto&&... args) -> decltype(auto) { return this->fn(std::forward<decltype(args)>(args)...); }
+
 namespace LukkelEngine {
+
+	/* Unique pointer */
+	template<typename T>
+	using u_ptr = std::unique_ptr<T>;
+	template<typename T, typename ... ARGS>
+	constexpr u_ptr<T> create_u_ptr(ARGS&& ... args)
+	{
+		return std::make_unique<T>(std::forward<Args>(args)...);
+	}
 
 	/* Reference using smart shared pointer */
 	template<typename T>
@@ -49,5 +61,5 @@ namespace LukkelEngine {
 	}
 }
 
-#include <Core/Log.h>
-#include <Core/Assert.h>
+#include <LukkelEngine/Core/Log.h>
+#include <LukkelEngine/Core/Assert.h>

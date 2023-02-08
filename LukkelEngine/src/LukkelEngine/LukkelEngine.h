@@ -1,6 +1,7 @@
 #pragma once
-#include <Core/PlatformDetection.h>
-#include <Core/Log.h>
+
+#include <LukkelEngine/Core/PlatformDetection.h>
+#include <LukkelEngine/Core/Log.h>
 
 /* LIBRARIES */
 #include <GL/glew.h>
@@ -10,41 +11,41 @@
 #include <imgui/imgui.h>
 
 /* CORE FUNCTIONALITY */
-#include <Core/LukkelCore.h>
-#include <Core/LKErrorHandler.h>
-#include <Core/Filesystem.h>
-#include <Core/Buffer.h>
+#include <LukkelEngine/Core/Base.h>
+#include <LukkelEngine/Core/LayerStack.h>
+#include <LukkelEngine/Core/LKErrorHandler.h>
+#include <LukkelEngine/Core/Filesystem.h>
+#include <LukkelEngine/Core/Buffer.h>
 
 /* EVENTS */
-#include <Event/ApplicationEvent.h>
-// #include <Event/Event.h>
-#include <Event/KeyEvent.h>
-#include <Event/MouseEvent.h>
+#include <LukkelEngine/Event/ApplicationEvent.h>
+#include <LukkelEngine/Event/KeyEvent.h>
+#include <LukkelEngine/Event/MouseEvent.h>
 
 /* I/O */
-#include <Display/Window.h>
-#include <Input/Keyboard.h>
+#include <LukkelEngine/Core/Window.h>
+#include <LukkelEngine/Input/Keyboard.h>
 
-/* RENDERER */
-#include <Renderer/Camera.h>
-#include <Renderer/Renderer.h>
-#include <Renderer/VertexBuffer.h>
-#include <Renderer/VertexBufferLayout.h>
-#include <Renderer/VertexArray.h>
-#include <Renderer/IndexBuffer.h>
-#include <Renderer/Shader.h>
-#include <Renderer/Texture.h>
+/* RENDERELukkelEngine/R */
+#include <LukkelEngine/Renderer/Camera.h>
+#include <LukkelEngine/Renderer/Renderer.h>
+#include <LukkelEngine/Renderer/VertexBuffer.h>
+#include <LukkelEngine/Renderer/VertexBufferLayout.h>
+#include <LukkelEngine/Renderer/VertexArray.h>
+#include <LukkelEngine/Renderer/IndexBuffer.h>
+#include <LukkelEngine/Renderer/Shader.h>
+#include <LukkelEngine/Renderer/Texture.h>
 
 /* TESTS */
-#include <Test/Test.h>			
-#include <Test/TestClearColor.h>
-#include <Test/TestTexture2D.h>
-#include <Test/TestDrawTriangle.h>
-#include <Test/TestDrawTriangle2.h>
-#include <Test/TestDrawCube.h>
-#include <Test/TestShader.h>
-#include <Test/TestTexture.h>
-#include <Test/TestKeyInput.h>
+#include <LukkelEngine/Test/Test.h>			
+#include <LukkelEngine/Test/TestClearColor.h>
+#include <LukkelEngine/Test/TestTexture2D.h>
+#include <LukkelEngine/Test/TestDrawTriangle.h>
+#include <LukkelEngine/Test/TestDrawTriangle2.h>
+#include <LukkelEngine/Test/TestDrawCube.h>
+#include <LukkelEngine/Test/TestShader.h>
+#include <LukkelEngine/Test/TestTexture.h>
+#include <LukkelEngine/Test/TestKeyInput.h>
 
 
 
@@ -55,12 +56,12 @@
 #define MINOR_VERSION 3
 
 /* ENGINE DEFAULTS */
-#define BLENDING_DISABLED		 0  // DISABLE BLENDING		
-#define BLENDING_ENABLED         1	// ENABLE BLENDING		
-#define GRAPHICS_MODE_2D		 0	// 2D GRAPHICS MODE     
-#define GRAPHICS_MODE_3D		 1  // 3D GRAPHICS MODE 
-#define DEFAULT_GRAPHICS_MODE	 GRAPHICS_MODE_3D		
-#define DEFAULT_BLENDING_MODE	 1  // SET DEFAULT BLENDING MODE 
+#define LK_BLENDING_DISABLED		0	// DISABLE BLENDING		
+#define LK_BLENDING_ENABLED         1	// ENABLE BLENDING		
+#define LK_GRAPHICS_MODE_2D			0	// 2D GRAPHICS MODE     
+#define LK_GRAPHICS_MODE_3D			1	// 3D GRAPHICS MODE 
+#define LK_DEFAULT_GRAPHICS_MODE	LK_GRAPHICS_MODE_3D		
+#define LK_DEFAULT_BLENDING_MODE	LK_BLENDING_ENABLED
 
 /* CLIENT DEFAULTS */
 #define ZERO_UPDATE_FREQUENCY    0.0f
@@ -83,32 +84,43 @@ namespace LukkelEngine {
 		LukkelEngine();
 		~LukkelEngine();
 
-		// int SCREEN_WIDTH, SCREEN_HEIGHT;
 		test::Test* currentTest = nullptr;
 		test::TestMenu* testMenu;
 
-		void init(unsigned int graphicsMode, bool blending);
+		void init(uint8_t graphicsMode = LK_GRAPHICS_MODE_3D,
+				  bool blending = LK_BLENDING_ENABLED);
 		void render();
 		void screenUpdate();
 		void renderImGuiData();
 		void testRunner(float updateFrequency);
 		GLFWwindow* getWindow();
+		LukkelEngine& getEngine();
 
 	private:
-		Renderer m_Renderer;
-		std::unique_ptr<Window> m_Window;
-		std::unique_ptr<Keyboard> m_Keyboard;
-		// Keyboard m_Keyboard;
+		bool m_Running = false;
+		bool m_Minimized = false; // TODO: Implement separate Application window
+
 		uint8_t m_GraphicsMode;
 		uint8_t m_Blending; 
-		int status_GLFW;
-		int status_ImGui;
-		// float rotX, rotY, rotZ = 0.0f;
+		bool m_ImGuiInitialized = false;
 
-		int  initImGui();
+		std::unique_ptr<Renderer> m_Renderer;
+		std::unique_ptr<Window> m_Window;
+		std::unique_ptr<Keyboard> m_Keyboard;
+		LayerStack m_LayerStack;
+
+		bool onWindowClose(WindowCloseEvent& e);
+		bool onWindowResize(WindowResizeEvent& e);
+		void resizeWindow(uint16_t width, uint16_t height);
+
+		void initImGui();
 		void setMode(unsigned int setting);
 		void setBlending(unsigned int setting);
 		void registerTests();
+
+		void pushLayer(Layer* layer);
+		void popLayer(Layer* layer);
+		void onEvent(Event& e);
 		
 	};
 }

@@ -1,15 +1,21 @@
-#include <LukkelEngine.h>
+#ifdef LK_USE_PRECOMPILED_HEADERS
+	#include <LKpch.h>
+#endif
+#include <LukkelEngine/LukkelEngine.h>
+#include <Platform/Windows/Windows_Window.h> // FIXME
 
 namespace LukkelEngine {
 
 	LukkelEngine::LukkelEngine()
 	{
-		m_Blending = 1;
+		m_Blending = LK_DEFAULT_BLENDING_MODE;
+		m_GraphicsMode = LK_GRAPHICS_MODE_3D;
 	}
 
 	LukkelEngine::~LukkelEngine()
 	{
 		// TERMINATE ALL 
+		LK_CORE_WARN("Terminating LukkelEngine");
 		delete currentTest;
 		if (currentTest != testMenu)
 			delete testMenu;
@@ -19,26 +25,34 @@ namespace LukkelEngine {
 		glfwTerminate();
 	}
 
-	void LukkelEngine::init(unsigned int graphicsMode, bool blending)
+	void LukkelEngine::init(uint8_t graphicsMode, bool blending)
 	{
 		/* Enable logging */
+		m_Running = true;
 		Log::init();
-		LK_TRACE("Creating window ({0}x{1})", DEFAULT_SCREEN_WIDTH, DEFAULT_SCREEN_HEIGHT);
-		m_Window = std::unique_ptr<Window>(Window::create());
-		initImGui();
+		LK_CORE_WARN("Starting LukkelEngine");
 
+		LK_CORE_TRACE("Creating window ({0}x{1})", DEFAULT_SCREEN_WIDTH, DEFAULT_SCREEN_HEIGHT);
+		// m_Window = std::unique_ptr<Window>(Window::create()); // FIXME
+		// m_Window = std::unique_ptr<Windows_Window>(new Windows_Window()); // FIXME
+		// m_Window = Window::create();
+		// TODO: Event callback causes crashes -> create an application class to hold the engine
+		m_Window->setEventCallback(LK_BIND_EVENT_FN(onEvent));
+		initImGui();
 		// Initiate I/O
-		LK_TRACE("Attaching I/O modules...");
-		Keyboard m_Keyboard;
-		m_Keyboard.Bind(m_Window->getWindow());
-		// GLCall(glfwSetKeyCallback(m_Window, m_Keyboard.));
+		LK_CORE_WARN("Attaching I/O modules...");
+		m_Keyboard->bind(m_Window->getWindow());
 		
 		// Test registration
-		LK_TRACE("Registering tests...");
+		LK_CORE_WARN("Registering tests...");
 		registerTests();
+		Layer testLayer;
+		m_LayerStack.pushLayer(&testLayer);
 	}
 
 	GLFWwindow* LukkelEngine::getWindow() { return m_Window->getWindow(); }
+
+	LukkelEngine& LukkelEngine::getEngine() { return *this; }
 
 	void LukkelEngine::registerTests()
 	{
@@ -56,15 +70,15 @@ namespace LukkelEngine {
 
 	void LukkelEngine::screenUpdate()
 	{
-		m_Renderer.clear();
+		m_Renderer->clear();
 	}
 
-	int LukkelEngine::initImGui()
+	void LukkelEngine::initImGui()
 	{
 		ImGui::CreateContext();
 		ImGui_ImplGlfwGL3_Init(m_Window->getWindow(), true);
 		ImGui::StyleColorsDark();
-		return 1;
+		m_ImGuiInitialized = true;
 	}
 
 	void LukkelEngine::renderImGuiData()
@@ -82,19 +96,25 @@ namespace LukkelEngine {
 	void LukkelEngine::setMode(unsigned int setting)
 	{
 		m_GraphicsMode = setting;
-		if (m_GraphicsMode == GRAPHICS_MODE_3D)   // 1
+		if (m_GraphicsMode == LK_GRAPHICS_MODE_3D)  // 1
 			GLCall(glEnable(GL_DEPTH_TEST));
-		if (m_GraphicsMode == GRAPHICS_MODE_2D)	// 0
+		if (m_GraphicsMode == LK_GRAPHICS_MODE_2D)	// 0
 			GLCall(glDisable(GL_DEPTH_TEST));
 	}
 
 	void LukkelEngine::setBlending(unsigned int setting)
 	{
-		if (setting > 1)
-			setting = DEFAULT_BLENDING_MODE;
 		m_Blending = setting;
-		GLCall(glEnable(GL_BLEND));
-		GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
+		if (m_Blending > 1)
+			m_Blending = LK_DEFAULT_BLENDING_MODE;
+		if (m_Blending == LK_BLENDING_ENABLED) {
+			LK_CORE_TRACE("Enabling blending");
+			GLCall(glEnable(GL_BLEND));
+			GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
+		} else {
+			LK_CORE_TRACE("Disabling blending");
+			GLCall(glDisable(GL_BLEND));
+		}
 	}
 
 	void LukkelEngine::testRunner(float updateFrequency)
@@ -115,5 +135,57 @@ namespace LukkelEngine {
 		}
 	}
 
+	void LukkelEngine::pushLayer(Layer* layer)
+	{
+		m_LayerStack.pushLayer(layer);
+		layer->onAttach();
+	}
+
+	void LukkelEngine::popLayer(Layer* layer)
+	{
+		m_LayerStack.popLayer(layer);
+		layer->onDetach();
+	}
+
+	bool LukkelEngine::onWindowClose(WindowCloseEvent& e)
+	{
+		LK_CORE_WARN("Event: WindowCloseEvent -> onWindowClose");
+		m_Running = false;
+		return true;
+	}
+
+	bool LukkelEngine::onWindowResize(WindowResizeEvent& e)
+	{
+		if (e.getWidth() == 0 || e.getHeight() == 0) {
+			m_Minimized = true;
+			return false;
+		}
+		m_Minimized = false;
+		LK_CORE_WARN("Event: WindowResizeEvent -> onWindowResize");
+		// resizeWindow(e.getWidth(), e.getHeight());
+		LK_CORE_TRACE("New window size is ({0}x{1})", e.getWidth(), e.getHeight());
+		glViewport(0, 0, e.getWidth(), e.getHeight());
+		return false;
+	}
+
+	void LukkelEngine::onEvent(Event& e)
+	{
+		LK_CORE_WARN("[!] Event trigger: ", e);
+		EventDispatcher ed(e);
+		ed.dispatch<WindowCloseEvent>(LK_BIND_EVENT_FN(onWindowClose));
+		ed.dispatch<WindowResizeEvent>(LK_BIND_EVENT_FN(onWindowResize));
+		/* Handle events */
+		for (auto it = m_LayerStack.rbegin(); it != m_LayerStack.rend(); ++it) {
+			if (e.handled)
+				break;
+			(*it)->onEvent(e);
+		}
+	}
+
+
+	void LukkelEngine::resizeWindow(uint16_t width, uint16_t height)
+	{
+		glViewport(0, 0, width, height);
+	}
 
 }

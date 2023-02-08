@@ -5,7 +5,6 @@
 
 namespace LukkelEngine {
 
-	// Non-owning raw buffer class
 	struct Buffer
 	{
 		uint8_t* Data = nullptr;
@@ -15,26 +14,26 @@ namespace LukkelEngine {
 
 		Buffer(uint64_t size)
 		{
-			Allocate(size);
+			allocate(size);
 		}
 
 		Buffer(const Buffer&) = default;
 
-		static Buffer Copy(Buffer other)
+		static Buffer copy(Buffer other)
 		{
 			Buffer result(other.Size);
 			memcpy(result.Data, other.Data, other.Size);
 			return result;
 		}
 
-		void Allocate(uint64_t size)
+		void allocate(uint64_t size)
 		{
-			Release();
+			release();
 			Data = new uint8_t[size];
 			Size = size;
 		}
 
-		void Release()
+		void release()
 		{
 			delete[] Data;
 			Data = nullptr;
@@ -42,7 +41,7 @@ namespace LukkelEngine {
 		}
 
 		template<typename T>
-		T* As()
+		T* as()
 		{
 			return (T*)Data;
 		}
@@ -68,16 +67,16 @@ namespace LukkelEngine {
 
 		~ScopedBuffer()
 		{
-			m_Buffer.Release();
+			m_Buffer.release();
 		}
 
 		uint8_t* Data() { return m_Buffer.Data; }
 		uint64_t Size() { return m_Buffer.Size; }
 
 		template<typename T>
-		T* As()
+		T* as()
 		{
-			return m_Buffer.As<T>();
+			return m_Buffer.as<T>();
 		}
 
 		operator bool() const { return m_Buffer; }

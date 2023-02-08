@@ -1,7 +1,6 @@
 #pragma once
 
-#include <Core/Assert.h>
-#include <Core/LukkelCore.h>
+#include <LukkelEngine/Core/Base.h>
 
 #include <stdint.h>
 #include <cstring>
@@ -22,6 +21,8 @@ namespace LukkelEngine {
 	class Log
 	{
 	public:
+		// Log();
+		// ~Log();
 		static void init();
 		static ref<spdlog::logger>& getCoreLogger() { return s_CoreLogger; }
 		static ref<spdlog::logger>& getClientLogger() { return s_ClientLogger; }

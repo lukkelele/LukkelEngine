@@ -1,3 +1,6 @@
+#ifdef LK_USE_PRECOMPILED_HEADERS
+	#include <LKpch.h>
+#endif
 #include <Input/Keyboard.h>
 
 namespace LukkelEngine {
@@ -6,21 +9,21 @@ namespace LukkelEngine {
 
 	Keyboard::~Keyboard(){}
 
-	void Keyboard::Bind(GLFWwindow* window)
+	void Keyboard::bind(GLFWwindow* window)
 	{
 		GLCall(glfwSetWindowUserPointer(window, this));
-		GLCall(glfwSetKeyCallback(window, Input_static));
+		GLCall(glfwSetKeyCallback(window, input_static));
 		GLCall(glfwSetInputMode(window, GLFW_STICKY_KEYS, 1));
 	}
 
-	void Keyboard::Unbind(){}
+	void Keyboard::unbind(){}
 
-	int Keyboard::KeyPressed()
+	int Keyboard::keyPressed()
 	{
 		return 1;
 	}
 
-	void Keyboard::Input(GLFWwindow* window, int key, int scanCode, int action, int mods)
+	void Keyboard::input(GLFWwindow* window, int key, int scanCode, int action, int mods)
 	{
 		// actions are GLFW_PRESS, GLFW_RELEASE or GLFW_REPEAT
 		if (action == GLFW_PRESS || action == GLFW_REPEAT)
@@ -63,10 +66,10 @@ namespace LukkelEngine {
 		}
 	}
 
-	void Keyboard::Input_static(GLFWwindow* window, int key, int scanCode, int action, int mods)
+	void Keyboard::input_static(GLFWwindow* window, int key, int scanCode, int action, int mods)
 	{
 		Keyboard* Keyboard_ptr = static_cast<Keyboard*>(glfwGetWindowUserPointer(window));
-		Keyboard_ptr->Input(window, key, scanCode, action, mods);
+		Keyboard_ptr->input(window, key, scanCode, action, mods);
 	}
 
 }

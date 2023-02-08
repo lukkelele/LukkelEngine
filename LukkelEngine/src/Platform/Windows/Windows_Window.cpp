@@ -1,10 +1,11 @@
+#ifdef LK_USE_PRECOMPILED_HEADERS
+	#include <LKpch.h>
+#endif
 #include <Windows/Windows_Window.h>
 
 namespace LukkelEngine {
 	static bool GLFW_initialized = false;
 	
-	Windows_Window::Windows_Window(){}
-
 	Windows_Window::Windows_Window(WindowProps& props)
 	{
 		init(props);
@@ -12,7 +13,8 @@ namespace LukkelEngine {
 
 	Windows_Window::~Windows_Window()
 	{
-		GLCall(glfwTerminate());
+		LK_CORE_CRITICAL("Terminating Windows_Window");
+		glfwTerminate();
 	}
 
 	void Windows_Window::init(WindowProps& props)
@@ -29,30 +31,35 @@ namespace LukkelEngine {
 		m_Data.title = props.title;
 		m_Data.width = props.width;
 		m_Data.height = props.height;
-		m_Window = glfwCreateWindow(props.width, props.height, props.title.c_str(), nullptr, nullptr);
+		m_Window = glfwCreateWindow((int)props.width, (int)props.height, props.title.c_str(), nullptr, nullptr);
 		glfwMakeContextCurrent(m_Window);
 		GLCall(glfwSetWindowUserPointer(m_Window, &m_Data));
-
+		
 		if (!GLFW_initialized) {
-			// TODO: Fix here so Log is initialized
-			// LK_TRACE("Initializing glew");
 			GLenum err = glewInit();
 			if (err != GLEW_OK) {
 				/* if error occured, print error message */
-				printf("Error: %s\n", glewGetErrorString(err));
-				// LK_ERROR("Error: {0}", glewGetErrorString(err));
-				// TODO: Fix here so Log is initialized
-				GLFW_initialized = true;
-			} else {
-				// TODO: Fix here so Log is initialized
-				printf("openGL version: %s\n", glGetString(GL_VERSION)); /* output openGL version */
-				// LK_TRACE("OpenGL version: {0}", glGetString(GL_VERSION)); /* output openGL version */
+				printf("[ERROR] %s\n", glewGetErrorString(err));
 				GLFW_initialized = false;
+			} else {
+				printf("[OPENGL] Version: %s\n", glGetString(GL_VERSION)); /* output openGL version */
+				GLFW_initialized = true;
 			}
 		}
-		GLCall(glEnable(GL_BLEND));
-		GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
 		setVSync(true);
+		LK_CORE_TRACE("Setting window callback");
+		/* Currently only for one window */
+		// IMPLEMENT RESIZING HERE
+		/*
+		glfwSetWindowSizeCallback(m_Window, [](GLFWwindow* window, int width, int height)
+		{
+			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+			data.width = width;
+			data.height = height;
+			WindowResizeEvent event(width, height);
+			data.eventCallback(event);
+		});
+		*/
 	}
 		
 	void Windows_Window::exit()
@@ -88,10 +95,30 @@ namespace LukkelEngine {
 		Window* window = dynamic_cast<Window*>(new Windows_Window(props));
 		return window;
 	}
-
-	inline void Windows_Window::setCallback()
+	/*
+	void LukkelEngine::setMode(unsigned int setting)
 	{
-
+		m_GraphicsMode = setting;
+		if (m_GraphicsMode == LK_GRAPHICS_MODE_3D)  // 1
+			GLCall(glEnable(GL_DEPTH_TEST));
+		if (m_GraphicsMode == LK_GRAPHICS_MODE_2D)	// 0
+			GLCall(glDisable(GL_DEPTH_TEST));
 	}
+
+	void LukkelEngine::setBlending(unsigned int setting)
+	{
+		m_Blending = setting;
+		if (m_Blending > 1)
+			m_Blending = LK_DEFAULT_BLENDING_MODE;
+		if (m_Blending == LK_BLENDING_ENABLED) {
+			LK_CORE_TRACE("Enabling blending");
+			GLCall(glEnable(GL_BLEND));
+			GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
+		} else {
+			LK_CORE_TRACE("Disabling blending");
+			GLCall(glDisable(GL_BLEND));
+		}
+	}
+	*/
 }
 

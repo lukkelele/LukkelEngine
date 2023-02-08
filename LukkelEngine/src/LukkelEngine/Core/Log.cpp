@@ -1,3 +1,6 @@
+#ifdef LK_USE_PRECOMPILED_HEADERS
+	#include <LKpch.h>
+#endif
 #include <LukkelEngine/Core/Log.h>
 
 #include <spdlog/sinks/stdout_color_sinks.h>
@@ -7,6 +10,9 @@ namespace LukkelEngine {
 
 	ref<spdlog::logger> Log::s_CoreLogger;
 	ref<spdlog::logger> Log::s_ClientLogger;
+
+	// Log::Log() { init(); }
+	// Log::~Log() {}
 
 	void Log::init()
 	{

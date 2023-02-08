@@ -1,11 +1,10 @@
 #ifndef _EVENT_H
 #define _EVENT_H
-
-#include <LukkelEngine/Core/LukkelCore.h>
-
+#include <LukkelEngine/Core/Base.h>
 /* Include in precompiled header */
 #include <string>
 #include <sstream>
+
 #include <functional>
 
 namespace LukkelEngine {
@@ -80,7 +79,6 @@ namespace LukkelEngine {
 	private:
 		Event& m_Event;
 	};
-
 	/* Logging */
 	inline std::ostream& operator<<(std::ostream& os, const Event& e) { return os << e.toString(); }
 }

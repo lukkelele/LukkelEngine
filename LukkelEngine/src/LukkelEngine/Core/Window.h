@@ -4,8 +4,10 @@
 #include <string>
 #include <vector>
 
-#include <Display/Window.h>
-#include <Core/LKErrorHandler.h>
+#include <LukkelEngine/Core/Log.h>
+#include <LukkelEngine/Core/LKErrorHandler.h>
+#include <LukkelEngine/Event/Event.h>
+
 #include <GLFW/glfw3.h>
 #include <imgui/imgui.h>
 
@@ -24,20 +26,24 @@ namespace LukkelEngine {
 	class Window
 	{
 	public:
-		Window();
-		~Window();
+		Window(); // (?)
+		virtual ~Window() = default;
+
+		using EventCallbackFn = std::function<void(Event&)>;
 
 		virtual void onUpdate() = 0;
 		virtual uint16_t getWidth() = 0;
 		virtual uint16_t getHeight() = 0;
 
-		virtual void setCallback() = 0; // FIXME
 		virtual void setVSync(bool enabled) = 0;
 		virtual bool isVSync() const = 0;
-		// virtual void initImGui() = 0;
-		virtual GLFWwindow* getWindow() const = 0;
 
+		virtual GLFWwindow* getWindow() const = 0;
+		// static std::unique_ptr<Window> create(WindowProps& props = WindowProps());
 		static Window* create(WindowProps& props = WindowProps());
+
+		/* Static for platform independent window creation */
+		virtual void setEventCallback(const EventCallbackFn& callback) = 0;
 	};
 }
 #endif /* _WINDOW_H */

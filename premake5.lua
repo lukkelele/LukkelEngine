@@ -27,9 +27,9 @@ project "LukkelEngine"
     targetdir "bin/%{cfg.buildcfg}"
     objdir    "obj/%{cfg.buildcfg}"
     
-    -- Precompiled Headers
+    -- Precompiled Header -- FIX ERROR WITH INCLUDED VENDOR CPP FILES
     -- pchheader "LKpch.h"
-    -- pchsource "./LukkelEngine/LKpch.cpp"
+    -- pchsource "LukkelEngine/LKpch.cpp"
 
     defines {
         "GLEW_STATIC"
@@ -37,14 +37,16 @@ project "LukkelEngine"
     }
 
     includedirs {
-        "LukkelEngine/src/",
-        "LukkelEngine/src/Platform/",
-        "LukkelEngine/src/LukkelEngine/",
+        "LukkelEngine/src",
+        "LukkelEngine/src/Platform",
+        "LukkelEngine/src/LukkelEngine",
         "LukkelEngine/src/LukkelEngine/Renderer",
-        "LukkelEngine/src/LukkelEngine/Test/",
+        "LukkelEngine/src/LukkelEngine/Test",
         "LukkelEngine/src/LukkelEngine/Display",
         "lib",
         "lib/glm",
+        "lib/imgui",
+        "lib/ImGuizmo",
         "lib/stb_image",
         "lib/glfw/include",
         "lib/glew/include",
@@ -56,13 +58,22 @@ project "LukkelEngine"
         "LukkelEngine/src/**.h",
         "LukkelEngine/src/LukkelEngine/**.h",
         "LukkelEngine/src/LukkelEngine/**.cpp",
-
         "LukkelEngine/src/Platform/**.cpp",
         "LukkelEngine/src/Platform/**.h",
 
         "lib/stb_image/**.h",
         "lib/stb_image/**.cpp",
-		"lib/imgui/*.cpp",
+
+		"lib/imgui/imgui.cpp",
+		"lib/imgui/imgui.h",
+		"lib/imgui/imgui_draw.cpp",
+		"lib/imgui/imgui_impl_glfw_gl3.cpp",
+		"lib/imgui/imgui_impl_glfw_gl3.h",
+		"lib/imgui/imgui_widgets.cpp",
+
+        "lib/ImGuizmo/*.cpp",
+        "lib/ImGuizmo/*.h",
+
         "lib/glm/glm/**.hpp",
         "lib/glm/glm/**.inl"
         -- "LukkelEngine/LKpch.cpp"

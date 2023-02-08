@@ -72,6 +72,7 @@
 *.h     text diff=cpp
 *.h++   text diff=cpp
 *.hh    text diff=cpp
+*.lua   text diff=lua
 
 # Compiled Object files
 *.slo   binary

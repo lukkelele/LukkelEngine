@@ -4,7 +4,7 @@ int main()
 {
 	using namespace LukkelEngine;
 	Application app;
-	LK_CORE_INFO("Application created");
+	LKLOG_TRACE("Application created");
 	app.run();
 
 	return 0;

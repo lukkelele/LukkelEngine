@@ -61,5 +61,6 @@ namespace LukkelEngine {
 	}
 }
 
-#include <LukkelEngine/Core/Log.h>
+#include "LukkeLog/LukkeLog.h"
+// #include <LukkelEngine/Core/Log.h>
 #include <LukkelEngine/Core/Assert.h>

@@ -13,7 +13,7 @@ namespace LukkelEngine {
 
 	Windows_Window::~Windows_Window()
 	{
-		LK_CORE_CRITICAL("Terminating Windows_Window");
+		LKLOG_CRITICAL("Terminating Windows_Window");
 		glfwTerminate();
 	}
 
@@ -47,7 +47,7 @@ namespace LukkelEngine {
 			}
 		}
 		setVSync(true);
-		LK_CORE_TRACE("Setting window callback");
+		LKLOG_TRACE("Setting window callback");
 		/* Currently only for one window */
 		// IMPLEMENT RESIZING HERE
 		/*
@@ -111,11 +111,11 @@ namespace LukkelEngine {
 		if (m_Blending > 1)
 			m_Blending = LK_DEFAULT_BLENDING_MODE;
 		if (m_Blending == LK_BLENDING_ENABLED) {
-			LK_CORE_TRACE("Enabling blending");
+			LKLOG_TRACE("Enabling blending");
 			GLCall(glEnable(GL_BLEND));
 			GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
 		} else {
-			LK_CORE_TRACE("Disabling blending");
+			LKLOG_TRACE("Disabling blending");
 			GLCall(glDisable(GL_BLEND));
 		}
 	}

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "LukkeLog/LukkeLog.h"
 #include <imgui/imgui.h>
 #include <GL/glew.h>
 #include <LukkelEngine/Renderer/VertexArray.h>

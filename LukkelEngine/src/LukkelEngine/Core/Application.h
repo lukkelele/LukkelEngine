@@ -77,6 +77,5 @@ namespace LukkelEngine {
 		void tick(uint8_t = 1);
 
 
-	
 	};
 }

@@ -4,8 +4,8 @@ namespace LukkelEngine {
 
 	Application::Application()
 	{
-		Log::init();
-		LK_CORE_CRITICAL("Starting application");
+		LukkeLog::Log::init("LukkelEngine.log", "App", "Client");
+		LKLOG_CRITICAL("Starting application");
 		m_Window = Window::create();
 
 		ImGui::CreateContext();
@@ -22,13 +22,13 @@ namespace LukkelEngine {
 
 	Application::~Application()
 	{
-		LK_CORE_CRITICAL("Terminating application");
+		LKLOG_CRITICAL("Terminating application");
 	}
 
 	void Application::run(bool test)
 	{
-		LK_CORE_INFO("App->run()");
-		LK_CORE_INFO("Testing: {0}", test);
+		// LKLOG_INFO("App->run()");
+		// LKLOG_INFO("Testing: {0}", test);
 		while (!glfwWindowShouldClose(m_Window->getWindow())) // while m_Running 
 		{
 			m_Renderer->clear();
@@ -89,7 +89,7 @@ namespace LukkelEngine {
 
 	bool Application::onWindowClose(WindowCloseEvent& e)
 	{
-		LK_CORE_WARN("Event: WindowCloseEvent -> onWindowClose");
+		// LKLOG_WARN("Event: WindowCloseEvent -> onWindowClose");
 		m_Running = false;
 		return true;
 	}
@@ -101,16 +101,16 @@ namespace LukkelEngine {
 			return false;
 		}
 		m_Minimized = false;
-		LK_CORE_WARN("Event: WindowResizeEvent -> onWindowResize");
+		// LKLOG_WARN("Event: WindowResizeEvent -> onWindowResize");
 		// resizeWindow(e.getWidth(), e.getHeight());
-		LK_CORE_TRACE("New window size is ({0}x{1})", e.getWidth(), e.getHeight());
+		// LKLOG_TRACE("New window size is ({0}x{1})", e.getWidth(), e.getHeight());
 		glViewport(0, 0, e.getWidth(), e.getHeight());
 		return false;
 	}
 
 	void Application::onEvent(Event& e)
 	{
-		LK_CORE_WARN("[!] Event trigger: ", e);
+		// LKLOG_WARN("[!] Event trigger: ", e);
 		EventDispatcher ed(e);
 		ed.dispatch<WindowCloseEvent>(LK_BIND_EVENT_FN(onWindowClose));
 		ed.dispatch<WindowResizeEvent>(LK_BIND_EVENT_FN(onWindowResize));

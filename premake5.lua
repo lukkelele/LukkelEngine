@@ -32,7 +32,9 @@ project "LukkelEngine"
     -- pchsource "LukkelEngine/LKpch.cpp"
 
     defines {
-        "GLEW_STATIC"
+        "GLEW_STATIC",
+        "LKLOG_ADVANCED",
+        "LKLOG_CLIENT_ENABLE"
        -- "IMGUI_IMPL_OPENGL_LOADER_GLAD"
     }
 
@@ -50,7 +52,7 @@ project "LukkelEngine"
         "lib/stb_image",
         "lib/glfw/include",
         "lib/glew/include",
-        "lib/spdlog/include"
+        "lib/spdlog/include",
     }
 
     files { 
@@ -75,7 +77,10 @@ project "LukkelEngine"
         "lib/ImGuizmo/*.h",
 
         "lib/glm/glm/**.hpp",
-        "lib/glm/glm/**.inl"
+        "lib/glm/glm/**.inl",
+
+        "lib/LukkeLog/LukkeLog.cpp",
+        "lib/LukkeLog/LukkeLog.h"
         -- "LukkelEngine/LKpch.cpp"
    	}
 

@@ -31,7 +31,7 @@ namespace LukkelEngine {
 			template<typename T>
 			void registerTest(const std::string& name)
 			{
-				LK_CORE_TRACE("Registering test {0}", name);
+				// LK_CORE_TRACE("Registering test {0}", name);
 				m_tests.push_back(std::make_pair(name, []() { return new T; }));
 			}
 

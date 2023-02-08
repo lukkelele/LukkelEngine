@@ -16,7 +16,7 @@ unsigned int rect_indices[6] = {
 };
 // VERTEX COORD | TEXTURE COORDINATES
 float rectangle_Tex[16] = {
-	 -50.0f, -50.0f, 1.0f, 0.0f,
+	 -50.0f, -50.0f, 0.0f, 0.0f,
 	  50.0f, -50.0f, 1.0f, 0.0f,
 	  50.0f,  50.0f, 1.0f, 1.0f,
 	 -50.0f,  50.0f, 0.0f, 1.0f
@@ -51,7 +51,7 @@ int main()
 	Texture texture = Texture("res/textures/tinder_logo.png");
 	Shader shader = Shader("res/shaders/default3D.shader");
 	// glm::vec3 translationA(200, 200, 0);
-	glm::vec3 translationA(1, 0, 0);
+	glm::vec3 translationA(200, 0, -100);
 	glm::vec3 translationB(400, 200, 0);
 
 	Camera cam;
@@ -76,21 +76,28 @@ int main()
 	LKLOG_CRITICAL("First draw");
 	renderer.draw(vao, ibo, shader);
 	LKLOG_WARN("Entering main loop");
+	float sliderMax = 960;
 
 	while (!glfwWindowShouldClose(window))
 	{
 		renderer.clear();
-		model = glm::translate(glm::mat4(1.0f), translationA);
-		mvp = proj * view * model;
 
 		ImGui_ImplGlfwGL3_NewFrame();
-		ImGui::SliderFloat3("Translation A", &translationA.x, 0.0f, 960.0f); 
-		ImGui::SliderFloat3("Translation B", &translationB.x, 0.0f, 960.0f);
+		ImGui::SliderFloat3("Translation A", &translationA.x, 0.0f, sliderMax); 
+		ImGui::SliderFloat3("Translation B", &translationB.x, 0.0f, sliderMax);
 		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 
+		model = glm::translate(glm::mat4(1.0f), translationA);
+		mvp = proj * view * model;
 		shader.bind();
 		shader.setUniformMat4f("camMatrix", mvp);
 
+		renderer.draw(vao, ibo, shader);
+		renderer.drawImGui();
+
+		model = glm::translate(glm::mat4(1.0f), translationB);
+		mvp = proj * view * model;
+		shader.setUniformMat4f("camMatrix", mvp);
 
 		renderer.draw(vao, ibo, shader);
 		renderer.drawImGui();

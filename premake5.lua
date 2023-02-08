@@ -58,13 +58,12 @@ project "LukkelEngine"
         "LukkelEngine/src/**.h",
         "LukkelEngine/src/LukkelEngine/**.h",
         "LukkelEngine/src/LukkelEngine/**.cpp",
-
         "LukkelEngine/src/Platform/**.cpp",
         "LukkelEngine/src/Platform/**.h",
 
         "lib/stb_image/**.h",
         "lib/stb_image/**.cpp",
-		-- "lib/imgui/*.cpp",
+
 		"lib/imgui/imgui.cpp",
 		"lib/imgui/imgui.h",
 		"lib/imgui/imgui_draw.cpp",

@@ -4,6 +4,8 @@
 #include "Platform/Windows/Windows_Window.h"
 #include "Renderer/Camera.h"
 
+
+/*
 float rectangle[8] = {
 	-0.5f, -0.5f,
 	 0.5f, -0.5f,
@@ -26,7 +28,6 @@ unsigned int rect_indices_Tex[6] = {
 2, 3, 0
 };
 
-/*
 int main()
 {
 	using namespace LukkelEngine;

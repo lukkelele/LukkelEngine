@@ -1,3 +1,5 @@
+#pragma once
+
 #include "LukkelEngine/Core/Base.h"
 #include "LukkelEngine/Core/Application.h"
 #include "LukkelEngine/Core/Layer.h"

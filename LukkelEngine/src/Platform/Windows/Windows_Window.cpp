@@ -77,9 +77,9 @@ namespace LukkelEngine {
 	void Windows_Window::setVSync(bool enabled)
 	{
 		if (enabled) {
-			GLCall(glfwSwapInterval(1));
+			glfwSwapInterval(1);
 		} else {
-			GLCall(glfwSwapInterval(0));
+			glfwSwapInterval(0);
 		}
 		m_Data.VSync = enabled;
 	}

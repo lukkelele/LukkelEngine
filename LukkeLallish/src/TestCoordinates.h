@@ -5,7 +5,7 @@ float rectangle[8] = {
 	-0.5f,  0.5f
 };
 
-unsigned int rect_indices[6] = {
+unsigned int rectangle_indices[6] = {
 	0, 1, 2,
 	2, 3, 0
 };

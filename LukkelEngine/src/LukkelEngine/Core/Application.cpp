@@ -74,6 +74,7 @@ namespace LukkelEngine {
 
 	void Application::pushLayer(Layer* layer)
 	{
+		LKLOG_WARN("pushLayer -> {0}", layer->getName());
 		m_LayerStack.pushLayer(layer);
 		layer->onAttach();
 	}

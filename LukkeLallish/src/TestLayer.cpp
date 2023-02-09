@@ -29,9 +29,10 @@ void TestLayer::onEvent(LukkelEngine::Event& e)
 void TestLayer::onAttach()
 {
 	LKLOG_WARN("onAttach()!");
+
 }
 
 void TestLayer::onDetach()
 {
-
+	LKLOG_WARN("onDetach()");
 }

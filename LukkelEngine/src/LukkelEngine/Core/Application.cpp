@@ -2,11 +2,13 @@
 
 namespace LukkelEngine {
 
-	Application::Application()
+	Application::Application(const ApplicationDetails& details)
 	{
 		LukkeLog::Log::init("LukkelEngine.log", "App", "Client");
 		LKLOG_CRITICAL("Starting application");
-		m_Window = Window::create();
+		/* FIXME */
+		WindowProps properties = WindowProps("Debug", 1600, 1024);
+		m_Window = Window::create(properties);
 
 		ImGui::CreateContext();
 		ImGui_ImplGlfwGL3_Init(m_Window->getWindow(), true);
@@ -14,10 +16,6 @@ namespace LukkelEngine {
 		m_ImGuiInitialized = true;
 
 		registerTests();
-
-		/* Layer stack testing */
-		Layer layer1;
-		m_LayerStack.pushLayer(&layer1);
 	}
 
 	Application::~Application()

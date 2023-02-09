@@ -26,7 +26,7 @@ unsigned int rect_indices_Tex[6] = {
 2, 3, 0
 };
 
-
+/*
 int main()
 {
 	using namespace LukkelEngine;
@@ -51,10 +51,10 @@ int main()
 	Texture texture = Texture("res/textures/tinder_logo.png");
 	Shader shader = Shader("res/shaders/default3D.shader");
 	// glm::vec3 translationA(200, 200, 0);
-	glm::vec3 translationA(200, 0, -100);
-	glm::vec3 translationB(400, 200, 0);
+	glm::vec3 translationA(0, 0, -100);
+	glm::vec3 translationB(50, 0, 0);
 
-	Camera cam;
+	Camera cam(45, 1600, 1200, 0.01, 120.0f);
 	glm::mat4 model = glm::translate(glm::mat4(1.0f), translationA);
 	glm::mat4 proj = cam.getProjectionMatrix();
 	glm::mat4 view = cam.getViewMatrix();
@@ -63,9 +63,7 @@ int main()
 
 	ImGui::CreateContext();
 	ImGui_ImplGlfwGL3_Init(window, true);
-	ImGui::StyleColorsDark();
-
-
+	// ImGui::StyleColorsDark();
 
 	shader.bind();
 	shader.setUniformMat4f("camMatrix", mvp);
@@ -105,7 +103,6 @@ int main()
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
-	
-
 	return 0;
 }
+*/

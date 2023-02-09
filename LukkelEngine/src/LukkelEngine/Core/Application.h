@@ -41,18 +41,22 @@ namespace LukkelEngine {
 	class Application
 	{
 	public:
-		Application();
+		Application(const ApplicationDetails& details = ApplicationDetails());
 		~Application();
 
 		void run(bool test = LK_DEBUG);
 		void shutdown();
 		void tick(uint8_t = 1);
 
+		void pushLayer(Layer* layer);
+		void popLayer(Layer* layer);
+		void onEvent(Event& e);
+
 
 		/* DEBUGGING ONLY */
 		GLFWwindow* getWindow() { return m_Window->getWindow(); }
 
-	private:
+	protected:
 		ApplicationDetails details;
 		static Application* s_Instance;
 
@@ -75,10 +79,6 @@ namespace LukkelEngine {
 		void testRunner();
 		void registerTests();
 		// void renderImGuiData();
-
-		void pushLayer(Layer* layer);
-		void popLayer(Layer* layer);
-		void onEvent(Event& e);
 
 	};
 }

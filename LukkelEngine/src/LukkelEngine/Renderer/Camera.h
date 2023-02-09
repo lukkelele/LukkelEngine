@@ -22,17 +22,23 @@ namespace LukkelEngine {
 		glm::mat4 getViewMatrix() { return m_ViewMat; }
 		glm::mat4 getProjectionMatrix() { return m_ProjMat; }
 
+		void setPosition(glm::vec3 newPos);
+		// Could recalculate view matrix in 'onUpdate' as well
+		void setRotation(float rot) { m_Rotation = rot; recalculateViewMatrix(); }
+		void recalculateViewMatrix();
 
 	private:
 		glm::vec3 m_Pos;
-		float m_FOV;
 		float m_Width, m_Height;
-		float m_NearPlane, m_FarPlane;
+		float m_FOV, m_NearPlane, m_FarPlane;
+		float m_Rotation = 0.0f;
+		float m_RotationSpeed = 0.10f;
 		glm::vec3 m_Front = glm::vec3(0.0f, 0.0f, 0.0f);
 		glm::vec3 m_Up = glm::vec3(0.0f, 1.0f, 0.0f);
 
 		glm::mat4 m_ViewMat;
 		glm::mat4 m_ProjMat;
+		glm::mat4 m_MVP; // view projection matrix
 	};
 
 }

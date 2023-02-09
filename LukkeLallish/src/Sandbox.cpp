@@ -56,10 +56,12 @@ int main()
 	glm::mat4 model = glm::translate(glm::mat4(1.0f), translationA);
 	glm::mat4 proj = cam.getProjectionMatrix();
 	glm::mat4 view = cam.getViewMatrix();
-
 	glm::mat4 mvp = proj * view * model;
 
-	float sliderMax = 900.0f;
+	glm::vec3 color(1, 0.5, 1);
+
+	float sliderMax = 30.0f;
+	float colorSliderMax = 1.0f;
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -68,11 +70,14 @@ int main()
 		ImGui_ImplGlfwGL3_NewFrame();
 		ImGui::SliderFloat3("Translation A", &translationA.x, 0, sliderMax); 
 		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+		// Color slider for the object -> color.x will include rest of vector as well
+		ImGui::SliderFloat3("object rgb color", &color.x, 0, colorSliderMax);
 
 		model = glm::translate(glm::mat4(1.0f), translationA);
 		mvp = proj * view * model;
 		shader.bind();
 		shader.setUniformMat4f("camMatrix", mvp);
+		shader.setUniform4f("u_Color", color.x, color.y, color.z, 1.0f);
 
 		renderer.draw(vao, ibo, shader);
 		renderer.drawImGui();

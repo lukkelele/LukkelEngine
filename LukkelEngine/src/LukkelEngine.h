@@ -9,6 +9,9 @@
 #include "LukkelEngine/Renderer/VertexArray.h"
 #include "LukkelEngine/Renderer/Camera.h"
 
+#include "LukkelEngine/Scene/Scene.h"
+#include "LukkelEngine/Scene/Entity.h"
+
 #include "Platform/Windows/Windows_Window.h"
 
 

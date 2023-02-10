@@ -19,9 +19,6 @@ private:
 	LukkelEngine::s_ptr<LukkelEngine::Shader> m_Shader;
 	LukkelEngine::s_ptr<LukkelEngine::VertexArray> m_VertexArray;
 
-	LukkelEngine::s_ptr<LukkelEngine::Shader> m_FlatColorShader;
-	LukkelEngine::s_ptr<LukkelEngine::VertexArray> m_SquareVA;
-
-
+	LukkelEngine::Scene* m_Scene;
 	LukkelEngine::Camera m_Camera;
 };

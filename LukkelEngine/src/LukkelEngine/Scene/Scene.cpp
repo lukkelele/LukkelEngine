@@ -16,10 +16,11 @@ namespace LukkelEngine {
 		// LKLOG_TRACE("Scene->onUpdate()");
 		for (auto &entity : m_Entities) {
 			s_ptr<VertexArray> va = entity->getVertexArray();
+			LKLOG_TRACE("Va RenderID: {0}", va->m_RendererID);
 			auto ib = entity->getIndexBuffer();
 			s_ptr<Shader> shader = entity->getVertexShader();
 			LKLOG_WARN("Renderer->draw()");
-			// m_Renderer->draw(*va, *ib, *shader);
+			m_Renderer->draw(*va, *ib, *shader);
 		}
 
 	}

@@ -40,10 +40,17 @@ namespace LukkelEngine {
 		m_FragmentShader = std::make_shared<Shader>(shader);
 	}
 
-	s_ptr<VertexArray> Entity::getVertexArray()
+	s_ptr<VertexArray>& Entity::getVertexArray()
 	{
 		//LKLOG_WARN("Returning shared_ptr -> VertexArray");
 		return m_VAO;
 	}
+
+	s_ptr<IndexBuffer>& Entity::getIndexBuffer()
+	{
+		//LKLOG_WARN("Returning shared_ptr -> VertexArray");
+		return m_IBO;
+	}
+
 
 }

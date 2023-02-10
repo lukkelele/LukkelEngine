@@ -38,6 +38,14 @@ namespace LukkelEngine {
 		}
 	}
 
+	void Application::onUpdate()
+	{
+		for (auto it = m_LayerStack.rbegin(); it != m_LayerStack.rend(); ++it) {
+			Layer* currentLayer = *it;
+			currentLayer->onUpdate(1);
+		}
+	}
+
 	void Application::testRunner()
 	{
 		if (currentTest) {

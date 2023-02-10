@@ -1,7 +1,5 @@
-#ifndef _LKENGINE_UUID_H
-#define _LKENGINE_UUID_H
-
-#include <stdint.h> // FIXME
+#pragma once
+#include "LukkelEngine/Core/Base.h"
 
 namespace LukkelEngine {
 	
@@ -18,6 +16,3 @@ namespace LukkelEngine {
 		uint64_t m_UUID;
 	};
 }
-
-
-#endif

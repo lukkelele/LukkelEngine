@@ -46,7 +46,7 @@ namespace LukkelEngine {
 
 		void run(bool test = LK_DEBUG);
 		void shutdown();
-		void tick(uint8_t = 1);
+		void onUpdate(); // tick
 
 		void pushLayer(Layer* layer);
 		void popLayer(Layer* layer);

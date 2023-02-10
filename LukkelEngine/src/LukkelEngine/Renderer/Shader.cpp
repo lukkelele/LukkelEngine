@@ -110,7 +110,8 @@ namespace LukkelEngine {
 			}
 		}
 		// Return the strings of the parsed shaders using struct ShaderProgramSource 
-		if (LK_DEBUG)
+		// if (LK_DEBUG)
+		if (false) // just to mute it for now
 		{
 			std::cout << "Parsed shaderfile:\n" << std::endl;
 			std::cout << "VERTEX SHADER" << std::endl;

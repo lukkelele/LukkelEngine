@@ -25,6 +25,7 @@ namespace LukkelEngine {
 		void addBuffer(const VertexBuffer& vb, const VertexBufferLayout& layout);
 		std::vector<s_ptr<VertexBuffer>>& getVertexBuffers() { return m_VertexBuffers;  }
 		s_ptr<IndexBuffer>& getIndexBuffer() { return m_IndexBuffer; }
+
 	};
 
 }

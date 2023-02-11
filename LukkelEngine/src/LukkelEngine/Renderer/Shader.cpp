@@ -56,8 +56,8 @@ namespace LukkelEngine {
 			return m_UniformLocationCache[name];
 
 		GLCall(int location = glGetUniformLocation(m_RendererID, name.c_str()));
-		if (location == -1) 
-			std::cout << "[SHADER] Warning: uniform " << name << " isn't in use" << std::endl;
+		if (location == -1)
+			LKLOG_ERROR("[SHADER] Warning: uniform{0} isn't in use", name);
 
 		m_UniformLocationCache[name] = location;
 		return location;
@@ -112,14 +112,14 @@ namespace LukkelEngine {
 		// Return the strings of the parsed shaders using struct ShaderProgramSource 
 		// if (LK_DEBUG)
 		if (false) // just to mute it for now
-		{
+		{	// FIXME
 			std::cout << "Parsed shaderfile:\n" << std::endl;
 			std::cout << "VERTEX SHADER" << std::endl;
 			std::cout << ss[0].str() << std::endl;
 			std::cout << "FRAGMENT SHADER" << std::endl;
 			std::cout << ss[1].str() << std::endl;
+			std::cout << "Returning parsed shader" << std::endl;
 		}
-		std::cout << "Returning parsed shader" << std::endl;
 		return { ss[0].str(), ss[1].str() };
 	}
 

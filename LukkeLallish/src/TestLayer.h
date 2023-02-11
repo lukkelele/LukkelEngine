@@ -6,7 +6,7 @@ class TestLayer : public LukkelEngine::Layer
 {
 public:
 	TestLayer();
-	virtual ~TestLayer() = default;
+	~TestLayer() = default;
 
 	virtual void onAttach() override;
 	virtual void onDetach() override;
@@ -19,6 +19,7 @@ private:
 	LukkelEngine::s_ptr<LukkelEngine::Shader> m_Shader;
 	LukkelEngine::s_ptr<LukkelEngine::VertexArray> m_VertexArray;
 
-	LukkelEngine::Scene* m_Scene;
 	LukkelEngine::Camera m_Camera;
+	// Shared pointer
+	LukkelEngine::s_ptr<LukkelEngine::Scene> m_Scene;
 };

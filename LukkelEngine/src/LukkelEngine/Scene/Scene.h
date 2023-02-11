@@ -15,18 +15,17 @@ namespace LukkelEngine {
 		Scene();
 		~Scene();
 
-		/* Runtime */
 		void onUpdate();
 		bool isRunning() const { return m_IsRunning; }
 		void pause(bool paused) { m_IsPaused = paused; }
 		void tick(unsigned int frames = 1);
 
-		void addEntity(s_ptr<Entity> &entity);
+		void addEntity(Entity &entity);
 
 	private:
 		entt::registry m_Registry;
-		// std::unordered_map<UUID, entt::entity> m_Entities;
-		std::deque<s_ptr<Entity>> m_Entities;
+		std::deque<Entity*> m_Entities;
+
 		bool m_IsRunning = false;
 		bool m_IsPaused = false;
 		int m_Frames = 0;

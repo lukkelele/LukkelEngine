@@ -51,16 +51,16 @@ namespace LukkeLog {
 }
 
 
-#define LKLOG_VEC3(...)					 ::LukkeLog::Log::printVec3(__VA_ARGS__)
-#define LKLOG_VERTEXARRAY(...)			 ::LukkeLog::Log::printVec3(__VA_ARGS__)
+#define LKLOG_VEC3(...)					::LukkeLog::Log::printVec3(__VA_ARGS__)
+#define LKLOG_VERTEXARRAY(...)			::LukkeLog::Log::printVec3(__VA_ARGS__)
 
 /* Core log macros */
-#define LKLOG_TRACE(...)    			 ::LukkeLog::Log::getCoreLogger()->trace(__VA_ARGS__)
-#define LKLOG_INFO(...)     			 ::LukkeLog::Log::getCoreLogger()->info(__VA_ARGS__)
-#define LKLOG_WARN(...)     			 ::LukkeLog::Log::getCoreLogger()->warn(__VA_ARGS__)
-#define LKLOG_ERROR(...)    			 ::LukkeLog::Log::getCoreLogger()->error(__VA_ARGS__)
-#define LKLOG_CRITICAL(...) 			 ::LukkeLog::Log::getCoreLogger()->critical(__VA_ARGS__)
-#define LKLOG_BLUE(...)    				 ::LukkeLog::Log::getCoreLogger()->debug(__VA_ARGS__)
+#define LKLOG_TRACE(...)    			::LukkeLog::Log::getCoreLogger()->trace(__VA_ARGS__)
+#define LKLOG_INFO(...)     			::LukkeLog::Log::getCoreLogger()->info(__VA_ARGS__)
+#define LKLOG_WARN(...)     			::LukkeLog::Log::getCoreLogger()->warn(__VA_ARGS__)
+#define LKLOG_ERROR(...)    			::LukkeLog::Log::getCoreLogger()->error(__VA_ARGS__)
+#define LKLOG_CRITICAL(...) 			::LukkeLog::Log::getCoreLogger()->critical(__VA_ARGS__)
+#define LKLOG_BLUE(...)    				::LukkeLog::Log::getCoreLogger()->debug(__VA_ARGS__)
 
 /* Client log macros */
 #define LKLOG_CLIENT_TRACE(...)         ::LukkeLog::Log::getClientLogger()->trace(__VA_ARGS__)

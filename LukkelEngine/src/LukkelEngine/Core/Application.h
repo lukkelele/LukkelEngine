@@ -4,6 +4,8 @@
 #include <LukkelEngine/Core/LayerStack.h>
 #include <LukkelEngine/Event/Event.h>
 #include <LukkelEngine/Event/ApplicationEvent.h>
+#include "LukkelEngine/Scene/Entity.h"
+#include "LukkelEngine/Scene/Scene.h"
 #include <Platform/Windows/Windows_Window.h>
 
 /* EVENTS */

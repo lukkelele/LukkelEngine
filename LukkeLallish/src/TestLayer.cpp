@@ -8,9 +8,8 @@ TestLayer::TestLayer()
 	std::shared_ptr<LukkelEngine::Shader> m_Shader;
 	std::shared_ptr<LukkelEngine::VertexArray> m_VertexArray;
 
-	LukkelEngine::Camera m_Camera;
-	LukkelEngine::Scene m_Scene;
 
+	LukkelEngine::Camera m_Camera;
 }
 
 void TestLayer::onUpdate(float t)
@@ -31,32 +30,30 @@ void TestLayer::onEvent(LukkelEngine::Event& e)
 void TestLayer::onAttach()
 {
 	LKLOG_WARN("onAttach() called");
-	LukkelEngine::Scene* scene = new LukkelEngine::Scene;
-	m_Scene = scene;
-	std::shared_ptr<LukkelEngine::Entity> Rectangle = std::make_shared<LukkelEngine::Entity>();
+	m_Scene = std::make_shared<LukkelEngine::Scene>();
 
-	// Add some properties to this rectangle
-	LukkelEngine::VertexArray va = LukkelEngine::VertexArray();
-	LukkelEngine::VertexBuffer vb = LukkelEngine::VertexBuffer(rectangle, (sizeof(rectangle) / (sizeof(float)) * sizeof(float)));
-	LukkelEngine::IndexBuffer ib = LukkelEngine::IndexBuffer(rectangle_indices, (sizeof(rectangle_indices) / sizeof(unsigned int)) * sizeof(unsigned int));
-	auto layout = LukkelEngine::VertexBufferLayout();
-	layout.push<float>(2);
-	va.addBuffer(vb, layout);
-	glm::vec3 testVec3(4, 1, 3);
-	LKLOG_VEC3(testVec3); // Works
-	auto shader = LukkelEngine::Shader("res/shaders/3D/color3D.shader");
-	shader.bind();
-	shader.setUniform4f("u_Color", 0.5f, 0.8f, 0.5f, 1.0f);
+	// std::shared_ptr<LukkelEngine::Entity> Rectangle = std::make_shared<LukkelEngine::Entity>();
+	LukkelEngine::Entity* Rectangle = new LukkelEngine::Entity;
+	LukkelEngine::VertexArray* va = new LukkelEngine::VertexArray();
+	LukkelEngine::VertexBuffer* vb = new LukkelEngine::VertexBuffer(rectangle, (sizeof(rectangle) / (sizeof(float)) * sizeof(float)));
+	LukkelEngine::IndexBuffer* ib = new LukkelEngine::IndexBuffer(rectangle_indices, (sizeof(rectangle_indices) / sizeof(unsigned int)) * sizeof(unsigned int));
+	auto layout = new LukkelEngine::VertexBufferLayout();
+	layout->push<float>(2);
+	va->addBuffer(*vb, *layout);
+	// auto shader = new LukkelEngine::Shader("res/shaders/3D/color3D.shader");
+	auto shader = new LukkelEngine::Shader("res/shaders/basic2.shader");
+	shader->bind();
+	shader->setUniform4f("u_Color", 0.5f, 0.8f, 0.5f, 1.0f);
 
-	Rectangle->setVertexArray(va);
-	LKLOG_TRACE("Vertex array set!");
-	Rectangle->setVertexBuffer(vb);
-	Rectangle->setIndexBuffer(ib);
-	Rectangle->setVertexShader(shader);
-	Rectangle->getVertexArray();
-	LKLOG_TRACE("Done setting up Rectangle properties");
+	Rectangle->setVertexArray(*va);
+	Rectangle->setVertexBuffer(*vb);
+	Rectangle->setIndexBuffer(*ib);
+	Rectangle->setVertexShader(*shader);
 
-	scene->addEntity(Rectangle);
+	m_Scene->addEntity(*Rectangle);
+
+	LukkelEngine::Renderer renderer;
+
 }
 
 void TestLayer::onDetach()

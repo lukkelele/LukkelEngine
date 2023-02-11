@@ -5,7 +5,7 @@ namespace LukkelEngine {
 	Application::Application(const ApplicationDetails& details)
 	{
 		LukkeLog::Log::init("LukkelEngine.log", "App", "Client");
-		LKLOG_CRITICAL("Starting application");
+		LKLOG_BLUE("Starting application");
 		/* FIXME */
 		WindowProps properties = WindowProps("Debug", 1600, 1024);
 		m_Window = Window::create(properties);
@@ -20,30 +20,26 @@ namespace LukkelEngine {
 
 	Application::~Application()
 	{
-		LKLOG_CRITICAL("Terminating application");
+		LKLOG_ERROR("Terminating application");
 	}
 
 	void Application::run(bool test)
 	{
-		LKLOG_INFO("Testing: {0}", test);
 		while (!glfwWindowShouldClose(m_Window->getWindow())) // while m_Running 
 		{
-			m_Renderer->clear();
-			testRunner();
-			{
-				for (Layer* layer : m_LayerStack)
-					layer->onUpdate(1.0f);
-			}
-			m_Window->onUpdate();
+			onUpdate();
 		}
 	}
 
 	void Application::onUpdate()
 	{
+		m_Renderer->clear();
+		testRunner();
 		for (auto it = m_LayerStack.rbegin(); it != m_LayerStack.rend(); ++it) {
 			Layer* currentLayer = *it;
 			currentLayer->onUpdate(1);
 		}
+		m_Window->onUpdate();
 	}
 
 	void Application::testRunner()

@@ -19,26 +19,15 @@ public:
 
 int main()
 {
-	std::cout << "Hello World!" << std::endl;
 	Sandbox app;
-	GLFWwindow* window = app.getWindow();
-	glEnable(GL_DEPTH_TEST);
 
 	TestLayer layer;
-	LKLOG_WARN("Pushing new layer");
+	LKLOG_TRACE("Pushing new layer");
 	app.pushLayer(&layer); // heap bug at LayerStack destructor
 
-
-	while (!glfwWindowShouldClose(window))
-	{
-		app.onUpdate();
-
-
-		glfwSwapBuffers(window);
-		glfwPollEvents();
-	}
+	app.run();
 	
 
-	LKLOG_CRITICAL("SANDBOX terminated!");
+	LKLOG_WARN("SANDBOX terminated!");
 	return 0;
 }

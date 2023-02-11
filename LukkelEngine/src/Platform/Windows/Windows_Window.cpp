@@ -48,19 +48,6 @@ namespace LukkelEngine {
 			}
 		}
 		setVSync(true);
-		LKLOG_WARN("Setting window callback");
-		/* Currently only for one window */
-		// IMPLEMENT RESIZING HERE
-		/*
-		glfwSetWindowSizeCallback(m_Window, [](GLFWwindow* window, int width, int height)
-		{
-			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
-			data.width = width;
-			data.height = height;
-			WindowResizeEvent event(width, height);
-			data.eventCallback(event);
-		});
-		*/
 	}
 		
 	void Windows_Window::exit()

@@ -1,13 +1,11 @@
-#ifndef _MOUSE_CODES_H
-#define _MOUSE_CODES_H
+#pragma once
 
-/* Insert precompiled header */
-#include <cstdint>
+#include <stdint.h>
 
 namespace LukkelEngine {
 
 	using MouseCode = uint16_t;
-	namespace Mouse
+	namespace Mousecodes
 	{
 		enum : MouseCode
 		{
@@ -28,4 +26,3 @@ namespace LukkelEngine {
 		};
 	}
 }
-#endif /* _MOUSE_CODES_H */

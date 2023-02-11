@@ -1,9 +1,10 @@
 #pragma once
 
+#include <stdint.h>
+
 namespace LukkelEngine {
 
 	using KeyCode = uint16_t;
-
 	namespace Key
 	{
 		enum : KeyCode

@@ -3,9 +3,7 @@
 namespace LukkeLog {
 
 	std::shared_ptr<spdlog::logger> Log::s_CoreLogger;
-	#ifdef LKLOG_CLIENT_ENABLE
 	std::shared_ptr<spdlog::logger> Log::s_ClientLogger;
-	#endif
 
 	void Log::init(std::string logfilename,
 		           std::string coreLoggerName,
@@ -23,11 +21,14 @@ namespace LukkeLog {
 		s_CoreLogger->set_level(spdlog::level::trace);
 		s_CoreLogger->flush_on(spdlog::level::trace);
 
-#ifdef LKLOG_CLIENT_ENABLE
 		s_ClientLogger = std::make_shared<spdlog::logger>(clientLoggerName, begin(logSinks), end(logSinks));
 		spdlog::register_logger(s_ClientLogger);
 		s_ClientLogger->set_level(spdlog::level::trace);
 		s_ClientLogger->flush_on(spdlog::level::trace);
-#endif
+	}
+
+	void Log::printVec3(glm::vec3& vector)
+	{
+		s_CoreLogger->debug("| Vector3 ({0}, {1}, {2})", vector[0], vector[1], vector[2]);
 	}
 }

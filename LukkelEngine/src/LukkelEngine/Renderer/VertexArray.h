@@ -11,6 +11,7 @@ namespace LukkelEngine {
 	class VertexArray
 	{
 	private:
+		unsigned int m_RendererID; // MOVE ME TO PRIVATE
 		uint32_t m_VertexBufferIndex = 0;
 		std::vector<s_ptr<VertexBuffer>> m_VertexBuffers;
 		s_ptr<IndexBuffer> m_IndexBuffer;
@@ -25,7 +26,6 @@ namespace LukkelEngine {
 		std::vector<s_ptr<VertexBuffer>>& getVertexBuffers() { return m_VertexBuffers;  }
 		s_ptr<IndexBuffer>& getIndexBuffer() { return m_IndexBuffer; }
 
-		unsigned int m_RendererID; // MOVE ME TO PRIVATE
 	};
 
 }

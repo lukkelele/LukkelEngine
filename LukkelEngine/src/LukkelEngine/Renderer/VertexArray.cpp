@@ -1,12 +1,10 @@
-#ifdef LK_USE_PRECOMPILED_HEADERS
-	#include <LKpch.h>
-#endif
-#include <Renderer.h>
-#include <VertexArray.h>
-#include <VertexBufferLayout.h>
+#include "LukkelEngine/Renderer/Renderer.h"
+#include "LukkelEngine/Renderer/VertexArray.h"
+#include "LukkelEngine/Renderer/VertexBufferLayout.h"
 
 namespace LukkelEngine {
 
+	/* Generate vertex array and reference to it using own render ID */
 	VertexArray::VertexArray()
 	{
 		GLCall(glGenVertexArrays(1, &m_RendererID));
@@ -26,7 +24,6 @@ namespace LukkelEngine {
 		const auto& elements = layout.getElements();
 		unsigned int offset = 0;
 		for (unsigned int i = 0 ; i < elements.size(); i++) {
-			std::cout << "i == " << i << std::endl;
 			const auto& element = elements[i];
 			GLCall(glEnableVertexAttribArray(i));
 			GLCall(glVertexAttribPointer(i, element.count, element.type, element.normalized, 
@@ -35,11 +32,13 @@ namespace LukkelEngine {
 		}
 	}
 
+	/* Bind vertex array */
 	void VertexArray::bind() const
 	{
 		GLCall(glBindVertexArray(m_RendererID))
 	}
 
+	/* Unbind vertex array */
 	void VertexArray::unbind() const
 	{
 		GLCall(glBindVertexArray(0));

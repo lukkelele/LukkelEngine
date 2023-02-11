@@ -16,7 +16,6 @@ namespace LukkelEngine {
 	*/
 	LayerStack::~LayerStack()
 	{
-		LKLOG_CRITICAL("Terminating layerstack"); // TODO: Remove
 		for (Layer* layer : m_Layers) {
 			layer->onDetach();
 			// delete layer; // FIXME -> heap bug

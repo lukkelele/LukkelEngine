@@ -12,6 +12,11 @@ namespace LukkelEngine {
 		/* FIXME */
 		WindowProps properties = WindowProps("Debug", WINDOW_WIDTH, WINDOW_HEIGHT);
 		m_Window = Window::create(properties);
+		
+		/* Fix so these pointers actually stick to Sandbox */
+		//m_Camera = create_u_ptr<Camera>();
+		//m_Keyboard = create_u_ptr<Keyboard>();
+		//m_Keyboard->bindWindow(m_Window->getWindow());
 
 		ImGui::CreateContext();
 		ImGui_ImplGlfwGL3_Init(m_Window->getWindow(), true);
@@ -23,7 +28,7 @@ namespace LukkelEngine {
 
 	Application::~Application()
 	{
-		LKLOG_ERROR("Terminating application");
+		LKLOG_WARN("Terminating application");
 	}
 
 	void Application::run(bool test)
@@ -31,7 +36,7 @@ namespace LukkelEngine {
 		while (!glfwWindowShouldClose(m_Window->getWindow())) // while m_Running 
 		{
 			/* Poll input */
-
+			// LKLOG_TRACE("pos -> (x,y,z) == ({0}, {1}, {2})", m_Keyboard->m_Position.x, m_Keyboard->m_Position.y, m_Keyboard->m_Position.z);
 			onUpdate();
 		}
 	}

@@ -26,8 +26,5 @@ namespace LukkelEngine {
 		void attachCamera(Camera* cam);
 
 		static void onWindowResize(uint16_t width, uint16_t height);
-
-	private:
-		Camera* m_Cam;
 	};
 }

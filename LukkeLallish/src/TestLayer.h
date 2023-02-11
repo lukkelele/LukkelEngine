@@ -16,7 +16,6 @@ public:
 	void onEvent(LukkelEngine::Event& e) override;
 
 private:
-	LukkelEngine::Camera m_Camera;
 	// Shared pointer
 	LukkelEngine::s_ptr<LukkelEngine::Scene> m_Scene;
 };

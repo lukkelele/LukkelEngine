@@ -47,8 +47,8 @@ namespace LukkelEngine {
 		~Application();
 
 		void run(bool test = LK_DEBUG);
+		void onUpdate(); // per tick
 		void shutdown();
-		void onUpdate(); // tick
 
 		void pushLayer(Layer* layer);
 		void popLayer(Layer* layer);
@@ -64,9 +64,11 @@ namespace LukkelEngine {
 		bool m_Minimized = false;
 		bool m_ImGuiInitialized = false;
 
+		// TODO: Change to smart pointers
 		Window* m_Window;
-		std::unique_ptr<Renderer> m_Renderer;
-		std::unique_ptr<Keyboard> m_Keyboard;
+		u_ptr<Camera> m_Camera;
+		u_ptr<Renderer> m_Renderer;
+		u_ptr<Keyboard> m_Keyboard;
 		LayerStack m_LayerStack;
 
 		test::Test* currentTest = nullptr;

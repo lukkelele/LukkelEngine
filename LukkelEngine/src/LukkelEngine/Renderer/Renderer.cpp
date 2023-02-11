@@ -12,7 +12,7 @@ namespace LukkelEngine {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
 
-	void Renderer::attachCamera(Camera* cam) { m_Cam = cam; }
+	// void Renderer::attachCamera(Camera* cam) { m_Cam = cam; }
 
 	void Renderer::draw(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const
 	{

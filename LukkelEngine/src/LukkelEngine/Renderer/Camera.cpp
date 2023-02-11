@@ -6,12 +6,10 @@ namespace LukkelEngine {
 		: m_FOV(FOV), m_NearPlane(nearPlane),
 		  m_FarPlane(farPlane)
 	{
-		/* Perform matrix operations */
 		m_ViewMat = glm::lookAt(m_Position, m_Front, m_Up);
 		m_ProjMat = glm::perspective(FOV, (m_ViewportWidth / m_ViewportHeight), nearPlane, farPlane);
+		LKLOG_BLUE("Camera created | FOV: {0}", FOV);
 	}
-
-	Camera::~Camera(){}
 
 	void Camera::setPosition(glm::vec3 newPos) {
 		m_Position = newPos; // set (x, y, z) to new pos

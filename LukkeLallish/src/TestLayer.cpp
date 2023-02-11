@@ -5,9 +5,6 @@
 TestLayer::TestLayer()
 	: Layer("TestLayer")
 {
-
-
-	LukkelEngine::Camera m_Camera;
 }
 
 void TestLayer::onUpdate(float t)

@@ -21,7 +21,7 @@ namespace LukkelEngine {
 		GLFWwindow* getWindow() const override;
 		virtual void init(WindowProps& properties);
 
-	// FIXME: private 
+	// FIXME: set private 
 	public:
 		GLFWwindow* m_Window;
 

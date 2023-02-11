@@ -30,7 +30,6 @@ namespace LukkelEngine {
 		bool m_IsPaused = false;
 		int m_Frames = 0;
 
-		// Renderer m_Renderer;
 		s_ptr<Renderer> m_Renderer;
 	};
 }

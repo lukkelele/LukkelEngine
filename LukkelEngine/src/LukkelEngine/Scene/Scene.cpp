@@ -16,7 +16,6 @@ namespace LukkelEngine {
 	{
 		for (auto &entity : m_Entities) {
 			s_ptr<VertexArray> va = entity->getVertexArray();
-			// LKLOG_ERROR("getVertexArray");
 			auto ib = entity->getIndexBuffer();
 			s_ptr<Shader> shader = entity->getVertexShader();
 			m_Renderer->draw(*va, *ib, *shader);

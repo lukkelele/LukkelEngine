@@ -1,6 +1,3 @@
-#ifdef LK_USE_PRECOMPILED_HEADERS
-	#include <LKpch.h>
-#endif
 #include <Windows/Windows_Window.h>
 
 namespace LukkelEngine {

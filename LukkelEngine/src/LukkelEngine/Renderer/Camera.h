@@ -7,7 +7,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtx/rotate_vector.hpp>
 #include <glm/gtx/vector_angle.hpp>
-#include <Shader.h>
+#include "LukkelEngine/Renderer/Shader.h"
 
 namespace LukkelEngine {
 
@@ -22,13 +22,10 @@ namespace LukkelEngine {
 	{
 	public:
 		Camera(float FOV = 50.0f, float nearPlane = 0.10f, float farPlane = 100.0f);
-		~Camera();
+		~Camera() = default;
+
 
 		glm::vec3 getPosition() const { return m_Position; }
-		float getPositionX() const { return m_Position.x; }
-		float getPositionY() const { return m_Position.y; }
-		float getPositionZ() const { return m_Position.z; }
-
 		glm::mat4 getViewMatrix() const { return m_ViewMat; }
 		glm::mat4 getProjectionMatrix() const { return m_ProjMat; }
 		glm::vec3 getForwardDirection() const;
@@ -41,11 +38,13 @@ namespace LukkelEngine {
 		void recalculateViewMatrix();
 
 		void setVecPosition(VecPos p, float value);
+		// void bindKeyboard(Keyboard* keyboard);
 
 	private:
 		glm::vec3 m_Position = { 0.0f, 0.0f, 0.0f };
 		glm::vec3 m_Origin = { 0.0f, 0.0f, 0.0f };
 		glm::vec2 m_MousePos = { 0.0f, 0.0f };
+
 
 		float m_FOV = 50.0f, m_NearPlane = 0.10f, m_FarPlane = 1000.0f;
 		float m_Distance = 9.0f;

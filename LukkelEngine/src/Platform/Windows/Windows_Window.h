@@ -1,6 +1,6 @@
 #pragma once
-#include <LukkelEngine/Core/Window.h>
-#include <LukkelEngine/Event/ApplicationEvent.h>
+#include "LukkelEngine/Core/Window.h"
+#include "LukkelEngine/Event/ApplicationEvent.h"
 
 namespace LukkelEngine {
 
@@ -24,7 +24,6 @@ namespace LukkelEngine {
 	// FIXME: set private 
 	public:
 		GLFWwindow* m_Window;
-
 		virtual void exit();
 
 		struct WindowData

@@ -34,19 +34,23 @@ namespace LukkelEngine {
 	void Application::onUpdate()
 	{
 		m_Renderer->clear();
-		// testRunner();
+		ImGui_ImplGlfwGL3_NewFrame();
+		testRunner();
+
 		for (auto it = m_LayerStack.rbegin(); it != m_LayerStack.rend(); ++it) {
 			Layer* currentLayer = *it;
 			currentLayer->onUpdate(1);
 		}
+
 		m_Renderer->drawImGui();
+
 		m_Window->onUpdate();
 	}
 
 	void Application::testRunner()
 	{
 		if (currentTest) {
-			ImGui_ImplGlfwGL3_NewFrame();
+			// ImGui_ImplGlfwGL3_NewFrame();
 			currentTest->onUpdate(0.0f);
 			currentTest->onRender();
 			ImGui::Begin("Test");
@@ -59,7 +63,7 @@ namespace LukkelEngine {
 			currentTest->onImGuiRender();
 			ImGui::End();
 		}
-		m_Renderer->drawImGui();
+		// m_Renderer->drawImGui();
 	}
 
 	void Application::registerTests()
@@ -79,7 +83,6 @@ namespace LukkelEngine {
 
 	void Application::pushLayer(Layer* layer)
 	{
-		LKLOG_WARN("pushLayer -> {0}", layer->getName());
 		m_LayerStack.pushLayer(layer);
 		layer->onAttach();
 	}
@@ -92,7 +95,6 @@ namespace LukkelEngine {
 
 	bool Application::onWindowClose(WindowCloseEvent& e)
 	{
-		// LKLOG_WARN("Event: WindowCloseEvent -> onWindowClose");
 		m_Running = false;
 		return true;
 	}

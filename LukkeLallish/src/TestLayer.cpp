@@ -14,7 +14,6 @@ TestLayer::TestLayer()
 
 void TestLayer::onUpdate(float t)
 {
-	ImGui_ImplGlfwGL3_NewFrame();
 	m_Scene->onUpdate();
 	onImGuiRender();
 }

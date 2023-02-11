@@ -10,8 +10,8 @@ namespace LukkelEngine {
 	{
 	public:
 		KeyCode getKeyCode() const { return m_KeyCode; }
-
 		EVENT_CLASS_CATEGORY(EventCategoryKeyboard | EventCategoryInput)
+
 	protected:
 		KeyEvent(const KeyCode keycode)
 			: m_KeyCode(keycode) {}

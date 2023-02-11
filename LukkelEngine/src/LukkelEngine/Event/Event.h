@@ -1,10 +1,9 @@
 #ifndef _EVENT_H
 #define _EVENT_H
-#include <LukkelEngine/Core/Base.h>
-/* Include in precompiled header */
+
+#include "LukkelEngine/Core/Base.h"
 #include <string>
 #include <sstream>
-
 #include <functional>
 
 namespace LukkelEngine {

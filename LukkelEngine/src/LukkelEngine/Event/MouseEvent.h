@@ -12,8 +12,8 @@ namespace LukkelEngine {
 		MouseMovedEvent(const float x, const float y)
 			: m_MouseX(x), m_MouseY(y) {}
 
-		float GetX() const { return m_MouseX; }
-		float GetY() const { return m_MouseY; }
+		float getX() const { return m_MouseX; }
+		float getY() const { return m_MouseY; }
 
 		std::string toString() const override
 		{

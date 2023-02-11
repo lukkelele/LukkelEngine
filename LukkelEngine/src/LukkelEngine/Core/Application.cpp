@@ -1,5 +1,8 @@
 #include <LukkelEngine/Core/Application.h>
 
+#define WINDOW_WIDTH	1280
+#define WINDOW_HEIGHT   1024
+
 namespace LukkelEngine {
 
 	Application::Application(const ApplicationDetails& details)
@@ -7,7 +10,7 @@ namespace LukkelEngine {
 		LukkeLog::Log::init("LukkelEngine.log", "App", "Client");
 		LKLOG_BLUE("Starting application");
 		/* FIXME */
-		WindowProps properties = WindowProps("Debug", 1600, 1024);
+		WindowProps properties = WindowProps("Debug", WINDOW_WIDTH, WINDOW_HEIGHT);
 		m_Window = Window::create(properties);
 
 		ImGui::CreateContext();

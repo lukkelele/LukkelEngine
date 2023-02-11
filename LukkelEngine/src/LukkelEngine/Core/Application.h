@@ -1,24 +1,29 @@
 #pragma once
+
+#include "GL/glew.h"
+#include "glfw/glfw3.h"
+#include "imgui/imgui.h"
+#include "imgui_impl_glfw.h"
+#include <imgui_impl_opengl3.h>
+
+
 #include <LukkelEngine/Core/Base.h>
 #include <LukkelEngine/Core/Window.h>
 #include <LukkelEngine/Core/LayerStack.h>
 #include <LukkelEngine/Event/Event.h>
-#include <LukkelEngine/Event/ApplicationEvent.h>
-#include "LukkelEngine/Scene/Entity.h"
 #include "LukkelEngine/Scene/Scene.h"
 #include <Platform/Windows/Windows_Window.h>
 
 /* EVENTS */
 #include <LukkelEngine/Event/ApplicationEvent.h>
-#include <LukkelEngine/Event/KeyEvent.h>
-#include <LukkelEngine/Event/MouseEvent.h>
+//#include <LukkelEngine/Event/KeyEvent.h>
+//#include <LukkelEngine/Event/MouseEvent.h>
 
 /* I/O */
 #include <LukkelEngine/Core/Window.h>
 #include <LukkelEngine/Input/Keyboard.h>
+// #include <LukkelEngine/Input/Mouse.h>
 
-/* RENDERER */
-#include <LukkelEngine/Renderer/Renderer.h>
 
 /* TESTS */
 #include <LukkelEngine/Test/Test.h>			
@@ -55,6 +60,11 @@ namespace LukkelEngine {
 		void onEvent(Event& e);
 
 		GLFWwindow* getWindow() { return m_Window->getWindow(); }
+		int getViewportWidth() { return m_Window->getWidth(); }
+		int getViewportHeight() { return m_Window->getWidth(); }
+
+		// Used for getting current user window, cross platform
+		static Application& get() { return *s_Instance; }
 
 	protected:
 		ApplicationDetails details;
@@ -65,6 +75,8 @@ namespace LukkelEngine {
 		bool m_ImGuiInitialized = false;
 
 		// TODO: Change to smart pointers
+		// They are protected, so they should be inherited to Sandbox (?)
+		// s_ptr<Window> m_Window;
 		Window* m_Window;
 		u_ptr<Camera> m_Camera;
 		u_ptr<Renderer> m_Renderer;

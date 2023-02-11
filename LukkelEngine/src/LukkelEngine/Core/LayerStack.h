@@ -1,5 +1,4 @@
-#ifndef _LAYER_STACK_H
-#define _LAYER_STACK_H
+#pragma once
 
 #include "LukkeLog/LukkeLog.h"
 #include "LukkelEngine/Core/Base.h"
@@ -34,6 +33,3 @@ namespace LukkelEngine {
 
 
 }
-
-
-#endif /* _LAYER_STACK_H */

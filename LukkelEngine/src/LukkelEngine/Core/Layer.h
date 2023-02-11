@@ -1,5 +1,6 @@
-#ifndef _LAYER_H
-#define _LAYER_H
+#ifndef _LUKKELENGINE_LAYER_H
+#define _LUKKELENGINE_LAYER_H
+
 #include <LukkelEngine/Core/Base.h>
 #include <LukkelEngine/Event/Event.h>
 
@@ -12,14 +13,14 @@ namespace LukkelEngine {
 
 		virtual void onAttach() {}
 		virtual void onDetach() {}
-		virtual void onUpdate(float t) {}
+		virtual void onUpdate() {}
 		virtual void onImGuiRender() {}
 		virtual void onEvent(Event& event) {}
 
 		const std::string& getName() const { return m_Name; }
 	protected:
-		std::string m_Name ; // Remove in dist and release versions
+		std::string m_Name ; // Remove in release
 	};
 }
 
-#endif /* _LAYER_H */
+#endif /* _LUKKELENGINE_LAYER_H */

@@ -1,5 +1,4 @@
-#ifndef _WINDOW_H
-#define _WINDOW_H
+#pragma once
 
 #include <string>
 #include <vector>
@@ -45,4 +44,3 @@ namespace LukkelEngine {
 		virtual void setEventCallback(const EventCallbackFn& callback) = 0;
 	};
 }
-#endif /* _WINDOW_H */

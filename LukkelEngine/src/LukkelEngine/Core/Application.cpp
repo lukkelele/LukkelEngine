@@ -5,18 +5,19 @@
 
 namespace LukkelEngine {
 
+	Application* Application::s_Instance;
+
 	Application::Application(const ApplicationDetails& details)
 	{
+		s_Instance = this;
 		LukkeLog::Log::init("LukkelEngine.log", "App", "Client");
 		LKLOG_BLUE("Starting application");
-		/* FIXME */
 		WindowProps properties = WindowProps("Debug", WINDOW_WIDTH, WINDOW_HEIGHT);
 		m_Window = Window::create(properties);
+		// m_Window = create_s_ptr<Windows_Window>(properties);
 		
 		/* Fix so these pointers actually stick to Sandbox */
 		//m_Camera = create_u_ptr<Camera>();
-		//m_Keyboard = create_u_ptr<Keyboard>();
-		//m_Keyboard->bindWindow(m_Window->getWindow());
 
 		ImGui::CreateContext();
 		ImGui_ImplGlfwGL3_Init(m_Window->getWindow(), true);
@@ -35,8 +36,7 @@ namespace LukkelEngine {
 	{
 		while (!glfwWindowShouldClose(m_Window->getWindow())) // while m_Running 
 		{
-			/* Poll input */
-			// LKLOG_TRACE("pos -> (x,y,z) == ({0}, {1}, {2})", m_Keyboard->m_Position.x, m_Keyboard->m_Position.y, m_Keyboard->m_Position.z);
+			int state = glfwGetKey(m_Window->getWindow(), GLFW_KEY_W);
 			onUpdate();
 		}
 	}
@@ -44,14 +44,14 @@ namespace LukkelEngine {
 	void Application::onUpdate()
 	{
 		m_Renderer->clear();
-
 		/* TODO: Implement ImGui as an overlay */
 		ImGui_ImplGlfwGL3_NewFrame();
 		testRunner();
 
-		for (auto it = m_LayerStack.rbegin(); it != m_LayerStack.rend(); ++it) {
+		for (auto it = m_LayerStack.rbegin(); it != m_LayerStack.rend(); ++it) 
+		{
 			Layer* currentLayer = *it;
-			currentLayer->onUpdate(1);
+			currentLayer->onUpdate();
 		}
 
 		m_Renderer->drawImGui(); // ImGui Render
@@ -115,16 +115,12 @@ namespace LukkelEngine {
 			return false;
 		}
 		m_Minimized = false;
-		// LKLOG_WARN("Event: WindowResizeEvent -> onWindowResize");
-		// resizeWindow(e.getWidth(), e.getHeight());
-		// LKLOG_TRACE("New window size is ({0}x{1})", e.getWidth(), e.getHeight());
 		glViewport(0, 0, e.getWidth(), e.getHeight());
 		return false;
 	}
 
 	void Application::onEvent(Event& e)
 	{
-		// LKLOG_WARN("[!] Event trigger: ", e);
 		EventDispatcher ed(e);
 		ed.dispatch<WindowCloseEvent>(LK_BIND_EVENT_FN(onWindowClose));
 		ed.dispatch<WindowResizeEvent>(LK_BIND_EVENT_FN(onWindowResize));

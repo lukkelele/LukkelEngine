@@ -1,5 +1,4 @@
 #include "LukkelEngine/Core/UUID.h"
-
 #include <random>
 
 namespace LukkelEngine {
@@ -11,7 +10,6 @@ namespace LukkelEngine {
 	UUID::UUID()
 		: m_UUID(s_UniformDistribution(s_Engine))
 	{
-		LKLOG_WARN("UUID: {0}", m_UUID);
 	}
 
 	UUID::UUID(uint64_t uuid)

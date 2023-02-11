@@ -4,15 +4,20 @@ namespace LukkelEngine {
 
 	Keyboard::Keyboard(){}
 
-	Keyboard::~Keyboard(){}
-
-	void Keyboard::bind(GLFWwindow* window)
+	void Keyboard::bindWindow(GLFWwindow* window)
 	{
 		glfwSetKeyCallback(window, input_static);
 		glfwSetInputMode(window, GLFW_STICKY_KEYS, 1);
 	}
 
-	void Keyboard::unbind(){}
+	void Keyboard::unbindWindow(){}
+
+	void Keyboard::bindCamera(Camera* camera)
+	{
+		m_Camera = create_u_ptr<Camera>(camera);
+	}
+
+	void Keyboard::unbindCamera(){}
 
 	int Keyboard::keyPressed()
 	{
@@ -28,20 +33,15 @@ namespace LukkelEngine {
 			switch (key) {
 				/* ARROW KEYS */
 				case Key::Up: {
-
-					// m_RotX -= m_RotationSpeed;
 					break;
 				} case Key::Down: {
 
-					// m_RotX += m_RotationSpeed;
 					break;
 				} case Key::Right: {
 
-					// m_RotY += m_RotationSpeed;
 					break;
 				} case Key::Left: {
 
-					// m_RotY -= m_RotationSpeed;
 					break;
 
 				/* WASD */

@@ -27,6 +27,8 @@ namespace LukkelEngine {
 	{
 		while (!glfwWindowShouldClose(m_Window->getWindow())) // while m_Running 
 		{
+			/* Poll input */
+
 			onUpdate();
 		}
 	}
@@ -34,6 +36,8 @@ namespace LukkelEngine {
 	void Application::onUpdate()
 	{
 		m_Renderer->clear();
+
+		/* TODO: Implement ImGui as an overlay */
 		ImGui_ImplGlfwGL3_NewFrame();
 		testRunner();
 
@@ -42,15 +46,13 @@ namespace LukkelEngine {
 			currentLayer->onUpdate(1);
 		}
 
-		m_Renderer->drawImGui(); // RENDER IMGUI***
-
+		m_Renderer->drawImGui(); // ImGui Render
 		m_Window->onUpdate();
 	}
 
 	void Application::testRunner()
 	{
 		if (currentTest) {
-			// ImGui_ImplGlfwGL3_NewFrame();
 			currentTest->onUpdate(0.0f);
 			currentTest->onRender();
 			ImGui::Begin("Test");
@@ -63,7 +65,6 @@ namespace LukkelEngine {
 			currentTest->onImGuiRender();
 			ImGui::End();
 		}
-		// m_Renderer->drawImGui();
 	}
 
 	void Application::registerTests()

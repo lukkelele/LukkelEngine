@@ -23,17 +23,18 @@ namespace LukkelEngine {
 		glfwInit();
 		/* Set core profile instead of compability one */
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-		/* Version 3.3 */
+		/* OPENGL Version 3.3 */
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 		glewExperimental = true; // needed for profile(?)
+
 		/* Set window properties */
 		m_Data.title = props.title;
 		m_Data.width = props.width;
 		m_Data.height = props.height;
 		m_Window = glfwCreateWindow((int)props.width, (int)props.height, props.title.c_str(), nullptr, nullptr);
+
 		glfwMakeContextCurrent(m_Window);
-		// GLCall(glfwSetWindowUserPointer(m_Window, &m_Data));
 		glfwSetWindowUserPointer(m_Window, &m_Data);
 		
 		if (!GLFW_initialized) {
@@ -43,7 +44,7 @@ namespace LukkelEngine {
 				printf("[ERROR] %s\n", glewGetErrorString(err));
 				GLFW_initialized = false;
 			} else {
-				printf("[OPENGL] Version: %s\n", glGetString(GL_VERSION)); /* output openGL version */
+				printf("[OPENGL] Version: %s\n", glGetString(GL_VERSION));
 				GLFW_initialized = true;
 			}
 		}

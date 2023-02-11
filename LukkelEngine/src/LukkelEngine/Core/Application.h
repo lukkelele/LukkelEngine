@@ -54,7 +54,6 @@ namespace LukkelEngine {
 		void popLayer(Layer* layer);
 		void onEvent(Event& e);
 
-		/* DEBUGGING ONLY */
 		GLFWwindow* getWindow() { return m_Window->getWindow(); }
 
 	protected:
@@ -79,7 +78,6 @@ namespace LukkelEngine {
 
 		void testRunner();
 		void registerTests();
-		// void renderImGuiData();
 
 	};
 }

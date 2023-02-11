@@ -8,7 +8,10 @@ class Sandbox : public LukkelEngine::Application
 public:
 	Sandbox(const LukkelEngine::ApplicationDetails& details = LukkelEngine::ApplicationDetails())
 		: LukkelEngine::Application(details)
-	{
+	{	
+		m_Keyboard = LukkelEngine::create_u_ptr<LukkelEngine::Keyboard>();
+		m_Keyboard->bind(m_Window->getWindow());
+
 	}
 
 	~Sandbox()
@@ -22,12 +25,9 @@ int main()
 	Sandbox app;
 
 	TestLayer layer;
-	LKLOG_TRACE("Pushing new layer");
 	app.pushLayer(&layer); // heap bug at LayerStack destructor
 
 	app.run();
-	
 
-	LKLOG_WARN("SANDBOX terminated!");
 	return 0;
 }

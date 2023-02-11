@@ -1,5 +1,5 @@
-#ifndef _KEYBOARD_H
-#define _KEYBOARD_H
+#ifndef _LK_KEYBOARD_H
+#define _LK_KEYBOARD_H
 
 #include <LukkelEngine/Core/LKErrorHandler.h>
 #include <glfw/glfw3.h>
@@ -13,7 +13,7 @@ namespace LukkelEngine {
 		float m_RotX = 0;
 		float m_RotY = 0;
 		float m_RotationSpeed = 5.0f;
-		GLFWwindow* m_WindowReference;
+		GLFWwindow* m_WindowReference = nullptr;
 
 	public:
 		Keyboard();
@@ -28,4 +28,4 @@ namespace LukkelEngine {
 		static void input_static(GLFWwindow* window, int key, int scanCode, int action, int mods);
 	};
 }
-#endif /* _KEYBOARD_H */
+#endif /* _LK_KEYBOARD_H */

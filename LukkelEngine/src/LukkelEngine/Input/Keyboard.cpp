@@ -1,6 +1,3 @@
-#ifdef LK_USE_PRECOMPILED_HEADERS
-	#include <LKpch.h>
-#endif
 #include <Input/Keyboard.h>
 
 namespace LukkelEngine {
@@ -11,9 +8,8 @@ namespace LukkelEngine {
 
 	void Keyboard::bind(GLFWwindow* window)
 	{
-		GLCall(glfwSetWindowUserPointer(window, this));
-		GLCall(glfwSetKeyCallback(window, input_static));
-		GLCall(glfwSetInputMode(window, GLFW_STICKY_KEYS, 1));
+		glfwSetKeyCallback(window, input_static);
+		glfwSetInputMode(window, GLFW_STICKY_KEYS, 1);
 	}
 
 	void Keyboard::unbind(){}
@@ -26,39 +22,40 @@ namespace LukkelEngine {
 	void Keyboard::input(GLFWwindow* window, int key, int scanCode, int action, int mods)
 	{
 		// actions are GLFW_PRESS, GLFW_RELEASE or GLFW_REPEAT
+		LKLOG_BLUE("keyPress: {0}", key);
 		if (action == GLFW_PRESS || action == GLFW_REPEAT)
 		{
 			switch (key) {
 				/* ARROW KEYS */
 				case Key::Up: {
-					LOG("^");
+
 					// m_RotX -= m_RotationSpeed;
 					break;
 				} case Key::Down: {
-					LOG("v");
+
 					// m_RotX += m_RotationSpeed;
 					break;
 				} case Key::Right: {
-					LOG("->");
+
 					// m_RotY += m_RotationSpeed;
 					break;
 				} case Key::Left: {
-					LOG("<-");
+
 					// m_RotY -= m_RotationSpeed;
 					break;
 
 				/* WASD */
 				} case Key::W: {
-					LOG("W");
+
 					break;
 				} case Key::A: {
-					LOG("A");
+
 					break;
 				} case Key::S: {
-					LOG("S");
+
 					break;
 				} case Key::D: {
-					LOG("D");
+
 					break;
 				}
 

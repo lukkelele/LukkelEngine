@@ -31,6 +31,7 @@ namespace LukkelEngine {
 		s_ptr<VertexArray> m_VAO;
 		s_ptr<VertexBuffer> m_VBO;
 		s_ptr<IndexBuffer> m_IBO;
+		// s_ptr<IndexBuffer> m_Layout;
 
 		s_ptr<Shader> m_Shader;
 		s_ptr<Shader> m_FragmentShader; // TODO: Rename this

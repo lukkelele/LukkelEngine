@@ -7,8 +7,18 @@ TestLayer::TestLayer()
 {
 }
 
-void TestLayer::onUpdate(float t)
+void TestLayer::onUpdate()
 {
+	/* Poll input */
+	if (LukkelEngine::Keyboard::isKeyPressed(LukkelEngine::Key::W))
+		LKLOG_BLUE("W");
+	else if (LukkelEngine::Keyboard::isKeyPressed(LukkelEngine::Key::S))
+		LKLOG_BLUE("S");
+	if (LukkelEngine::Keyboard::isKeyPressed(LukkelEngine::Key::A))
+		LKLOG_BLUE("A");
+	else if (LukkelEngine::Keyboard::isKeyPressed(LukkelEngine::Key::D))
+		LKLOG_BLUE("D");
+
 	m_Scene->onUpdate();
 	onImGuiRender();
 }

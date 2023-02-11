@@ -21,11 +21,11 @@ namespace LukkelEngine {
 		void setVertexShader(Shader& shader);
 		void setFragmentShader(Shader& shader);
 
-		s_ptr<VertexArray>& getVertexArray();// { return m_VAO; }
-		s_ptr<VertexBuffer>& getVertexBuffer();
-		s_ptr<IndexBuffer>& getIndexBuffer();
-		s_ptr<Shader>& getVertexShader() { return m_VertexShader; }
-		s_ptr<Shader>& getFragmentShader() { return m_FragmentShader; }
+		s_ptr<VertexArray> getVertexArray() const { return m_VAO; }
+		s_ptr<VertexBuffer> getVertexBuffer() const { return m_VBO; }
+		s_ptr<IndexBuffer> getIndexBuffer() const { return m_IBO; }
+		s_ptr<Shader> getVertexShader() const { return m_VertexShader; }
+		s_ptr<Shader> getFragmentShader() const { return m_FragmentShader; }
 
 	private:
 		UUID m_UUID;

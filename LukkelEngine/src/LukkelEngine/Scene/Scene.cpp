@@ -25,7 +25,7 @@ namespace LukkelEngine {
 
 	}
 
-	void Scene::addEntity(s_ptr<Entity> entity)
+	void Scene::addEntity(s_ptr<Entity> &entity)
 	{
 		m_Entities.push_back(entity);
 		LKLOG_WARN("Added entity! => m_Entities size: {0}", m_Entities.size());

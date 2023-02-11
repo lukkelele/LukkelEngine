@@ -21,7 +21,7 @@ namespace LukkelEngine {
 		void pause(bool paused) { m_IsPaused = paused; }
 		void tick(unsigned int frames = 1);
 
-		void addEntity(s_ptr<Entity> entity);
+		void addEntity(s_ptr<Entity> &entity);
 
 	private:
 		entt::registry m_Registry;

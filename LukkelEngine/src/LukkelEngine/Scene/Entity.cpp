@@ -4,6 +4,9 @@ namespace LukkelEngine {
 
 	Entity::Entity()
 	{
+		s_ptr<VertexArray> m_VAO;
+		s_ptr<VertexBuffer> m_VBO;
+		s_ptr<IndexBuffer> m_IBO;
 	}
 
 	Entity::~Entity()
@@ -39,18 +42,4 @@ namespace LukkelEngine {
 		//LKLOG_WARN("Setting fragment shader for entity!");
 		m_FragmentShader = std::make_shared<Shader>(shader);
 	}
-
-	s_ptr<VertexArray>& Entity::getVertexArray()
-	{
-		//LKLOG_WARN("Returning shared_ptr -> VertexArray");
-		return m_VAO;
-	}
-
-	s_ptr<IndexBuffer>& Entity::getIndexBuffer()
-	{
-		//LKLOG_WARN("Returning shared_ptr -> VertexArray");
-		return m_IBO;
-	}
-
-
 }

@@ -52,7 +52,6 @@ namespace LukkelEngine {
 		void popLayer(Layer* layer);
 		void onEvent(Event& e);
 
-
 		/* DEBUGGING ONLY */
 		GLFWwindow* getWindow() { return m_Window->getWindow(); }
 

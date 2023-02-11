@@ -23,6 +23,7 @@ int main()
 	Sandbox app;
 	GLFWwindow* window = app.getWindow();
 	glEnable(GL_DEPTH_TEST);
+
 	TestLayer layer;
 	LKLOG_WARN("Pushing new layer");
 	app.pushLayer(&layer); // heap bug at LayerStack destructor

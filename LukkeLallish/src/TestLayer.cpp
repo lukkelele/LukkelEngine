@@ -14,12 +14,14 @@ TestLayer::TestLayer()
 
 void TestLayer::onUpdate(float t)
 {
+	ImGui_ImplGlfwGL3_NewFrame();
 	m_Scene->onUpdate();
+	onImGuiRender();
 }
 
 void TestLayer::onImGuiRender()
 {
-
+	ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate); 
 }
 
 void TestLayer::onEvent(LukkelEngine::Event& e)
@@ -32,7 +34,6 @@ void TestLayer::onAttach()
 	LKLOG_WARN("onAttach() called");
 	m_Scene = std::make_shared<LukkelEngine::Scene>();
 
-	// std::shared_ptr<LukkelEngine::Entity> Rectangle = std::make_shared<LukkelEngine::Entity>();
 	LukkelEngine::Entity* Rectangle = new LukkelEngine::Entity;
 	LukkelEngine::VertexArray* va = new LukkelEngine::VertexArray();
 	LukkelEngine::VertexBuffer* vb = new LukkelEngine::VertexBuffer(rectangle, (sizeof(rectangle) / (sizeof(float)) * sizeof(float)));
@@ -51,9 +52,6 @@ void TestLayer::onAttach()
 	Rectangle->setVertexShader(*shader);
 
 	m_Scene->addEntity(*Rectangle);
-
-	LukkelEngine::Renderer renderer;
-
 }
 
 void TestLayer::onDetach()

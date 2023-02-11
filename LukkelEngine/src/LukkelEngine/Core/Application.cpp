@@ -34,11 +34,12 @@ namespace LukkelEngine {
 	void Application::onUpdate()
 	{
 		m_Renderer->clear();
-		testRunner();
+		// testRunner();
 		for (auto it = m_LayerStack.rbegin(); it != m_LayerStack.rend(); ++it) {
 			Layer* currentLayer = *it;
 			currentLayer->onUpdate(1);
 		}
+		m_Renderer->drawImGui();
 		m_Window->onUpdate();
 	}
 

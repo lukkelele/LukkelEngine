@@ -1,5 +1,6 @@
 #include "LukkelEngine/Scene/Scene.h"
 
+
 namespace LukkelEngine {
 
 	Scene::Scene()

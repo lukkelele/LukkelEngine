@@ -34,7 +34,6 @@
 #include <LukkelEngine/Test/TestDrawCube.h>
 #include <LukkelEngine/Test/TestShader.h>
 #include <LukkelEngine/Test/TestTexture.h>
-#include <LukkelEngine/Test/TestKeyInput.h>
 
 
 namespace LukkelEngine {

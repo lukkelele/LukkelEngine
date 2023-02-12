@@ -11,7 +11,7 @@ namespace LukkelEngine {
 	{
 		s_Instance = this;
 		LukkeLog::Log::init("LukkelEngine.log", "App", "Client");
-		LKLOG_BLUE("Starting application");
+		LKLOG_TRACE("Starting application");
 		WindowProps properties = WindowProps("Debug", WINDOW_WIDTH, WINDOW_HEIGHT);
 		m_Window = Window::create(properties);
 		// m_Window = create_s_ptr<Windows_Window>(properties);
@@ -86,7 +86,6 @@ namespace LukkelEngine {
 		testMenu->registerTest<test::TestDrawCube>("Draw 3D cube");
 		testMenu->registerTest<test::TestShader>("Shader test");
 		testMenu->registerTest<test::TestTexture>("Texture testing");
-		testMenu->registerTest<test::TestKeyInput>("Key input");
 
 	}
 

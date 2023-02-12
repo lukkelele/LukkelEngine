@@ -2,8 +2,6 @@
 	LukkeLog
 	---------------------------------
 	Simple logger using spdlog.
-	Instead of implementing separate loggers in my projects I figured a logger
-	could be of great utility.
 
 	Preprocessor definitions:
 	LKLOG_ADVANCED - implements more advanced logging functionality but is not as lightweight
@@ -35,7 +33,6 @@ namespace LukkeLog {
 	{
 	private:
 		static std::shared_ptr<spdlog::logger> s_CoreLogger;
-
 		static std::shared_ptr<spdlog::logger> s_ClientLogger;
 
 	public:
@@ -54,20 +51,18 @@ namespace LukkeLog {
 #define LKLOG_VEC3(...)					::LukkeLog::Log::printVec3(__VA_ARGS__)
 
 /* Core log macros */
-#define LKLOG_TRACE(...)    			::LukkeLog::Log::getCoreLogger()->trace(__VA_ARGS__)
-#define LKLOG_INFO(...)     			::LukkeLog::Log::getCoreLogger()->info(__VA_ARGS__)
+#define LKLOG_INFO(...)    				::LukkeLog::Log::getCoreLogger()->trace(__VA_ARGS__)
+#define LKLOG_TRACE(...)     			::LukkeLog::Log::getCoreLogger()->debug(__VA_ARGS__)
 #define LKLOG_WARN(...)     			::LukkeLog::Log::getCoreLogger()->warn(__VA_ARGS__)
 #define LKLOG_ERROR(...)    			::LukkeLog::Log::getCoreLogger()->error(__VA_ARGS__)
 #define LKLOG_CRITICAL(...) 			::LukkeLog::Log::getCoreLogger()->critical(__VA_ARGS__)
-#define LKLOG_BLUE(...)    				::LukkeLog::Log::getCoreLogger()->debug(__VA_ARGS__)
 
 /* Client log macros */
-#define LKLOG_CLIENT_TRACE(...)         ::LukkeLog::Log::getClientLogger()->trace(__VA_ARGS__)
-#define LKLOG_CLIENT_INFO(...)          ::LukkeLog::Log::getClientLogger()->info(__VA_ARGS__)
+#define LKLOG_CLIENT_INFO(...)			::LukkeLog::Log::getClientLogger()->trace(__VA_ARGS__)
+#define LKLOG_CLIENT_TRACE(...)         ::LukkeLog::Log::getClientLogger()->debug(__VA_ARGS__)
 #define LKLOG_CLIENT_WARN(...)          ::LukkeLog::Log::getClientLogger()->warn(__VA_ARGS__)
 #define LKLOG_CLIENT_ERROR(...)         ::LukkeLog::Log::getClientLogger()->error(__VA_ARGS__)
 #define LKLOG_CLIENT_CRITICAL(...)      ::LukkeLog::Log::getClientLogger()->critical(__VA_ARGS__)
-#define LKLOG_CLIENT_BLUE(...)    		::LukkeLog::Log::getCoreLogger()->debug(__VA_ARGS__)
 
 
 #endif /* _LUKKELOG_H */

@@ -54,7 +54,7 @@ namespace LukkelEngine {
 
 		GLCall(int location = glGetUniformLocation(m_RendererID, name.c_str()));
 		if (location == -1)
-			LKLOG_ERROR("[SHADER] Warning: uniform{0} isn't in use", name);
+			LKLOG_ERROR("[SHADER] Warning: uniform {0} isn't in use", name);
 
 		m_UniformLocationCache[name] = location;
 		return location;

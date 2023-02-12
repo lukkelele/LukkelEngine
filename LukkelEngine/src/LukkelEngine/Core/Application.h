@@ -83,7 +83,6 @@ namespace LukkelEngine {
 		// They are protected, so they should be inherited to Sandbox (?)
 		// s_ptr<Window> m_Window;
 		Window* m_Window;
-		// u_ptr<Camera> m_Camera;
 		u_ptr<Renderer> m_Renderer;
 		u_ptr<Keyboard> m_Keyboard;
 		LayerStack m_LayerStack;

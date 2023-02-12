@@ -6,7 +6,7 @@ namespace LukkelEngine {
 	Scene::Scene()
 	{
 		std::deque<Entity*> m_Entities;
-		m_Camera = create_s_ptr<Camera>();
+		m_Camera = create_s_ptr<Camera>(-1.0, 1.0, -1.0, 1.0);
 	}
 	
 	Scene::~Scene()

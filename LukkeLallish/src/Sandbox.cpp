@@ -8,7 +8,6 @@ public:
 	Sandbox(const LukkelEngine::ApplicationDetails& details = LukkelEngine::ApplicationDetails())
 		: LukkelEngine::Application(details)
 	{	
-		// m_Camera = LukkelEngine::create_u_ptr<LukkelEngine::Camera>();
 	}
 
 	~Sandbox()
@@ -20,10 +19,10 @@ public:
 int main()
 {
 	Sandbox app;
-	LukkelEngine::ImGuiLayer imguiLayer;
+	// LukkelEngine::ImGuiLayer imguiLayer;
 	TestLayer layer;
 	app.pushLayer(&layer); // heap bug at LayerStack destructor
-	app.pushOverlay(&imguiLayer);
+	// app.pushOverlay(&imguiLayer);
 
 	app.run();
 

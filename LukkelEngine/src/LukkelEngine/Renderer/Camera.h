@@ -11,32 +11,26 @@
 
 namespace LukkelEngine {
 
-	/* Vector position -> (x, y, z) */
-	enum VecPos {
-		x = 0,
-		y = 1,
-		z = 2
-	};
-
 	class Camera
 	{
 	public:
-		Camera(float FOV = 50.0f, float nearPlane = 0.10f, float farPlane = 100.0f);
+		// Camera(float FOV = 50.0f, float nearPlane = 0.10f, float farPlane = 100.0f);
+		Camera(float left, float right, float bottom, float top);
 		~Camera() = default;
 
 		glm::vec3 getPosition() const { return m_Position; }
-		glm::mat4 getViewMatrix() const { return m_ViewMat; }
-		glm::mat4 getProjectionMatrix() const { return m_ProjMat; }
+		glm::mat4 getViewMatrix() const { return m_ViewMatrix; }
+		glm::mat4 getProjectionMatrix() const { return m_ProjectionMatrix; }
+		glm::mat4 getViewProjectionMatrix() const { return m_ViewProjectionMatrix; }
 		glm::vec3 getForwardDirection() const;
 		glm::quat getOrientation() const;
 		glm::vec3 calculatePosition() const;
 
-		void setPosition(glm::vec3 newPos);
+		void setPosition(glm::vec3& newPos);
 		// Could recalculate view matrix in 'onUpdate' as well
+		void setProjection(float left, float right, float bottom, float top);
 		void setRotation(float rot) { m_Rotation = rot; recalculateViewMatrix(); }
 		void recalculateViewMatrix();
-
-		void setVecPosition(VecPos p, float value);
 
 	// TODO: SET ME TO PRIVATE
 	public:
@@ -44,21 +38,17 @@ namespace LukkelEngine {
 		glm::vec3 m_Origin = { 0.0f, 0.0f, 0.0f };
 		glm::vec2 m_MousePos = { 0.0f, 0.0f };
 
-
 		float m_FOV = 50.0f, m_NearPlane = 0.10f, m_FarPlane = 1000.0f;
 		float m_Distance = 9.0f;
 
 		float m_Rotation = 0.0f;
 		float m_RotationSpeed = 0.10f;
-		float m_Yaw, m_Pitch = 0.0f;
+		float m_Yaw = 0.0f, m_Pitch = 0.0f;
 		float m_ViewportWidth = 1280, m_ViewportHeight = 1024;
 
-		glm::vec3 m_Front = glm::vec3(0.0f, 0.0f, 0.0f);
-		glm::vec3 m_Up = glm::vec3(0.0f, 1.0f, 0.0f);
-
-		glm::mat4 m_ViewMat;
-		glm::mat4 m_ProjMat;
-		glm::mat4 m_MVP; // view projection matrix
+		glm::mat4 m_ViewMatrix;
+		glm::mat4 m_ProjectionMatrix; 
+		glm::mat4 m_ViewProjectionMatrix; 
 	};
 
 }

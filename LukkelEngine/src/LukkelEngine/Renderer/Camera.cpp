@@ -2,48 +2,35 @@
 
 namespace LukkelEngine {
 
-	Camera::Camera(float FOV, float nearPlane, float farPlane)
-		: m_FOV(FOV), m_NearPlane(nearPlane),
-		  m_FarPlane(farPlane)
+	Camera::Camera(float left, float right, float bottom, float top)
+		: m_ProjectionMatrix(glm::ortho(left, right, bottom, top, -1.0f, 1.0f)), m_ViewMatrix(1.0f)
 	{
-		m_ViewMat = glm::lookAt(m_Position, m_Front, m_Up);
-		m_ProjMat = glm::perspective(FOV, (m_ViewportWidth / m_ViewportHeight), nearPlane, farPlane);
-		LKLOG_TRACE("Camera created | FOV: {0}", FOV);
+		LKLOG_TRACE("Camera created | FOV: {0}", m_FOV);
+		m_ViewProjectionMatrix = m_ProjectionMatrix * m_ViewMatrix;
 	}
 
 	// Change to 3 floats instead ?
-	void Camera::setPosition(glm::vec3 newPos) {
+	void Camera::setPosition(glm::vec3 &newPos) {
 		m_Position = newPos; // set (x, y, z) to new pos
+		m_Position.x = newPos.x;
 		LKLOG_TRACE("Position: ({0}, {1}, {2})", m_Position.x, m_Position.y, m_Position.z);
 		recalculateViewMatrix();
 	}
 
-	void Camera::setVecPosition(VecPos p, float value)
+	void Camera::setProjection(float left, float right, float bottom, float top)
 	{
-		switch (p)
-		{
-			case (VecPos::x): {
-				m_Position.x = value;
-				break;
-			} 
-			case (VecPos::y): {
-				m_Position.y = value;
-				break;
-			}
-			case (VecPos::z): {
-				m_Position.z = value;
-				break;
-			}
-		}
+		m_ProjectionMatrix = glm::ortho(left, right, bottom, top, -1.0f, 1.0f);
+		m_ViewProjectionMatrix = m_ProjectionMatrix * m_ViewMatrix;
 	}
 
 	void Camera::recalculateViewMatrix()
 	{
+		LKLOG_TRACE("Position: ({0}, {1}, {2})", m_Position.x, m_Position.y, m_Position.z);
 		glm::mat4 transform = glm::translate(glm::mat4(1.0f), m_Position) *
-			glm::rotate(glm::mat4(1.0f), m_Rotation, glm::vec3(0, 0, 1));
+			glm::rotate(glm::mat4(1.0f), glm::radians(m_Rotation), glm::vec3(0, 0, 1));
 
-		m_ViewMat = glm::inverse(transform);
-		m_MVP = m_ProjMat * m_ViewMat;
+		m_ViewMatrix = glm::inverse(transform);
+		m_ViewProjectionMatrix = m_ProjectionMatrix * m_ViewMatrix;
 	}
 
 	glm::vec3 Camera::getForwardDirection() const
@@ -60,4 +47,5 @@ namespace LukkelEngine {
 	{
 		return (m_Origin - getForwardDirection() * m_Distance);
 	}
+
 }

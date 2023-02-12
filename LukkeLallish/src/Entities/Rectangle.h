@@ -12,12 +12,17 @@ namespace LukkelEngine {
 			m_VAO = create_s_ptr<VertexArray>();
 			m_VBO = create_s_ptr<VertexBuffer>(vertices, (sizeof(vertices) / (sizeof(float)) * sizeof(float)));
 			m_IBO = create_s_ptr<IndexBuffer>(indices, (sizeof(indices) / (sizeof(unsigned int)) * sizeof(unsigned int)));
-			m_Shader = create_s_ptr<Shader>("assets/shaders/basic2.shader");
+			// m_Shader = create_s_ptr<Shader>("assets/shaders/basic2.shader");
+			// m_Shader = create_s_ptr<Shader>("assets/shaders/3D/color3D.shader");
+			m_Shader = create_s_ptr<Shader>("assets/shaders/3D/flat.shader");
 			VertexBufferLayout layout;
 			layout.push<float>(2); // 2D Vertex (x, y) 
 			m_VAO->addBuffer(*m_VBO, layout);
+
+
 			m_Shader->bind();
 			m_Shader->setUniform4f("u_Color", 0.6f, 0.8f, 0.2f, 1.0f);
+
 		}
 
 		~Rectangle() = default;

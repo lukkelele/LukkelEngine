@@ -7,6 +7,7 @@ uniform mat4 camMatrix;
 void main()
 {
 	gl_Position = camMatrix * pos;
+	//gl_Position = pos;
 }
 
 #shader fragment

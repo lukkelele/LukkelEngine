@@ -1,7 +1,7 @@
 #include <LukkelEngine/Core/Application.h>
 
-#define WINDOW_WIDTH	1280
-#define WINDOW_HEIGHT   1024
+#define WINDOW_WIDTH	1600
+#define WINDOW_HEIGHT   1200
 
 namespace LukkelEngine {
 

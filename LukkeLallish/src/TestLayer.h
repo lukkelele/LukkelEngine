@@ -16,6 +16,9 @@ public:
 	virtual void onImGuiRender() override;
 	void onEvent(LukkelEngine::Event& e) override;
 
+	// TESTING ONLY
+	float r = 0.0f;
+
 private:
 	// Shared pointer
 	LukkelEngine::s_ptr<LukkelEngine::Scene> m_Scene;

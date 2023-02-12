@@ -26,6 +26,8 @@ namespace LukkelEngine {
 		s_ptr<Shader> getVertexShader() const { return m_Shader; }
 		s_ptr<Shader> getFragmentShader() const { return m_FragmentShader; }
 
+		glm::vec3& getTranslation() const { return *m_Translation; }
+		void setTranslation(glm::vec3& translation) { *m_Translation = translation; }
 
 	// TODO: Set these back to private
 	public:
@@ -34,7 +36,9 @@ namespace LukkelEngine {
 		s_ptr<VertexBuffer> m_VBO;
 		s_ptr<IndexBuffer> m_IBO;
 
-		glm::vec3 m_TranslationA; // For testing
+		s_ptr<glm::vec3>m_Translation;
+		glm::vec3 m_TranslationA; // = glm::vec3(0.0f, 0.0f, 0.0f); // For testing
+		// glm::vec3* m_TranslationA; // For testing
 
 		s_ptr<Shader> m_Shader;
 		s_ptr<Shader> m_FragmentShader; // TODO: Rename this

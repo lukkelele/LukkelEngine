@@ -26,18 +26,19 @@ namespace LukkelEngine {
 		s_ptr<Shader> getVertexShader() const { return m_Shader; }
 		s_ptr<Shader> getFragmentShader() const { return m_FragmentShader; }
 
-	protected:
+
+	// TODO: Set these back to private
+	public:
 		// Set to unique?
 		s_ptr<VertexArray> m_VAO;
 		s_ptr<VertexBuffer> m_VBO;
 		s_ptr<IndexBuffer> m_IBO;
-		// s_ptr<IndexBuffer> m_Layout;
+
+		glm::vec3 m_TranslationA; // For testing
 
 		s_ptr<Shader> m_Shader;
 		s_ptr<Shader> m_FragmentShader; // TODO: Rename this
 
-		// ----
-		// Scene* m_Scene; // BUGGED!!!!
 	private:
 		UUID m_UUID;
 	};

@@ -38,7 +38,8 @@ namespace LukkelEngine {
 
 		void setVecPosition(VecPos p, float value);
 
-	private:
+	// TODO: SET ME TO PRIVATE
+	public:
 		glm::vec3 m_Position = { 0.0f, 0.0f, 0.0f };
 		glm::vec3 m_Origin = { 0.0f, 0.0f, 0.0f };
 		glm::vec2 m_MousePos = { 0.0f, 0.0f };

@@ -3,6 +3,8 @@
 #include "LukkelEngine/Core/Base.h"
 #include "LukkelEngine/Renderer/Renderer.h"
 #include "LukkelEngine/Scene/Entity.h"
+#include "LukkelEngine/Renderer/Camera.h"
+
 #include <deque> // Temporary fix for unordered map has bug
 
 #include "entt/entt.hpp"
@@ -21,6 +23,11 @@ namespace LukkelEngine {
 		void tick(unsigned int frames = 1);
 
 		void addEntity(Entity &entity);
+		std::deque<Entity*>& getEntities() { return m_Entities; }
+
+		Camera& getCamera() { return *m_Camera; }
+		// Make unique
+		s_ptr<Camera> m_Camera;
 
 	private:
 		entt::registry m_Registry;

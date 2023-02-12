@@ -1,7 +1,5 @@
 #include "LukkelEngine/Layer/ImGuiLayer.h"
 
-// #include <imgui_impl_opengl3.h>
-
 
 namespace LukkelEngine {
 
@@ -10,8 +8,23 @@ namespace LukkelEngine {
 	{
 	}
 
+	void ImGuiLayer::onAttach()
+	{
+		ImGui::CreateContext();
+		ImGuiIO& io = ImGui::GetIO();
+		/* Enable keyboard */
+		io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+
+		ImGui::StyleColorsDark();
+		Application& app = Application::get();
+		GLFWwindow* window = static_cast<GLFWwindow*>(app.getWindow());
+		//ImGui_ImplGlfw_InitForOpenGL(window, true);
+		//ImGui_ImplOpenGL3_Init("#version 330");
+	}
+
 	void ImGuiLayer::begin()
 	{
+		ImGui::NewFrame();
 	}
 
 	void ImGuiLayer::end()
@@ -21,7 +34,6 @@ namespace LukkelEngine {
 		float width = (float) app.getViewportWidth();
 		float height = (float) app.getViewportHeight();
 		io.DisplaySize = ImVec2(width, height);
-
 	}
 
 	void ImGuiLayer::onUpdate()
@@ -30,6 +42,7 @@ namespace LukkelEngine {
 	}
 	void ImGuiLayer::onImGuiRender()
 	{
+		ImGui::InputText("string", m_Buffer, IM_ARRAYSIZE(m_Buffer));
 	}
 
 	void ImGuiLayer::onEvent(LukkelEngine::Event& e)
@@ -37,15 +50,8 @@ namespace LukkelEngine {
 
 	}
 
-	void ImGuiLayer::onAttach()
-	{
-		// m_Scene->addEntity(*Rect);
-	}
-
 	void ImGuiLayer::onDetach()
 	{
-		// ImGui_ImplOpenGL3_Shutdown(); // UNRESOLVED EXTERNALS
-		// ImGui_ImplGlfw_Shutdown();
 		ImGui::DestroyContext();
 	}
 

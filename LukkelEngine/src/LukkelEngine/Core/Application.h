@@ -4,15 +4,15 @@
 #include "glfw/glfw3.h"
 #include "imgui/imgui.h"
 #include "imgui_impl_glfw.h"
-#include <imgui_impl_opengl3.h>
+#include "imgui_impl_opengl3.h"
 
 
-#include <LukkelEngine/Core/Base.h>
-#include <LukkelEngine/Core/Window.h>
-#include <LukkelEngine/Core/LayerStack.h>
-#include <LukkelEngine/Event/Event.h>
+#include "LukkelEngine/Core/Base.h"
+#include "LukkelEngine/Core/Window.h"
+#include "LukkelEngine/Core/LayerStack.h"
+#include "LukkelEngine/Event/Event.h"
 #include "LukkelEngine/Scene/Scene.h"
-#include <Platform/Windows/Windows_Window.h>
+#include "Platform/Windows/Windows_Window.h"
 
 /* EVENTS */
 #include <LukkelEngine/Event/ApplicationEvent.h>
@@ -24,6 +24,7 @@
 #include <LukkelEngine/Input/Keyboard.h>
 // #include <LukkelEngine/Input/Mouse.h>
 
+#include "LukkelEngine/Layer/ImGuiLayer.h"
 
 /* TESTS */
 #include <LukkelEngine/Test/Test.h>			
@@ -54,8 +55,13 @@ namespace LukkelEngine {
 		void onUpdate(); // per tick
 		void shutdown();
 
+		/* Layer */
 		void pushLayer(Layer* layer);
 		void popLayer(Layer* layer);
+		/* Overlay */
+		void pushOverlay(Layer* layer);
+		void popOverlay(Layer* layer);
+
 		void onEvent(Event& e);
 
 		GLFWwindow* getWindow() { return m_Window->getWindow(); }
@@ -77,7 +83,7 @@ namespace LukkelEngine {
 		// They are protected, so they should be inherited to Sandbox (?)
 		// s_ptr<Window> m_Window;
 		Window* m_Window;
-		u_ptr<Camera> m_Camera;
+		// u_ptr<Camera> m_Camera;
 		u_ptr<Renderer> m_Renderer;
 		u_ptr<Keyboard> m_Keyboard;
 		LayerStack m_LayerStack;

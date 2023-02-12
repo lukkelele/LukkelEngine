@@ -31,4 +31,11 @@ namespace LukkeLog {
 	{
 		s_CoreLogger->debug("| Vector3 ({0}, {1}, {2})", vector[0], vector[1], vector[2]);
 	}
+
+	template<typename T>
+	std::ostream& operator<<(std::ostream& out, const T& g)
+	{
+		return out << glm::to_string(g);
+	}
+
 }

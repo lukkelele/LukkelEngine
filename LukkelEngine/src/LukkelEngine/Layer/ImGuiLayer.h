@@ -8,6 +8,7 @@ namespace LukkelEngine {
 
 	class ImGuiLayer : public Layer
 	{
+	public:
 		ImGuiLayer();
 		~ImGuiLayer() = default;
 
@@ -21,6 +22,8 @@ namespace LukkelEngine {
 
 	private:
 		LukkelEngine::s_ptr<LukkelEngine::Scene> m_Scene;
+
+		char m_Buffer[40 * 8] = { 0 }; // 40 Char buff, for input text
 	};
 
 }

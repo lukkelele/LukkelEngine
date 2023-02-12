@@ -44,14 +44,16 @@ namespace LukkelEngine {
 	void Application::onUpdate()
 	{
 		m_Renderer->clear();
-		/* TODO: Implement ImGui as an overlay */
-		ImGui_ImplGlfwGL3_NewFrame();
+
+		ImGui_ImplGlfwGL3_NewFrame(); // FIXME
 		testRunner();
 
 		for (auto it = m_LayerStack.rbegin(); it != m_LayerStack.rend(); ++it) 
 		{
 			Layer* currentLayer = *it;
 			currentLayer->onUpdate();
+			// If current implementation, change name to onImGuiUpdate?
+			currentLayer->onImGuiRender();
 		}
 
 		m_Renderer->drawImGui(); // ImGui Render
@@ -89,17 +91,45 @@ namespace LukkelEngine {
 
 	}
 
+	/**
+	 * Push a layer to the layer stack
+	 * @param layer is the layer to be pushed
+	*/
 	void Application::pushLayer(Layer* layer)
 	{
 		m_LayerStack.pushLayer(layer);
 		layer->onAttach();
 	}
 
+	/**
+	 * Push an overlay to the layer stack
+	 * @param layer is the layer to be pushed
+	*/
+	void Application::pushOverlay(Layer* layer)
+	{
+		m_LayerStack.pushOverlay(layer);
+		layer->onAttach();
+	}
+
+	/**
+	 * Pop a layer from the layer stack
+	 * @param layer is the layer to be popped
+	*/
 	void Application::popLayer(Layer* layer)
 	{
 		m_LayerStack.popLayer(layer);
 		layer->onDetach();
 	}
+	/**
+	 * Pop an overlay from the layer stack
+	 * @param layer is the layer to be popped
+	*/
+	void Application::popOverlay(Layer* layer)
+	{
+		m_LayerStack.popOverlay(layer);
+		layer->onDetach();
+	}
+
 
 	bool Application::onWindowClose(WindowCloseEvent& e)
 	{

@@ -6,10 +6,16 @@ namespace LukkelEngine {
 	Scene::Scene()
 	{
 		std::deque<Entity*> m_Entities;
+		m_Camera = create_s_ptr<Camera>();
 	}
 	
 	Scene::~Scene()
 	{
+		for (auto& entity : m_Entities)
+		{
+			delete entity;
+			LKLOG_WARN("Deleting entity");
+		}
 	}
 
 	void Scene::onUpdate()

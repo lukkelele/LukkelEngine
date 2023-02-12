@@ -21,6 +21,7 @@ namespace LukkelEngine {
 		float width = (float) app.getViewportWidth();
 		float height = (float) app.getViewportHeight();
 		io.DisplaySize = ImVec2(width, height);
+
 	}
 
 	void ImGuiLayer::onUpdate()

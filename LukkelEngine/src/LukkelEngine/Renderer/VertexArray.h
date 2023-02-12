@@ -2,8 +2,8 @@
 
 #include "LukkelEngine/Core/Base.h"
 #include <LukkelEngine/Core/LKErrorHandler.h>
-#include <VertexBuffer.h>
-#include <VertexBufferLayout.h>
+#include "LukkelEngine/Renderer/VertexBuffer.h"
+#include "LukkelEngine/Renderer/VertexBufferLayout.h"
 #include "LukkelEngine/Renderer/IndexBuffer.h"
 
 namespace LukkelEngine {

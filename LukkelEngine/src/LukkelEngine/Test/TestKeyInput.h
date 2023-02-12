@@ -1,6 +1,7 @@
-#ifndef _TEST_KEYINPUT_H
-#define _TEST_KEYINPUT_H
-#include <Test/Test.h>
+#ifndef _LK_TEST_KEYINPUT_H
+#define _LK_TEST_KEYINPUT_H
+
+#include "LukkelEngine/Test/Test.h"
 #include <glfw/glfw3.h>
 #include <vector>
 
@@ -29,4 +30,4 @@ namespace LukkelEngine {
 		};
 	}
 }
-#endif /* _TEST_KEYINPUT_H */
+#endif /* _LK_TEST_KEYINPUT_H */

@@ -1,7 +1,11 @@
 # Files
 *.log
 **/*.log
+**/bin-int
+**/bin-int/
+**/*/bin-int
 Makefile
+**/Makefile
 *.make
 **/*.make
 **/*/*.make

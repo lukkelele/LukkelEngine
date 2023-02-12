@@ -1,5 +1,4 @@
-#include <LKpch.h>
-#include <Test/TestTexture2D.h>
+#include "LukkelEngine/Test/TestTexture2D.h"
 
 /*
 	TEST FILE, 2D TEXTURES

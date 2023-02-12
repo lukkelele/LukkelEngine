@@ -1,12 +1,12 @@
 includedirs
-{ 
+{  -- Fix {wks.location} instead of hardcoding
 	"glm",
 	"glm/glm"
 }
 
 files
 {
-	"glm/glm/**"
+	"glm/glm/**.hpp"
 }
 
 filter "system:linux"

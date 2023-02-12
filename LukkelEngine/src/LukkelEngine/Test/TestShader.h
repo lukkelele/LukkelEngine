@@ -1,15 +1,15 @@
 #ifndef _TEST_SHADER_H
 #define _TEST_SHADER_H
 
-#include <Test/Test.h>
 #include <vector>
-#include <VertexBuffer.h>
-#include <VertexBufferLayout.h>
-#include <IndexBuffer.h>
-#include <VertexArray.h>
-#include <Shader.h>
-#include <Renderer.h>
-#include <glm/ext.hpp>
+#include "LukkelEngine/Test/Test.h"
+#include "LukkelEngine/Renderer/VertexBuffer.h"
+#include "LukkelEngine/Renderer/VertexBufferLayout.h"
+#include "LukkelEngine/Renderer/IndexBuffer.h"
+#include "LukkelEngine/Renderer/VertexArray.h"
+#include "LukkelEngine/Renderer/Shader.h"
+#include "LukkelEngine/Renderer/Renderer.h"
+#include "glm/ext.hpp"
 
 namespace LukkelEngine {
 	namespace test {

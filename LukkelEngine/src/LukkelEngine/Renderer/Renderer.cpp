@@ -1,7 +1,4 @@
-#ifdef LK_USE_PRECOMPILED_HEADERS
-	#include <LKpch.h>
-#endif
-#include <Renderer.h>
+#include "LukkelEngine/Renderer/Renderer.h"
 #include <imgui_impl_glfw_gl3.h> // FIXME
 
 namespace LukkelEngine {

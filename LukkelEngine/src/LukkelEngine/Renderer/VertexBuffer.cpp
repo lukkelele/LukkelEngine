@@ -1,8 +1,7 @@
-#ifdef LK_USE_PRECOMPILED_HEADERS
-	#include <LKpch.h>
-#endif
-#include <VertexBuffer.h>
-#include <Renderer.h>
+#include "LukkelEngine/Renderer/VertexBuffer.h"
+
+#include "LukkelEngine/Core/LKErrorHandler.h"
+// #include "LukkelEngine/Renderer/Renderer.h"
 
 namespace LukkelEngine {
 

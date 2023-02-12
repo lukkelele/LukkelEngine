@@ -1,7 +1,4 @@
-#ifdef LK_USE_PRECOMPILED_HEADERS
-	#include <LKpch.h>
-#endif
-#include <Shader.h>
+#include "LukkelEngine/Renderer/Shader.h"
 
 namespace LukkelEngine {
 

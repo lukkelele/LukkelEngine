@@ -9,7 +9,7 @@
 			- glfwMakeContextCurrent(WINDOW);
 
 */
-#include <Core/PlatformDetection.h>
+#include "LukkelEngine/Core/PlatformDetection.h"
 
 #include <memory>
 #include <sstream>
@@ -61,5 +61,5 @@ namespace LukkelEngine {
 	}
 }
 
-#include "LukkeLog/LukkeLog.h"
+#include "LukkelEngine/Core/LukkeLog.h"
 #include <LukkelEngine/Core/Assert.h>

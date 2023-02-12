@@ -1,5 +1,6 @@
-#include <Texture.h>
-#include <stb_image/stb_image.h>
+#include "LukkelEngine/Renderer/Texture.h"
+
+#include "stb_image/stb_image.h"
 
 namespace LukkelEngine {
 

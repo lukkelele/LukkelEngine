@@ -1,182 +1,141 @@
--- premake5.lua
+
 workspace "LukkelEngine"
-    configurations { "Debug", "Release", "Dist" }
-    architecture "x64"
+    architecture "x86_64"
+
+    startproject "LukkeLallish"
+
+    configurations
+    {
+        "Debug",
+		"Release",
+        "Dist"
+    }
 
     flags { "MultiProcessorCompile" }
 
     filter "configurations:Debug"
         defines { "LK_DEBUG" }
+        runtime "Debug"
         symbols "On"
 
     filter "configurations:Release"
         defines { "LK_RELEASE" }
+        runtime "Release"
         optimize "On"
 
     filter "configurations:Dist"
         defines { "LK_DIST" }
+        runtime "Release"
         optimize "On"
 
+outputdir = "%{cfg.buildcfg}-%{cfg.system}}"
+
+include "lib/glfw/glfw.lua"
+include "lib/glew/glew.lua"
+include "lib/imgui/imgui.lua"
+include "lib/stb_image/stb_image.lua"
+include "LukkeLallish/premake5.lua"
 
 project "LukkelEngine"
-    kind "ConsoleApp"
+    location "LukkelEngine"
+    kind "StaticLib"
     language "C++"
-    architecture "x64"
     cppdialect "C++17"
+    staticruntime "on"
 
-    targetdir "bin/%{cfg.buildcfg}"
-    objdir    "obj/%{cfg.buildcfg}"
-    
-    -- Precompiled Header -- FIX ERROR WITH INCLUDED VENDOR CPP FILES
-    -- pchheader "LKpch.h"
-    -- pchsource "LukkelEngine/LKpch.cpp"
+    targetdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
+    objdir ("%{wks.location}/bin-int/" .. outputdir .. "/%{prj.name}")
 
-    defines {
+    defines
+    {
         "GLEW_STATIC",
         "LKLOG_ADVANCED",
-        "LKLOG_CLIENT_ENABLE"
-       -- "IMGUI_IMPL_OPENGL_LOADER_GLAD"
+		"_GLM_WIN32",
+		"_CRT_SECURE_NO_WARNINGS",
+
     }
 
-    includedirs {
-        "LukkelEngine/src",
-        "LukkelEngine/src/Platform",
-        "LukkelEngine/src/LukkelEngine",
-        "LukkelEngine/src/LukkelEngine/Renderer",
-        "LukkelEngine/src/LukkelEngine/Test",
-        "LukkelEngine/src/LukkelEngine/Display",
-        "lib",
-        "lib/glm",
-        "lib/imgui",
-        "lib/ImGuizmo",
-        "lib/stb_image",
-        "lib/glfw/include",
-        "lib/glew/include",
-        "lib/spdlog/include",
-        "lib/entt/src"
-    }
+    files
+    { 
+        "%{prj.name}/**.h",
+        "%{prj.name}/**.cpp",
 
-    files { 
-        "LukkelEngine/src/**.cpp",
-        "LukkelEngine/src/**.h",
-        "LukkelEngine/src/LukkelEngine/**.h",
-        "LukkelEngine/src/LukkelEngine/**.cpp",
-        "LukkelEngine/src/Platform/**.cpp",
-        "LukkelEngine/src/Platform/**.h",
+        "%{wks.location}/lib/stb_image/**.h",
+        "%{wks.location}/lib/stb_image/**.cpp",
 
-        "lib/stb_image/**.h",
-        "lib/stb_image/**.cpp",
+        "%{wks.location}/lib/imgui/imgui.cpp",
+		"%{wks.location}/lib/imgui/imgui.h",
+		"%{wks.location}/lib/imgui/imgui_draw.cpp",
+		"%{wks.location}/lib/imgui/imgui_impl_glfw_gl3.cpp",
+		"%{wks.location}/lib/imgui/imgui_impl_glfw_gl3.h",
+		"%{wks.location}/lib/imgui/imgui_widgets.cpp",
 
-		"lib/imgui/imgui.cpp",
-		"lib/imgui/imgui.h",
-		"lib/imgui/imgui_draw.cpp",
-		"lib/imgui/imgui_impl_glfw_gl3.cpp",
-		"lib/imgui/imgui_impl_glfw_gl3.h",
-		"lib/imgui/imgui_widgets.cpp",
+		"%{wks.location}/lib/entt/entt.hpp",
+        "%{wks.location}/glm/glm/**.hpp",
 
-        "lib/ImGuizmo/*.cpp",
-        "lib/ImGuizmo/*.h",
-
-        "lib/glm/glm/**.hpp",
-        "lib/glm/glm/**.inl",
-
-        "lib/LukkeLog/LukkeLog.cpp",
-        "lib/LukkeLog/LukkeLog.h",
-
-        "lib/entt/src/entt/entt.hpp"
-        -- "LukkelEngine/LKpch.cpp"
+        "%{wks.location}/lib/ImGuizmo/*.cpp",
+        "%{wks.location}/lib/ImGuizmo/*.h",
    	}
+
+    libdirs
+    {
+        "%{wks.location}/lib/glew/lib",
+        "%{wks.location}/lib/glfw/lib"
+    }
+
+    includedirs
+    {
+        "%{prj.name}/src",
+		"%{wks.location}/lib",
+		"%{wks.location}/lib/glm",
+		"%{wks.location}/lib/imgui",
+		"%{wks.location}/lib/ImGuizmo",
+		"%{wks.location}/lib/stb_image",
+		"%{wks.location}/lib/glfw/include",
+		"%{wks.location}/lib/glew/include",
+		"%{wks.location}/lib/spdlog/include",
+		"%{wks.location}/lib/entt/src"
+    }
+
+    links
+    {
+        "GLFW",
+        -- "glew",
+		"opengl32",
+        "glew32s",
+        "ImGui",
+        -- "LukkeLallish"
+    }
 
 
     -- LINUX    
     filter "system:linux"
-        defines {
+        defines 
+        {
             "LK_PLATFORM_LINUX",
             "_X11",
             "_IMGUI_X11"
         }
-		libdirs {
-			"lib/glfw/lib/",
-			"lib/glew/lib/"
-		}
-        links {
+        links
+        {
             "dl",
             "pthread",
-		    "glfw3",
-            "opengl32",
-            "glew32s"
         }
 
 
 	filter "system:windows"
-		defines { 
-        "LK_PLATFORM_WINDOWS",
-        "GLEW_STATIC",
-		"_IMGUI_WIN32",
-		"_CRT_SECURE_NO_WARNINGS" -- ImGui
+		defines 
+        { 
+			"LK_PLATFORM_WINDOWS",
+			"GLEW_STATIC",
+			"_IMGUI_WIN32",
+			"_CRT_SECURE_NO_WARNINGS"
 		}
-		libdirs {
-			"lib/glfw/lib/",
-			"lib/glew/lib/"
-		}
-		links { "glfw3", "opengl32", "glew32s" }
 
 
 	
---        -- LINUX 64 bit
---        filter "architecture:x64"
---            defines { 
---                "PLATFORM_LINUX_64",
---				"GLEW_STATIC"
---            }
---            libdirs {
---                "lib/glfw/lib/",
---                "lib/glew/lib/"
---            }
---            links { "glfw3", "opengl32", "glew32s" }
---
---        -- LINUX 32 bit  FIXME
---        filter "architecture:x86"
---            defines {
---                "PLATFORM_LINUX_32",
---				"GLEW_STATIC"
---            }
---            libdirs {
---                "lib/glfw/lib/",
---                "lib/glew/lib/"
---            }
---            links { "glfw3", "opengl32", "glew32s" }
---
---    -- WINDOWS
---    filter "system:windows"
---        defines { 
---            "_IMGUI_WIN32",
---            "_CRT_SECURE_NO_WARNINGS" -- ImGui
---        }
---       -- WINDOWS 64 bit 
---        filter "architecture:x64"
---            defines { 
---                "PLATFORM_WINDOWS_64",
---				"GLEW_STATIC"
---            }
---            libdirs {
---                "lib/glfw/lib/",
---                "lib/glew/lib/"
---            }
---            links { "glfw3", "opengl32", "glew32s" }
---        -- WINDOWS 32 bit
---        filter "architecture:x86"
---            defines { "PLATFORM_WINDOWS_32" }
---            libdirs {
---                "lib/glfw/lib/",
---                "lib/glew/lib/"
---            }
---            links { "glfw3", "opengl32", "glew32s" }
 
-
-
-
-include "lib/glew.lua"
-include "lib/glfw.lua"
+-- include "lib/glew.lua"
+-- include "lib/glfw.lua"
 -- include "lib/imgui.lua"
 -- include "lib/glm.lua"

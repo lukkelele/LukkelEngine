@@ -1,11 +1,11 @@
 project "LukkeLallish"
-kind "ConsoleApp"
+	kind "ConsoleApp"
 	language "C++"
 	cppdialect "C++17"
 	staticruntime "off"
 
-	targetdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
-	objdir ("%{wks.location}/bin-int/" .. outputdir .. "/%{prj.name}")
+	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
+	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
 
 	files {
 		"src/**.h",
@@ -13,22 +13,19 @@ kind "ConsoleApp"
 	}
 
 	includedirs {
-		"%{wks.location}/LukkelEngine/lib/spdlog/include",
 		"%{wks.location}/LukkelEngine/src",
-		"%{wks.location}/LukkelEngine/src/LukkelEngine",
-		"%{wks.location}/LukkelEngine/src/Platform",
-		"%{wks.location}/LukkelEngine/lib",
-		"%{wks.location}/LukkelEngine/lib/glm",
-		"%{wks.location}/LukkelEngine/src/LukkelEngine/Renderer",
-		"%{wks.location}/LukkelEngine/src/LukkelEngine/Test/",
-		"%{wks.location}/LukkelEngine/src/LukkelEngine/Display",
+		"%{wks.location}/lib/spdlog",
 		"%{wks.location}/lib",
 		"%{wks.location}/lib/glm",
+		"%{wks.location}/lib/imgui",
+		"%{wks.location}/lib/ImGuizmo",
 		"%{wks.location}/lib/stb_image",
 		"%{wks.location}/lib/glfw/include",
 		"%{wks.location}/lib/glew/include",
-		"%{wks.location}/lib/spdlog/include"
-	}
+		"%{wks.location}/lib/spdlog/include",
+		"%{wks.location}/lib/entt/src"
+
+		}
 
 	links { "LukkelEngine" }
 

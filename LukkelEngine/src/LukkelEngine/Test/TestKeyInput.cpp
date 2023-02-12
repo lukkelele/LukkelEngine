@@ -1,5 +1,4 @@
-#include <LKpch.h>
-#include <Test/TestKeyInput.h>
+#include "LukkelEngine/Test/TestKeyInput.h"
 
 namespace LukkelEngine {
 

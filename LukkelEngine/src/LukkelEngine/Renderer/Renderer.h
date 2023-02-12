@@ -1,13 +1,12 @@
 #pragma once
 
-#include "LukkeLog/LukkeLog.h"
-#include <imgui/imgui.h>
-#include <GL/glew.h>
-#include <LukkelEngine/Renderer/VertexArray.h>
-#include <LukkelEngine/Renderer/IndexBuffer.h>
-#include <LukkelEngine/Renderer/Shader.h>
-#include <LukkelEngine/Core/LKErrorHandler.h>
-#include <LukkelEngine/Renderer/Camera.h>
+#include "imgui/imgui.h"
+#include "GL/glew.h"
+#include "LukkelEngine/Renderer/VertexArray.h"
+#include "LukkelEngine/Renderer/IndexBuffer.h"
+#include "LukkelEngine/Renderer/Shader.h"
+#include "LukkelEngine/Core/LKErrorHandler.h"
+#include "LukkelEngine/Renderer/Camera.h"
 
 
 namespace LukkelEngine {

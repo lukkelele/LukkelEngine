@@ -1,11 +1,11 @@
 #pragma once
-#include <Test/Test.h>
-#include <VertexBuffer.h>
-#include <VertexBufferLayout.h>
-#include <IndexBuffer.h>
-#include <VertexArray.h>
-#include <Shader.h>
-#include <Renderer.h>
+#include "LukkelEngine/Test/Test.h"
+#include "LukkelEngine/Renderer/VertexArray.h"
+#include "LukkelEngine/Renderer/VertexBufferLayout.h"
+#include "LukkelEngine/Renderer/VertexBuffer.h"
+#include "LukkelEngine/Renderer/IndexBuffer.h"
+#include "LukkelEngine/Renderer/Texture.h"
+#include "LukkelEngine/Renderer/Shader.h"
 
 namespace LukkelEngine {
 	namespace test {

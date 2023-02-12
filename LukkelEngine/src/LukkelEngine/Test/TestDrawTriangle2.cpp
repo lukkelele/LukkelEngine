@@ -1,5 +1,4 @@
-#include <LKpch.h>
-#include <Test/TestDrawTriangle2.h>
+#include "LukkelEngine/Test/TestDrawTriangle2.h"
 
 namespace LukkelEngine {
 	using namespace test;

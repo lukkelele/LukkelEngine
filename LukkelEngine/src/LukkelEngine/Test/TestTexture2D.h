@@ -1,18 +1,18 @@
 #pragma once
 
-#include <Test/Test.h>
+#include "LukkelEngine/Test/Test.h"
 #include <memory>
 
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-#include <VertexArray.h>
-#include <VertexBufferLayout.h>
-#include <VertexBuffer.h>
-#include <IndexBuffer.h>
-#include <Texture.h>
-#include <Shader.h>
+#include "LukkelEngine/Renderer/VertexArray.h"
+#include "LukkelEngine/Renderer/VertexBufferLayout.h"
+#include "LukkelEngine/Renderer/VertexBuffer.h"
+#include "LukkelEngine/Renderer/IndexBuffer.h"
+#include "LukkelEngine/Renderer/Texture.h"
+#include "LukkelEngine/Renderer/Shader.h"
 
 
 /*

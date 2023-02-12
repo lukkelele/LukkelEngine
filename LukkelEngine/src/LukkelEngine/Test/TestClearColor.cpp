@@ -1,5 +1,4 @@
-#include <LKpch.h>
-#include <Test/TestClearColor.h>
+#include "LukkelEngine/Test/TestClearColor.h"
 
 namespace LukkelEngine {
 	using namespace test;

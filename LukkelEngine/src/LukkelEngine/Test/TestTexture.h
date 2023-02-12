@@ -1,15 +1,16 @@
-#ifndef _TEST_TEXTURE_H
-#define _TEST_TEXTURE_H
+#ifndef _LK_TEST_TEXTURE_H
+#define _LK_TEST_TEXTURE_H
 
-#include <Test/Test.h>
-#include <VertexBuffer.h>
-#include <VertexBufferLayout.h>
-#include <IndexBuffer.h>
-#include <VertexArray.h>
-#include <Shader.h>
-#include <Texture.h>
-#include <Renderer.h>
-#include <glm/ext.hpp>
+#include "LukkelEngine/Test/Test.h"
+#include "LukkelEngine/Renderer/VertexBuffer.h"
+#include "LukkelEngine/Renderer/VertexBufferLayout.h"
+#include "LukkelEngine/Renderer/IndexBuffer.h"
+#include "LukkelEngine/Renderer/VertexArray.h"
+#include "LukkelEngine/Renderer/Shader.h"
+#include "LukkelEngine/Renderer/Texture.h"
+#include "LukkelEngine/Renderer/Renderer.h"
+
+#include "glm/ext.hpp"
 
 
 namespace LukkelEngine {
@@ -55,4 +56,4 @@ namespace LukkelEngine {
 }
 
 
-#endif /* _TEST_TEXTURE_H */
+#endif /* _LK_TEST_TEXTURE_H */

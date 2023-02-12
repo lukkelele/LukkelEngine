@@ -47,7 +47,7 @@ namespace LukkelEngine {
 		layout.push<float>(3);
 		m_VAO->addBuffer(*m_VBO, layout);
 
-		m_Shader = std::make_unique<Shader>("res/shaders/default3D.shader");
+		m_Shader = std::make_unique<Shader>("assets/shaders/default3D.shader");
 	}
 
 	TestDrawCube::~TestDrawCube()

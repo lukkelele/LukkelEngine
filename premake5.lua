@@ -1,7 +1,5 @@
-
 workspace "LukkelEngine"
     architecture "x86_64"
-
     startproject "LukkeLallish"
 
     configurations
@@ -28,20 +26,21 @@ workspace "LukkelEngine"
         runtime "Release"
         optimize "On"
 
-outputdir = "%{cfg.buildcfg}-%{cfg.system}}"
 
-include "lib/glfw/glfw.lua"
-include "lib/glew/glew.lua"
-include "lib/imgui/imgui.lua"
-include "lib/stb_image/stb_image.lua"
+outputdir = "%{cfg.buildcfg}-%{cfg.system}"
+
+
 include "LukkeLallish/premake5.lua"
+include "lib/glfw/glfw.lua"
+-- include "lib/glew/glew.lua"
+include "lib/imgui/imgui.lua"
 
 project "LukkelEngine"
     location "LukkelEngine"
     kind "StaticLib"
     language "C++"
     cppdialect "C++17"
-    staticruntime "on"
+    staticruntime "off"
 
     targetdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
     objdir ("%{wks.location}/bin-int/" .. outputdir .. "/%{prj.name}")
@@ -51,6 +50,7 @@ project "LukkelEngine"
         "GLEW_STATIC",
         "LKLOG_ADVANCED",
 		"_GLM_WIN32",
+		"GLFW_INCLUDE_NONE",
 		"_CRT_SECURE_NO_WARNINGS",
 
     }
@@ -75,6 +75,8 @@ project "LukkelEngine"
 
         "%{wks.location}/lib/ImGuizmo/*.cpp",
         "%{wks.location}/lib/ImGuizmo/*.h",
+
+		"%{wks.locaton}/lib/glew/include/GL/glew.h",
    	}
 
     libdirs
@@ -100,28 +102,11 @@ project "LukkelEngine"
     links
     {
         "GLFW",
-        -- "glew",
+        --"glew",
 		"opengl32",
         "glew32s",
         "ImGui",
-        -- "LukkeLallish"
     }
-
-
-    -- LINUX    
-    filter "system:linux"
-        defines 
-        {
-            "LK_PLATFORM_LINUX",
-            "_X11",
-            "_IMGUI_X11"
-        }
-        links
-        {
-            "dl",
-            "pthread",
-        }
-
 
 	filter "system:windows"
 		defines 
@@ -131,6 +116,22 @@ project "LukkelEngine"
 			"_IMGUI_WIN32",
 			"_CRT_SECURE_NO_WARNINGS"
 		}
+
+	filter "configurations:Debug"
+		defines "LK_DEBUG"
+		runtime "Debug"
+		symbols "on"
+
+	filter "configurations:Release"
+		defines "LK_RELEASE"
+		runtime "Release"
+		optimize "on"
+
+	filter "configurations:Dist"
+		defines "LK_DIST"
+		runtime "Release"
+		optimize "on"
+
 
 
 	

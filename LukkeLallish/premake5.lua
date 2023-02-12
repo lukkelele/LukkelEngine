@@ -4,15 +4,17 @@ project "LukkeLallish"
 	cppdialect "C++17"
 	staticruntime "off"
 
-	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
-	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+	targetdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
+	objdir ("%{wks.location}/bin-int/" .. outputdir .. "/%{prj.name}")
 
-	files {
+	files
+	{
 		"src/**.h",
 		"src/**.cpp"
 	}
 
 	includedirs {
+		"%{wks.location}/LukkelEngine",
 		"%{wks.location}/LukkelEngine/src",
 		"%{wks.location}/lib/spdlog",
 		"%{wks.location}/lib",
@@ -24,13 +26,16 @@ project "LukkeLallish"
 		"%{wks.location}/lib/glew/include",
 		"%{wks.location}/lib/spdlog/include",
 		"%{wks.location}/lib/entt/src"
-
 		}
 
-	links { "LukkelEngine" }
+	links
+	{ 
+		"LukkelEngine",
+	}
 
 	filter "system:windows"
 		systemversion "latest"
+
 
 	filter "configurations:Debug"
 		defines "LK_DEBUG"

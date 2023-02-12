@@ -41,8 +41,8 @@ namespace LukkelEngine {
 		m_IBO = std::make_unique<IndexBuffer>(indices, 6);
 
 		// Shader creation
-		m_Shader = std::make_unique<Shader>("res/shaders/basic.shader");
-		m_Texture = std::make_unique<Texture>("res/textures/tinder_logo.png");
+		m_Shader = std::make_unique<Shader>("assets/shaders/basic.shader"); // FIXME: Sandbox pathing
+		m_Texture = std::make_unique<Texture>("assets/textures/tinder_logo.png"); // FIXME: Sandbox pathing
 	}
 
 	TestTexture2D::~TestTexture2D()

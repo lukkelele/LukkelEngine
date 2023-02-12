@@ -13,7 +13,8 @@ namespace LukkelEngine {
 		layout.push<float>(2);
 
 		m_VAO->addBuffer(*m_VBO, layout);
-		m_Shader = std::make_unique<Shader>("res/shaders/basic2.shader");
+		// m_Shader = std::make_unique<Shader>("res/shaders/basic2.shader");
+		m_Shader = std::make_unique<Shader>("assets/shaders/basic2.shader"); // SANDBOX
 		m_Shader->bind();
 		m_Shader->setUniform4f("u_Color", 0.5f, 0.1f, 0.5f, 1.0f);
 		// m_Renderer->draw(*m_VAO, *m_IBO, *m_Shader);

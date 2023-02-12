@@ -1,7 +1,6 @@
 #pragma once
 
 #include "GL/glew.h"
-#include "LukkeLog/LukkeLog.h"
 #include <LukkelEngine/Core/Base.h>
 
 #include <stdint.h>

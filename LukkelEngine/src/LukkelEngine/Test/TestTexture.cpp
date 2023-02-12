@@ -13,8 +13,10 @@ namespace LukkelEngine {
 		layout.push<float>(2);
 
 		m_VAO->addBuffer(*m_VBO, layout);
-		m_Shader = std::make_unique<Shader>("res/shaders/default3D.shader");
-		m_Texture = std::make_unique<Texture>("res/textures/tinder_logo.png");
+		// m_Shader = std::make_unique<Shader>("res/shaders/default3D.shader"); 
+		// m_Texture = std::make_unique<Texture>("res/textures/tinder_logo.png");
+		m_Shader = std::make_unique<Shader>("assets/shaders/default3D.shader"); // FIXME: Sandbox pathing
+		m_Texture = std::make_unique<Texture>("assets/textures/tinder_logo.png"); // FIXME: Sandbox pathing
 		m_Shader->bind();
 		m_Texture->bind();
 		m_Shader->setUniform1i("u_Texture", 0);

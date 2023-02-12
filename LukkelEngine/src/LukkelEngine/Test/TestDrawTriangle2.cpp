@@ -23,7 +23,8 @@ namespace LukkelEngine {
 		layout.push<float>(2);
 		m_VAO->addBuffer(*m_VBO, layout);
 
-		m_Shader = std::make_unique<Shader>("res/shaders/BasicTest.shader");
+		// m_Shader = std::make_unique<Shader>("res/shaders/BasicTest.shader");
+		m_Shader = std::make_unique<Shader>("assets/shaders/BasicTest.shader"); // FIXME -> relative pathing needs to be fixed
 		m_Shader->bind();
 		m_Renderer->draw(*m_VAO, *m_IBO, *m_Shader);
 	}

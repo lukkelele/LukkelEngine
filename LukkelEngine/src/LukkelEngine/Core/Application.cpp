@@ -14,15 +14,13 @@ namespace LukkelEngine {
 		LKLOG_TRACE("Starting application");
 		WindowProps properties = WindowProps("Debug", WINDOW_WIDTH, WINDOW_HEIGHT);
 		m_Window = Window::create(properties);
-		// m_Window = create_s_ptr<Windows_Window>(properties);
-		
-		/* Fix so these pointers actually stick to Sandbox */
-		//m_Camera = create_u_ptr<Camera>();
 
 		ImGui::CreateContext();
 		ImGui_ImplGlfwGL3_Init(m_Window->getWindow(), true);
 		ImGui::StyleColorsDark();
 		m_ImGuiInitialized = true;
+
+		m_Scene = create_u_ptr<Scene>();
 
 		registerTests();
 	}
@@ -44,7 +42,6 @@ namespace LukkelEngine {
 	void Application::onUpdate()
 	{
 		m_Renderer->clear();
-
 		ImGui_ImplGlfwGL3_NewFrame(); // FIXME
 		testRunner();
 
@@ -88,7 +85,6 @@ namespace LukkelEngine {
 		testMenu->registerTest<test::TestDrawCube>("Draw 3D cube");
 		testMenu->registerTest<test::TestShader>("Shader test");
 		testMenu->registerTest<test::TestTexture>("Texture testing");
-
 	}
 
 	/**

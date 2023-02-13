@@ -14,11 +14,10 @@ namespace LukkelEngine {
 	class Camera
 	{
 	public:
-		// Camera(float FOV = 50.0f, float nearPlane = 0.10f, float farPlane = 100.0f);
 		Camera(float left, float right, float bottom, float top);
 		~Camera() = default;
 
-		glm::vec3 getPosition() const { return m_Position; }
+		const glm::vec3& getPosition() const { return m_Position; }
 		glm::mat4 getViewMatrix() const { return m_ViewMatrix; }
 		glm::mat4 getProjectionMatrix() const { return m_ProjectionMatrix; }
 		glm::mat4 getViewProjectionMatrix() const { return m_ViewProjectionMatrix; }
@@ -26,11 +25,14 @@ namespace LukkelEngine {
 		glm::quat getOrientation() const;
 		glm::vec3 calculatePosition() const;
 
-		void setPosition(glm::vec3& newPos);
+		void setPosition(const glm::vec3& newPos);
 		// Could recalculate view matrix in 'onUpdate' as well
 		void setProjection(float left, float right, float bottom, float top);
 		void setRotation(float rot) { m_Rotation = rot; recalculateViewMatrix(); }
 		void recalculateViewMatrix();
+
+		void updateView();
+		void updateProjection();
 
 	// TODO: SET ME TO PRIVATE
 	public:
@@ -45,6 +47,7 @@ namespace LukkelEngine {
 		float m_RotationSpeed = 0.10f;
 		float m_Yaw = 0.0f, m_Pitch = 0.0f;
 		float m_ViewportWidth = 1280, m_ViewportHeight = 1024;
+		float m_AspectRatio = 1.5f;
 
 		glm::mat4 m_ViewMatrix;
 		glm::mat4 m_ProjectionMatrix; 

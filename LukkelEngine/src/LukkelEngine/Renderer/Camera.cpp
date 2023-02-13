@@ -10,10 +10,9 @@ namespace LukkelEngine {
 	}
 
 	// Change to 3 floats instead ?
-	void Camera::setPosition(glm::vec3 &newPos) {
-		m_Position = newPos; // set (x, y, z) to new pos
-		m_Position.x = newPos.x;
-		LKLOG_TRACE("Position: ({0}, {1}, {2})", m_Position.x, m_Position.y, m_Position.z);
+	void Camera::setPosition(const glm::vec3 &newPos) {
+		m_Position = newPos; 
+		LKLOG_CLIENT_WARN("Camera position: ({0}, {1}, {2})", m_Position.x, m_Position.y, m_Position.z);
 		recalculateViewMatrix();
 	}
 
@@ -23,9 +22,23 @@ namespace LukkelEngine {
 		m_ViewProjectionMatrix = m_ProjectionMatrix * m_ViewMatrix;
 	}
 
+	void Camera::updateView()
+	{
+		m_Position = calculatePosition();
+		glm::quat orientation = getOrientation();
+		m_ViewMatrix = glm::translate(glm::mat4(1.0f), m_Position) * glm::toMat4(orientation);
+		m_ViewMatrix = glm::inverse(m_ViewMatrix);
+	}
+
+	void Camera::updateProjection()
+	{
+		m_AspectRatio = m_ViewportWidth / m_ViewportHeight;
+		m_ProjectionMatrix = glm::perspective(glm::radians(m_FOV), m_AspectRatio, m_NearPlane, m_FarPlane);
+	}
+
 	void Camera::recalculateViewMatrix()
 	{
-		LKLOG_TRACE("Position: ({0}, {1}, {2})", m_Position.x, m_Position.y, m_Position.z);
+		LKLOG_CLIENT_TRACE("recalculateViewMatrix() -> cam position: ({0}, {1}, {2})", m_Position.x, m_Position.y, m_Position.z);
 		glm::mat4 transform = glm::translate(glm::mat4(1.0f), m_Position) *
 			glm::rotate(glm::mat4(1.0f), glm::radians(m_Rotation), glm::vec3(0, 0, 1));
 

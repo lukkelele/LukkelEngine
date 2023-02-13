@@ -26,8 +26,9 @@ namespace LukkelEngine {
 		std::deque<Entity*>& getEntities() { return m_Entities; }
 
 		Camera& getCamera() { return *m_Camera; }
-		// Make unique
-		s_ptr<Camera> m_Camera;
+		void updateCameraPosition(glm::vec3& newPosition);
+
+		u_ptr<Camera> m_Camera;
 
 	private:
 		entt::registry m_Registry;

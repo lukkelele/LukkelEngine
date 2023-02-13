@@ -18,6 +18,7 @@ public:
 
 	// TESTING ONLY
 	float r = 0.0f;
+	float b = 0.5f;
 
 private:
 	// Shared pointer

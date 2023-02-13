@@ -71,6 +71,13 @@ namespace LukkelEngine {
 		// Used for getting current user window, cross platform
 		static Application& get() { return *s_Instance; }
 
+		bool onWindowClose(WindowCloseEvent& e);
+		bool onWindowResize(WindowResizeEvent& e);
+		void resizeWindow(uint16_t width, uint16_t height);
+
+		void testRunner();
+		void registerTests();
+
 	protected:
 		ApplicationDetails details;
 		static Application* s_Instance;
@@ -90,12 +97,7 @@ namespace LukkelEngine {
 		test::Test* currentTest = nullptr;
 		test::TestMenu* testMenu;
 
-		bool onWindowClose(WindowCloseEvent& e);
-		bool onWindowResize(WindowResizeEvent& e);
-		void resizeWindow(uint16_t width, uint16_t height);
-
-		void testRunner();
-		void registerTests();
+		s_ptr<Scene> m_Scene;
 
 	};
 }

@@ -15,7 +15,6 @@ void TestLayer::onAttach()
 {
 	m_Scene = std::make_shared<LukkelEngine::Scene>();
 	LukkelEngine::Entity* Rect = new LukkelEngine::Rectangle();
-	//Rect->m_Shader->setUniform4f("u_Color", r, 0.5f, 0.5f, 1.0f);
 	m_Scene->addEntity(*Rect);
 
 	//LukkelEngine::Entity* Cube = new LukkelEngine::Cube();
@@ -26,43 +25,45 @@ void TestLayer::onAttach()
 void TestLayer::onUpdate()
 {			
 
-	LukkelEngine::Camera cam = m_Scene->getCamera();
 	/* Poll input */
 	if (LukkelEngine::Keyboard::isKeyPressed(LukkelEngine::Key::W))
 	{
 		LKLOG_INFO("W");
-		cam.setPosition(glm::vec3(0.5, 0.5, 0));
+		m_Scene->updateCameraPosition(glm::vec3(0.0f, -1.0f, 0.0f));
 		r += 0.01;
 	} 
 	else if (LukkelEngine::Keyboard::isKeyPressed(LukkelEngine::Key::S))
 	{
-		cam.setPosition(glm::vec3(0.5, 0.2, 0));
+		m_Scene->updateCameraPosition(glm::vec3(0.0f, 1.0f, 0.0f));
 		LKLOG_INFO("S");
 		r -= 0.01;
 	} 
 	if (LukkelEngine::Keyboard::isKeyPressed(LukkelEngine::Key::A)) 
 	{
 		LKLOG_INFO("A");
-		cam.setPosition(glm::vec3(-1, 0, 0));
+		m_Scene->updateCameraPosition(glm::vec3(1.0f, 0.0f, 0.0f));
+		b -= 0.1f;
 	} 
 	else if (LukkelEngine::Keyboard::isKeyPressed(LukkelEngine::Key::D))
 	{
 		LKLOG_INFO("D");
-		cam.setPosition(glm::vec3(1, 0, 0));
+		m_Scene->updateCameraPosition(glm::vec3(-1.0f, 0.0f, 0.0f));
+		b += 0.1f;
 	}
 
+	auto cam = m_Scene->getCamera();
 
 	auto sceneEntities = m_Scene->getEntities();
 	for (auto &item : sceneEntities)
 	{
 		glm::vec3 translationA = item->m_TranslationA;
+		cam.recalculateViewMatrix();
 		item->m_Shader->bind();
 		item->m_Shader->setUniformMat4f("u_ViewProjection", cam.getViewProjectionMatrix());
-		item->m_Shader->setUniform4f("u_Color", r, 0.5f, 0.5f, 1.0f);
-		cam.recalculateViewMatrix();
+		item->m_Shader->setUniform4f("u_Color", r, b, 0.2f, 1.0f);
 	}
-	m_Scene->onUpdate();
 	onImGuiRender();
+	m_Scene->onUpdate();
 }
 
 void TestLayer::onImGuiRender()
@@ -74,10 +75,8 @@ void TestLayer::onImGuiRender()
 
 void TestLayer::onEvent(LukkelEngine::Event& e)
 {
-
 }
 
 void TestLayer::onDetach()
 {
-
 }

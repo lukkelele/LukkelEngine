@@ -48,7 +48,7 @@ namespace LukkelEngine {
 	template<typename T, typename ... ARGS>
 	constexpr u_ptr<T> create_u_ptr(ARGS&& ... args)
 	{
-		return std::make_unique<T>(std::forward<Args>(args)...);
+		return std::make_unique<T>(std::forward<ARGS>(args)...);
 	}
 
 	/* Reference using smart shared pointer */

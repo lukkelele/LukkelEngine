@@ -6,7 +6,7 @@ namespace LukkelEngine {
 	Scene::Scene()
 	{
 		std::deque<Entity*> m_Entities;
-		m_Camera = create_s_ptr<Camera>(-1.0, 1.0, -1.0, 1.0);
+		m_Camera = create_u_ptr<Camera>(-1.6f, 1.6f, -0.9f, 0.9f);
 	}
 	
 	Scene::~Scene()
@@ -28,11 +28,15 @@ namespace LukkelEngine {
 		}
 	}
 
-	// void Scene::addEntity(s_ptr<Entity> &entity)
 	void Scene::addEntity(Entity& entity)
 	{
 		m_Entities.push_back(&entity);
 	}
 
+	/* This is needed because the references was weird when accessing camera directly */
+	void Scene::updateCameraPosition(glm::vec3& newPosition)
+	{
+		m_Camera->setPosition(newPosition);
+	}
 
 }

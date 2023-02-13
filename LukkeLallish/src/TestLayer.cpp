@@ -14,16 +14,20 @@ TestLayer::TestLayer()
 void TestLayer::onAttach()
 {
 	m_Scene = std::make_shared<LukkelEngine::Scene>();
-	LukkelEngine::Entity* Rect = new LukkelEngine::Rectangle();
-	m_Scene->addEntity(*Rect);
 
-	//LukkelEngine::Entity* Cube = new LukkelEngine::Cube();
-	// Cube->m_Shader->bind();
-	//m_Scene->addEntity(*Cube);
+	//LukkelEngine::Entity* Rect = new LukkelEngine::Rectangle();
+	//m_Scene->addEntity(*Rect);
+
+	LukkelEngine::Entity* Cube = new LukkelEngine::Cube();
+	m_Scene->addEntity(*Cube);
 }
 
 void TestLayer::onUpdate()
 {			
+	// Fix correct referencing of the camera when getting it from Scene.
+	// It is currently a unique pointer which interferes
+	auto cam = m_Scene->getCamera();
+	// LukkelEngine::Camera cam = m_Scene->m_Camera;
 
 	/* Poll input */
 	if (LukkelEngine::Keyboard::isKeyPressed(LukkelEngine::Key::W))
@@ -43,15 +47,21 @@ void TestLayer::onUpdate()
 		LKLOG_INFO("A");
 		m_Scene->updateCameraPosition(glm::vec3(1.0f, 0.0f, 0.0f));
 		b -= 0.1f;
+		// cam.m_Yaw -= 0.2; // FIXME
+		m_Scene->m_Camera->m_Yaw -= 0.2f;
+		LKLOG_CLIENT_WARN("Yaw: {0} | Pitch: {1}", cam.m_Yaw, cam.m_Pitch);
 	} 
 	else if (LukkelEngine::Keyboard::isKeyPressed(LukkelEngine::Key::D))
 	{
 		LKLOG_INFO("D");
 		m_Scene->updateCameraPosition(glm::vec3(-1.0f, 0.0f, 0.0f));
 		b += 0.1f;
+		// cam.m_Yaw += 0.2; // FIXME
+		m_Scene->m_Camera->m_Yaw += 0.2f;
+		LKLOG_CLIENT_WARN("Yaw: {0} | Pitch: {1}", cam.m_Yaw, cam.m_Pitch);
 	}
 
-	auto cam = m_Scene->getCamera();
+	LKLOG_CLIENT_WARN("Yaw: {0} | Pitch: {1}", cam.m_Yaw, cam.m_Pitch);
 
 	auto sceneEntities = m_Scene->getEntities();
 	for (auto &item : sceneEntities)

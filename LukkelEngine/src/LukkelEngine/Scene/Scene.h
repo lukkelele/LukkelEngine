@@ -27,6 +27,7 @@ namespace LukkelEngine {
 
 		Camera& getCamera() { return *m_Camera; }
 		void updateCameraPosition(glm::vec3& newPosition);
+		void updateCameraRotation(float rot) { m_Camera->setRotation(rot); }
 
 		u_ptr<Camera> m_Camera;
 

@@ -20,7 +20,6 @@ namespace LukkelEngine {
 
 			m_Shader->bind();
 			m_Shader->setUniform4f("u_Color", 0.6f, 0.8f, 0.2f, 1.0f);
-
 		}
 
 		~Rectangle() = default;

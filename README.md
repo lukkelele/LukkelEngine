@@ -2,7 +2,8 @@
 > Graphics Engine written in C++<br>
 
 As I've grown impatient with Python and Java I figured it was time for me to step in to a new realm.
-One language I always have had a special love towards is **C**.<br>No steering wheels and total freedom.<br><br>
+One language I always have had a special love towards is **C** and **C++**. Especially **C++**, something about 
+the entire structure of the language is just something I appreciate. It is so clean in away.<br><br>
 My preferred way of learning is to just do something, be horrible at it and try again.<br>
 A project is a very good way of learning as it *requires* things to work.<br>
 My restlessness combined with my severe dissapointment in the gaming world made me think that a game engine
@@ -49,6 +50,6 @@ Holds mostly abstracted OpenGL to create an API that is way more clean than raw 
 
 The sandbox is simply a child of *Application* and implements custom layers that are inserted on to the engine.
 This is done to simulate a real life example of actually using the engine. Not that anyone besides me ever will do that,
-still I think it is appropriate to code *as if* that was the case.
+still I think it is appropriate to code *as if* that is the case.
 
 

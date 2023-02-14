@@ -61,4 +61,52 @@ namespace LukkelEngine {
 		return (m_Origin - getForwardDirection() * m_Distance);
 	}
 
+	void Camera::onUpdate(float ts)
+	{
+		if (Keyboard::isKeyPressed(Key::W))
+		{
+			LKLOG_INFO("W");
+			m_Position.y -= m_Speed * ts;
+		} 
+		else if (Keyboard::isKeyPressed(Key::S))
+		{
+			LKLOG_INFO("S");
+			m_Position.y += m_Speed * ts;
+		} 
+		if (Keyboard::isKeyPressed(Key::A)) 
+		{
+			LKLOG_INFO("A");
+			m_Position.x += m_Speed * ts;
+		} 
+		else if (Keyboard::isKeyPressed(Key::D))
+		{
+			LKLOG_INFO("D");
+			m_Position.x -= m_Speed * ts;
+		}
+
+		// ROTATION
+		if (Keyboard::isKeyPressed(Key::Q))
+		{
+			m_Rotation += m_RotationSpeed * ts;
+			setRotation(m_Rotation);
+			LKLOG_WARN("Yaw: {0} | Pitch: {1}", m_Yaw, m_Pitch);
+		}
+		else if (Keyboard::isKeyPressed(Key::E))
+		{
+			m_Rotation -= m_RotationSpeed * ts;
+			setRotation(m_Rotation);
+			LKLOG_WARN("Yaw: {0} | Pitch: {1}", m_Yaw, m_Pitch);
+		}
+
+		if (Keyboard::isKeyPressed(Key::R))
+		{
+			m_Position.z += m_Speed * ts;
+		}
+		else if (Keyboard::isKeyPressed(Key::T))
+		{
+			m_Position.z -= m_Speed * ts;
+		}
+
+	}
+
 }

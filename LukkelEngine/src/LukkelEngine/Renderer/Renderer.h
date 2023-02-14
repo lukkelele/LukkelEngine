@@ -15,14 +15,11 @@ namespace LukkelEngine {
 	{
 	public:
 		void clear() const;
-		void draw(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const;
+		void draw(const VertexArray& va,
+				  const IndexBuffer& ib,
+				  const Shader& shader,
+				  const glm::mat4& transform = glm::mat4(1.0f)) const;
 		void drawImGui() const;
-
-
-		// void drawIndexed(VertexArray& va, uint32_t indexCount) const;
-		void drawIndexed(const s_ptr<VertexArray>& va, uint32_t indexCount) const;
-
-		void attachCamera(Camera* cam);
 
 		static void onWindowResize(uint16_t width, uint16_t height);
 	};

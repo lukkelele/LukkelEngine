@@ -9,9 +9,8 @@ namespace LukkelEngine {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
 
-	// void Renderer::attachCamera(Camera* cam) { m_Cam = cam; }
-
-	void Renderer::draw(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const
+	void Renderer::draw(const VertexArray& va, const IndexBuffer& ib,
+						const Shader& shader, const glm::mat4& transform) const
 	{
 		shader.bind();
 		va.bind();
@@ -24,14 +23,6 @@ namespace LukkelEngine {
 		ImGui::Render();
 		ImGui_ImplGlfwGL3_RenderDrawData(ImGui::GetDrawData());
 	}
-
-	void Renderer::drawIndexed(const s_ptr<VertexArray> &va, uint32_t indexCount) const
-	{
-		va->bind();
-		uint32_t count = indexCount ? indexCount : va->getIndexBuffer()->getCount();
-		glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
-	}
-
 
 	void Renderer::onWindowResize(uint16_t width, uint16_t height)
 	{

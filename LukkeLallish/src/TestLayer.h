@@ -12,7 +12,7 @@ public:
 	virtual void onAttach() override;
 	virtual void onDetach() override;
 
-	void onUpdate() override;
+	void onUpdate(float ts) override;
 	virtual void onImGuiRender() override;
 	void onEvent(LukkelEngine::Event& e) override;
 

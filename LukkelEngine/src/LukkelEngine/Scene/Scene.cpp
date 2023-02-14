@@ -23,9 +23,11 @@ namespace LukkelEngine {
 		m_Camera->onUpdate(ts);
 		for (auto &entity : m_Entities)
 		{
-			m_Camera->recalculateViewMatrix();
 			entity->m_Shader->bind();
 			entity->m_Shader->setUniformMat4f("u_ViewProjection", m_Camera->getViewProjectionMatrix());
+			/* Get transform */
+			glm::mat4 transform = glm::translate(glm::mat4(1.0f), glm::vec3(1.0f, 0.5f, 1.0f));
+			entity->m_Shader->setUniformMat4f("u_Transform", transform);
 			entity->m_Shader->setUniform4f("u_Color", 1.0, 0.8f, 0.2f, 1.0f);
 
 			s_ptr<VertexArray> va = entity->getVertexArray();

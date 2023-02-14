@@ -3,10 +3,15 @@
 namespace LukkelEngine {
 
 	Camera::Camera(float left, float right, float bottom, float top)
-		: m_ProjectionMatrix(glm::ortho(left, right, bottom, top, -1.0f, 1.0f)), m_ViewMatrix(1.0f)
+		: m_ProjMatrix(glm::ortho(left, right, bottom, top, -1.0f, 1.0f)), m_ViewMatrix(1.0f)
 	{
 		LKLOG_TRACE("Camera created | FOV: {0}", m_FOV);
-		m_ViewProjectionMatrix = m_ProjectionMatrix * m_ViewMatrix;
+		m_ViewProjectionMatrix = m_ProjMatrix * m_ViewMatrix;
+	}
+
+	Camera::Camera(float FOV, float nearPlane, float farPlane)
+		: m_FOV(FOV), m_NearPlane(nearPlane), m_FarPlane(farPlane)
+	{
 	}
 
 	// Change to 3 floats instead ?
@@ -18,8 +23,8 @@ namespace LukkelEngine {
 
 	void Camera::setProjection(float left, float right, float bottom, float top)
 	{
-		m_ProjectionMatrix = glm::ortho(left, right, bottom, top, -1.0f, 1.0f);
-		m_ViewProjectionMatrix = m_ProjectionMatrix * m_ViewMatrix;
+		m_ProjMatrix = glm::ortho(left, right, bottom, top, -1.0f, 1.0f);
+		m_ViewProjectionMatrix = m_ProjMatrix * m_ViewMatrix;
 	}
 
 	void Camera::updateView()
@@ -33,17 +38,29 @@ namespace LukkelEngine {
 	void Camera::updateProjection()
 	{
 		m_AspectRatio = m_ViewportWidth / m_ViewportHeight;
-		m_ProjectionMatrix = glm::perspective(glm::radians(m_FOV), m_AspectRatio, m_NearPlane, m_FarPlane);
+		m_ProjMatrix = glm::perspective(glm::radians(m_FOV), m_AspectRatio, m_NearPlane, m_FarPlane);
 	}
 
 	void Camera::recalculateViewMatrix()
 	{
-		LKLOG_CLIENT_TRACE("recalculateViewMatrix() -> cam position: ({0}, {1}, {2})", m_Position.x, m_Position.y, m_Position.z);
 		glm::mat4 transform = glm::translate(glm::mat4(1.0f), m_Position) *
 			glm::rotate(glm::mat4(1.0f), glm::radians(m_Rotation), glm::vec3(0, 0, 1));
 
 		m_ViewMatrix = glm::inverse(transform);
-		m_ViewProjectionMatrix = m_ProjectionMatrix * m_ViewMatrix;
+		m_ViewProjectionMatrix = m_ProjMatrix * m_ViewMatrix;
+	}
+
+	void Camera::recalculateProjMatrix()
+	{
+		m_ProjMatrix = glm::perspective(m_PerspectiveFOV, m_AspectRatio, m_PerspectiveNear, m_PerspectiveFar);
+	}
+
+	void Camera::setPerspective(float FOV, float nearPlane, float farPlane)
+	{
+		m_PerspectiveFOV = FOV;
+		m_PerspectiveNear = nearPlane;
+		m_PerspectiveFar = farPlane;
+		recalculateProjMatrix();
 	}
 
 	glm::vec3 Camera::getForwardDirection() const
@@ -107,6 +124,8 @@ namespace LukkelEngine {
 			m_Position.z -= m_Speed * ts;
 		}
 
+		recalculateViewMatrix();
+		// recalculateProjMatrix();
 	}
 
 }

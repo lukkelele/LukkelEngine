@@ -39,7 +39,7 @@ namespace LukkelEngine {
 		}
 	}
 
-	void Application::onUpdate()
+	void Application::onUpdate(float ts)
 	{
 		m_Renderer->clear();
 		ImGui_ImplGlfwGL3_NewFrame(); // FIXME
@@ -48,7 +48,7 @@ namespace LukkelEngine {
 		for (auto it = m_LayerStack.rbegin(); it != m_LayerStack.rend(); ++it) 
 		{
 			Layer* currentLayer = *it;
-			currentLayer->onUpdate();
+			currentLayer->onUpdate(ts);
 			// If current implementation, change name to onImGuiUpdate?
 			currentLayer->onImGuiRender();
 		}

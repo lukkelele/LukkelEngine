@@ -52,7 +52,7 @@ namespace LukkelEngine {
 		~Application();
 
 		void run(bool test = LK_DEBUG);
-		void onUpdate(); // per tick
+		void onUpdate(float ts = 1.0f);
 		void shutdown();
 
 		/* Layer */

@@ -13,7 +13,7 @@ namespace LukkelEngine {
 
 		virtual void onAttach() {}
 		virtual void onDetach() {}
-		virtual void onUpdate() {}
+		virtual void onUpdate(float ts) {}
 		virtual void onImGuiRender() {}
 		virtual void onEvent(Event& event) {}
 

@@ -32,7 +32,8 @@ namespace LukkelEngine {
 
 		void setPosition(const glm::vec3& newPos);
 		void setProjection(float left, float right, float bottom, float top);
-		void setRotation(float rot) { m_Rotation = rot; recalculateViewMatrix(); }
+		// void setRotation(float rot) { m_Rotation = rot; recalculateViewMatrix(); }
+		void setRotation(float rot) { m_Rotation = rot; }
 		void recalculateViewMatrix();
 		void recalculateProjMatrix();
 
@@ -49,12 +50,14 @@ namespace LukkelEngine {
 		float getPerspectiveFarClip() const { return m_PerspectiveFar; }
 		void setPerspectiveFarClip(float farClip) { m_PerspectiveFar = farClip; recalculateProjMatrix(); }
 
+		float getRotation() { return glm::radians(m_Rotation); }
 
 		void onEvent(Event& e);
 
-	private:
+	public:
 		glm::vec3 m_Position = { 0.0f, 0.0f, 0.0f };
 		glm::vec3 m_Origin = { 0.0f, 0.0f, 0.0f };
+		glm::vec3 m_Orientation = { 0.0f, 0.0f, -1.0f };
 		glm::vec2 m_MousePos = { 0.0f, 0.0f };
 
 		float m_FOV = 50.0f, m_NearPlane = 0.10f, m_FarPlane = 1000.0f;

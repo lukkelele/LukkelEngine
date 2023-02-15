@@ -53,8 +53,9 @@ namespace LukkelEngine {
 		glm::vec3 m_Position = { 0.0f, 0.0f, 3.0f };
 		glm::vec3 m_Origin = { 0.0f, 0.0f, 0.0f };
 		glm::vec2 m_MousePos = { 0.0f, 0.0f };
-		glm::vec3 m_ForwardDir = { 0.0f, 0.0f, -1.0f };
 
+		glm::vec3 m_ForwardDir = { 0.0f, 0.0f, -1.0f };
+		glm::vec3 m_Up = glm::vec3(0.0f, 1.0f, 0.0f);
         glm::vec3 m_Target = { 0.0f, 0.0f, 0.0f };
 
 		float m_FOV = 50.0f, m_NearPlane = 0.10f, m_FarPlane = 1000.0f;

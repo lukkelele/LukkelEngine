@@ -24,16 +24,27 @@ namespace LukkelEngine {
 		for (auto &entity : m_Entities)
 		{
 			entity->m_Shader->bind();
-			entity->m_Shader->setUniformMat4f("u_ViewProjection", m_Camera->getViewProjectionMatrix());
 			/* Get transform */
 			glm::mat4 transform = glm::translate(glm::mat4(1.0f), glm::vec3(1.0f, 0.5f, 1.0f));
 			entity->m_Shader->setUniformMat4f("u_Transform", transform);
-			entity->m_Shader->setUniform4f("u_Color", 1.0, 0.8f, 0.2f, 1.0f);
+
+			glm::vec3 up = { 0.0f, 1.0f, 0.0f }; // Rotate with this to rotate as if looking left/right
+			glm::vec3 target = { 0.0f, 0.0f, 1.0f };
+
+			glm::mat4 model = glm::mat4(1.0f);
+			model = glm::translate(model, glm::vec3(1.0f, 1.0f, 1.0f));
+			// Rotate axis
+			model = glm::rotate(model, m_Camera->getRotation(), up); // last vector is UP
+
+			entity->m_Shader->setUniformMat4f("model", model);
+			entity->m_Shader->setUniform4f("u_Color", 1.0, 0.8f, 1.0f, 1.0f);
+			entity->m_Shader->setUniformMat4f("u_ViewProjection", m_Camera->getViewProjectionMatrix());
 
 			s_ptr<VertexArray> va = entity->getVertexArray();
 			s_ptr<IndexBuffer> ib = entity->getIndexBuffer();
 			s_ptr<Shader> shader = entity->getVertexShader();
-			m_Renderer->draw(*va, *ib, *shader);
+			// m_Renderer->draw(*va, *ib, *shader);
+			m_Renderer->drawLines(*va, *ib, *shader);
 		}
 	}
 

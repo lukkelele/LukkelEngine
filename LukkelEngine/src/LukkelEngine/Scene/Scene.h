@@ -29,7 +29,6 @@ namespace LukkelEngine {
 		// const Camera& getCamera() const { return *m_Camera; }
 		const s_ptr<Camera> getCamera() const { return m_Camera; }
 
-
 	private:
 		bool m_IsRunning = false, m_IsPaused = false;
 		int m_Frames = 0;

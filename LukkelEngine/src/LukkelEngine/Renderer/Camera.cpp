@@ -3,7 +3,7 @@
 namespace LukkelEngine {
 
 	Camera::Camera(float left, float right, float bottom, float top)
-		: m_ProjMatrix(glm::ortho(left, right, bottom, top, -1.0f, 1.0f)), m_ViewMatrix(1.0f)
+		: m_ProjMatrix(glm::ortho(left, right, bottom, top, -10.0f, 100.0f)), m_ViewMatrix(1.0f)
 	{
 		LKLOG_TRACE("Camera created | FOV: {0}", m_FOV);
 		m_ViewProjectionMatrix = m_ProjMatrix * m_ViewMatrix;
@@ -52,7 +52,7 @@ namespace LukkelEngine {
 
 	void Camera::recalculateProjMatrix()
 	{
-		m_ProjMatrix = glm::perspective(m_PerspectiveFOV, m_AspectRatio, m_PerspectiveNear, m_PerspectiveFar);
+		m_ProjMatrix = glm::perspective(m_PerspectiveFOV, (float)m_ViewportWidth/m_ViewportHeight, m_PerspectiveNear, m_PerspectiveFar);
 	}
 
 	void Camera::setPerspective(float FOV, float nearPlane, float farPlane)
@@ -83,12 +83,18 @@ namespace LukkelEngine {
 		if (Keyboard::isKeyPressed(Key::W))
 		{
 			LKLOG_INFO("W");
-			m_Position.y -= m_Speed * ts;
+			// m_Position.y -= m_Speed * ts;
+			glm::vec3 forward(0, 0, 1);
+			m_Position += forward * 0.1f;
+			LKLOG_CLIENT_TRACE("POS -> ( {0}, {1}, {2} )", m_Position.x, m_Position.y, m_Position.y);
 		} 
 		else if (Keyboard::isKeyPressed(Key::S))
 		{
 			LKLOG_INFO("S");
-			m_Position.y += m_Speed * ts;
+			// m_Position.y -= m_Speed * ts;
+			glm::vec3 forward(0, 0, 1);
+			m_Position -= forward * 0.1f;
+			LKLOG_CLIENT_TRACE("POS -> ( {0}, {1}, {2} )", m_Position.x, m_Position.y, m_Position.y);
 		} 
 		if (Keyboard::isKeyPressed(Key::A)) 
 		{
@@ -124,8 +130,18 @@ namespace LukkelEngine {
 			m_Position.z -= m_Speed * ts;
 		}
 
-		recalculateViewMatrix();
+		// ARROW KEYS
+		if (Keyboard::isKeyPressed(Key::Up))
+		{
+			m_Position.y -= m_Speed * ts;
+		}
+		else if (Keyboard::isKeyPressed(Key::Down))
+		{
+			m_Position.y += m_Speed * ts;
+		}
+
 		// recalculateProjMatrix();
+		recalculateViewMatrix();
 	}
 
 }

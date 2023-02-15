@@ -29,10 +29,19 @@ namespace LukkelEngine {
 		glm::vec3 getForwardDirection() const;
 		glm::quat getOrientation() const;
 		glm::vec3 calculatePosition() const;
+		float getFOV() const { return m_FOV; }
+		float getNearClip() const { return m_NearPlane; }
+		float getFarClip() const { return m_FarPlane; }
 
 		void setPosition(const glm::vec3& newPos);
 		void setProjection(float left, float right, float bottom, float top);
 		void setRotation(float rot) { m_Rotation = rot; recalculateView(); }
+		void setPerspective(float FOV, float nearPlane, float farPlane);
+		void setFOV(float FOV) { m_FOV = FOV; recalculateProjection(); }
+		void setNearClip(float nearClip) { m_NearPlane = nearClip; recalculateProjection(); }
+		void setFarClip(float farClip) { m_FarPlane = farClip; recalculateProjection(); }
+        void setTarget(glm::vec3 target) { m_Target = target; }
+
 		void recalculateView();
 		void recalculateProjection();
 
@@ -40,19 +49,13 @@ namespace LukkelEngine {
 		void updateView();
 		void updateProjection();
 
-		void setPerspective(float FOV, float nearPlane, float farPlane);
-		float getPerspectiveFOV() const { return m_FOV; }
-		void setPerspectiveFOV(float FOV) { m_FOV = FOV; recalculateProjection(); }
-		float getPerspectiveNearClip() const { return m_NearPlane; }
-		void setPerspectiveNearClip(float nearClip) { m_NearPlane = nearClip; recalculateProjection(); }
-		float getPerspectiveFarClip() const { return m_FarPlane; }
-		void setPerspectiveFarClip(float farClip) { m_FarPlane = farClip; recalculateProjection(); }
-
 	private:
 		glm::vec3 m_Position = { 0.0f, 0.0f, 3.0f };
 		glm::vec3 m_Origin = { 0.0f, 0.0f, 0.0f };
 		glm::vec2 m_MousePos = { 0.0f, 0.0f };
 		glm::vec3 m_ForwardDir = { 0.0f, 0.0f, -1.0f };
+
+        glm::vec3 m_Target = { 0.0f, 0.0f, 0.0f };
 
 		float m_FOV = 50.0f, m_NearPlane = 0.10f, m_FarPlane = 1000.0f;
 		float m_Distance = 9.0f;
@@ -62,7 +65,7 @@ namespace LukkelEngine {
 		float m_RotationSpeed = 0.8f;
 		float m_Yaw = 0.0f, m_Pitch = 0.0f;
 		float m_ViewportWidth = 1280, m_ViewportHeight = 1024;
-		float m_AspectRatio = float(16.0f) / float(9.0f);
+		float m_AspectRatio = float(16.0f/9.0f);
 
 		glm::mat4 m_View;
 		glm::mat4 m_Projection; 

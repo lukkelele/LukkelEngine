@@ -18,8 +18,11 @@ namespace LukkelEngine {
 		ImGui::StyleColorsDark();
 		Application& app = Application::get();
 		GLFWwindow* window = static_cast<GLFWwindow*>(app.getWindow());
-		//ImGui_ImplGlfw_InitForOpenGL(window, true);
-		//ImGui_ImplOpenGL3_Init("#version 330");
+	}
+
+	void ImGuiLayer::onUpdate(float ts)
+	{
+
 	}
 
 	void ImGuiLayer::begin()
@@ -36,10 +39,6 @@ namespace LukkelEngine {
 		io.DisplaySize = ImVec2(width, height);
 	}
 
-	void ImGuiLayer::onUpdate()
-	{
-
-	}
 	void ImGuiLayer::onImGuiRender()
 	{
 		ImGui::InputText("string", m_Buffer, IM_ARRAYSIZE(m_Buffer));

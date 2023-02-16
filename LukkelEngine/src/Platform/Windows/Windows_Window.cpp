@@ -46,8 +46,7 @@ namespace LukkelEngine {
 			}
 		}
 		setVSync(true);
-		/* POLL INSTEAD ...*/
-		//glfwSetKeyCallback(m_Window, Keyboard::s_handleInput);
+		// glfwSetKeyCallback(m_Window, Keyboard::s_handleInput);
 		glfwSetInputMode(m_Window, GLFW_STICKY_KEYS, 1);
 	}
 		

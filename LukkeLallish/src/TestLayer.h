@@ -21,6 +21,10 @@ public:
 	float b = 0.5f;
 	float inc = 0.02;
 
+	glm::vec3 colorSlider1 = { 1.0f, 1.0f, 1.0f };
+	glm::vec3 sliderBuff2 = { 0.0f, 0.0f, 0.0f };
+	glm::vec3 sliderBuff3 = { 0.0f, 0.0f, 0.0f };
+
 private:
 	// Shared pointer
 	LukkelEngine::s_ptr<LukkelEngine::Scene> m_Scene;

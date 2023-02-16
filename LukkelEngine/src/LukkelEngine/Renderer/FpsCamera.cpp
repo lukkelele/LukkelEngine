@@ -1,11 +1,19 @@
 #include "LukkelEngine/Renderer/FpsCamera.h"
 
 
+/**
+ * TODO: Clipping and warping  40.0 < FOV < 90
+*/
+
 namespace LukkelEngine {
 
 	FpsCamera::FpsCamera(float FOV, float nearPlane, float farPlane)
 		: m_FOV(FOV), m_NearPlane(nearPlane), m_FarPlane(farPlane)
 	{
+		LKLOG_TRACE("FPS Camera created | FOV: {0}", m_FOV);
+		m_View = glm::mat4(1.0f);
+		m_Projection = glm::perspectiveFov(m_FOV, m_ViewportWidth, m_ViewportHeight, m_NearPlane, m_FarPlane);
+		m_ViewProjection = m_Projection * m_View;
 	}
 
 	void FpsCamera::recalculateProjection()
@@ -22,38 +30,34 @@ namespace LukkelEngine {
 
 	void FpsCamera::onUpdate(float ts)
 	{
-		// glm::vec2 deltaTime = (mousePos - m_LastMousePos) * 0.002f;
-
-		glm::vec3 upDir = glm::vec3(0.0f, 1.0f, 0.0f);
-		glm::vec3 rightDir = glm::cross(m_ForwardDir, upDir);
-
-		float camSpeed = 2.0f;
-
 		if (Keyboard::isKeyPressed(Key::W))
 		{
 			LKLOG_INFO("W");
-			m_Position += m_ForwardDir * camSpeed * ts;
+			m_Position.z += m_Speed * ts;
+			LKLOG_CLIENT_TRACE("POS -> ( {0}, {1}, {2} )", m_Position.x, m_Position.y, m_Position.z);
 		} 
 		else if (Keyboard::isKeyPressed(Key::S))
 		{
 			LKLOG_INFO("S");
-			m_Position -= m_ForwardDir * camSpeed * ts;
+			m_Position.z -= m_Speed * ts;
+			LKLOG_CLIENT_TRACE("POS -> ( {0}, {1}, {2} )", m_Position.x, m_Position.y, m_Position.z);
 		} 
 		if (Keyboard::isKeyPressed(Key::A)) 
 		{
 			LKLOG_INFO("A");
-			m_Position += rightDir * camSpeed * ts;
+			m_Position.x -= m_Speed * ts;
 		} 
 		else if (Keyboard::isKeyPressed(Key::D))
 		{
 			LKLOG_INFO("D");
-			m_Position -= rightDir * camSpeed * ts;
+			m_Position.x += m_Speed * ts;
 		}
 
 		// ROTATION
 		if (Keyboard::isKeyPressed(Key::Q))
 		{
 			m_Rotation += m_RotationSpeed * ts;
+			LKLOG_TRACE("Rotation speed: {0}", m_RotationSpeed);
 			setRotation(m_Rotation);
 			LKLOG_WARN("Yaw: {0} | Pitch: {1}", m_Yaw, m_Pitch);
 		}
@@ -64,13 +68,17 @@ namespace LukkelEngine {
 			LKLOG_WARN("Yaw: {0} | Pitch: {1}", m_Yaw, m_Pitch);
 		}
 
-		if (Keyboard::isKeyPressed(Key::R))
+		// ARROW KEYS
+		if (Keyboard::isKeyPressed(Key::Up))
 		{
-			m_Position.z += m_Speed * ts;
+			m_Position.y -= m_Speed * ts;
 		}
-		else if (Keyboard::isKeyPressed(Key::T))
+		else if (Keyboard::isKeyPressed(Key::Down))
 		{
-			m_Position.z -= m_Speed * ts;
+			m_Position.y += m_Speed * ts;
 		}
+
+		//recalculateProjection();
+		recalculateView();
 	}
 }

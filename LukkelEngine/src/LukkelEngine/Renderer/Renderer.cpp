@@ -5,10 +5,11 @@ namespace LukkelEngine {
 
 	void Renderer::clear() const
 	{
-		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+		glClearColor(float(51.0f/255.0f), float(98.0f/255.0f), float(125.0f/255.0f), 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
 
+	// FIXME: Delta time
 	void Renderer::draw(const VertexArray& va, const IndexBuffer& ib, const Shader& shader, const glm::mat4& transform) const {
 		shader.bind();
 		va.bind();
@@ -16,6 +17,7 @@ namespace LukkelEngine {
 		GLCall(glDrawElements(GL_TRIANGLES, ib.getCount(), GL_UNSIGNED_INT, nullptr));
 	}
 
+	// FIXME: Delta time
 	void Renderer::drawLines(const VertexArray& va, const IndexBuffer& ib, const Shader& shader, const glm::mat4& transform) const {
 		shader.bind();
 		va.bind();

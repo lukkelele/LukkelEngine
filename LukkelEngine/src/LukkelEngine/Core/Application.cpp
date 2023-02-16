@@ -20,8 +20,6 @@ namespace LukkelEngine {
 		ImGui::StyleColorsDark();
 		m_ImGuiInitialized = true;
 
-		m_Scene = create_u_ptr<Scene>();
-
 		registerTests();
 	}
 
@@ -49,8 +47,6 @@ namespace LukkelEngine {
 		{
 			Layer* currentLayer = *it;
 			currentLayer->onUpdate(ts);
-			// If current implementation, change name to onImGuiUpdate?
-			currentLayer->onImGuiRender();
 		}
 
 		m_Renderer->drawImGui(); // ImGui Render

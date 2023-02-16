@@ -36,6 +36,7 @@ namespace LukkelEngine {
 		s_ptr<VertexBuffer> m_VBO;
 		s_ptr<IndexBuffer> m_IBO;
 
+		glm::vec3 m_Position = { 0.0f, 0.0f, 0.0f };
 		glm::vec3 m_Translation = { 0.0f, 0.0f, 0.0f };
 
 		s_ptr<Shader> m_Shader;

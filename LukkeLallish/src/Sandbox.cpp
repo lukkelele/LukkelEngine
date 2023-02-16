@@ -19,10 +19,8 @@ public:
 int main()
 {
 	Sandbox app;
-	// LukkelEngine::ImGuiLayer imguiLayer;
 	TestLayer layer;
 	app.pushLayer(&layer); // heap bug at LayerStack destructor
-	// app.pushOverlay(&imguiLayer);
 
 	app.run();
 

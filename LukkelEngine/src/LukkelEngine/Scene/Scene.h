@@ -3,7 +3,8 @@
 #include "LukkelEngine/Core/Base.h"
 #include "LukkelEngine/Renderer/Renderer.h"
 #include "LukkelEngine/Scene/Entity.h"
-#include "LukkelEngine/Renderer/Camera.h"
+//#include "LukkelEngine/Renderer/Camera.h"
+#include "LukkelEngine/Renderer/FpsCamera.h"
 // #include "LukkelEngine/Input/Keyboard.h"
 
 #include <deque> // Temporary fix for unordered map has bug
@@ -26,8 +27,7 @@ namespace LukkelEngine {
 		void addEntity(Entity &entity);
 		std::deque<Entity*>& getEntities() { return m_Entities; }
 
-		// const Camera& getCamera() const { return *m_Camera; }
-		const s_ptr<Camera> getCamera() const { return m_Camera; }
+		const s_ptr<FpsCamera> getCamera() const { return m_Camera; }
 
 	private:
 		bool m_IsRunning = false, m_IsPaused = false;
@@ -37,6 +37,7 @@ namespace LukkelEngine {
 		std::deque<Entity*> m_Entities;
 
 		s_ptr<Renderer> m_Renderer;
-		s_ptr<Camera> m_Camera;
+		s_ptr<FpsCamera> m_Camera;
+
 	};
 }

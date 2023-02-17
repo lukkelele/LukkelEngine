@@ -1,15 +1,15 @@
 #shader vertex
 #version 330 core
                                   
-layout(location = 0) in vec4 position;
+layout(location = 0) in vec3 position;
 layout(location = 1) in vec2 texCoord;
 
 out vec2 v_texCoord; // varying texture coordinate
-uniform mat4 u_MVP; // Model View Projection matrix
+uniform mat4 u_MVP;  // Model View Projection matrix
 
 void main()
 {
-    gl_Position = u_MVP * position;
+    gl_Position = u_MVP * vec4(position, 1.0);
     v_texCoord = texCoord;
 };
 
@@ -27,6 +27,5 @@ uniform sampler2D u_Texture;
 void main()
 {
     vec4 texColor = texture(u_Texture, v_texCoord);
-    // color = u_Color; 
     color = texColor; 
 };

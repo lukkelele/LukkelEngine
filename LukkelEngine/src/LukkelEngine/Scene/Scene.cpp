@@ -23,6 +23,7 @@ namespace LukkelEngine {
 		m_Camera->onUpdate(ts);
 		for (auto &entity : m_Entities)
 		{
+			entity->m_Texture->bind();
 			entity->m_Shader->bind();
 			/* Get transform */
 			glm::mat4 transform = glm::translate(glm::mat4(1.0f), glm::vec3(1.0f, 0.5f, 1.0f));
@@ -38,11 +39,6 @@ namespace LukkelEngine {
 			glm::vec3 pos = m_Camera->getPosition();
 			ImGui::SliderFloat3("Camera pos", &m_Camera->m_Position.x, -50, 50);
 			ImGui::SliderFloat("Camera rotation speed", &(m_Camera->m_RotationSpeed), 0.01f, 4.0f);
-			LKLOG_CLIENT_INFO("Atilla CLIENT");
-			LKLOG_CLIENT_TRACE("Atilla CLIENT");
-			LKLOG_WARN("ATILLA ATILLA");
-			LKLOG_ERROR("ATILLA ATILLA {0} {1}", 5.0f, 2);
-			LKLOG_CRITICAL("ATILLA ATILLA {0} {1}", 5.0f, 2);
 
 			glm::mat4 model = glm::mat4(1.0f);
 			// model = glm::translate(model, translation);
@@ -57,8 +53,8 @@ namespace LukkelEngine {
 			s_ptr<IndexBuffer> ib = entity->getIndexBuffer();
 			s_ptr<Shader> shader = entity->getVertexShader();
 
-			m_Renderer->drawLines(*va, *ib, *shader);
-			//m_Renderer->draw(*va, *ib, *shader);
+			//m_Renderer->drawLines(*va, *ib, *shader);
+			m_Renderer->draw(*va, *ib, *shader);
 		}
 	}
 

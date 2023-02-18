@@ -13,9 +13,11 @@ namespace LukkelEngine {
 			m_VBO = create_s_ptr<VertexBuffer>(vertices, (sizeof(vertices) / (sizeof(float)) * sizeof(float)));
 			m_IBO = create_s_ptr<IndexBuffer>(indices, (sizeof(indices) / (sizeof(unsigned int)) * sizeof(unsigned int)));
 			m_Shader = create_s_ptr<Shader>("assets/shaders/3D/flat.shader");
-			m_Texture = create_s_ptr<Texture>("assets/img/debug_texture_img.jpg");
+			m_Texture = std::make_unique<Texture>("assets/img/atte_square.png"); // FIXME: Sandbox pathing
+			// m_Texture = create_s_ptr<Texture>("assets/img/debug_texture_img.jpg");
 			VertexBufferLayout layout;
 			layout.push<float>(3); // 3D Vertex (x, y, z) 
+			layout.push<float>(2);
 			//layout.push<float>(2); 
 			m_VAO->addBuffer(*m_VBO, layout);
 
@@ -24,18 +26,16 @@ namespace LukkelEngine {
 		}
 		~Cube() = default;
 
-
-
 	private:
-		float vertices[3 * 8] = {
-		-0.5f, -0.5f,  0.5f, //0
-		 0.5f, -0.5f,  0.5f, //1
-		-0.5f,  0.5f,  0.5f, //2
-		 0.5f,  0.5f,  0.5f, //3
-		-0.5f, -0.5f, -0.5f, //4
-		 0.5f, -0.5f, -0.5f, //5
-		-0.5f,  0.5f, -0.5f, //6
-		 0.5f,  0.5f, -0.5f  //7
+		float vertices[5 * 8] = {
+		-0.5f, -0.5f,  0.5f, 0.0f, 0.0f,
+		 0.5f, -0.5f,  0.5f, 1.0f, 0.0f,
+		-0.5f,  0.5f,  0.5f, 1.0f, 1.0f,
+		 0.5f,  0.5f,  0.5f, 1.0f, 1.0f,
+		-0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
+		 0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
+		-0.5f,  0.5f, -0.5f, 1.0f, 1.0f,
+		 0.5f,  0.5f, -0.5f, 0.0f, 0.0f
 		};
 
 		// 6 Sides

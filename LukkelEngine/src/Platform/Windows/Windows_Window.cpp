@@ -46,6 +46,7 @@ namespace LukkelEngine {
 			}
 		}
 		setVSync(true);
+		glEnable(GL_DEPTH_TEST);
 		// glfwSetKeyCallback(m_Window, Keyboard::s_handleInput);
 		glfwSetInputMode(m_Window, GLFW_STICKY_KEYS, 1);
 	}
@@ -80,7 +81,6 @@ namespace LukkelEngine {
 
 	Window* Window::create(WindowProps& props)
 	{
-		// s_ptr<Window> window = create_s_ptr<Window>(Windows_Window(props));
 		Window* window = dynamic_cast<Window*>(new Windows_Window(props));
 		return window;
 	}

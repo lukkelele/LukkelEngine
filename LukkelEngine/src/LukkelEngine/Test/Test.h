@@ -5,7 +5,7 @@
 #include <imgui/imgui_impl_glfw_gl3.h>
 #include <functional>
 #include <vector>
-#include <iostream> // FIXME
+#include <iostream>
 
 namespace LukkelEngine {
 	namespace test {

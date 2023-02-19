@@ -12,7 +12,6 @@ namespace LukkelEngine {
 		  m_View(glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, 0))),
 		  m_TranslationA(200, 200, 0), m_TranslationB(400, 200, 0)
 	{
-		GLCall(glDisable(GL_DEPTH_TEST));
 
 		float positions[] = {
 			/* Vertex positions and texture coordinates in 2D */
@@ -32,7 +31,6 @@ namespace LukkelEngine {
 		GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
 		m_VAO = std::make_unique<VertexArray>();
 		m_VertexBuffer = std::make_unique<VertexBuffer>(positions, 4*4* sizeof(float));
-		// Vertex Buffer layout
 		VertexBufferLayout layout;
 		layout.push<float>(2);
 		layout.push<float>(2);
@@ -42,7 +40,7 @@ namespace LukkelEngine {
 
 		// Shader creation
 		m_Shader = std::make_unique<Shader>("assets/shaders/basic.shader"); // FIXME: Sandbox pathing
-		m_Texture = std::make_unique<Texture>("assets/textures/tinder_logo.png"); // FIXME: Sandbox pathing
+		m_Texture = std::make_unique<Texture>("assets/img/atte_square.png"); // FIXME: Sandbox pathing
 	}
 
 	TestTexture2D::~TestTexture2D()

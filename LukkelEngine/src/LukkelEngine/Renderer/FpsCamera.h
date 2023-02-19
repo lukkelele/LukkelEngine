@@ -50,7 +50,7 @@ namespace LukkelEngine {
 		void updateProjection();
 
 	public:
-		glm::vec3 m_Position = { 0.0f, 0.0f, -200.0f };
+		glm::vec3 m_Position = { 0.0f, 0.0f, -60.0f };
 		glm::vec3 m_Origin = { 0.0f, 0.0f, 0.0f };
 		glm::vec2 m_MousePos = { 0.0f, 0.0f };
 
@@ -64,7 +64,7 @@ namespace LukkelEngine {
 		float m_Rotation = 0.0f;
 		float m_RotationSpeed = 0.2f;
 		float m_Yaw = 0.0f, m_Pitch = 0.0f;
-		float m_ViewportWidth = 1280, m_ViewportHeight = 1024;
+		float m_ViewportWidth = 1600, m_ViewportHeight = 1024;
 		float m_AspectRatio = float(16.0f/9.0f);
 
 		glm::mat4 m_View;

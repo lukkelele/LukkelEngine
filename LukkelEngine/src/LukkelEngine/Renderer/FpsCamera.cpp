@@ -1,10 +1,6 @@
 #include "LukkelEngine/Renderer/FpsCamera.h"
 
 
-/**
- * TODO: Clipping and warping  40.0 < FOV < 90
-*/
-
 namespace LukkelEngine {
 
 	FpsCamera::FpsCamera(float FOV, float nearPlane, float farPlane)

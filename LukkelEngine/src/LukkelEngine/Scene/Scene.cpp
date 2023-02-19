@@ -57,7 +57,7 @@ namespace LukkelEngine {
 			s_ptr<Shader> shader = entity->getShader();
 
 			m_Renderer->drawLines(*va, *ib, *shader);
-			//m_Renderer->draw(*va, *ib, *shader);
+			m_Renderer->draw(*va, *ib, *shader);
 		}
 	}
 

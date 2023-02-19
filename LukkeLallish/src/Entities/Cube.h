@@ -18,7 +18,8 @@ namespace LukkelEngine {
 
 			VertexBufferLayout layout;
 			layout.push<float>(3); // 3D Vertex (x, y, z) 
-			layout.push<float>(2);
+			layout.push<float>(2); // Texture coordinates
+			layout.push<float>(3); // RGB Color
 			m_VAO->addBuffer(*m_VBO, layout);
 
 			m_Shader->bind();
@@ -27,51 +28,18 @@ namespace LukkelEngine {
 		~Cube() = default;
 
 	private:
-		float vertices[100] = {
-		// Positions		   Texture coordinates
-		-0.5f, -0.5f,  0.5f,   0.0f, 1.0f,
-		 0.5f, -0.5f,  0.5f,   1.0f, 0.0f,
-		-0.5f,  0.5f,  0.5f,   1.0f, 1.0f,
-		 0.5f,  0.5f,  0.5f,   1.0f, 1.0f,
-		-0.5f, -0.5f, -0.5f,   0.0f, 1.0f,
-		 0.5f, -0.5f, -0.5f,   0.0f, 1.0f,
-		-0.5f,  0.5f, -0.5f,   1.0f, 1.0f,
-		 0.5f,  0.5f, -0.5f,   0.0f, 0.0f
+		float vertices[8 * 8] = {
+		// Positions		 Texture coords    Color
+		-0.5f, -0.5f,  0.5f,   0.0f, 1.0f,    1.0f, 1.0f, 1.0f,
+		 0.5f, -0.5f,  0.5f,   1.0f, 0.0f,    0.2f, 0.5f, 0.0f,
+		-0.5f,  0.5f,  0.5f,   1.0f, 1.0f,    1.0f, 1.0f, 1.0f,
+		 0.5f,  0.5f,  0.5f,   1.0f, 1.0f,    0.3f, 0.5f, 0.0f,
+		-0.5f, -0.5f, -0.5f,   0.0f, 1.0f,    0.0f, 1.0f, 0.0f,
+		 0.5f, -0.5f, -0.5f,   0.0f, 1.0f,    0.0f, 0.5f, 0.5f,
+		-0.5f,  0.5f, -0.5f,   1.0f, 1.0f,    0.7f, 0.0f, 1.0f,
+		 0.5f,  0.5f, -0.5f,   0.0f, 0.0f,    1.0f, 0.5f, 1.0f
 		};
 		
-		float vvertices[5 * 8] = {
-			1.0f,  1.0f,  0.0f,   0.0f, 1.0f, // 0 - 0 0 0
-			1.0f, -1.0f,  0.0f,   1.0f, 0.0f, // 1 - 1 0 0
-		   -1.0f, -1.0f,  0.0f,   1.0f, 1.0f, // 2 - 1 0 1
-		   -1.0f,  1.0f,  0.0f,   1.0f, 1.0f, // 3 - 1 1 0
-
-			1.0f,  1.0f, -1.0f,   0.0f, 1.0f, // 4 - 1 1 1
-			1.0f, -1.0f, -1.0f,   0.0f, 1.0f, // 5 - 0 1 1
-		   -1.0f, -1.0f, -1.0f,   1.0f, 1.0f, // 6 - 0 1 0
-		   -1.0f,  1.0f, -1.0f,   0.0f, 0.0f  // 7 - 0 0 1
-		};
-
-		 unsigned int iindices[36] = {
-			// front
-			0, 1, 3,
-			1, 2, 3,
-			// back
-			4, 5, 7,
-			5, 6, 7,
-			// right
-			0, 1, 4,
-			1, 4, 5,
-			// left
-			2, 3, 7,
-			2, 6, 7,
-			// top
-			0, 3, 4,
-			3, 4, 7,
-			// bottom
-			1, 2, 5,
-			2, 5, 6
-		 };
-
 
 		// 6 Sides
 		// Should go anticlockwise

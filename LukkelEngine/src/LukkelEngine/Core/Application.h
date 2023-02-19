@@ -41,8 +41,13 @@ namespace LukkelEngine {
 
 	struct ApplicationDetails
 	{
-		std::string name = "LukkelEngine - Dev - Application";
+		std::string title;
+		uint16_t width, height;
 		std::string directory;
+		ApplicationDetails(const std::string& title = "LukkelEngine - Application",
+						   uint16_t width = 1600,
+						   uint16_t height = 1240)
+			: title(title), width(width), height(height){}
 	};
 
 	class Application
@@ -55,18 +60,17 @@ namespace LukkelEngine {
 		void onUpdate(float ts = 1.0f);
 		void shutdown();
 
-		/* Layer */
-		void pushLayer(Layer* layer);
-		void popLayer(Layer* layer);
-		/* Overlay */
-		void pushOverlay(Layer* layer);
-		void popOverlay(Layer* layer);
-
 		void onEvent(Event& e);
 
 		GLFWwindow* getWindow() { return m_Window->getWindow(); }
 		int getViewportWidth() { return m_Window->getWidth(); }
 		int getViewportHeight() { return m_Window->getWidth(); }
+
+
+		void pushLayer(Layer* layer);
+		void popLayer(Layer* layer);
+		void pushOverlay(Layer* layer);
+		void popOverlay(Layer* layer);
 
 		// Used for getting current user window, cross platform
 		static Application& get() { return *s_Instance; }
@@ -78,26 +82,19 @@ namespace LukkelEngine {
 		void testRunner();
 		void registerTests();
 
-	protected:
+		static bool s_IsNewImGuiFrame;
+
+	private:
 		ApplicationDetails details;
 		static Application* s_Instance;
-
+		
 		bool m_Running = false;
 		bool m_Minimized = false;
-		bool m_ImGuiInitialized = false;
 
-		// TODO: Change to smart pointers
-		// They are protected, so they should be inherited to Sandbox (?)
-		// s_ptr<Window> m_Window;
 		Window* m_Window;
 		u_ptr<Renderer> m_Renderer;
 		u_ptr<Keyboard> m_Keyboard;
-		LayerStack m_LayerStack;
-
-		test::Test* currentTest = nullptr;
-		test::TestMenu* testMenu;
-
 		s_ptr<Scene> m_Scene;
-
+		LayerStack m_LayerStack;
 	};
 }

@@ -5,7 +5,7 @@
 class Sandbox : public LukkelEngine::Application
 {
 public:
-	Sandbox(const LukkelEngine::ApplicationDetails& details = LukkelEngine::ApplicationDetails())
+	Sandbox(const LukkelEngine::ApplicationDetails& details =  LukkelEngine::ApplicationDetails("Sandbox", 1920, 1080))
 		: LukkelEngine::Application(details)
 	{	
 	}
@@ -19,6 +19,7 @@ public:
 int main()
 {
 	Sandbox app;
+
 	TestLayer layer;
 	app.pushLayer(&layer); // heap bug at LayerStack destructor
 

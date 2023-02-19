@@ -2,6 +2,7 @@
 
 #include "LukkelEngine/Core/Application.h" // Fix include dir in premake5 script
 
+#include "LukkelEngine/Test/Test.h"
 
 
 namespace LukkelEngine {
@@ -16,14 +17,18 @@ namespace LukkelEngine {
 		void end();
 		virtual void onAttach() override;
 		virtual void onDetach() override;
-		void onUpdate(float ts) override;
+		virtual void onUpdate(float ts) override;
 		virtual void onImGuiRender() override;
 		void onEvent(LukkelEngine::Event& e) override;
 
-	private:
-		LukkelEngine::s_ptr<LukkelEngine::Scene> m_Scene;
+		void renderTestMenu();
+		void registerTests();
 
+	private:
 		char m_Buffer[40 * 8] = { 0 }; // 40 Char buff, for input text
+
+		test::Test* currentTest = nullptr;
+		test::TestMenu* testMenu;
 	};
 
 }

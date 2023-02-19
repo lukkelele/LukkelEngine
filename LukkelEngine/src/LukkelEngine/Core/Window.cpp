@@ -1,6 +1,3 @@
-#ifdef LK_USE_PRECOMPILED_HEADERS
-	#include <LKpch.h>
-#endif
 #include <LukkelEngine/Core/Window.h>
 #ifdef LK_PLATFORM_WINDOWS
 	#include <Platform/Windows/Windows_Window.h>

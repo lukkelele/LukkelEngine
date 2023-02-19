@@ -1,5 +1,7 @@
 #include "TestLayer.h"
 
+#include "LukkelEngine/Core/Application.h"
+
 #include "Entities/Rectangle.h"
 #include "Entities/Cube.h"
 
@@ -29,7 +31,6 @@ void TestLayer::onUpdate(float ts)
 void TestLayer::onImGuiRender()
 {
 	auto cam = m_Scene->getCamera();
-	// Object color
 	ImGui::SliderFloat3("Object color", &colorSlider1.x, 0, 1.0f);
 	m_Scene->getEntities().front()->m_Shader->setUniform4f("u_Color", colorSlider1.x, colorSlider1.y, colorSlider1.z, 1.0f);
 	ImGui::SliderFloat("Camera speed", &cam->m_Speed, 0.010f, 2.0f);

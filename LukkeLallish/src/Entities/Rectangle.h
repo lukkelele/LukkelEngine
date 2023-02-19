@@ -12,7 +12,7 @@ namespace LukkelEngine {
 			m_VAO = create_s_ptr<VertexArray>();
 			m_VBO = create_s_ptr<VertexBuffer>(vertices, (sizeof(vertices) / (sizeof(float)) * sizeof(float)));
 			m_IBO = create_s_ptr<IndexBuffer>(indices, (sizeof(indices) / (sizeof(unsigned int)) * sizeof(unsigned int)));
-			m_Shader = create_s_ptr<Shader>("assets/shaders/3D/flat.shader");
+			m_Shader = create_s_ptr<Shader>("shaders/3D/flat.shader");
 			VertexBufferLayout layout;
 			layout.push<float>(2); // 2D Vertex (x, y) 
 			m_VAO->addBuffer(*m_VBO, layout);

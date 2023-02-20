@@ -22,7 +22,7 @@
 /* I/O */
 #include <LukkelEngine/Core/Window.h>
 #include <LukkelEngine/Input/Keyboard.h>
-// #include <LukkelEngine/Input/Mouse.h>
+#include <LukkelEngine/Input/Mouse.h>
 
 #include "LukkelEngine/Layer/ImGuiLayer.h"
 
@@ -63,8 +63,8 @@ namespace LukkelEngine {
 		void onEvent(Event& e);
 
 		GLFWwindow* getWindow() { return m_Window->getWindow(); }
-		int getViewportWidth() { return m_Window->getWidth(); }
-		int getViewportHeight() { return m_Window->getWidth(); }
+		int getViewportWidth() { return m_Details.width; }
+		int getViewportHeight() { return m_Details.height; }
 
 
 		void pushLayer(Layer* layer);
@@ -85,13 +85,13 @@ namespace LukkelEngine {
 		static bool s_IsNewImGuiFrame;
 
 	private:
-		ApplicationDetails details;
+		ApplicationDetails m_Details;
 		static Application* s_Instance;
 		
 		bool m_Running = false;
 		bool m_Minimized = false;
+		float m_LastTime = 0.0f;
 
-		// Window* m_Window;
 		s_ptr<Window> m_Window;
 		u_ptr<Renderer> m_Renderer;
 		u_ptr<Keyboard> m_Keyboard;

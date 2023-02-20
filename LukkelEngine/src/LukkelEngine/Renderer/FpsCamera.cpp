@@ -8,73 +8,118 @@ namespace LukkelEngine {
 	{
 		LKLOG_TRACE("FPS Camera created | FOV: {0}", m_FOV);
 		m_View = glm::mat4(1.0f);
-		m_Projection = glm::perspectiveFov(m_FOV, m_ViewportWidth, m_ViewportHeight, m_NearPlane, m_FarPlane);
+		m_Projection = glm::perspectiveFov(glm::radians(m_FOV), m_ViewportWidth, m_ViewportHeight, m_NearPlane, m_FarPlane);
 		m_ViewProjection = m_Projection * m_View;
 	}
 
-	void FpsCamera::recalculateProjection()
+	void FpsCamera::updateProjection()
 	{
 		m_Projection = glm::perspectiveFov(glm::radians(m_FOV), (float)m_ViewportWidth, (float)m_ViewportHeight, m_NearPlane, m_FarPlane);
-		m_InverseProjection = glm::inverse(m_Projection);
 	}
 
-	void FpsCamera::recalculateView()
+	void FpsCamera::updateView()
 	{
-		m_View = glm::lookAt(m_Position, m_Position + m_ForwardDir, glm::vec3(0, 1, 0));
-		m_InverseView = glm::inverse(m_View);
+		m_Position = calculatePosition();
+
+		glm::quat orientation = getOrientation();
+		m_View= glm::translate(glm::mat4(1.0f), m_Position) * glm::toMat4(orientation);
+		m_View = glm::inverse(m_View);
 	}
+
+	void FpsCamera::updateMousePosition()
+	{
+		std::pair<float, float> mousePos = Mouse::getMousePosition();
+		m_MousePos.x = mousePos.first;
+		m_MousePos.y = mousePos.second;
+	}
+
+	void FpsCamera::mouseRotate(glm::vec2& delta)
+	{
+		float yawSign = getUpDirection().y < 0 ? -1.0f : 1.0f;
+		m_Yaw += yawSign * delta.x * m_RotationSpeed;
+		m_Pitch += delta.y * m_RotationSpeed;
+	}
+
+	glm::vec3 FpsCamera::getUpDirection() const
+	{
+		return glm::rotate(getOrientation(), glm::vec3(0.0f, 1.0f, 0.0f));
+	}
+
+	glm::vec3 FpsCamera::getRightDirection() const
+	{
+		return glm::rotate(getOrientation(), glm::vec3(1.0f, 0.0f, 0.0f));
+	}
+
+	glm::vec3 FpsCamera::getForwardDirection() const
+	{
+		return glm::rotate(getOrientation(), glm::vec3(0.0f, 0.0f, -1.0f));
+	}
+
+	glm::quat FpsCamera::getOrientation() const
+	{
+		return glm::quat(glm::vec3(-m_Pitch, -m_Yaw, 0.0f));
+	}
+
+	glm::vec3 FpsCamera::calculatePosition() const
+	{
+		return m_Origin - getForwardDirection() * m_Distance;
+	}
+
 
 	void FpsCamera::onUpdate(float ts)
 	{
+		// LKLOG_CLIENT_TRACE("POS -> ( {0}, {1}, {2} )", m_Position.x, m_Position.y, m_Position.z);
+		updateMousePosition();
+		// TODO: Fix mouse rotation
+		// mouseRotate(glm::vec2(m_MousePos.x, m_MousePos.y));
+		horizontalAngle += m_MouseSpeed * ts * float(m_ViewportWidth / 2 - m_MousePos.x);
+		verticalAngle += m_MouseSpeed * ts * float(m_ViewportHeight / 2 - m_MousePos.y);
+
+		// Right vector
+
 		if (Keyboard::isKeyPressed(Key::W))
 		{
-			LKLOG_INFO("W");
-			m_Position.z += m_Speed * ts;
-			LKLOG_CLIENT_TRACE("POS -> ( {0}, {1}, {2} )", m_Position.x, m_Position.y, m_Position.z);
+			m_Position += m_ForwardDir * m_Speed * ts;
 		} 
 		else if (Keyboard::isKeyPressed(Key::S))
 		{
-			LKLOG_INFO("S");
-			m_Position.z -= m_Speed * ts;
-			LKLOG_CLIENT_TRACE("POS -> ( {0}, {1}, {2} )", m_Position.x, m_Position.y, m_Position.z);
+			m_Position -= m_ForwardDir * m_Speed * ts;
 		} 
 		if (Keyboard::isKeyPressed(Key::A)) 
 		{
-			LKLOG_INFO("A");
-			m_Position.x -= m_Speed * ts;
+			// m_Position.x += m_Speed * ts;
+			m_Position += getRightDirection() * m_Speed * ts;
 		} 
 		else if (Keyboard::isKeyPressed(Key::D))
 		{
-			LKLOG_INFO("D");
-			m_Position.x += m_Speed * ts;
+			m_Position -= getRightDirection() * m_Speed * ts;
 		}
 
 		// ROTATION
 		if (Keyboard::isKeyPressed(Key::Q))
 		{
 			m_Rotation += m_RotationSpeed * ts;
-			LKLOG_TRACE("Rotation speed: {0}", m_RotationSpeed);
 			setRotation(m_Rotation);
-			LKLOG_WARN("Yaw: {0} | Pitch: {1}", m_Yaw, m_Pitch);
 		}
 		else if (Keyboard::isKeyPressed(Key::E))
 		{
 			m_Rotation -= m_RotationSpeed * ts;
 			setRotation(m_Rotation);
-			LKLOG_WARN("Yaw: {0} | Pitch: {1}", m_Yaw, m_Pitch);
 		}
 
 		// ARROW KEYS
 		if (Keyboard::isKeyPressed(Key::Up))
 		{
-			m_Position.y -= m_Speed * ts;
+			// m_Position.y -= m_Speed * ts;
+			m_FOV += 1;
 		}
 		else if (Keyboard::isKeyPressed(Key::Down))
 		{
-			m_Position.y += m_Speed * ts;
+			// m_Position.y += m_Speed * ts;
+			m_FOV -= 1;
 		}
 
-		//recalculateProjection();
-		recalculateView();
+		updateProjection();
+		m_ViewProjection = m_Projection * m_View;
 	}
 }

@@ -7,7 +7,7 @@
 
 #include "LukkelEngine/Renderer/Renderer.h"
 #include "LukkelEngine/Renderer/VertexArray.h"
-#include "LukkelEngine/Renderer/Camera.h"
+// #include "LukkelEngine/Renderer/Camera.h"
 
 #include "LukkelEngine/Scene/Scene.h"
 #include "LukkelEngine/Scene/Entity.h"

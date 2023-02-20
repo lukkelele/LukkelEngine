@@ -26,6 +26,7 @@ namespace LukkelEngine {
 		s_ptr<Shader> getShader() const { return m_Shader; }
 
 		void setTranslation(glm::vec3& translation) { m_Translation = translation; }
+		void setPosition(glm::vec3& position) { m_Position = position; }
 
 	// TODO: Set these back to private
 	public:

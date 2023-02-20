@@ -13,6 +13,8 @@ namespace LukkelEngine {
 		WindowProps properties = WindowProps(details.title, details.width, details.height);
 		m_Window = Window::create(properties);
 
+		m_Window->setEventCallback(LK_BIND_EVENT_FN(Application::onEvent));
+
 		Layer* imguiLayer = new ImGuiLayer();
 		pushOverlay(imguiLayer);
 	}
@@ -26,8 +28,10 @@ namespace LukkelEngine {
 	{
 		while (!glfwWindowShouldClose(m_Window->getWindow())) // while m_Running 
 		{
-			int state = glfwGetKey(m_Window->getWindow(), GLFW_KEY_W);
-			onUpdate();
+			float time = (float)glfwGetTime();
+			float delta = time - m_LastTime;
+			m_LastTime = time;
+			onUpdate(delta);
 		}
 	}
 
@@ -42,7 +46,10 @@ namespace LukkelEngine {
 			currentLayer->onUpdate(ts);
 		}
 
-		m_Renderer->renderImGui(); // ImGui Render
+		// ENABLE TO LOCK CURSOR
+		// glfwSetCursorPos(Application::get().getWindow(), viewportWidth / 2, viewportHeight / 2);
+
+		m_Renderer->renderImGui();
 		m_Window->onUpdate();
 	}
 	/**
@@ -87,12 +94,14 @@ namespace LukkelEngine {
 
 	bool Application::onWindowClose(WindowCloseEvent& e)
 	{
+		LKLOG_INFO("WINDOW CLOSE EVENT");
 		m_Running = false;
 		return true;
 	}
 
 	bool Application::onWindowResize(WindowResizeEvent& e)
 	{
+		LKLOG_INFO("WINDOW RESIZE EVENT");
 		if (e.getWidth() == 0 || e.getHeight() == 0) {
 			m_Minimized = true;
 			return false;
@@ -108,7 +117,8 @@ namespace LukkelEngine {
 		ed.dispatch<WindowCloseEvent>(LK_BIND_EVENT_FN(onWindowClose));
 		ed.dispatch<WindowResizeEvent>(LK_BIND_EVENT_FN(onWindowResize));
 		/* Handle events */
-		for (auto it = m_LayerStack.rbegin(); it != m_LayerStack.rend(); ++it) {
+		for (auto it = m_LayerStack.rbegin(); it != m_LayerStack.rend(); ++it)
+		{
 			if (e.handled)
 				break;
 			(*it)->onEvent(e);

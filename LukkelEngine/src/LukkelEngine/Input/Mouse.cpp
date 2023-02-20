@@ -1,25 +1,21 @@
 #include "LukkelEngine/Input/Mouse.h"
+#include "LukkelEngine/Core/Application.h"
 
 namespace LukkelEngine {
 
+	// FIXME
 	bool Mouse::isButtonPressed(MouseCode button)
 	{
 		return false;
 	}
 
-	glm::vec2 Mouse::getMousePosition()
+	std::pair<float, float> Mouse::getMousePosition()
 	{
-		return glm::vec2(0, 0); // for now
-	}
-
-	float Mouse::getMouseX()
-	{
-		return 0.0f;
-	}
-	
-	float Mouse::getMouseY()
-	{
-		return 0.0f;
+		double xpos, ypos;
+		glfwGetCursorPos(Application::get().getWindow(), &xpos, &ypos);
+		float x = static_cast<float>(xpos);
+		float y = static_cast<float>(ypos);
+		return std::make_pair(x, y);
 	}
 
 }

@@ -11,55 +11,66 @@
 
 #include "LukkelEngine/Renderer/Shader.h"
 #include "LukkelEngine/Input/Keyboard.h"
+#include "LukkelEngine/Input/Mouse.h"
+
 #include "LukkelEngine/Event/Event.h"
+#include "LukkelEngine/Event/KeyEvent.h"
+#include "LukkelEngine/Event/MouseEvent.h"
 
 
 namespace LukkelEngine {
 
-	class FpsCamera
-	{
+	class FpsCamera	{
 	public:
 		FpsCamera(float FOV, float nearPlane, float farPlane);
 		~FpsCamera() = default;
 
-		const glm::vec3& getPosition() const { return m_Position; }
+		void onUpdate(float ts);
+
 		glm::mat4 getView() const { return m_View; }
 		glm::mat4 getProjectionMatrix() const { return m_Projection; }
-		glm::mat4 getViewProjectionMatrix() const { return m_ViewProjection; }
-		glm::vec3 getForwardDirection() const;
-		glm::quat getOrientation() const;
+		glm::mat4 getViewProjectionMatrix() { return m_ViewProjection; }
 		glm::vec3 calculatePosition() const;
+
+		glm::quat getOrientation() const;
+		glm::vec3 getRightDirection() const;
+		glm::vec3 getForwardDirection() const;
+		glm::vec3 getUpDirection() const;
+
+		const glm::vec3& getPosition() const { return m_Position; }
 		float getFOV() const { return m_FOV; }
 		float getNearClip() const { return m_NearPlane; }
 		float getFarClip() const { return m_FarPlane; }
 		float getRotation() { return glm::radians(m_Rotation); }
 
-		void setPosition(const glm::vec3& newPos);
-		void setProjection(float left, float right, float bottom, float top);
-		void setRotation(float rot) { m_Rotation = rot; recalculateView(); }
-		void setFOV(float FOV) { m_FOV = FOV; recalculateProjection(); }
-		void setNearClip(float nearClip) { m_NearPlane = nearClip; recalculateProjection(); }
-		void setFarClip(float farClip) { m_FarPlane = farClip; recalculateProjection(); }
+		void setRotation(float rot) { m_Rotation = rot; }
+		void setFOV(float FOV) { m_FOV = FOV; updateProjection(); }
+		void setNearClip(float nearClip) { m_NearPlane = nearClip; updateProjection(); }
+		void setFarClip(float farClip) { m_FarPlane = farClip; updateProjection(); }
         void setTarget(glm::vec3 target) { m_Target = target; }
 
-		void recalculateView();
-		void recalculateProjection();
-
-		void onUpdate(float ts);
 		void updateView();
 		void updateProjection();
+		void updateMousePosition();
+
+		void mouseRotate(glm::vec2& delta);
+		void onMouseScroll(MouseScrolledEvent& e);
 
 	public:
-		glm::vec3 m_Position = { 0.0f, 0.0f, -60.0f };
+		glm::vec3 m_Position = { 0.0f, 0.0f, -10.0f };
+		glm::vec3 m_Direction = { 0.0f, 0.0f, 0.0f };
 		glm::vec3 m_Origin = { 0.0f, 0.0f, 0.0f };
 		glm::vec2 m_MousePos = { 0.0f, 0.0f };
 
-		glm::vec3 m_ForwardDir = { 0.0f, 0.0f, -1.0f };
+		glm::vec3 m_ForwardDir = { 0.0f, 0.0f, 1.0f };
 		glm::vec3 m_Up = glm::vec3(0.0f, 1.0f, 0.0f);
         glm::vec3 m_Target = { 0.0f, 0.0f, 0.0f };
 
 		float m_FOV = 50.0f, m_NearPlane = 0.10f, m_FarPlane = 1000.0f;
-		float m_Speed = 0.45f;
+		float m_Speed = 0.05f;
+		float m_Distance = 0.5f;
+		float m_MouseSpeed = 1.0f;
+		float horizontalAngle = 3.14f, verticalAngle = 0.0f;
 
 		float m_Rotation = 0.0f;
 		float m_RotationSpeed = 0.2f;

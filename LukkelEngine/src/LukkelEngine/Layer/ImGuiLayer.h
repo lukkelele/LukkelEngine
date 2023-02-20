@@ -2,7 +2,7 @@
 
 #include "LukkelEngine/Core/Application.h" // Fix include dir in premake5 script
 
-#include "LukkelEngine/Test/Test.h"
+#include "LukkelEngine/Test/Test.h" // FIXME
 
 
 namespace LukkelEngine {

@@ -1,5 +1,6 @@
 #include "LukkelEngine/Scene/Scene.h"
 
+#include "LukkelEngine/Core/Application.h"
 
 namespace LukkelEngine {
 
@@ -35,29 +36,23 @@ namespace LukkelEngine {
 			glm::vec3 translation = entity->m_Translation;
 			ImGui::SliderFloat("Entity translation", &translation.x , -200.0f, 400.0f);
 
-			// Camera position
-			glm::vec3 pos = m_Camera->getPosition();
-			ImGui::SliderFloat3("Camera pos", &m_Camera->m_Position.x, -50, 50);
-			ImGui::SliderFloat("Camera rotation speed", &(m_Camera->m_RotationSpeed), 0.01f, 4.0f);
 
 			glm::mat4 model = glm::mat4(1.0f);
-			// model = glm::translate(model, translation);
 			model = glm::translate(model, m_Camera->m_Position);
 			// Rotate axis
-			model = glm::rotate(model, m_Camera->getRotation(), up); // last vector is UP
+			model = glm::rotate(model, m_Camera->getRotation(), m_Camera->getUpDirection()); // last vector is UP
 
+			ImGui::SliderFloat3("Camera position", &m_Camera->m_Position.x, -40.0f, 40.0f);
 			auto entityShader = entity->getShader();
 			entityShader->setUniformMat4f("model", model);
 			entityShader->setUniformMat4f("u_ViewProjection", m_Camera->getViewProjectionMatrix());
-			// entity->m_Shader->setUniformMat4f("model", model);
-			// entity->m_Shader->setUniformMat4f("u_ViewProjection", m_Camera->getViewProjectionMatrix());
 
 			s_ptr<VertexArray> va = entity->getVertexArray();
 			s_ptr<IndexBuffer> ib = entity->getIndexBuffer();
 			s_ptr<Shader> shader = entity->getShader();
 
 			m_Renderer->drawLines(*va, *ib, *shader);
-			m_Renderer->draw(*va, *ib, *shader);
+			// m_Renderer->draw(*va, *ib, *shader);
 		}
 	}
 

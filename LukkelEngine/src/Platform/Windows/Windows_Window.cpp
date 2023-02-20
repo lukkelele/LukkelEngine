@@ -1,4 +1,6 @@
 #include "Platform/Windows/Windows_Window.h"
+#include "LukkelEngine/Event/KeyEvent.h"
+#include "LukkelEngine/Event/MouseEvent.h"
 
 namespace LukkelEngine {
 
@@ -46,12 +48,46 @@ namespace LukkelEngine {
 			}
 		}
 		setVSync(true);
-		// glfwSetKeyCallback(m_Window, Keyboard::s_handleInput);
 		glfwSetInputMode(m_Window, GLFW_STICKY_KEYS, 1);
 		glEnable(GL_BLEND);
 		glEnable(GL_DEPTH_TEST);
 		glEnable(GL_LINE_SMOOTH);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+		// glfwSetMouseButtonCallback(m_Window, [](GLFWwindow* window, int button, int action, int mods)
+		// {
+		// 	WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+		// 	switch (action) 
+		// 	{
+		// 		case GLFW_PRESS:
+		// 		{
+		// 			MouseButtonPressedEvent event(button);
+		// 			data.eventCallback(event);
+		// 			break;
+		// 		}
+		// 		case GLFW_RELEASE:
+		// 		{
+		// 			MouseButtonReleasedEvent event(button);
+		// 			data.eventCallback(event);
+		// 			break;
+		// 		}
+		// 	}
+		// });
+
+		glfwSetScrollCallback(m_Window, [](GLFWwindow* window, double x, double y)
+		{
+			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+			MouseScrolledEvent event((float)x, (float)y);
+			data.eventCallback(event);
+		});
+
+		//glfwSetCursorPosCallback(m_Window, [](GLFWwindow* window, double xPos, double yPos)
+		//{
+		//	WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+		//	MouseMovedEvent event((float)xPos, (float)yPos);
+		//	data.eventCallback(event);
+		//});
+
 	}
 		
 	void Windows_Window::exit()

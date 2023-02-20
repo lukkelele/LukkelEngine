@@ -58,7 +58,7 @@ namespace LukkelEngine {
 		if (currentTest) {
 			currentTest->onUpdate(0.0f);
 			currentTest->onRender();
-			ImGui::Begin("Test");
+			ImGui::Begin("Tests");
 			// Check if current test isn't test menu and back button clicked 
 			if (currentTest != testMenu && ImGui::Button("<-"))
 			{	// Delete current test and go back to test menu

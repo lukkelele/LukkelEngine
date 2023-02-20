@@ -91,7 +91,8 @@ namespace LukkelEngine {
 		bool m_Running = false;
 		bool m_Minimized = false;
 
-		Window* m_Window;
+		// Window* m_Window;
+		s_ptr<Window> m_Window;
 		u_ptr<Renderer> m_Renderer;
 		u_ptr<Keyboard> m_Keyboard;
 		s_ptr<Scene> m_Scene;

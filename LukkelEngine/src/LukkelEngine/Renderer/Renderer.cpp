@@ -17,32 +17,22 @@ namespace LukkelEngine {
 		GLCall(glDrawElements(GL_TRIANGLES, ib.getCount(), GL_UNSIGNED_INT, nullptr));
 	}
 
-	//void Renderer::draw(Entity& entity)
-	//{
-	//	auto va = entity.getVertexArray();
-	//	auto ib = entity.getIndexBuffer();
-	//	auto shader = entity.getShader();
-	//	draw(*va, *ib, *shader);
-	//}
-
-	//void Renderer::drawLines(Entity& entity)
-	//{
-	//	auto va = entity.getVertexArray();
-	//	auto ib = entity.getIndexBuffer();
-	//	auto shader = entity.getShader();
-	//	drawLines(*va, *ib, *shader);
-	//}
-
 	// FIXME: Delta time
 	void Renderer::drawLines(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const {
 		shader.bind();
 		va.bind();
 		ib.bind();
-		GLCall(glDrawElements(GL_LINES, ib.getCount(), GL_UNSIGNED_INT, nullptr));
+		glDrawElements(GL_LINES, ib.getCount(), GL_UNSIGNED_INT, nullptr);
 	}
 
+	void Renderer::drawIndexed(const s_ptr<VertexArray>& va)
+	{
+		va->bind();
+		unsigned int count = va->getIndexBuffer()->getCount();
+		glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
+	}
 
-	void Renderer::drawImGui() const
+	void Renderer::renderImGui() const
 	{
 		ImGui::Render();
 		ImGui_ImplGlfwGL3_RenderDrawData(ImGui::GetDrawData());

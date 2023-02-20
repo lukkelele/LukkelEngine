@@ -23,10 +23,8 @@ namespace LukkelEngine {
 		void drawLines(const VertexArray& va,
 					   const IndexBuffer& ib,
 					   const Shader& shader) const;
-
-		//void draw(Entity& entity);
-		//void drawLines(Entity& entity);
-		void drawImGui() const;
+		void drawIndexed(const s_ptr<VertexArray>& va);
+		void renderImGui() const;
 
 		static void onWindowResize(uint16_t width, uint16_t height);
 	};

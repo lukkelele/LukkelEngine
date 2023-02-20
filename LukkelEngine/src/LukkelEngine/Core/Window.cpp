@@ -5,17 +5,14 @@
 
 namespace LukkelEngine {
 
-	Window::Window(){} // (?)
-	/*
-	std::unique_ptr<Window> Window::create(WindowProps& props)
+	s_ptr<Window> Window::create(WindowProps& props)
 	{
 		#ifdef LK_PLATFORM_WINDOWS
-			return std::make_unique<Windows_Window>(Windows_Window(props));
+			return std::make_unique<Windows_Window>(props);
 		// return Windows_Window::create(props);// Windows_Window(props);
 		#else
 			LK_CORE_ASSERT(false, "Platform not implemented yet");
 			return nullptr;
 		#endif
 	}
-	*/
 }

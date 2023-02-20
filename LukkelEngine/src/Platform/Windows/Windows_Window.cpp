@@ -1,6 +1,7 @@
 #include "Platform/Windows/Windows_Window.h"
 
 namespace LukkelEngine {
+
 	static bool GLFW_initialized = false;
 	
 	Windows_Window::Windows_Window(WindowProps& props)
@@ -10,7 +11,6 @@ namespace LukkelEngine {
 
 	Windows_Window::~Windows_Window()
 	{
-		LKLOG_CRITICAL("Terminating Windows_Window");
 		glfwTerminate();
 	}
 
@@ -46,9 +46,12 @@ namespace LukkelEngine {
 			}
 		}
 		setVSync(true);
-		glEnable(GL_DEPTH_TEST);
 		// glfwSetKeyCallback(m_Window, Keyboard::s_handleInput);
 		glfwSetInputMode(m_Window, GLFW_STICKY_KEYS, 1);
+		glEnable(GL_BLEND);
+		glEnable(GL_DEPTH_TEST);
+		glEnable(GL_LINE_SMOOTH);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	}
 		
 	void Windows_Window::exit()
@@ -79,10 +82,5 @@ namespace LukkelEngine {
 
 	GLFWwindow* Windows_Window::getWindow() const { return m_Window; }
 
-	Window* Window::create(WindowProps& props)
-	{
-		Window* window = dynamic_cast<Window*>(new Windows_Window(props));
-		return window;
-	}
 }
 

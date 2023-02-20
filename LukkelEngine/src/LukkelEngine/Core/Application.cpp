@@ -8,7 +8,6 @@ namespace LukkelEngine {
 	Application::Application(const ApplicationDetails& details)
 	{
 		s_Instance = this;
-		// s_IsNewImGuiFrame = false;
 		LukkeLog::Log::init("LukkelEngine.log", "App", "Client");
 		LKLOG_TRACE("Starting application");
 		WindowProps properties = WindowProps(details.title, details.width, details.height);
@@ -43,7 +42,7 @@ namespace LukkelEngine {
 			currentLayer->onUpdate(ts);
 		}
 
-		m_Renderer->drawImGui(); // ImGui Render
+		m_Renderer->renderImGui(); // ImGui Render
 		m_Window->onUpdate();
 	}
 	/**

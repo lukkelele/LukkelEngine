@@ -10,11 +10,13 @@
 #include "LukkelEngine/Core/Base.h"
 #include "LukkelEngine/Core/Window.h"
 #include "LukkelEngine/Core/LayerStack.h"
-#include "LukkelEngine/Event/Event.h"
 #include "LukkelEngine/Scene/Scene.h"
+#include "LukkelEngine/Scene/EntityHandler.h"
+
 #include "Platform/Windows/Windows_Window.h"
 
 /* EVENTS */
+#include "LukkelEngine/Event/Event.h"
 #include <LukkelEngine/Event/ApplicationEvent.h>
 //#include <LukkelEngine/Event/KeyEvent.h>
 //#include <LukkelEngine/Event/MouseEvent.h>
@@ -52,7 +54,11 @@ namespace LukkelEngine {
 
 		void onEvent(Event& e);
 
-		GLFWwindow* getWindow() { return m_Window->getWindow(); }
+		GLFWwindow* getGLFWWindow() { return m_Window->getWindow(); }
+		s_ptr<Window> getWindow() { return m_Window; }
+		s_ptr<Scene> getScene() { return m_Scene; }
+		void setScene(s_ptr<Scene>& scene) { m_Scene = scene; }
+
 		int getViewportWidth() { return m_Details.width; }
 		int getViewportHeight() { return m_Details.height; }
 
@@ -71,8 +77,6 @@ namespace LukkelEngine {
 
 		void testRunner();
 		void registerTests();
-
-		static bool s_IsNewImGuiFrame;
 
 	private:
 		ApplicationDetails m_Details;

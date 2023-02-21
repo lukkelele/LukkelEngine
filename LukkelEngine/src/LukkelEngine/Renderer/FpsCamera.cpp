@@ -1,5 +1,6 @@
 #include "LukkelEngine/Renderer/FpsCamera.h"
 
+#include "LukkelEngine/Core/Application.h"
 
 namespace LukkelEngine {
 
@@ -28,6 +29,8 @@ namespace LukkelEngine {
 		glm::vec2 currentMousePos = glm::vec2(mousePos.first, mousePos.second);
 		m_MouseDelta = m_MousePos - currentMousePos;
 		m_MousePos = glm::vec2(mousePos.first, mousePos.second);
+		if (Keyboard::isKeyPressed(Key::Escape))
+			m_MouseEnabled = false;
 	}
 
 	glm::vec3 FpsCamera::getUpDirection() const
@@ -105,24 +108,33 @@ namespace LukkelEngine {
 			// m_Position.y += m_Speed * ts;
 			m_FOV -= 1;
 		}
-
+			
 		updateMousePosition();
 		// If the mouse has moved since last frame, update camera rotation
-		if (m_MouseDelta.x != 0.0f || m_MouseDelta.y != 0.0f)
+		if (m_MouseEnabled)
 		{
-			float yaw = m_MouseDelta.x * m_RotationSpeed / 20.0f;
-			float pitch = m_MouseDelta.y * m_RotationSpeed / 20.0f;
-			glm::quat q = glm::normalize(glm::cross(glm::angleAxis(pitch, rightDir),
-				glm::angleAxis(yaw, glm::vec3(0.0f, 1.0f, 0.0f))));
+			m_Paused = false; // Fix a better paus implementation
+			if ((m_MouseDelta.x != 0.0f || m_MouseDelta.y != 0.0f) && m_MouseEnabled)
+			{
+				float yaw = m_MouseDelta.x * m_RotationSpeed / 20.0f;
+				float pitch = m_MouseDelta.y * m_RotationSpeed / 20.0f;
+				glm::quat q = glm::normalize(glm::cross(glm::angleAxis(pitch, rightDir),
+					glm::angleAxis(yaw, glm::vec3(0.0f, 1.0f, 0.0f))));
 
-			m_ForwardDir = glm::rotate(q, m_ForwardDir);
+				m_ForwardDir = glm::rotate(q, m_ForwardDir);
 
-			mouseMoved = true;
+				mouseMoved = true;
+			}
+
+			if (mouseMoved)
+			{
+				updateView();
+			}
 		}
-
-		if (mouseMoved)
+		if (m_MouseEnabled == false && m_Paused == false)
 		{
-			updateView();
+			Application::get().getWindow()->toggleInputLock();
+			m_Paused = true;
 		}
 
 		updateProjection();

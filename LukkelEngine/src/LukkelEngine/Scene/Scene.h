@@ -20,10 +20,12 @@ namespace LukkelEngine {
 		~Scene();
 
 		void onUpdate(float ts);
+		void onImGuiRender();
+
 		bool isRunning() const { return m_IsRunning; }
 		void pause(bool paused) { m_IsPaused = paused; }
-		void tick(unsigned int frames = 1);
 
+		// static void addEntity(Entity &entity);
 		void addEntity(Entity &entity);
 		std::deque<Entity*>& getEntities() { return m_Entities; }
 

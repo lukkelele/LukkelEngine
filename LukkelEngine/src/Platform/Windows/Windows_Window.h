@@ -18,13 +18,15 @@ namespace LukkelEngine {
 		void setVSync(bool enabled) override;
 		bool isVSync() const override;
 
+		void toggleInputLock() override;
+		void init(WindowProps& properties);
 		GLFWwindow* getWindow() const override;
-		virtual void init(WindowProps& properties);
+		void exit();
 
 	// FIXME: set private 
 	public:
 		GLFWwindow* m_Window;
-		virtual void exit();
+		bool m_InputLock = false;
 
 		struct WindowData
 		{

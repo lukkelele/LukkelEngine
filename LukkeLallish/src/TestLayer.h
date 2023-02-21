@@ -27,6 +27,5 @@ public:
 	glm::vec3 sliderBuff3 = { 0.0f, 0.0f, 0.0f };
 
 private:
-	// Shared pointer
 	LukkelEngine::s_ptr<LukkelEngine::Scene> m_Scene;
 };

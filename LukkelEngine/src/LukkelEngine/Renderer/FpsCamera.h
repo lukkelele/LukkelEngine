@@ -69,6 +69,9 @@ namespace LukkelEngine {
 		float m_FOV = 50.0f, m_NearPlane = 0.10f, m_FarPlane = 1000.0f;
 		float m_Speed = 0.05f;
 		float m_Distance = 0.5f;
+
+		bool m_Paused = false;
+		bool m_MouseEnabled = true;
 		float m_MouseSpeed = 1.0f;
 		glm::vec2 m_MouseDelta = { 0.0f , 0.0f };
 

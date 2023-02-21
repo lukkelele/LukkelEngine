@@ -62,9 +62,9 @@ namespace LukkelEngine {
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 		glfwSetInputMode(m_Window, GLFW_STICKY_KEYS, GLFW_TRUE);
-		// Lock cursor and enable raw input
-		glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-		glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_RAW_MOUSE_MOTION);
+		glfwSetInputMode(m_Window, GLFW_RAW_MOUSE_MOTION, GLFW_TRUE);
+
+		toggleInputLock();
 
 
 		glfwSetScrollCallback(m_Window, [](GLFWwindow* window, double x, double y)
@@ -110,6 +110,20 @@ namespace LukkelEngine {
 	bool Windows_Window::isVSync() const
 	{
 		return m_Data.VSync;
+	}
+
+	void Windows_Window::toggleInputLock()
+	{
+		if (m_InputLock == false)
+		{
+			glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+			m_InputLock = true;
+		}
+		else
+		{
+			glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+			m_InputLock = false;
+		}
 	}
 
 	GLFWwindow* Windows_Window::getWindow() const { return m_Window; }

@@ -3,7 +3,6 @@
 namespace LukkelEngine {
 
 	Application* Application::s_Instance;
-	bool Application::s_IsNewImGuiFrame = false;
 
 	Application::Application(const ApplicationDetails& details)
 	{
@@ -17,7 +16,6 @@ namespace LukkelEngine {
 
 		DebugLayer* debugLayer = new DebugLayer;
 		pushOverlay(debugLayer);
-
 	}
 
 	Application::~Application()
@@ -47,6 +45,16 @@ namespace LukkelEngine {
 			Layer* currentLayer = *it;
 			currentLayer->onUpdate(ts);
 		}
+
+
+		if (Keyboard::isKeyPressed(Key::G))
+		{
+			m_Window->toggleInputLock();
+			// bool toggleValue = m_Scene->getCamera()->m_MouseEnabled;
+			// m_Scene->getCamera()->m_MouseEnabled = ;
+			// toggleValue = !toggleValue;
+		}
+
 
 		m_Renderer->renderImGui();
 		m_Window->onUpdate();

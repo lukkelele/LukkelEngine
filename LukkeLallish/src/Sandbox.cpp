@@ -18,7 +18,10 @@ public:
 
 int main()
 {
+	using namespace LukkelEngine;
 	Sandbox app;
+	s_ptr<Scene>scene = std::make_shared<Scene>();
+	app.setScene(scene);
 
 	TestLayer layer;
 	app.pushLayer(&layer); // heap bug at LayerStack destructor

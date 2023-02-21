@@ -12,7 +12,7 @@ namespace LukkelEngine {
 	std::pair<float, float> Mouse::getMousePosition()
 	{
 		double xpos, ypos;
-		glfwGetCursorPos(Application::get().getWindow(), &xpos, &ypos);
+		glfwGetCursorPos(Application::get().getGLFWWindow(), &xpos, &ypos);
 		float x = static_cast<float>(xpos);
 		float y = static_cast<float>(ypos);
 		return std::make_pair(x, y);

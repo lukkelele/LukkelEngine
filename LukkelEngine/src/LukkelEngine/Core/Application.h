@@ -3,8 +3,8 @@
 #include "GL/glew.h"
 #include "glfw/glfw3.h"
 #include "imgui/imgui.h"
-#include "imgui_impl_glfw.h"
-#include "imgui_impl_opengl3.h"
+#include "imgui/imgui_impl_glfw.h"
+#include "imgui/imgui_impl_opengl3.h"
 
 
 #include "LukkelEngine/Core/Base.h"
@@ -24,17 +24,7 @@
 #include <LukkelEngine/Input/Keyboard.h>
 #include <LukkelEngine/Input/Mouse.h>
 
-#include "LukkelEngine/Layer/ImGuiLayer.h"
-
-/* TESTS */
-#include <LukkelEngine/Test/Test.h>			
-#include <LukkelEngine/Test/TestClearColor.h>
-#include <LukkelEngine/Test/TestTexture2D.h>
-#include <LukkelEngine/Test/TestDrawTriangle.h>
-#include <LukkelEngine/Test/TestDrawTriangle2.h>
-#include <LukkelEngine/Test/TestDrawCube.h>
-#include <LukkelEngine/Test/TestShader.h>
-#include <LukkelEngine/Test/TestTexture.h>
+#include "LukkelEngine/Layer/DebugLayer.h"
 
 
 namespace LukkelEngine {

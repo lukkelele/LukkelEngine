@@ -2,6 +2,11 @@
 #include "LukkelEngine/Event/KeyEvent.h"
 #include "LukkelEngine/Event/MouseEvent.h"
 
+#include "imgui/imgui.h"
+#include "imgui/imgui_impl_glfw.h"
+#include "imgui/imgui_impl_glfw_gl3.h"
+
+
 namespace LukkelEngine {
 
 	static bool GLFW_initialized = false;
@@ -33,6 +38,9 @@ namespace LukkelEngine {
 		m_Data.height = props.height;
 		m_Window = glfwCreateWindow((int)props.width, (int)props.height, props.title.c_str(), nullptr, nullptr);
 
+		m_ViewportWidth = float(props.width);
+		m_ViewportHeight = float(props.height);
+
 		glfwMakeContextCurrent(m_Window);
 		glfwSetWindowUserPointer(m_Window, &m_Data);
 		
@@ -48,31 +56,16 @@ namespace LukkelEngine {
 			}
 		}
 		setVSync(true);
-		glfwSetInputMode(m_Window, GLFW_STICKY_KEYS, 1);
 		glEnable(GL_BLEND);
 		glEnable(GL_DEPTH_TEST);
 		glEnable(GL_LINE_SMOOTH);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-		// glfwSetMouseButtonCallback(m_Window, [](GLFWwindow* window, int button, int action, int mods)
-		// {
-		// 	WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
-		// 	switch (action) 
-		// 	{
-		// 		case GLFW_PRESS:
-		// 		{
-		// 			MouseButtonPressedEvent event(button);
-		// 			data.eventCallback(event);
-		// 			break;
-		// 		}
-		// 		case GLFW_RELEASE:
-		// 		{
-		// 			MouseButtonReleasedEvent event(button);
-		// 			data.eventCallback(event);
-		// 			break;
-		// 		}
-		// 	}
-		// });
+		glfwSetInputMode(m_Window, GLFW_STICKY_KEYS, GLFW_TRUE);
+		// Lock cursor and enable raw input
+		glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+		glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_RAW_MOUSE_MOTION);
+
 
 		glfwSetScrollCallback(m_Window, [](GLFWwindow* window, double x, double y)
 		{
@@ -81,12 +74,15 @@ namespace LukkelEngine {
 			data.eventCallback(event);
 		});
 
-		//glfwSetCursorPosCallback(m_Window, [](GLFWwindow* window, double xPos, double yPos)
-		//{
-		//	WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
-		//	MouseMovedEvent event((float)xPos, (float)yPos);
-		//	data.eventCallback(event);
-		//});
+		// Setup ImGui
+		ImGui::CreateContext();
+		ImGuiIO& io = ImGui::GetIO();
+		// Add and load font
+		io.Fonts->AddFontFromFileTTF("assets/fonts/SourceCodePro/SourceSansProSemibold.ttf", 20);
+		// Enable keyboard
+		io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+		ImGui_ImplGlfwGL3_Init(m_Window, true);
+		ImGui::StyleColorsDark();
 
 	}
 		

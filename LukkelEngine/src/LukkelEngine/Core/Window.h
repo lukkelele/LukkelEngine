@@ -3,11 +3,10 @@
 #include <string>
 #include <vector>
 
-#include <LukkelEngine/Core/LKErrorHandler.h>
-#include <LukkelEngine/Event/Event.h>
+#include "LukkelEngine/Core/LKErrorHandler.h"
+#include "LukkelEngine/Event/Event.h"
 
-#include <GLFW/glfw3.h>
-#include <imgui/imgui.h>
+#include "GLFW/glfw3.h"
 
 namespace LukkelEngine {
 
@@ -40,5 +39,7 @@ namespace LukkelEngine {
 
 		/* Static for platform independent window creation */
 		virtual void setEventCallback(const EventCallbackFn& callback) = 0;
+
+		float m_ViewportWidth, m_ViewportHeight;
 	};
 }

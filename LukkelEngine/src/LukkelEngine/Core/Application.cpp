@@ -15,13 +15,15 @@ namespace LukkelEngine {
 
 		m_Window->setEventCallback(LK_BIND_EVENT_FN(Application::onEvent));
 
-		Layer* imguiLayer = new ImGuiLayer();
-		pushOverlay(imguiLayer);
+		DebugLayer* debugLayer = new DebugLayer;
+		pushOverlay(debugLayer);
+
 	}
 
 	Application::~Application()
 	{
 		LKLOG_WARN("Terminating application");
+		ImGui::DestroyContext();
 	}
 
 	void Application::run(bool test)
@@ -45,9 +47,6 @@ namespace LukkelEngine {
 			Layer* currentLayer = *it;
 			currentLayer->onUpdate(ts);
 		}
-
-		// ENABLE TO LOCK CURSOR
-		// glfwSetCursorPos(Application::get().getWindow(), viewportWidth / 2, viewportHeight / 2);
 
 		m_Renderer->renderImGui();
 		m_Window->onUpdate();

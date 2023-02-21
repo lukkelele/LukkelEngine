@@ -38,9 +38,6 @@ namespace LukkelEngine {
 
 
 			glm::mat4 model = glm::mat4(1.0f);
-			model = glm::translate(model, m_Camera->m_Position);
-			// Rotate axis
-			model = glm::rotate(model, m_Camera->getRotation(), m_Camera->getUpDirection()); // last vector is UP
 
 			ImGui::SliderFloat3("Camera position", &m_Camera->m_Position.x, -40.0f, 40.0f);
 			auto entityShader = entity->getShader();

@@ -19,25 +19,15 @@ namespace LukkelEngine {
 
 	void FpsCamera::updateView()
 	{
-		m_Position = calculatePosition();
-
-		glm::quat orientation = getOrientation();
-		m_View= glm::translate(glm::mat4(1.0f), m_Position) * glm::toMat4(orientation);
-		m_View = glm::inverse(m_View);
+		m_View = glm::lookAt(m_Position, m_Position + m_ForwardDir, glm::vec3(0.0f, 1.0f, 0.0f));
 	}
 
 	void FpsCamera::updateMousePosition()
 	{
 		std::pair<float, float> mousePos = Mouse::getMousePosition();
-		m_MousePos.x = mousePos.first;
-		m_MousePos.y = mousePos.second;
-	}
-
-	void FpsCamera::mouseRotate(glm::vec2& delta)
-	{
-		float yawSign = getUpDirection().y < 0 ? -1.0f : 1.0f;
-		m_Yaw += yawSign * delta.x * m_RotationSpeed;
-		m_Pitch += delta.y * m_RotationSpeed;
+		glm::vec2 currentMousePos = glm::vec2(mousePos.first, mousePos.second);
+		m_MouseDelta = m_MousePos - currentMousePos;
+		m_MousePos = glm::vec2(mousePos.first, mousePos.second);
 	}
 
 	glm::vec3 FpsCamera::getUpDirection() const
@@ -68,12 +58,10 @@ namespace LukkelEngine {
 
 	void FpsCamera::onUpdate(float ts)
 	{
+		bool mouseMoved = false;
+
+		glm::vec3 rightDir = glm::cross(m_ForwardDir, m_UpDir);
 		// LKLOG_CLIENT_TRACE("POS -> ( {0}, {1}, {2} )", m_Position.x, m_Position.y, m_Position.z);
-		updateMousePosition();
-		// TODO: Fix mouse rotation
-		// mouseRotate(glm::vec2(m_MousePos.x, m_MousePos.y));
-		horizontalAngle += m_MouseSpeed * ts * float(m_ViewportWidth / 2 - m_MousePos.x);
-		verticalAngle += m_MouseSpeed * ts * float(m_ViewportHeight / 2 - m_MousePos.y);
 
 		// Right vector
 
@@ -87,12 +75,11 @@ namespace LukkelEngine {
 		} 
 		if (Keyboard::isKeyPressed(Key::A)) 
 		{
-			// m_Position.x += m_Speed * ts;
-			m_Position += getRightDirection() * m_Speed * ts;
+			m_Position -= rightDir * m_Speed * ts;
 		} 
 		else if (Keyboard::isKeyPressed(Key::D))
 		{
-			m_Position -= getRightDirection() * m_Speed * ts;
+			m_Position += rightDir * m_Speed * ts;
 		}
 
 		// ROTATION
@@ -119,7 +106,27 @@ namespace LukkelEngine {
 			m_FOV -= 1;
 		}
 
+		updateMousePosition();
+		// If the mouse has moved since last frame, update camera rotation
+		if (m_MouseDelta.x != 0.0f || m_MouseDelta.y != 0.0f)
+		{
+			float yaw = m_MouseDelta.x * m_RotationSpeed / 20.0f;
+			float pitch = m_MouseDelta.y * m_RotationSpeed / 20.0f;
+			glm::quat q = glm::normalize(glm::cross(glm::angleAxis(pitch, rightDir),
+				glm::angleAxis(yaw, glm::vec3(0.0f, 1.0f, 0.0f))));
+
+			m_ForwardDir = glm::rotate(q, m_ForwardDir);
+
+			mouseMoved = true;
+		}
+
+		if (mouseMoved)
+		{
+			updateView();
+		}
+
 		updateProjection();
+		updateView();
 		m_ViewProjection = m_Projection * m_View;
 	}
 }

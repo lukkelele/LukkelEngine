@@ -45,35 +45,35 @@ namespace LukkelEngine {
 
 		void setRotation(float rot) { m_Rotation = rot; }
 		void setFOV(float FOV) { m_FOV = FOV; updateProjection(); }
-		void setNearClip(float nearClip) { m_NearPlane = nearClip; updateProjection(); }
-		void setFarClip(float farClip) { m_FarPlane = farClip; updateProjection(); }
+		void setNearClip(float nearClip) { m_NearPlane = nearClip; }
+		void setFarClip(float farClip) { m_FarPlane = farClip; }
         void setTarget(glm::vec3 target) { m_Target = target; }
 
 		void updateView();
 		void updateProjection();
 		void updateMousePosition();
 
-		void mouseRotate(glm::vec2& delta);
 		void onMouseScroll(MouseScrolledEvent& e);
 
 	public:
-		glm::vec3 m_Position = { 0.0f, 0.0f, -10.0f };
+		glm::vec3 m_Position = { 0.0f, 0.0f, -6.0f };
 		glm::vec3 m_Direction = { 0.0f, 0.0f, 0.0f };
 		glm::vec3 m_Origin = { 0.0f, 0.0f, 0.0f };
 		glm::vec2 m_MousePos = { 0.0f, 0.0f };
 
 		glm::vec3 m_ForwardDir = { 0.0f, 0.0f, 1.0f };
-		glm::vec3 m_Up = glm::vec3(0.0f, 1.0f, 0.0f);
+		glm::vec3 m_UpDir = glm::vec3(0.0f, 1.0f, 0.0f);
+
         glm::vec3 m_Target = { 0.0f, 0.0f, 0.0f };
 
 		float m_FOV = 50.0f, m_NearPlane = 0.10f, m_FarPlane = 1000.0f;
 		float m_Speed = 0.05f;
 		float m_Distance = 0.5f;
 		float m_MouseSpeed = 1.0f;
-		float horizontalAngle = 3.14f, verticalAngle = 0.0f;
+		glm::vec2 m_MouseDelta = { 0.0f , 0.0f };
 
 		float m_Rotation = 0.0f;
-		float m_RotationSpeed = 0.2f;
+		float m_RotationSpeed = 0.008f;
 		float m_Yaw = 0.0f, m_Pitch = 0.0f;
 		float m_ViewportWidth = 1600, m_ViewportHeight = 1024;
 		float m_AspectRatio = float(16.0f/9.0f);

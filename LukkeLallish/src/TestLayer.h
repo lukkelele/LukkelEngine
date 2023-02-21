@@ -22,6 +22,7 @@ public:
 	float inc = 0.02;
 
 	glm::vec3 colorSlider1 = { 1.0f, 1.0f, 1.0f };
+	glm::vec3 colorSlider2 = { 1.0f, 1.0f, 1.0f };
 	glm::vec3 sliderBuff2 = { 0.0f, 0.0f, 0.0f };
 	glm::vec3 sliderBuff3 = { 0.0f, 0.0f, 0.0f };
 

@@ -39,10 +39,6 @@ namespace LukkelEngine {
 			std::unique_ptr<VertexBuffer> m_VBO;
 			std::unique_ptr<IndexBuffer> m_IBO;
 			std::unique_ptr<Shader> m_Shader;
-			// Shader m_Shader;
-			// VertexArray m_VAO;
-			// VertexBuffer m_VBO;
-			// IndexBuffer m_IBO;
 			std::unique_ptr<Renderer> m_Renderer;
 
 			void onUpdate(float deltaTime) override;

@@ -46,19 +46,11 @@ namespace LukkelEngine {
 			currentLayer->onUpdate(ts);
 		}
 
-
-		if (Keyboard::isKeyPressed(Key::G))
-		{
-			m_Window->toggleInputLock();
-			// bool toggleValue = m_Scene->getCamera()->m_MouseEnabled;
-			// m_Scene->getCamera()->m_MouseEnabled = ;
-			// toggleValue = !toggleValue;
-		}
-
-
 		m_Renderer->renderImGui();
 		m_Window->onUpdate();
 	}
+
+
 	/**
 	 * Push a layer to the layer stack
 	 * @param layer is the layer to be pushed

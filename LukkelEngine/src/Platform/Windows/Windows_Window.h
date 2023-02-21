@@ -12,15 +12,15 @@ namespace LukkelEngine {
 
 		inline uint16_t getWidth() override { return m_Data.width; }
 		inline uint16_t getHeight() override { return m_Data.height; }
+		GLFWwindow* getWindow() const override;
 
 		void onUpdate() override;
 		void setEventCallback(const EventCallbackFn& callback) override { m_Data.eventCallback = callback; }
 		void setVSync(bool enabled) override;
 		bool isVSync() const override;
 
-		void toggleInputLock() override;
+		void setInputLock(bool enabled = true) override;
 		void init(WindowProps& properties);
-		GLFWwindow* getWindow() const override;
 		void exit();
 
 	// FIXME: set private 

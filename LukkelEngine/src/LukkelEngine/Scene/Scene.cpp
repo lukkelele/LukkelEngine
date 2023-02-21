@@ -57,9 +57,7 @@ namespace LukkelEngine {
 		ImGui::SliderFloat("FOV", &cam->m_FOV, 25.0f, 120.0f);
 		ImGui::Text("Average FPS: %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate); 
 		ImGui::SliderFloat3("Camera position", &m_Camera->m_Position.x, -40.0f, 40.0f);
-
-		bool mouseEnabled = cam->m_MouseEnabled;
-		ImGui::Checkbox("Enable mouse", &mouseEnabled);
+		ImGui::Checkbox("Enable mouse", &getCamera()->m_MouseEnabled);
 	}
 
 	void Scene::addEntity(Entity& entity)

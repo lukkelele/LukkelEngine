@@ -70,13 +70,14 @@ namespace LukkelEngine {
 		float m_Speed = 0.05f;
 		float m_Distance = 0.5f;
 
-		bool m_Paused = false;
 		bool m_MouseEnabled = true;
+		bool m_KeyboardEnabled = true;
+
 		float m_MouseSpeed = 1.0f;
 		glm::vec2 m_MouseDelta = { 0.0f , 0.0f };
 
 		float m_Rotation = 0.0f;
-		float m_RotationSpeed = 0.008f;
+		float m_RotationSpeed = 0.0002f;
 		float m_Yaw = 0.0f, m_Pitch = 0.0f;
 		float m_ViewportWidth = 1600, m_ViewportHeight = 1024;
 		float m_AspectRatio = float(16.0f/9.0f);

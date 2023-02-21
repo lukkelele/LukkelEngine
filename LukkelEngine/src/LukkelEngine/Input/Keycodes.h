@@ -92,6 +92,16 @@ namespace LukkelEngine {
 			F7 = 296,
 			F8 = 297,
 			F9 = 298,
+
+			LeftShift = 340,
+			LeftControl = 341,
+			LeftAlt = 342,
+			LeftSuper = 343,
+			RightShift = 344,
+			RightControl = 345,
+			RightAlt = 346,
+			RightSuper = 347,
+			Menu = 348
 		};
 	}
 }

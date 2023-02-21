@@ -23,16 +23,16 @@ namespace LukkelEngine {
 
 	void Windows_Window::init(WindowProps& props)
 	{
-		/* Initiate glfw */
+		// Initiate glfw
 		glfwInit();
-		/* Set core profile instead of compability one */
+		// Set core profile instead of compability one
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-		/* OPENGL Version 3.3 */
+		// OPENGL Version 3.3
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 		glewExperimental = true; // needed for profile(?)
 
-		/* Set window properties */
+		// Set window properties
 		m_Data.title = props.title;
 		m_Data.width = props.width;
 		m_Data.height = props.height;
@@ -47,7 +47,7 @@ namespace LukkelEngine {
 		if (!GLFW_initialized) {
 			GLenum err = glewInit();
 			if (err != GLEW_OK) {
-				/* if error occured, print error message */
+				// if error occured, print error message
 				printf("[ERROR] %s\n", glewGetErrorString(err));
 				GLFW_initialized = false;
 			} else {
@@ -64,15 +64,15 @@ namespace LukkelEngine {
 		glfwSetInputMode(m_Window, GLFW_STICKY_KEYS, GLFW_TRUE);
 		glfwSetInputMode(m_Window, GLFW_RAW_MOUSE_MOTION, GLFW_TRUE);
 
-		toggleInputLock();
-
-
 		glfwSetScrollCallback(m_Window, [](GLFWwindow* window, double x, double y)
 		{
 			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
 			MouseScrolledEvent event((float)x, (float)y);
 			data.eventCallback(event);
 		});
+
+		setInputLock(true);
+
 
 		// Setup ImGui
 		ImGui::CreateContext();
@@ -112,17 +112,16 @@ namespace LukkelEngine {
 		return m_Data.VSync;
 	}
 
-	void Windows_Window::toggleInputLock()
+	void Windows_Window::setInputLock(bool enabled)
 	{
+		m_InputLock = enabled;
 		if (m_InputLock == false)
 		{
-			glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-			m_InputLock = true;
-		}
-		else
-		{
 			glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-			m_InputLock = false;
+		}
+		else if (m_InputLock == true)
+		{
+			glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 		}
 	}
 

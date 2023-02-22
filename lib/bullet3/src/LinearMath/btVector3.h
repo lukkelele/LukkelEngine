@@ -14,7 +14,7 @@ subject to the following restrictions:
 
 #ifndef BT_VECTOR3_H
 #define BT_VECTOR3_H
-#define BT_USE_SSE_IN_API
+// #define BT_USE_SSE_IN_API
 
 //#include <stdint.h>
 #include "btScalar.h"

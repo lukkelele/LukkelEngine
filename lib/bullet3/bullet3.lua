@@ -1,36 +1,28 @@
 project "Bullet3"
 	kind "StaticLib"
-	language "C"
-	staticruntime "On"
+	language "C++"
+	--staticruntime "On"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
 
+	defines { "BT_USE_SSE_IN_API" }
+
 	files
 	{
 		"src/**.cpp",
-		"src/**.hpp",
-		"src/**.c",
 		"src/**.h",
+		-- "src/BulletCollision/**.cpp",
+		-- "src/BulletCollision/**.h",
+		-- "src/BulletDynamics/**.cpp",
+		-- "src/BulletDynamics/**.h",
+		-- "src/BulletInverseDynamics/**.cpp",
+		-- "src/BulletInverseDynamics/**.h",
+		-- "src/BulletSoftBody/**.cpp",
+		-- "src/BulletSoftBody/**.h",
+		-- "src/LinearMath/**.cpp",
+		-- "src/LinearMath/**.h",
 	}
-
-	includedirs
-	{
-		"src",
-		"test"
-	}
-
-	links
-	{
-		-- "Bullet3Collision",
-		-- "Bullet3Common",
-		-- "Bullet3Dynamics",
-		-- "Bullet3Geometry",
-		-- "Bullet3Serialize",
-		-- "BulletSoftBody",
-		-- "LinearMath"
-	}
-
 
 	filter "configurations:Debug"
 		runtime "Debug"

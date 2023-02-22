@@ -36,7 +36,7 @@ namespace LukkelEngine {
 		virtual bool isVSync() const = 0;
 
 		virtual GLFWwindow* getWindow() const = 0;
-		static s_ptr<Window> create(const WindowProps& props = WindowProps());
+		static s_ptr<Window> create(WindowProps& props = WindowProps());
 
 		/* Static for platform independent window creation */
 		virtual void setEventCallback(const EventCallbackFn& callback) = 0;

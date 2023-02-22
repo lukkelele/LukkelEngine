@@ -16,8 +16,8 @@ project "LukkeLallish"
 	includedirs {
 		"%{wks.location}/LukkelEngine",
 		"%{wks.location}/LukkelEngine/src",
-		"%{wks.location}/lib/spdlog",
 		"%{wks.location}/lib",
+		"%{wks.location}/lib/spdlog",
 		"%{wks.location}/lib/glm",
 		"%{wks.location}/lib/imgui",
 		"%{wks.location}/lib/ImGuizmo",
@@ -25,7 +25,8 @@ project "LukkeLallish"
 		"%{wks.location}/lib/glfw/include",
 		"%{wks.location}/lib/glew/include",
 		"%{wks.location}/lib/spdlog/include",
-		"%{wks.location}/lib/entt/src"
+		"%{wks.location}/lib/entt/src",
+		"%{wks.location}/lib/bullet3/src"
 		}
 
 	links

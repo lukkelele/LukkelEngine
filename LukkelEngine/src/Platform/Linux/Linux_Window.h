@@ -35,8 +35,8 @@ namespace LukkelEngine {
                 bool VSync;
                 EventCallbackFn eventCallback;
             };
-            WindowData m_Data;
-        };
-    }
 
+            WindowData m_Data;
+	};
 }
+

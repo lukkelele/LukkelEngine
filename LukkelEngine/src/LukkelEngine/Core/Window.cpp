@@ -11,8 +11,9 @@ namespace LukkelEngine {
 	s_ptr<Window> Window::create(WindowProps& props)
 	{
 		#ifdef LK_PLATFORM_WINDOWS
-			return std::make_unique<Windows_Window>(props);
+			return std::make_shared<Windows_Window>(props);
 		#else
+			// GCC requires const WindowProps?
 			// return std::make_unique<Linux_Window>(props);
 			return std::make_shared<Linux_Window>(props);
 		#endif

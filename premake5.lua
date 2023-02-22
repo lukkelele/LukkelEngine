@@ -32,8 +32,8 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}"
 
 include "LukkeLallish/premake5.lua"
 include "lib/GLFW/glfw.lua"
--- include "lib/glew/glew.lua"
 include "lib/imgui/imgui.lua"
+include "lib/bullet3/bullet3.lua"
 
 project "LukkelEngine"
     location "LukkelEngine"
@@ -49,10 +49,10 @@ project "LukkelEngine"
     {
         "GLEW_STATIC",
         "LKLOG_ADVANCED",
-		    "_GLM_WIN32",
-		    "GLFW_INCLUDE_NONE",
-		    "_CRT_SECURE_NO_WARNINGS",
-
+		"_GLM_WIN32",
+		"GLFW_INCLUDE_NONE",
+		"_CRT_SECURE_NO_WARNINGS",
+        "BT_USE_SSE_IN_API"
     }
 
     files
@@ -64,25 +64,29 @@ project "LukkelEngine"
         "%{wks.location}/lib/stb_image/**.cpp",
 
         "%{wks.location}/lib/imgui/imgui.cpp",
-		    "%{wks.location}/lib/imgui/imgui.h",
-		    "%{wks.location}/lib/imgui/imgui_draw.cpp",
-		    "%{wks.location}/lib/imgui/imgui_impl_glfw_gl3.cpp",
-		    "%{wks.location}/lib/imgui/imgui_impl_glfw_gl3.h",
-		    "%{wks.location}/lib/imgui/imgui_widgets.cpp",
+		"%{wks.location}/lib/imgui/imgui.h",
+		"%{wks.location}/lib/imgui/imgui_draw.cpp",
+		"%{wks.location}/lib/imgui/imgui_impl_glfw_gl3.cpp",
+		"%{wks.location}/lib/imgui/imgui_impl_glfw_gl3.h",
+		"%{wks.location}/lib/imgui/imgui_widgets.cpp",
 
-		    "%{wks.location}/lib/entt/entt.hpp",
+		"%{wks.location}/lib/entt/entt.hpp",
         "%{wks.location}/glm/glm/**.hpp",
 
         "%{wks.location}/lib/ImGuizmo/*.cpp",
         "%{wks.location}/lib/ImGuizmo/*.h",
 
 		"%{wks.locaton}/lib/glew/include/GL/glew.h",
+        
+		-- "%{wks.location}/lib/bullet3/src/**.cpp",
+		-- "%{wks.location}/lib/bullet3/src/**.h",
+		-- "%{wks.location}/lib/bullet3/src/**.c",
    	}
 
     libdirs
     {
         "%{wks.location}/lib/glew/lib",
-        "%{wks.location}/lib/glfw/lib"
+        "%{wks.location}/lib/GLFW/lib"
     }
 
     includedirs
@@ -93,16 +97,16 @@ project "LukkelEngine"
 		"%{wks.location}/lib/imgui",
 		"%{wks.location}/lib/ImGuizmo",
 		"%{wks.location}/lib/stb_image",
-		"%{wks.location}/lib/glfw/include",
+		"%{wks.location}/lib/GLFW/include",
 		"%{wks.location}/lib/glew/include",
 		"%{wks.location}/lib/spdlog/include",
-		"%{wks.location}/lib/entt/src"
+		"%{wks.location}/lib/entt/src",
+		-- "%{wks.location}/lib/bullet3/src"
     }
 
     links
     {
         "GLFW",
-        --"glew",
         "opengl32",
         "glew32s",
         "ImGui",
@@ -114,7 +118,7 @@ project "LukkelEngine"
 			"LK_PLATFORM_WINDOWS",
 			"GLEW_STATIC",
 			"_IMGUI_WIN32",
-			"_CRT_SECURE_NO_WARNINGS"
+			"_CRT_SECURE_NO_WARNINGS",
 		}
 
 	filter "configurations:Debug"
@@ -131,12 +135,3 @@ project "LukkelEngine"
 		defines "LK_DIST"
 		runtime "Release"
 		optimize "on"
-
-
-
-	
-
--- include "lib/glew.lua"
--- include "lib/glfw.lua"
--- include "lib/imgui.lua"
--- include "lib/glm.lua"

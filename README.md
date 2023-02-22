@@ -1,55 +1,51 @@
 # LukkelEngine
 > Graphics Engine written in C++<br>
 
-As I've grown impatient with Python and Java I figured it was time for me to step in to a new realm.
-One language I always have had a special love towards is **C** and **C++**. Especially **C++**, something about 
-the entire structure of the language is just something I appreciate. It is so clean in away.<br><br>
-My preferred way of learning is to just do something, be horrible at it and try again.<br>
-A project is a very good way of learning as it *requires* things to work.<br>
-My restlessness combined with my severe dissapointment in the gaming world made me think that a game engine
-would be great starting project. Games are no longer optimized and they all run bad.
-A thought popped up: *"**how hard could it be?**"*<br>
-And just like that **LukkelEngine** was born.
+I want to learn C++ and improve at it.  
+This combined with my severe dissapointment in the gaming world (games running horribly bad on high-end hardware) made me think that a game engine would be great starting project.  
+I'm very new to graphics programming in general so this has been an adventure to say the least.  
+<br>
+Coding C++ on Linux is not as smooth as it is on Windows. Visual Studio is a **great** tool to use for C++.
+But I will make **LukkelEngine** run on Linux as well. I have yet to set up a good development environment on Linux.
 
 ---
-## Components
 
+## TODO
+
+- [ ] Settings menu (mouse sensitivity, camera speed etc..)
+- [ ] Functionality to load object files
+- [ ] Camera interface to separate the camera system to 2D and 3D
+- [ ] Physics
+- [ ] Cleaner input management system
+
+---
+## Engine design
 ### Application
 Main application.<br>
-All components are used inside **Application**.
-> - Layers
-> - Logging
-> - Error handling
 
-### Scene
-Projected world.
-> - Entity (entities)
+### Sandbox
+Inherits from **Application** and is the main implementation of the engine.
 
 ### Renderer
-Holds mostly abstracted OpenGL to create an API that is way more clean than raw OpenGL calls.
-> - Camera
-> - VertexArray
-> - VertexBuffer
-> - IndexBuffer
-> - Shader
-> - Texture
- 
-<br>
+Abstracted OpenGL to create an API that is way more clean than raw OpenGL calls.<br>
+To be honest, the way that OpenGL works with its context and states is kind of hard to get a grasp on.
+My goal is to have a solid API that takes care of the raw OpenGL without me being forced to use it *directly*.
+> VertexArray<br>
+> VerteBuffer<br>
+> VertexBufferLayout<br>
+> Shader<br>
+> Texture<br>
 
-**LukkelEngine** 
+### Scene
+Projected world. Holds entities (world objects).<br>
+> Container of:
+>> Entity
+ 
+
 
 ## Mathematics
-<p align="center">The linear algebra used to create the projection and view matrices to create the 3D *feel*.</p>
+<p align="center">The linear algebra used to create the projection and view matrices to create the 3D feel.</p>
 <div align="center">
-	<img align="center" src="/res/img/matrix-transformations.png" width=460 height=440>
+	<img align="center" src="/doc/img/matrix-transformations.png" width=600 height=600>
 </div>
-
----
-
-# LukkeLallish -> Sandbox
-
-The sandbox is simply a child of *Application* and implements custom layers that are inserted on to the engine.
-This is done to simulate a real life example of actually using the engine. Not that anyone besides me ever will do that,
-still I think it is appropriate to code *as if* that is the case.
-
 

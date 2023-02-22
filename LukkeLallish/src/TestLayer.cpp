@@ -16,8 +16,9 @@ TestLayer::TestLayer()
 void TestLayer::onAttach()
 {
 
-	LukkelEngine::Entity* Cube = new LukkelEngine::Cube();
 	LukkelEngine::Entity* Cube2 = new LukkelEngine::Cube();
+	LukkelEngine::Entity* Cube = new LukkelEngine::Cube();
+	Cube2->m_Shader->setUniform4f("u_Color", 1.0f, 1.0f, 1.0f, 1.0f);
 	Cube->m_Shader->setUniform4f("u_Color", 1.0f, 1.0f, 1.0f, 1.0f);
 
 	// Set the scene to shared pointer
@@ -45,13 +46,13 @@ void TestLayer::onAttach()
 	groundRigidBody->setRestitution(0.90f);
 	groundRigidBody->setCollisionFlags(btCollisionObject::CF_STATIC_OBJECT);
 
-	// Cube2->m_RigidBody = sphereRigidBody;
+	Cube2->m_RigidBody = sphereRigidBody;
 	m_Scene->m_WorldPhysics->m_DynamicWorld->addRigidBody(groundRigidBody);
 
 
 	// Add cube to current scene
 	LukkelEngine::EntityHandler::addEntity(*Cube);
-	// LukkelEngine::EntityHandler::addEntity(*Cube2);
+	LukkelEngine::EntityHandler::addEntity(*Cube2);
 }
 
 void TestLayer::onUpdate(float ts)

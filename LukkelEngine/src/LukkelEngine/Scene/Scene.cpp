@@ -23,8 +23,6 @@ namespace LukkelEngine {
 
 	void Scene::onUpdate(float ts)
 	{
-		auto currentTime = std::chrono::high_resolution_clock::now();
-
 		m_Camera->onUpdate(ts);
 
 		for (auto &entity : m_Entities)
@@ -38,14 +36,13 @@ namespace LukkelEngine {
 			float x = translate.getX();
 			float y = translate.getY();
 			float z = translate.getZ();
-			LKLOG_CLIENT_WARN("RigidBody -> ({0}, {1}, {2}", x, y, z);
-			// glm::mat4 transform = glm::translate(glm::mat4(1.0f), glm::vec3(1.0f, 1.0f, 1.0f));
+
+			LKLOG_CLIENT_WARN("RigidBody -> ({0}, {1}, {2})", x, y, z);
 			glm::mat4 transform = glm::translate(glm::mat4(1.0f), glm::vec3(x, y, z));
 			entity->m_Shader->setUniformMat4f("u_Transform", transform);
 
-			m_WorldPhysics->m_DynamicWorld->stepSimulation(0.002f);
+			m_WorldPhysics->m_DynamicWorld->stepSimulation(0.0035f);
 
-			// glm::mat4 model = glm::mat4(1.0f);
 			glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(x, y, z));
 
 			auto entityShader = entity->getShader();

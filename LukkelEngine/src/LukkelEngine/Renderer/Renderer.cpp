@@ -3,6 +3,8 @@
 
 namespace LukkelEngine {
 
+	bool Renderer::s_DrawMode;
+
 	void Renderer::clear() const
 	{
 		glClearColor(float(51.0f/255.0f), float(98.0f/255.0f), float(125.0f/255.0f), 1.0f);
@@ -10,7 +12,7 @@ namespace LukkelEngine {
 	}
 
 	// FIXME: Delta time
-	void Renderer::draw(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const {
+	void Renderer::drawFill(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const {
 		shader.bind();
 		va.bind();
 		ib.bind();
@@ -30,6 +32,14 @@ namespace LukkelEngine {
 		va->bind();
 		unsigned int count = va->getIndexBuffer()->getCount();
 		glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
+	}
+
+	void Renderer::draw(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const
+	{
+		if (s_DrawMode == LK_DRAW_LINE)
+			drawLines(va, ib, shader);
+		else
+			drawFill(va, ib, shader);
 	}
 
 	void Renderer::renderImGui() const

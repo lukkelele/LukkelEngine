@@ -1,9 +1,11 @@
 #include "LukkelEngine/Layer/DebugLayer.h"
 
+#include "LukkelEngine/Core/Application.h"
 
 namespace LukkelEngine {
 	
 	DebugLayer::DebugLayer()
+		: Layer("DebugLayer")
 	{
 		registerTests();
 	}
@@ -11,6 +13,12 @@ namespace LukkelEngine {
 	void DebugLayer::onUpdate(float ts)
 	{
 		renderTestMenu();
+	}
+
+	void DebugLayer::onImGuiRender()
+	{
+		ImGui::Checkbox("Draw lines", &Renderer::s_DrawMode);
+		ImGui::Checkbox("Enable mouse", &Application::get().getCamera()->m_MouseEnabled); // FIXME
 	}
 
 	void DebugLayer::renderTestMenu()

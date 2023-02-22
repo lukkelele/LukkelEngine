@@ -1,14 +1,8 @@
 #pragma once
 /* 
-	LukkelEngine core file.
-
-	> GLFW
-		The GLCall macro does not function on some OpenGL functions.
-		Debugging can be a pain when the macro is seen as trivial but it can be prone to errors.
-		Specific ones to watch out for:
-			- glfwMakeContextCurrent(WINDOW);
-
+	LukkelEngine base file.
 */
+
 #include "LukkelEngine/Core/PlatformDetection.h"
 
 #include <memory>
@@ -31,13 +25,17 @@
 	#define LK_DEBUGBREAK()
 #endif
 
+// Draw modes
+#define LK_DRAW_FILL 0
+#define LK_DRAW_LINE 1
+
 #define LK_EXPAND_MACRO(x) x
 #define LK_STRINGIFY_MACRO(x) #x
 
-/* Bit field macro */
+// Bit field macro
 #define LK_BIT_FIELD(x) (1 << x)
 
-/* Bind event */
+// Bind event
 #define LK_BIND_EVENT_FN(fn) [this](auto&&... args) -> decltype(auto) { return this->fn(std::forward<decltype(args)>(args)...); }
 
 namespace LukkelEngine {

@@ -4,6 +4,7 @@
 #include "LukkelEngine/Renderer/Shader.h"
 #include "LukkelEngine/Renderer/Texture.h"
 
+#include "btBulletDynamicsCommon.h"
 #include "entt/entt.hpp"
 
 namespace LukkelEngine {
@@ -30,7 +31,7 @@ namespace LukkelEngine {
 
 	// TODO: Set these back to private
 	public:
-		// Set to unique?
+		// TODO: SET TO LOCAL MEMBERS (?)
 		s_ptr<VertexArray> m_VAO;
 		s_ptr<VertexBuffer> m_VBO;
 		s_ptr<IndexBuffer> m_IBO;
@@ -41,7 +42,7 @@ namespace LukkelEngine {
 		s_ptr<Shader> m_Shader;
 		s_ptr<Texture> m_Texture;
 
-	private:
+		btRigidBody* m_RigidBody;
 		UUID m_UUID;
 	};
 

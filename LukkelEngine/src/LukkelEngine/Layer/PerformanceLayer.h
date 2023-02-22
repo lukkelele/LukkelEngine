@@ -10,6 +10,7 @@ namespace LukkelEngine {
 		PerformanceLayer();
 		~PerformanceLayer() = default;
 
+		void onUpdate(float ts);
 		void onImGuiRender();
 
 		void FPS();

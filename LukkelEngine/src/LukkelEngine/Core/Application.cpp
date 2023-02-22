@@ -7,6 +7,7 @@ namespace LukkelEngine {
 	Application::Application(const ApplicationDetails& details)
 	{
 		s_Instance = this;
+		Renderer::s_DrawMode = LK_DRAW_FILL;
 		LukkeLog::Log::init("LukkelEngine.log", "App", "Client");
 		LKLOG_TRACE("Starting application");
 		WindowProps properties = WindowProps(details.title, details.width, details.height);
@@ -45,6 +46,15 @@ namespace LukkelEngine {
 			Layer* currentLayer = *it;
 			currentLayer->onUpdate(ts);
 		}
+
+		// Update ImGui
+		ImGui::Begin;
+		for (auto it = m_LayerStack.rbegin(); it != m_LayerStack.rend(); ++it) 
+		{
+			Layer* currentLayer = *it;
+			currentLayer->onImGuiRender();
+		}
+		ImGui::End;
 
 		m_Renderer->renderImGui();
 		m_Window->onUpdate();

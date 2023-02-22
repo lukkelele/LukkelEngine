@@ -29,6 +29,7 @@
 #include "LukkelEngine/Layer/DebugLayer.h"
 
 
+
 namespace LukkelEngine {
 
 	struct ApplicationDetails
@@ -54,9 +55,10 @@ namespace LukkelEngine {
 
 		void onEvent(Event& e);
 
-		GLFWwindow* getGLFWWindow() { return m_Window->getWindow(); }
-		s_ptr<Window> getWindow() { return m_Window; }
-		s_ptr<Scene> getScene() { return m_Scene; }
+		GLFWwindow* getGLFWWindow() const { return m_Window->getWindow(); }
+		s_ptr<Window> getWindow() const { return m_Window; }
+		s_ptr<FpsCamera> getCamera() const { return m_Scene->getCamera(); }
+		s_ptr<Scene> getScene() const { return m_Scene; }
 		void setScene(s_ptr<Scene>& scene) { m_Scene = scene; }
 
 		int getViewportWidth() { return m_Details.width; }
@@ -68,7 +70,6 @@ namespace LukkelEngine {
 		void pushOverlay(Layer* layer);
 		void popOverlay(Layer* layer);
 
-		// Used for getting current user window, cross platform
 		static Application& get() { return *s_Instance; }
 
 		bool onWindowClose(WindowCloseEvent& e);

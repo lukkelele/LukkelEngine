@@ -29,7 +29,6 @@ workspace "LukkelEngine"
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}"
 
-
 include "LukkeLallish/premake5.lua"
 include "lib/GLFW/glfw.lua"
 include "lib/imgui/imgui.lua"
@@ -77,16 +76,13 @@ project "LukkelEngine"
         "%{wks.location}/lib/ImGuizmo/*.h",
 
 		"%{wks.locaton}/lib/glew/include/GL/glew.h",
-        
-		-- "%{wks.location}/lib/bullet3/src/**.cpp",
-		-- "%{wks.location}/lib/bullet3/src/**.h",
-		-- "%{wks.location}/lib/bullet3/src/**.c",
    	}
 
     libdirs
     {
         "%{wks.location}/lib/glew/lib",
-        "%{wks.location}/lib/GLFW/lib"
+        "%{wks.location}/lib/GLFW/lib",
+        "%{wks.location}/lib/bullet3/lib"
     }
 
     includedirs
@@ -101,7 +97,10 @@ project "LukkelEngine"
 		"%{wks.location}/lib/glew/include",
 		"%{wks.location}/lib/spdlog/include",
 		"%{wks.location}/lib/entt/src",
-		-- "%{wks.location}/lib/bullet3/src"
+
+		"%{wks.location}/lib/bullet3/src",
+		-- "%{wks.location}/lib/bullet3/src/Bullet3Common",
+		"%{wks.location}/lib/bullet3/src/LinearMath",
     }
 
     links
@@ -110,6 +109,7 @@ project "LukkelEngine"
         "opengl32",
         "glew32s",
         "ImGui",
+        "Bullet3"
     }
 
 	filter "system:windows"

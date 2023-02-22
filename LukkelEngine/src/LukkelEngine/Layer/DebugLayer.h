@@ -19,6 +19,8 @@ namespace LukkelEngine {
 		~DebugLayer() = default;
 
 		void onUpdate(float ts);
+		void onImGuiRender();
+
 		void renderTestMenu();
 		void registerTests();
 

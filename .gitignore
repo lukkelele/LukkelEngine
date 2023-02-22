@@ -58,7 +58,5 @@ obj/
 x64
 **/*/x64
 **/x64
-doc
-doc/
-**/doc
-**/*/doc
+
+lib/**/doc

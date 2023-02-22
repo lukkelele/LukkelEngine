@@ -31,7 +31,7 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}"
 
 
 include "LukkeLallish/premake5.lua"
-include "lib/glfw/glfw.lua"
+include "lib/GLFW/glfw.lua"
 -- include "lib/glew/glew.lua"
 include "lib/imgui/imgui.lua"
 
@@ -49,9 +49,9 @@ project "LukkelEngine"
     {
         "GLEW_STATIC",
         "LKLOG_ADVANCED",
-		"_GLM_WIN32",
-		"GLFW_INCLUDE_NONE",
-		"_CRT_SECURE_NO_WARNINGS",
+		    "_GLM_WIN32",
+		    "GLFW_INCLUDE_NONE",
+		    "_CRT_SECURE_NO_WARNINGS",
 
     }
 
@@ -64,13 +64,13 @@ project "LukkelEngine"
         "%{wks.location}/lib/stb_image/**.cpp",
 
         "%{wks.location}/lib/imgui/imgui.cpp",
-		"%{wks.location}/lib/imgui/imgui.h",
-		"%{wks.location}/lib/imgui/imgui_draw.cpp",
-		"%{wks.location}/lib/imgui/imgui_impl_glfw_gl3.cpp",
-		"%{wks.location}/lib/imgui/imgui_impl_glfw_gl3.h",
-		"%{wks.location}/lib/imgui/imgui_widgets.cpp",
+		    "%{wks.location}/lib/imgui/imgui.h",
+		    "%{wks.location}/lib/imgui/imgui_draw.cpp",
+		    "%{wks.location}/lib/imgui/imgui_impl_glfw_gl3.cpp",
+		    "%{wks.location}/lib/imgui/imgui_impl_glfw_gl3.h",
+		    "%{wks.location}/lib/imgui/imgui_widgets.cpp",
 
-		"%{wks.location}/lib/entt/entt.hpp",
+		    "%{wks.location}/lib/entt/entt.hpp",
         "%{wks.location}/glm/glm/**.hpp",
 
         "%{wks.location}/lib/ImGuizmo/*.cpp",
@@ -88,22 +88,22 @@ project "LukkelEngine"
     includedirs
     {
         "%{prj.name}/src",
-		"%{wks.location}/lib",
-		"%{wks.location}/lib/glm",
-		"%{wks.location}/lib/imgui",
-		"%{wks.location}/lib/ImGuizmo",
-		"%{wks.location}/lib/stb_image",
-		"%{wks.location}/lib/glfw/include",
-		"%{wks.location}/lib/glew/include",
-		"%{wks.location}/lib/spdlog/include",
-		"%{wks.location}/lib/entt/src"
+		    "%{wks.location}/lib",
+		    "%{wks.location}/lib/glm",
+		    "%{wks.location}/lib/imgui",
+		    "%{wks.location}/lib/ImGuizmo",
+		    "%{wks.location}/lib/stb_image",
+		    "%{wks.location}/lib/glfw/include",
+		    "%{wks.location}/lib/glew/include",
+		    "%{wks.location}/lib/spdlog/include",
+		    "%{wks.location}/lib/entt/src"
     }
 
     links
     {
         "GLFW",
         --"glew",
-		"opengl32",
+        "opengl32",
         "glew32s",
         "ImGui",
     }
@@ -133,10 +133,3 @@ project "LukkelEngine"
 		optimize "on"
 
 
-
-	
-
--- include "lib/glew.lua"
--- include "lib/glfw.lua"
--- include "lib/imgui.lua"
--- include "lib/glm.lua"

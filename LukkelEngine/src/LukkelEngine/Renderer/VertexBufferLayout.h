@@ -19,7 +19,8 @@ namespace LukkelEngine {
 				case GL_UNSIGNED_INT:   return 4;
 				case GL_UNSIGNED_BYTE:  return 1;
 			}
-			LK_ASSERT(false, "Failed getting size of type");
+			// LK_ASSERT(false, "Failed getting size of type"); // FIXME
+			LK_ASSERT(false);
 			return 0;
 		}
 	};

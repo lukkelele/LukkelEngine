@@ -2,6 +2,7 @@
 #define _EVENT_H
 
 #include "LukkelEngine/Core/Base.h"
+
 #include <string>
 #include <sstream>
 #include <functional>

@@ -9,9 +9,16 @@
 #include <fstream>
 #include <sstream>
 
-/* Assertion for debugging */
-#ifdef LK_ASSERTS_ENABLED
+#ifdef LK_PLATFORM_LINUX
+    #define __debugbreak() \
+        asm("0:"                              \
+            ".pushsection embed-breakpoints;" \
+            ".quad 0b;"                       \
+            ".popsection;")
+#endif
 
+/* Assertion for debugging */
+#ifdef LK_DEBUG
 	#define LK_ASSERT(x) if (!(x)) __debugbreak();
 	#define LK_INTERNAL_ASSERT_IMPL(type, check, msg, ...) { if(!(check)) { LK##type##ERROR(msg, __VA_ARGS__); LK_DEBUGBREAK(); } }
 	#define LK_INTERNAL_ASSERT_WITH_MSG(type, check, ...) LK_INTERNAL_ASSERT_IMPL(type, check, "Assertion failed: {0}", __VA_ARGS__)

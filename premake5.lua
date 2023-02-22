@@ -88,15 +88,15 @@ project "LukkelEngine"
     includedirs
     {
         "%{prj.name}/src",
-		    "%{wks.location}/lib",
-		    "%{wks.location}/lib/glm",
-		    "%{wks.location}/lib/imgui",
-		    "%{wks.location}/lib/ImGuizmo",
-		    "%{wks.location}/lib/stb_image",
-		    "%{wks.location}/lib/glfw/include",
-		    "%{wks.location}/lib/glew/include",
-		    "%{wks.location}/lib/spdlog/include",
-		    "%{wks.location}/lib/entt/src"
+		"%{wks.location}/lib",
+		"%{wks.location}/lib/glm",
+		"%{wks.location}/lib/imgui",
+		"%{wks.location}/lib/ImGuizmo",
+		"%{wks.location}/lib/stb_image",
+		"%{wks.location}/lib/glfw/include",
+		"%{wks.location}/lib/glew/include",
+		"%{wks.location}/lib/spdlog/include",
+		"%{wks.location}/lib/entt/src"
     }
 
     links
@@ -133,3 +133,10 @@ project "LukkelEngine"
 		optimize "on"
 
 
+
+	
+
+-- include "lib/glew.lua"
+-- include "lib/glfw.lua"
+-- include "lib/imgui.lua"
+-- include "lib/glm.lua"

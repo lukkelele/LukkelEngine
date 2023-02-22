@@ -10,10 +10,11 @@ But I will make **LukkelEngine** run on Linux as well. I have yet to set up a go
 
 ---
 
-## TODO
+## Implementation
 
 - [ ] Settings menu (mouse sensitivity, camera speed etc..)
 - [ ] Functionality to load object files
+- [x] 3D Camera with mouse input (interactive first person camera)
 - [ ] Camera interface to separate the camera system to 2D and 3D
 - [ ] Physics
 - [ ] Cleaner input management system

@@ -4,7 +4,6 @@
 
 #include "Entities/Rectangle.h"
 #include "Entities/Cube.h"
-#include "LukkelEngine/Physics/WorldPhysics.h"
 
 #include "glm/ext.hpp"
 #include "glm/gtx/string_cast.hpp"

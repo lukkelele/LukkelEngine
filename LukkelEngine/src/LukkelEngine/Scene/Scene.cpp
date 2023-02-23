@@ -12,20 +12,18 @@ namespace LukkelEngine {
 		// Create dynamic world for physics
 		createDynamicWorld();
 
-		// Add a ground to the world
 		// HARDCODED GROUND OBJECT
-		btVector3 groundPosition(0.0f, -18.0f, 0.0f);
-		if (m_World->getDebugDrawer())
-			m_World->getDebugDrawer()->setDebugMode(btIDebugDraw::DBG_DrawWireframe + btIDebugDraw::DBG_DrawContactPoints);
-		// btCollisionShape* groundShape = new btBoxShape(btVector3(100.0f, 0.1f, 100.0f)); // Length Height Depth
-		// btStaticPlaneShape* groundShape = new btStaticPlaneShape(const btVector3(0.0f, 1.0f, 0.0f));
-		// btStaticPlaneShape* groundShape(btVector3(0.0f, 1.0f, 0.0f));
-		btCollisionShape* groundShape = new btStaticPlaneShape(btVector3(0,1,0), 1);
+		btVector3 groundPosition(0.0f, -2.0f, 0.0f);
+
+		// if (m_World->getDebugDrawer())
+		//		m_World->getDebugDrawer()->setDebugMode(btIDebugDraw::DBG_DrawWireframe + btIDebugDraw::DBG_DrawContactPoints);
+
+		btCollisionShape* groundShape = new btStaticPlaneShape(btVector3(0, 1, 0), 0);
 		btDefaultMotionState* groundMotionState = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, -1.0f, 0)));
 		btRigidBody::btRigidBodyConstructionInfo groundRigidBodyCI(0.0f, new btDefaultMotionState(), groundShape, groundPosition);
 		btRigidBody* groundRigidBody = new btRigidBody(groundRigidBodyCI);
 		groundRigidBody->setFriction(0.5f);
-		groundRigidBody->setRestitution(0.5f);
+		groundRigidBody->setRestitution(0.9f);
 		groundRigidBody->setCustomDebugColor(btVector3(100, 100, 100));
 		m_World->addRigidBody(groundRigidBody);
 	}

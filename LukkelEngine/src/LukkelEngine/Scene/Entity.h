@@ -3,7 +3,7 @@
 #include "LukkelEngine/Renderer/VertexArray.h"
 #include "LukkelEngine/Renderer/Shader.h"
 #include "LukkelEngine/Renderer/Texture.h"
-#include "LukkelEngine/Physics/Body.h"
+#include "LukkelEngine/Physics/Collider.h"
 
 #include "btBulletDynamicsCommon.h"
 #include "entt/entt.hpp"
@@ -39,7 +39,7 @@ namespace LukkelEngine {
 		s_ptr<IndexBuffer> m_IBO;
 		s_ptr<Shader> m_Shader;
 		s_ptr<Texture> m_Texture;
-		s_ptr<Body> m_Body;
+		s_ptr<Collider> m_Body;
 
 		glm::vec3 m_Position = { 0.0f, 0.0f, 0.0f };
 		UUID m_UUID;

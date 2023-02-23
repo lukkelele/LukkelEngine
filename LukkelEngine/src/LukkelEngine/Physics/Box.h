@@ -1,13 +1,13 @@
 #pragma once
 
-#include "LukkelEngine/Physics/Body.h"
+#include "LukkelEngine/Physics/Collider.h"
 
 
 namespace LukkelEngine {
 
 	namespace CollisionBody {
 
-		class Box : public Body
+		class Box : public Collider
 		{
 		public:
 			// TODO: Add quaternion rotation values for the constructor

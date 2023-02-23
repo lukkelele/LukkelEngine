@@ -7,16 +7,15 @@
 namespace LukkelEngine {
 
 
-	class Body
+	class Collider
 	{
 	public:
-		Body() = default;
-		virtual ~Body() = default;
+		Collider() = default;
+		virtual ~Collider() = default;
 
 		btRigidBody* getRigidBody() { return m_RigidBody; }
 		void setRestitution(float r) { m_RigidBody->setRestitution(r); }
 		void setFriction(float f) { m_RigidBody->setFriction(f); }
-		void setCollisionFlags(btCollisionObject flag);
 
 		virtual void reposition(btVector3 pos, btVector3 orientation) = 0;
 

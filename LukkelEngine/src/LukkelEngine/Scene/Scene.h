@@ -1,5 +1,4 @@
 #pragma once
-
 #include <deque> // Temporary fix because unordered map bugs out
 
 #include "LukkelEngine/Core/Base.h"
@@ -8,9 +7,19 @@
 #include "LukkelEngine/Renderer/Renderer.h"
 #include "LukkelEngine/Renderer/FpsCamera.h"
 #include "LukkelEngine/Scene/Entity.h"
-#include "LukkelEngine/Physics/WorldPhysics.h"
 
+#include "btBulletCollisionCommon.h"
+#include "btBulletDynamicsCommon.h"
 #include "entt/entt.hpp"
+
+#define LK_WORLD_NEUTRAL 0
+#define LK_WORLD_DYNAMIC 1
+#define LK_WORLD_GRAVITY_DEFAULT btVector3(0.0f, -9.8f, 0.0f)
+#define LK_WORLD_GRAVITY_SLOW btVector3(0.0f, -4.5f, 0.0f)
+#define LK_WORLD_GRAVITY_SLOWER btVector3(0.0f, -1.5f, 0.0f)
+#define LK_WORLD_GRAVITY_SLOWEST btVector3(0.0f, -0.5f, 0.0f)
+#define LK_WORLD_GRAVITY_FAST btVector3(0.0f, -18.0f, 0.0f)
+
 
 namespace LukkelEngine {
 
@@ -43,7 +52,6 @@ namespace LukkelEngine {
 		s_ptr<FpsCamera> m_Camera;
 		s_ptr<Renderer> m_Renderer;
 
-		WorldPhysics m_Physics;
 		btDiscreteDynamicsWorld* m_World;
 
 	};

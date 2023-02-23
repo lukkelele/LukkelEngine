@@ -10,13 +10,14 @@ namespace LukkelEngine {
 		Renderer::s_DrawMode = LK_DRAW_FILL;
 		LukkeLog::Log::init("LukkelEngine.log", "App", "Client");
 		LKLOG_TRACE("Starting application");
+
 		WindowProps properties = WindowProps(details.title, details.width, details.height);
 		m_Window = Window::create(properties);
-
 		m_Window->setEventCallback(LK_BIND_EVENT_FN(Application::onEvent));
 
 		DebugLayer* debugLayer = new DebugLayer;
 		pushOverlay(debugLayer);
+		m_Timer; // Start the timer
 	}
 
 	Application::~Application()
@@ -25,13 +26,13 @@ namespace LukkelEngine {
 		ImGui::DestroyContext();
 	}
 
+	// TODO: Need close event on window to change boolean member
 	void Application::run(bool test)
 	{
-		while (!glfwWindowShouldClose(m_Window->getWindow())) // while m_Running 
+		// while (m_Running)
+		while (!glfwWindowShouldClose(m_Window->getWindow()))
 		{
-			float time = (float)glfwGetTime();
-			float delta = time - m_LastTime;
-			m_LastTime = time;
+			float delta = m_Timer.elapsedMs();
 			onUpdate(delta);
 		}
 	}

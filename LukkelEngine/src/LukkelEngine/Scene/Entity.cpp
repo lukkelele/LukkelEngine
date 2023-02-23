@@ -17,7 +17,7 @@ namespace LukkelEngine {
 	glm::vec3 Entity::getWorldTransform()
 	{
 		btTransform transform;
-		m_RigidBody->getMotionState()->getWorldTransform(transform);
+		m_Body->m_RigidBody->getMotionState()->getWorldTransform(transform);
 		btVector3 tv = transform.getOrigin();
 
 		return glm::vec3(tv.getX(), tv.getY(), tv.getZ());

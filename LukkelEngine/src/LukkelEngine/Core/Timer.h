@@ -1,5 +1,4 @@
-#ifndef _LKENGINE_TIMER_H
-#define _LKENGINE_TIMER_H
+#pragma once
 
 #include <chrono>
 
@@ -14,7 +13,7 @@ namespace LukkelEngine {
 		}
 
 	   /**
-		*  Reset timer
+		* @brief Reset the timer
 		*/
 		void Timer::reset()
 		{
@@ -22,7 +21,8 @@ namespace LukkelEngine {
 		}
 
 	   /**
-		*  Get elapsed time since m_Start
+		* @brief Get elapsed time since m_Start in nanoseconds
+		* @returns time elapsed in nanoseconds
 		*/
 		float Timer::elapsed()
 		{
@@ -31,7 +31,8 @@ namespace LukkelEngine {
 		}
 
 	   /**
-		*  Get elapsed time since m_Start in milliseconds
+		* @brief Get elapsed time since m_Start in milliseconds
+		* @returns time elapsed in milliseconds
 		*/
 		float Timer::elapsedMs()
 		{
@@ -41,7 +42,4 @@ namespace LukkelEngine {
 	private:
 		std::chrono::time_point<std::chrono::high_resolution_clock> m_Start;
 	};
-
 }
-
-#endif /* _LKENGINE_TIMER_H */

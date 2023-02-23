@@ -3,6 +3,7 @@
 #include "LukkelEngine/Renderer/VertexArray.h"
 #include "LukkelEngine/Renderer/Shader.h"
 #include "LukkelEngine/Renderer/Texture.h"
+#include "LukkelEngine/Physics/Body.h"
 
 #include "btBulletDynamicsCommon.h"
 #include "entt/entt.hpp"
@@ -24,6 +25,7 @@ namespace LukkelEngine {
 		IndexBuffer& getIndexBufferRef() const { return *m_IBO; }
 
 		s_ptr<Shader> getShader() const { return m_Shader; }
+		btRigidBody* getRigidBody() { return m_Body->getRigidBody(); }
 
 		void setPosition(glm::vec3& position) { m_Position = position; }
 		glm::mat4 getEntityTranslation();
@@ -35,13 +37,11 @@ namespace LukkelEngine {
 		s_ptr<VertexArray> m_VAO;
 		s_ptr<VertexBuffer> m_VBO;
 		s_ptr<IndexBuffer> m_IBO;
-
-		glm::vec3 m_Position = { 0.0f, 0.0f, 0.0f };
-
 		s_ptr<Shader> m_Shader;
 		s_ptr<Texture> m_Texture;
+		s_ptr<Body> m_Body;
 
-		btRigidBody* m_RigidBody;
+		glm::vec3 m_Position = { 0.0f, 0.0f, 0.0f };
 		UUID m_UUID;
 	};
 

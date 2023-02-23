@@ -6,28 +6,25 @@
 #include "imgui/imgui_impl_glfw.h"
 #include "imgui/imgui_impl_opengl3.h"
 
-
 #include "LukkelEngine/Core/Base.h"
 #include "LukkelEngine/Core/Window.h"
 #include "LukkelEngine/Core/LayerStack.h"
-#include "LukkelEngine/Scene/Scene.h"
+#include "LukkelEngine/Core/Timer.h"
+#include "LukkelEngine/Core/TimeStep.h"
+
 #include "LukkelEngine/Scene/EntityHandler.h"
+#include "LukkelEngine/Scene/Scene.h"
 
 #include "Platform/Windows/Windows_Window.h"
 
-/* EVENTS */
 #include "LukkelEngine/Event/Event.h"
 #include <LukkelEngine/Event/ApplicationEvent.h>
-//#include <LukkelEngine/Event/KeyEvent.h>
-//#include <LukkelEngine/Event/MouseEvent.h>
 
-/* I/O */
 #include <LukkelEngine/Core/Window.h>
 #include <LukkelEngine/Input/Keyboard.h>
 #include <LukkelEngine/Input/Mouse.h>
 
 #include "LukkelEngine/Layer/DebugLayer.h"
-
 
 
 namespace LukkelEngine {
@@ -92,5 +89,6 @@ namespace LukkelEngine {
 		u_ptr<Keyboard> m_Keyboard;
 		s_ptr<Scene> m_Scene;
 		LayerStack m_LayerStack;
+		Timer m_Timer;
 	};
 }

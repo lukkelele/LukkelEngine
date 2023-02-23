@@ -3,6 +3,8 @@
 #include <deque> // Temporary fix because unordered map bugs out
 
 #include "LukkelEngine/Core/Base.h"
+#include "LukkelEngine/Core/Timer.h"
+#include "LukkelEngine/Core/Timestep.h"
 #include "LukkelEngine/Renderer/Renderer.h"
 #include "LukkelEngine/Renderer/FpsCamera.h"
 #include "LukkelEngine/Scene/Entity.h"
@@ -25,21 +27,24 @@ namespace LukkelEngine {
 		void pause(bool paused) { m_IsPaused = paused; }
 
 		void addEntity(Entity &entity);
+		void addCollider(btRigidBody* collider);
 		std::deque<Entity*>& getEntities() { return m_Entities; }
 		const s_ptr<FpsCamera> getCamera() const { return m_Camera; }
 
-		WorldPhysics* m_WorldPhysics;
+		void createDynamicWorld();
 
 	private:
 		bool m_IsRunning = false, m_IsPaused = false;
 		int m_Frames = 0;
 
+		Timer m_Timer;
 		entt::registry m_Registry;
 		std::deque<Entity*> m_Entities;
-		s_ptr<Renderer> m_Renderer;
 		s_ptr<FpsCamera> m_Camera;
+		s_ptr<Renderer> m_Renderer;
 
-		// Physics
-		// u_ptr<WorldPhysics> m_WorldPhysics;
+		WorldPhysics m_Physics;
+		btDiscreteDynamicsWorld* m_World;
+
 	};
 }

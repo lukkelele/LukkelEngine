@@ -43,6 +43,7 @@ namespace LukkelEngine {
 		float getFarClip() const { return m_FarPlane; }
 		float getRotation() { return glm::radians(m_Rotation); }
 
+		void setPosition(glm::vec3& pos) { m_Position = pos; }
 		void setRotation(float rot) { m_Rotation = rot; }
 		void setFOV(float FOV) { m_FOV = FOV; updateProjection(); }
 		void setNearClip(float nearClip) { m_NearPlane = nearClip; }

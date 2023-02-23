@@ -1,17 +1,14 @@
-#ifndef _LKENGINE_TIME_H
-#define _LKENGINE_TIME_H
-
+#pragma once
 /*
 	Time is a class to make different refresh rates move the
 	rendered objects at the same speed.
 */
-
 namespace LukkelEngine {
 
-	class Time
+	class Timestep
 	{
 	public:
-		Time(float time = 0.0f)
+		Timestep(float time = 0.0f)
 			: m_Time(time) 
 		{
 		}
@@ -24,5 +21,3 @@ namespace LukkelEngine {
 		float m_Time;
 	};
 }
-
-#endif /* _LKENGINGE_TIME_H */

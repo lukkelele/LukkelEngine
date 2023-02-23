@@ -28,8 +28,8 @@ namespace LukkelEngine {
 		void onUpdate(float ts);
 
 		glm::mat4 getView() const { return m_View; }
-		glm::mat4 getProjectionMatrix() const { return m_Projection; }
-		glm::mat4 getViewProjectionMatrix() { return m_ViewProjection; }
+		glm::mat4 getProjection() const { return m_Projection; }
+		glm::mat4 getViewProjection() { return m_ViewProjection; }
 		glm::vec3 calculatePosition() const;
 
 		glm::quat getOrientation() const;

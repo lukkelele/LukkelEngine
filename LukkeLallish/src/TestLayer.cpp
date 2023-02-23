@@ -35,8 +35,6 @@ void TestLayer::onAttach()
 	sphereRigidBody->setRestitution(1.0f);
 	sphereRigidBody->setFriction(1.0f);
 	
-	Cube->m_RigidBody = sphereRigidBody;
-	m_Scene->m_WorldPhysics->m_DynamicWorld->addRigidBody(sphereRigidBody);
 
 	btCollisionShape* groundShape = new btBoxShape(btVector3(4.0f, 1.0f, 4.0f)); // Lenght Height Depth
 	btDefaultMotionState* groundMotionState = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, -2.0f, 0)));
@@ -46,8 +44,10 @@ void TestLayer::onAttach()
 	groundRigidBody->setRestitution(0.90f);
 	groundRigidBody->setCollisionFlags(btCollisionObject::CF_STATIC_OBJECT);
 
-	Cube2->m_RigidBody = sphereRigidBody;
+	Cube->m_RigidBody = sphereRigidBody;
+	Cube2->m_RigidBody = groundRigidBody;
 	m_Scene->m_WorldPhysics->m_DynamicWorld->addRigidBody(groundRigidBody);
+	m_Scene->m_WorldPhysics->m_DynamicWorld->addRigidBody(sphereRigidBody);
 
 
 	// Add cube to current scene

@@ -9,12 +9,12 @@ namespace LukkelEngine {
 	public:
 		Cube()
 		{
+			// FIXME: New expressions as constructor argument to hinder possible pointer problems for multiple objects ?
 			m_VAO = create_s_ptr<VertexArray>();
 			m_VBO = create_s_ptr<VertexBuffer>(vertices, (sizeof(vertices) / (sizeof(float)) * sizeof(float)));
 			m_IBO = create_s_ptr<IndexBuffer>(indices, (sizeof(indices) / (sizeof(unsigned int)) * sizeof(unsigned int)));
 			m_Shader = create_s_ptr<Shader>("assets/shaders/3D/flat.shader");
-			// m_Texture = std::make_unique<Texture>("assets/img/atte_square.png"); // FIXME: Sandbox pathing
-			m_Texture = std::make_unique<Texture>("assets/img/debug_texture.png"); // FIXME: Sandbox pathing
+			m_Texture = std::make_unique<Texture>("assets/img/debug_texture.png");
 
 			VertexBufferLayout layout;
 			layout.push<float>(3); // 3D Vertex (x, y, z) 
@@ -32,15 +32,14 @@ namespace LukkelEngine {
 		// Positions		 Texture coords    Color
 		-0.5f, -0.5f,  0.5f,   0.0f, 1.0f,    1.0f, 1.0f, 1.0f,
 		 0.5f, -0.5f,  0.5f,   1.0f, 0.0f,    0.2f, 0.5f, 0.0f,
-		-0.5f,  0.5f,  0.5f,   1.0f, 1.0f,    1.0f, 1.0f, 1.0f,
+		-0.5f,  0.5f,  0.5f,   1.0f, 1.0f,    1.0f, 0.0f, 1.0f,
 		 0.5f,  0.5f,  0.5f,   1.0f, 1.0f,    0.3f, 0.5f, 0.0f,
 		-0.5f, -0.5f, -0.5f,   0.0f, 1.0f,    0.0f, 1.0f, 0.0f,
 		 0.5f, -0.5f, -0.5f,   0.0f, 1.0f,    0.0f, 0.5f, 0.5f,
 		-0.5f,  0.5f, -0.5f,   1.0f, 1.0f,    0.7f, 0.0f, 1.0f,
-		 0.5f,  0.5f, -0.5f,   0.0f, 0.0f,    1.0f, 0.5f, 1.0f
+		 0.5f,  0.5f, -0.5f,   0.0f, 0.0f,    1.0f, 0.5f, 0.0f
 		};
 		
-
 		// 6 Sides
 		// Should go anticlockwise
 		unsigned int indices[6 * 6] = {
@@ -63,7 +62,5 @@ namespace LukkelEngine {
 			4, 6, 7,
 			4, 5, 7
 		};
-
-
 	};
 }

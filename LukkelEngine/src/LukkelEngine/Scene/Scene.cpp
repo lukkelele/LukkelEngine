@@ -24,37 +24,17 @@ namespace LukkelEngine {
 	void Scene::onUpdate(float ts)
 	{
 		m_Camera->onUpdate(ts);
-
+		glm::mat4 viewProj = m_Camera->getViewProjection();
 		for (auto &entity : m_Entities)
 		{
-			entity->m_Texture->bind();
-			entity->m_Shader->bind();
-
-			btTransform t;
-			entity->m_RigidBody->getMotionState()->getWorldTransform(t);
-			btVector3 translate = t.getOrigin();
-			float x = translate.getX();
-			float y = translate.getY();
-			float z = translate.getZ();
-
-			LKLOG_CLIENT_WARN("RigidBody -> ({0}, {1}, {2})", x, y, z);
-			glm::mat4 transform = glm::translate(glm::mat4(1.0f), glm::vec3(x, y, z));
-			entity->m_Shader->setUniformMat4f("u_Transform", transform);
-
-			m_WorldPhysics->m_DynamicWorld->stepSimulation(0.0035f);
-
-			glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(x, y, z));
-
-			auto entityShader = entity->getShader();
-			entityShader->setUniformMat4f("model", model);
-			entityShader->setUniformMat4f("u_ViewProjection", m_Camera->getViewProjectionMatrix());
-
+			entity->updateOrientation(viewProj);
 			s_ptr<VertexArray> va = entity->getVertexArray();
 			s_ptr<IndexBuffer> ib = entity->getIndexBuffer();
 			s_ptr<Shader> shader = entity->getShader();
 
 			m_Renderer->draw(*va, *ib, *shader);
 		}
+		m_WorldPhysics->m_DynamicWorld->stepSimulation(0.0035f);
 	}
 
 	void Scene::onImGuiRender()

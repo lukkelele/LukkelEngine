@@ -8,7 +8,7 @@
 #include "LukkelEngine/Renderer/FpsCamera.h"
 #include "LukkelEngine/Scene/Entity.h"
 #include "LukkelEngine/Physics/Collider.h"
-#include "LukkelEngine/Physics/Ground.h"
+#include "LukkelEngine/Physics/Components.h"
 
 #include "btBulletCollisionCommon.h"
 #include "btBulletDynamicsCommon.h"
@@ -35,13 +35,18 @@ namespace LukkelEngine {
 		void onImGuiRender();
 		bool isRunning() const { return m_IsRunning; }
 		void pause(bool paused) { m_IsPaused = paused; }
+
+		Entity createEntity(const std::string entityName);
+		void addEntity(const std::string& entityName);
 		void addEntity(Entity &entity);
 		void addCollider(btRigidBody* collider);
+
 		std::deque<Entity*>& getEntities() { return m_Entities; }
 		const s_ptr<FpsCamera> getCamera() const { return m_Camera; }
 		void createDynamicWorld();
 
-	private:
+	// TODO: Fix access
+	public:
 		bool m_IsRunning = false, m_IsPaused = false;
 		int m_Frames = 0;
 
@@ -52,6 +57,5 @@ namespace LukkelEngine {
 		s_ptr<Renderer> m_Renderer;
 
 		btDiscreteDynamicsWorld* m_World;
-		Ground* ground; // REMOVE ME
 	};
 }

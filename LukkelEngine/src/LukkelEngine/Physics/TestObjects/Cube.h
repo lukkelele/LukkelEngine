@@ -27,7 +27,7 @@ namespace LukkelEngine {
 
 			m_Shader->bind();
 			m_Shader->setUniform4f("u_Color", 1.0f, 1.0f, 0.9f, 1.0f);
-			m_Body = create_s_ptr<CollisionBody::Box>();
+			m_Body = create_s_ptr<Box>();
 		}
 		~Cube() = default;
 

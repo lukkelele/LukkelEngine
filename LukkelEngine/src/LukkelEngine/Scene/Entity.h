@@ -13,35 +13,38 @@ namespace LukkelEngine {
 	class Entity
 	{
 	public:
-		Entity();
-		virtual ~Entity();
+		Entity() = default;
+		Entity(entt::entity handle, Scene* scene);
+
 		UUID getUUID() const { return m_UUID; }
-
-		s_ptr<VertexArray> getVertexArray() const { return m_VAO; }
-		s_ptr<VertexBuffer> getVertexBuffer() const { return m_VBO; }
-		s_ptr<IndexBuffer> getIndexBuffer() const { return m_IBO; }
-		VertexArray& getVertexArrayRef() const { return *m_VAO; }
-		VertexBuffer& getVertexBufferRef() const { return *m_VBO; }
-		IndexBuffer& getIndexBufferRef() const { return *m_IBO; }
-
-		s_ptr<Shader> getShader() const { return m_Shader; }
-		btRigidBody* getRigidBody() { return m_Body->getRigidBody(); }
-
-		void setPosition(glm::vec3& position) { m_Position = position; }
-		glm::mat4 getModelMatrix(float scale = 1.0f);
-		glm::vec3 getWorldTransform();
-		void updateOrientation(glm::mat4 projectionMatrix);
+		
+		template<typename T, typename... ARGS>
+		T& addComponent(ARGS&&... args)
+		{
+			T& component = m_Scene->m_Registry.emblace<T>(m_EntityHandle, std::forward<ARGS>(args)...);
+			
+		}
+		// s_ptr<VertexArray> getVertexArray() const { return m_VAO; }
+		// s_ptr<VertexBuffer> getVertexBuffer() const { return m_VBO; }
+		// s_ptr<IndexBuffer> getIndexBuffer() const { return m_IBO; }
+		// s_ptr<Shader> getShader() const { return m_Shader; }
+		// btRigidBody* getRigidBody() { return m_Body->getRigidBody(); }
+		// void setPosition(glm::vec3& position) { m_Position = position; }
+		// glm::mat4 getModelMatrix(float scale = 1.0f);
+		// void updateOrientation(glm::mat4 projectionMatrix);
 
 	// TODO: Set these back to private
 	public:
-		s_ptr<VertexArray> m_VAO;
-		s_ptr<VertexBuffer> m_VBO;
-		s_ptr<IndexBuffer> m_IBO;
-		s_ptr<Shader> m_Shader;
-		s_ptr<Texture> m_Texture;
-		s_ptr<CollisionBody::Collider> m_Body;
+		// s_ptr<VertexArray> m_VAO;
+		// s_ptr<VertexBuffer> m_VBO;
+		// s_ptr<IndexBuffer> m_IBO;
+		// s_ptr<Shader> m_Shader;
+		// s_ptr<Texture> m_Texture;
+		// s_ptr<Collider> m_Body;
+		// glm::vec3 m_Position = { 0.0f, 0.0f, 0.0f };
 
-		glm::vec3 m_Position = { 0.0f, 0.0f, 0.0f };
+		entt::entity m_EntityHandle{ entt::null };
+		Scene* m_Scene = nullptr;
 		UUID m_UUID;
 	};
 

@@ -11,17 +11,12 @@ namespace LukkelEngine {
 		m_Camera->setPosition(glm::vec3(0.0f, 2.5f, -10.0f));
 		// Create dynamic world for physics
 		createDynamicWorld();
-		// ground = new Ground();
-		// m_World->addRigidBody(ground->m_Body->getRigidBody());
+
 	}
 	
 	Scene::~Scene()
 	{
-		for (auto& entity : m_Entities)
-		{
-			LKLOG_WARN("Deleting entity...");
-			delete entity;
-		}
+		delete m_World;
 	}
 
 	void Scene::onUpdate(float ts)
@@ -32,43 +27,48 @@ namespace LukkelEngine {
 
 		for (auto &entity : m_Entities)
 		{
-			auto body = entity->m_Body->getRigidBody();
-			btVector3 massPos = body->getCenterOfMassPosition();
-			float x = massPos.getX(), y = massPos.getY(), z = massPos.getZ();
-			entity->updateOrientation(viewProj);
-			s_ptr<VertexArray> va = entity->getVertexArray();
-			s_ptr<IndexBuffer> ib = entity->getIndexBuffer();
-			s_ptr<Shader> shader = entity->getShader();
+			// auto body = entity->m_Body->getRigidBody();
+			// btVector3 massPos = body->getCenterOfMassPosition();
+			// float x = massPos.getX(), y = massPos.getY(), z = massPos.getZ();
+			// entity->updateOrientation(viewProj);
+			// s_ptr<VertexArray> va = entity->getVertexArray();
+			// s_ptr<IndexBuffer> ib = entity->getIndexBuffer();
+			// s_ptr<Shader> shader = entity->getShader();
 
-			LKLOG_INFO("Mass pos: ({0}, {1}, {2})", massPos.getX(), massPos.getY(), massPos.getZ());
-			m_Renderer->draw(*va, *ib, *shader);
+			// LKLOG_INFO("Mass pos: ({0}, {1}, {2})", massPos.getX(), massPos.getY(), massPos.getZ());
+			// m_Renderer->draw(*va, *ib, *shader);
 		}
 	}
 
 	void Scene::onImGuiRender()
 	{
-		auto entity = m_Entities.front();
-		auto body = entity->m_Body->getRigidBody();
-		btVector3 pos(entity->m_Position.x, entity->m_Position.y, entity->m_Position.z);
+		// auto entity = m_Entities.front();
+		// auto body = entity->m_Body->getRigidBody();
+		// btVector3 pos(entity->m_Position.x, entity->m_Position.y, entity->m_Position.z);
 
-		ImGui::Begin;
-		ImGui::SliderFloat3("Entity position", &entity->m_Position.x, -15.0f, 15.0f);
-		btTransform t;
-		body->getMotionState()->getWorldTransform(t);
-		btMatrix3x3 mat3(btQuaternion(0, 0, 0, 1));
-		body->setWorldTransform(btTransform(mat3, pos));
-		ImGui::End;
+		// ImGui::Begin;
+		// ImGui::SliderFloat3("Entity position", &entity->m_Position.x, -15.0f, 15.0f);
+		// btTransform t;
+		// body->getMotionState()->getWorldTransform(t);
+		// btMatrix3x3 mat3(btQuaternion(0, 0, 0, 1));
+		// body->setWorldTransform(btTransform(mat3, pos));
+		// ImGui::End;
 
-		for (auto &entity : m_Entities)
-		{
-		}
+		// for (auto &entity : m_Entities)
+		// {
+		// }
 
+	}
+	Entity Scene::createEntity(const std::string entityName)
+	{
+		Entity entity = { m_Registry.create(), this };
+		entity.Add
 	}
 
 	void Scene::addEntity(Entity& entity)
 	{
 		m_Entities.push_back(&entity);
-		m_World->addRigidBody(entity.getRigidBody());
+		// m_World->addRigidBody(entity.getRigidBody());
 	}
 
 	void Scene::addCollider(btRigidBody* collisionBody)

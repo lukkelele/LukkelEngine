@@ -38,16 +38,16 @@ namespace LukkelEngine {
 			delete m_MotionState;
 		}
 
-		void Box::reposition(btVector3 pos, btVector3 orientation)
-		{
-			btTransform initialTransform;
-			btQuaternion quat(orientation.getX(), orientation.getY(), orientation.getZ(), 1);
-			initialTransform.setOrigin(pos);
-			initialTransform.setRotation(quat);
+		// void Box::reposition(btVector3 pos, btVector3 orientation)
+		// {
+		// 	btTransform initialTransform;
+		// 	btQuaternion quat(orientation.getX(), orientation.getY(), orientation.getZ(), 1);
+		// 	initialTransform.setOrigin(pos);
+		// 	initialTransform.setRotation(quat);
 
-			m_RigidBody->setWorldTransform(initialTransform);
-			m_MotionState->setWorldTransform(initialTransform);
-		}
+		// 	m_RigidBody->setWorldTransform(initialTransform);
+		// 	m_MotionState->setWorldTransform(initialTransform);
+		// }
 
 	}
 

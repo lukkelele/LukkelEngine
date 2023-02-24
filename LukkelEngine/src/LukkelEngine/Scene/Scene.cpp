@@ -7,25 +7,12 @@ namespace LukkelEngine {
 	Scene::Scene()
 	{
 		std::deque<Entity*> m_Entities;
-		m_Camera = create_s_ptr<FpsCamera>(45.0f, 0.010f, 1000.0f);
+		m_Camera = create_s_ptr<FpsCamera>(55.0f, 0.010f, 1000.0f);
 		m_Camera->setPosition(glm::vec3(0.0f, 2.5f, -10.0f));
 		// Create dynamic world for physics
 		createDynamicWorld();
-
-		// HARDCODED GROUND OBJECT
-		btVector3 groundPosition(0.0f, -2.0f, 0.0f);
-
-		// if (m_World->getDebugDrawer())
-		//		m_World->getDebugDrawer()->setDebugMode(btIDebugDraw::DBG_DrawWireframe + btIDebugDraw::DBG_DrawContactPoints);
-
-		btCollisionShape* groundShape = new btStaticPlaneShape(btVector3(0, 1, 0), 0);
-		btDefaultMotionState* groundMotionState = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, -1.0f, 0)));
-		btRigidBody::btRigidBodyConstructionInfo groundRigidBodyCI(0.0f, new btDefaultMotionState(), groundShape, groundPosition);
-		btRigidBody* groundRigidBody = new btRigidBody(groundRigidBodyCI);
-		groundRigidBody->setFriction(0.5f);
-		groundRigidBody->setRestitution(0.9f);
-		groundRigidBody->setCustomDebugColor(btVector3(100, 100, 100));
-		m_World->addRigidBody(groundRigidBody);
+		// ground = new Ground();
+		// m_World->addRigidBody(ground->m_Body->getRigidBody());
 	}
 	
 	Scene::~Scene()
@@ -45,24 +32,43 @@ namespace LukkelEngine {
 
 		for (auto &entity : m_Entities)
 		{
+			auto body = entity->m_Body->getRigidBody();
+			btVector3 massPos = body->getCenterOfMassPosition();
+			float x = massPos.getX(), y = massPos.getY(), z = massPos.getZ();
 			entity->updateOrientation(viewProj);
 			s_ptr<VertexArray> va = entity->getVertexArray();
 			s_ptr<IndexBuffer> ib = entity->getIndexBuffer();
 			s_ptr<Shader> shader = entity->getShader();
 
+			LKLOG_INFO("Mass pos: ({0}, {1}, {2})", massPos.getX(), massPos.getY(), massPos.getZ());
 			m_Renderer->draw(*va, *ib, *shader);
 		}
 	}
 
 	void Scene::onImGuiRender()
 	{
+		auto entity = m_Entities.front();
+		auto body = entity->m_Body->getRigidBody();
+		btVector3 pos(entity->m_Position.x, entity->m_Position.y, entity->m_Position.z);
+
+		ImGui::Begin;
+		ImGui::SliderFloat3("Entity position", &entity->m_Position.x, -15.0f, 15.0f);
+		btTransform t;
+		body->getMotionState()->getWorldTransform(t);
+		btMatrix3x3 mat3(btQuaternion(0, 0, 0, 1));
+		body->setWorldTransform(btTransform(mat3, pos));
+		ImGui::End;
+
+		for (auto &entity : m_Entities)
+		{
+		}
+
 	}
 
 	void Scene::addEntity(Entity& entity)
 	{
 		m_Entities.push_back(&entity);
 		m_World->addRigidBody(entity.getRigidBody());
-		// m_World->addRigidBody(entity.m_Body->m_RigidBody);
 	}
 
 	void Scene::addCollider(btRigidBody* collisionBody)
@@ -81,7 +87,6 @@ namespace LukkelEngine {
 		btSequentialImpulseConstraintSolver* solver = new btSequentialImpulseConstraintSolver();
 
 		m_World = new btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfig);
-		// Gravity set to -9.8 m^2/2
 		m_World->setGravity(LK_WORLD_GRAVITY_SLOWEST);
 	}
 

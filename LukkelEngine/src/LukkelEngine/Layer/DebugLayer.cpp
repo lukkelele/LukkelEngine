@@ -48,7 +48,7 @@ namespace LukkelEngine {
 		testMenu->registerTest<test::TestTexture2D>("2D Texture");
 		testMenu->registerTest<test::TestDrawTriangle>("Draw 2D triangle");
 		testMenu->registerTest<test::TestDrawTriangle2>("Draw 2D triangle v2");
-		testMenu->registerTest<test::TestDrawCube>("Draw 3D cube");
+		// testMenu->registerTest<test::TestDrawCube>("Draw 3D cube");
 		testMenu->registerTest<test::TestShader>("Shader test");
 	}
 

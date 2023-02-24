@@ -1,9 +1,7 @@
 #include "TestLayer.h"
 
 #include "LukkelEngine/Core/Application.h"
-
-#include "Entities/Rectangle.h"
-#include "Entities/Cube.h"
+#include "LukkelEngine/Physics/TestObjects/Cube.h"
 
 #include "glm/ext.hpp"
 #include "glm/gtx/string_cast.hpp"
@@ -19,17 +17,21 @@ void TestLayer::onAttach()
 
 	LukkelEngine::Entity* Cube2 = new LukkelEngine::Cube();
 	LukkelEngine::Entity* Cube = new LukkelEngine::Cube();
-	Cube2->m_Shader->setUniform4f("u_Color", 1.0f, 1.0f, 1.0f, 1.0f);
+	LukkelEngine::Entity* Ground = new LukkelEngine::Ground();
+
 	Cube->m_Shader->setUniform4f("u_Color", 1.0f, 1.0f, 1.0f, 1.0f);
+	Cube2->m_Shader->setUniform4f("u_Color", 1.0f, 1.0f, 1.0f, 1.0f);
+	Ground->m_Shader->setUniform4f("u_Color", 1.0f, 1.0f, 1.0f, 1.0f);
 
 	LukkelEngine::EntityHandler::addEntity(*Cube);
 	LukkelEngine::EntityHandler::addEntity(*Cube2);
+	LukkelEngine::EntityHandler::addEntity(*Ground);
 }
 
 void TestLayer::onUpdate(float ts)
 {			
 	m_Scene->onUpdate(1.0f);
-	onImGuiRender();
+	m_Scene->onImGuiRender();
 }
 
 void TestLayer::onImGuiRender()

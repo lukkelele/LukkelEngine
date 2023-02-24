@@ -27,24 +27,11 @@ namespace LukkelEngine {
 
 			m_Shader->bind();
 			m_Shader->setUniform4f("u_Color", 1.0f, 1.0f, 0.9f, 1.0f);
-
 			m_Body = create_s_ptr<CollisionBody::Box>();
 		}
 		~Cube() = default;
 
 	private:
-		float vertices_color[8 * 8] = {
-		// Positions		 Texture coords    Color
-		-0.5f, -0.5f,  0.5f,   0.0f, 1.0f,    1.0f, 1.0f, 1.0f,
-		 0.5f, -0.5f,  0.5f,   1.0f, 0.0f,    0.2f, 0.5f, 0.0f,
-		-0.5f,  0.5f,  0.5f,   1.0f, 1.0f,    1.0f, 0.0f, 1.0f,
-		 0.5f,  0.5f,  0.5f,   1.0f, 1.0f,    0.3f, 0.5f, 0.0f,
-		-0.5f, -0.5f, -0.5f,   0.0f, 1.0f,    0.0f, 1.0f, 0.0f,
-		 0.5f, -0.5f, -0.5f,   0.0f, 1.0f,    0.0f, 0.5f, 0.5f,
-		-0.5f,  0.5f, -0.5f,   1.0f, 1.0f,    0.7f, 0.0f, 1.0f,
-		 0.5f,  0.5f, -0.5f,   0.0f, 0.0f,    1.0f, 0.5f, 0.0f
-		};
-
 		float vertices[8 * 8] = {
 		// Positions		 Texture coords    Color
 		-0.5f, -0.5f,  0.5f,   0.0f, 1.0f,    // 1.0f, 1.0f, 1.0f,
@@ -55,6 +42,18 @@ namespace LukkelEngine {
 		 0.5f, -0.5f, -0.5f,   0.0f, 1.0f,    // 0.0f, 0.5f, 0.5f,
 		-0.5f,  0.5f, -0.5f,   1.0f, 1.0f,    // 0.7f, 0.0f, 1.0f,
 		 0.5f,  0.5f, -0.5f,   0.0f, 0.0f,    // 1.0f, 0.5f, 0.0f
+		};
+
+		float vertices_color[8 * 8] = {
+		// Positions		 Texture coords    Color
+		-0.5f, -0.5f,  0.5f,   0.0f, 1.0f,    1.0f, 1.0f, 1.0f,
+		 0.5f, -0.5f,  0.5f,   1.0f, 0.0f,    0.2f, 0.5f, 0.0f,
+		-0.5f,  0.5f,  0.5f,   1.0f, 1.0f,    1.0f, 0.0f, 1.0f,
+		 0.5f,  0.5f,  0.5f,   1.0f, 1.0f,    0.3f, 0.5f, 0.0f,
+		-0.5f, -0.5f, -0.5f,   0.0f, 1.0f,    0.0f, 1.0f, 0.0f,
+		 0.5f, -0.5f, -0.5f,   0.0f, 1.0f,    0.0f, 0.5f, 0.5f,
+		-0.5f,  0.5f, -0.5f,   1.0f, 1.0f,    0.7f, 0.0f, 1.0f,
+		 0.5f,  0.5f, -0.5f,   0.0f, 0.0f,    1.0f, 0.5f, 0.0f
 		};
 		
 		// 6 Sides
@@ -81,3 +80,4 @@ namespace LukkelEngine {
 		};
 	};
 }
+

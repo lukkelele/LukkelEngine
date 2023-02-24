@@ -28,7 +28,7 @@ namespace LukkelEngine {
 		btRigidBody* getRigidBody() { return m_Body->getRigidBody(); }
 
 		void setPosition(glm::vec3& position) { m_Position = position; }
-		glm::mat4 getEntityTranslation();
+		glm::mat4 getModelMatrix(float scale = 1.0f);
 		glm::vec3 getWorldTransform();
 		void updateOrientation(glm::mat4 projectionMatrix);
 
@@ -39,7 +39,7 @@ namespace LukkelEngine {
 		s_ptr<IndexBuffer> m_IBO;
 		s_ptr<Shader> m_Shader;
 		s_ptr<Texture> m_Texture;
-		s_ptr<Collider> m_Body;
+		s_ptr<CollisionBody::Collider> m_Body;
 
 		glm::vec3 m_Position = { 0.0f, 0.0f, 0.0f };
 		UUID m_UUID;

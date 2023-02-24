@@ -13,16 +13,16 @@ TestLayer::TestLayer()
 
 void TestLayer::onAttach()
 {
-	m_Scene = LukkelEngine::Application::get().getScene();
+	using namespace LukkelEngine;
+	m_Scene = Application::get().getScene();
+	// LukkelEngine::Entity* Cube2 = new LukkelEngine::Cube();
+	// LukkelEngine::Entity* Cube = new LukkelEngine::Cube();
 
-	LukkelEngine::Entity* Cube2 = new LukkelEngine::Cube();
-	LukkelEngine::Entity* Cube = new LukkelEngine::Cube();
+	// UUID uuid();
+	// Entity* cube = new Cube(uuid, *m_Scene);
 
-	Cube->m_Shader->setUniform4f("u_Color", 1.0f, 1.0f, 1.0f, 1.0f);
-	Cube2->m_Shader->setUniform4f("u_Color", 1.0f, 1.0f, 1.0f, 1.0f);
-
-	LukkelEngine::EntityHandler::addEntity(*Cube);
-	LukkelEngine::EntityHandler::addEntity(*Cube2);
+	Entity* cube = new Cube();
+	// m_Scene->m_Entities.push_back(*cube);
 }
 
 void TestLayer::onUpdate(float ts)

@@ -1,8 +1,7 @@
 #pragma once
-#include "LukkelEngine/Core/Base.h"
 
 namespace LukkelEngine {
-	
+
 	class UUID
 	{
 	public:
@@ -15,4 +14,18 @@ namespace LukkelEngine {
 	private:
 		uint64_t m_UUID;
 	};
+}
+
+namespace std {
+	template <typename T> struct hash;
+
+	template<>
+	struct hash<LukkelEngine::UUID>
+	{
+		std::size_t operator()(const LukkelEngine::UUID& uuid) const
+		{
+			return (uint64_t)uuid;
+		}
+	};
+
 }

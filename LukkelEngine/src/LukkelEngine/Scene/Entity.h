@@ -1,11 +1,8 @@
 #pragma once
 #include "LukkelEngine/Core/UUID.h"
-#include "LukkelEngine/Renderer/VertexArray.h"
-#include "LukkelEngine/Renderer/Shader.h"
-#include "LukkelEngine/Renderer/Texture.h"
-#include "LukkelEngine/Physics/Collider.h"
+#include "LukkelEngine/Scene/Scene.h"
+#include "LukkelEngine/Scene/Components.h"
 
-#include "btBulletDynamicsCommon.h"
 #include "entt/entt.hpp"
 
 namespace LukkelEngine {
@@ -14,38 +11,54 @@ namespace LukkelEngine {
 	{
 	public:
 		Entity() = default;
-		Entity(entt::entity handle, Scene* scene);
+		Entity(entt::entity handle, Scene* scene); // Circular dependency
+		Entity(const Entity& other) = default;
 
-		UUID getUUID() const { return m_UUID; }
-		
 		template<typename T, typename... ARGS>
 		T& addComponent(ARGS&&... args)
 		{
 			T& component = m_Scene->m_Registry.emblace<T>(m_EntityHandle, std::forward<ARGS>(args)...);
-			
+			return component;
 		}
-		// s_ptr<VertexArray> getVertexArray() const { return m_VAO; }
-		// s_ptr<VertexBuffer> getVertexBuffer() const { return m_VBO; }
-		// s_ptr<IndexBuffer> getIndexBuffer() const { return m_IBO; }
-		// s_ptr<Shader> getShader() const { return m_Shader; }
-		// btRigidBody* getRigidBody() { return m_Body->getRigidBody(); }
-		// void setPosition(glm::vec3& position) { m_Position = position; }
-		// glm::mat4 getModelMatrix(float scale = 1.0f);
-		// void updateOrientation(glm::mat4 projectionMatrix);
 
-	// TODO: Set these back to private
-	public:
-		// s_ptr<VertexArray> m_VAO;
-		// s_ptr<VertexBuffer> m_VBO;
-		// s_ptr<IndexBuffer> m_IBO;
-		// s_ptr<Shader> m_Shader;
-		// s_ptr<Texture> m_Texture;
-		// s_ptr<Collider> m_Body;
-		// glm::vec3 m_Position = { 0.0f, 0.0f, 0.0f };
+		template<typename T>
+		T& getComponent()
+		{
+			return m_Scene->m_Registry.get<T>(m_EntityHandle);
+		}
 
+		template<typename T>
+		T& hasComponent()
+		{
+			return m_Scene->m_Registry.has<T>(m_EntityHandle);
+		}
+
+		template<typename T>
+		void removeComponent()
+		{
+			m_Scene->m_Registry.remove<T>(m_EntityHandle);
+		}
+
+		operator bool() const { return m_EntityHandle != entt::null; }
+		operator entt::entity() const { return m_EntityHandle; }
+		operator uint32_t() const { return (uint32_t)m_EntityHandle; }
+
+		UUID getUUID() { return getComponent<IDComponent>().ID; }
+		const std::string& GetName() { return getComponent<TagComponent>().Tag; }
+
+		bool operator==(const Entity& other) const
+		{
+			return m_EntityHandle == other.m_EntityHandle && m_Scene == other.m_Scene;
+		}
+
+		bool operator!=(const Entity& other) const
+		{
+			return !(*this == other);
+		}
+
+	private:
 		entt::entity m_EntityHandle{ entt::null };
 		Scene* m_Scene = nullptr;
-		UUID m_UUID;
 	};
 
 }

@@ -1,3 +1,4 @@
+#include "LKpch.h"
 #include "LukkelEngine/Renderer/Texture.h"
 
 #include "stb_image/stb_image.h"

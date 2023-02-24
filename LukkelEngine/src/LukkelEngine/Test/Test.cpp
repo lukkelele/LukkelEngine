@@ -1,3 +1,4 @@
+#include "LKpch.h"
 #include "LukkelEngine/Test/Test.h"
 
 namespace LukkelEngine {

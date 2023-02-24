@@ -1,7 +1,6 @@
 #pragma once
 
-#include "LukkelEngine.h"
-#include "LukkelEngine/Input/Keyboard.h"
+#include "LukkelEngine/Core/Application.h"
 
 class TestLayer : public LukkelEngine::Layer
 {

@@ -19,7 +19,7 @@ namespace LukkelEngine {
 
 		virtual void reposition(btVector3 pos, btVector3 orientation) = 0;
 
-	// FIXME: Change to protected
+	// FIXME: Issues when set to protected (as it should be set to)
 	public:
 		btRigidBody* m_RigidBody;
 		btCollisionShape* m_Shape;

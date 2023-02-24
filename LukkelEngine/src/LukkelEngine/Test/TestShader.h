@@ -1,7 +1,4 @@
-#ifndef _TEST_SHADER_H
-#define _TEST_SHADER_H
-
-#include <vector>
+#pragma once
 #include "LukkelEngine/Test/Test.h"
 #include "LukkelEngine/Renderer/VertexBuffer.h"
 #include "LukkelEngine/Renderer/VertexBufferLayout.h"
@@ -9,9 +6,11 @@
 #include "LukkelEngine/Renderer/VertexArray.h"
 #include "LukkelEngine/Renderer/Shader.h"
 #include "LukkelEngine/Renderer/Renderer.h"
+
 #include "glm/ext.hpp"
 
 namespace LukkelEngine {
+
 	namespace test {
 
 		class TestShader : public Test
@@ -48,5 +47,3 @@ namespace LukkelEngine {
 		};
 	}
 }
-
-#endif /* _TEST_SHADER_H */

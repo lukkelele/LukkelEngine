@@ -17,8 +17,16 @@ project "ImGui"
 		"imstb_rectpack.h",
 		"imstb_textedit.h",
 		"imstb_truetype.h",
-		"imgui_demo.cpp"
+		"imgui_demo.cpp",
+		"imgui_impl_glfw_gl3.cpp",
+		"imgui_impl_glfw_gl3.h",
 	}
+
+    includedirs
+    {
+        "%{wks.location}/lib/glew/include",
+        "%{wks.location}/lib/GLFW/include"
+    }
 
 	filter "system:windows"
 		systemversion "latest"

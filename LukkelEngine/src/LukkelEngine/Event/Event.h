@@ -1,11 +1,6 @@
-#ifndef _EVENT_H
-#define _EVENT_H
-
+#pragma once
 #include "LukkelEngine/Core/Base.h"
 
-#include <string>
-#include <sstream>
-#include <functional>
 
 namespace LukkelEngine {
 
@@ -19,10 +14,10 @@ namespace LukkelEngine {
 	};
 
 	/* - EventCategory -
-	Categories can be sorted to log certain event types which is helpful in debugging.
-	LK_BIT_FIELD is a bit field macro and is used to make an event tied to multiple
-	categories. E.g a keyboard event is also a input event, hence placing the keyboard
-	category below the input category.
+		Categories can be sorted to log certain event types which is helpful in debugging.
+		LK_BIT_FIELD is a bit field macro and is used to make an event tied to multiple
+		categories. E.g a keyboard event is also a input event, hence placing the keyboard
+		category below the input category.
 	*/
 	enum EventCategory
 	{
@@ -54,7 +49,6 @@ namespace LukkelEngine {
 		virtual int getCategoryFlags() const = 0;
 		bool isInCategory(EventCategory category) { return getCategoryFlags() & category; }
 	};
-
 	/* 
 		Dispatch events based on their type.
 		Takes event references and can apply event type specific functions on the passed event.
@@ -65,7 +59,6 @@ namespace LukkelEngine {
 		EventDispatcher(Event& event)
 			: m_Event(event)
 		{ } 
-
 		// F will be deduced by the compiler
 		template<typename T, typename F>
 		bool dispatch(const F& func)
@@ -82,5 +75,3 @@ namespace LukkelEngine {
 	/* Logging */
 	inline std::ostream& operator<<(std::ostream& os, const Event& e) { return os << e.toString(); }
 }
-
-#endif /* _EVENT_H */

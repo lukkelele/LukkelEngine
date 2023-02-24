@@ -44,6 +44,9 @@ project "LukkelEngine"
     targetdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
     objdir ("%{wks.location}/bin-int/" .. outputdir .. "/%{prj.name}")
 
+    pchheader "LKpch.h"
+    pchsource "LukkelEngine/src/LKpch.cpp"
+
     defines
     {
         "GLEW_STATIC",
@@ -62,18 +65,16 @@ project "LukkelEngine"
         "%{wks.location}/lib/stb_image/**.h",
         "%{wks.location}/lib/stb_image/**.cpp",
 
-        "%{wks.location}/lib/imgui/imgui.cpp",
-		"%{wks.location}/lib/imgui/imgui.h",
-		"%{wks.location}/lib/imgui/imgui_draw.cpp",
-		"%{wks.location}/lib/imgui/imgui_impl_glfw_gl3.cpp",
-		"%{wks.location}/lib/imgui/imgui_impl_glfw_gl3.h",
-		"%{wks.location}/lib/imgui/imgui_widgets.cpp",
-
-		"%{wks.location}/lib/entt/entt.hpp",
-        "%{wks.location}/glm/glm/**.hpp",
-
-        "%{wks.location}/lib/ImGuizmo/*.cpp",
-        "%{wks.location}/lib/ImGuizmo/*.h",
+        -- "%{wks.location}/lib/imgui/imgui.cpp",
+		-- "%{wks.location}/lib/imgui/imgui.h",
+		-- "%{wks.location}/lib/imgui/imgui_draw.cpp",
+		-- "%{wks.location}/lib/imgui/imgui_impl_glfw_gl3.cpp",
+		-- "%{wks.location}/lib/imgui/imgui_impl_glfw_gl3.h",
+		-- "%{wks.location}/lib/imgui/imgui_widgets.cpp",
+		-- "%{wks.location}/lib/entt/entt.hpp",
+        -- "%{wks.location}/glm/glm/**.hpp",
+        -- "%{wks.location}/lib/ImGuizmo/*.cpp",
+        -- "%{wks.location}/lib/ImGuizmo/*.h",
 
 		"%{wks.locaton}/lib/glew/include/GL/glew.h",
    	}
@@ -87,6 +88,8 @@ project "LukkelEngine"
 
     includedirs
     {
+		"%{wks.location}/LukkelEngine/src",
+        "%{prj.name}",
         "%{prj.name}/src",
 		"%{wks.location}/lib",
 		"%{wks.location}/lib/glm",
@@ -99,8 +102,6 @@ project "LukkelEngine"
 		"%{wks.location}/lib/entt/src",
 
 		"%{wks.location}/lib/bullet3/src",
-		-- "%{wks.location}/lib/bullet3/src/Bullet3Common",
-		"%{wks.location}/lib/bullet3/src/LinearMath",
     }
 
     links

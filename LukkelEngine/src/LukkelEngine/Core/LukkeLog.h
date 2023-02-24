@@ -11,10 +11,8 @@
 #ifndef _LUKKELOG_H
 #define _LUKKELOG_H
 
-#include <memory>
 #include <stdint.h>
 #include <cstring>
-#include <sstream>
 
 // This ignores all warnings raised inside External headers
 #pragma warning(push, 0)

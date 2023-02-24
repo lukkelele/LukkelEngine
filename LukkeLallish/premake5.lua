@@ -52,3 +52,5 @@ project "LukkeLallish"
 		defines "LK_DIST"
 		runtime "Release"
 		optimize "on"
+
+include "lib/imgui/imgui.lua"

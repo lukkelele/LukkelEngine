@@ -1,3 +1,4 @@
+#include "LKpch.h"
 #include "LukkelEngine/Layer/PerformanceLayer.h"
 
 #include "LukkelEngine/Core/Application.h" // FIXME: Fix better getters for camera etc

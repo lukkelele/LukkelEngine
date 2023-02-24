@@ -1,4 +1,5 @@
-#include "LukkeLog.h"
+#include "LKpch.h"
+#include "LukkelEngine/Core/LukkeLog.h"
 
 namespace LukkeLog {
 

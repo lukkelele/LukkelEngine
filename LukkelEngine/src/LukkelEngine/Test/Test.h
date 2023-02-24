@@ -1,13 +1,10 @@
 #pragma once
-
-#include <LukkelEngine/Core/LKErrorHandler.h>
-#include <imgui/imgui.h>
-#include <imgui/imgui_impl_glfw_gl3.h>
-#include <functional>
-#include <vector>
-#include <iostream>
+#include "LukkelEngine/Core/LKErrorHandler.h"
+#include "imgui/imgui.h"
+#include "imgui/imgui_impl_glfw_gl3.h"
 
 namespace LukkelEngine {
+
 	namespace test {
 
 		class Test
@@ -40,6 +37,5 @@ namespace LukkelEngine {
 			/* Vector [ String name, Test pointer ] -> instantiate tests on the fly */
 			std::vector< std::pair< std::string, std::function<Test* () >>> m_tests;
 		};
-
 	}
 }

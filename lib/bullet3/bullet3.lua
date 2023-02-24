@@ -12,16 +12,21 @@ project "Bullet3"
 	{
 		"src/**.cpp",
 		"src/**.h",
-		-- "src/BulletCollision/**.cpp",
-		-- "src/BulletCollision/**.h",
-		-- "src/BulletDynamics/**.cpp",
-		-- "src/BulletDynamics/**.h",
-		-- "src/BulletInverseDynamics/**.cpp",
-		-- "src/BulletInverseDynamics/**.h",
-		-- "src/BulletSoftBody/**.cpp",
-		-- "src/BulletSoftBody/**.h",
-		-- "src/LinearMath/**.cpp",
-		-- "src/LinearMath/**.h",
+		"src/BulletCollision/**.cpp",
+		"src/BulletCollision/**.h",
+		"src/BulletDynamics/**.cpp",
+		"src/BulletDynamics/**.h",
+		"src/BulletInverseDynamics/**.cpp",
+		"src/BulletInverseDynamics/**.h",
+		"src/BulletSoftBody/**.cpp",
+		"src/BulletSoftBody/**.h",
+		"src/LinearMath/**.cpp",
+		"src/LinearMath/**.h",
+	}
+
+	includedirs
+	{
+		"src"
 	}
 
 	filter "configurations:Debug"

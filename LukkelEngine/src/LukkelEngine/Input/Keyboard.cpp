@@ -1,3 +1,4 @@
+#include "LKpch.h"
 #include "LukkelEngine/Input/Keyboard.h"
 #include "LukkelEngine/Core/Application.h" // Include here to avoid circular dependency
 

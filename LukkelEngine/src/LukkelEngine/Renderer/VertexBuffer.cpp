@@ -1,7 +1,6 @@
+#include "LKpch.h"
 #include "LukkelEngine/Renderer/VertexBuffer.h"
-
 #include "LukkelEngine/Core/LKErrorHandler.h"
-// #include "LukkelEngine/Renderer/Renderer.h"
 
 namespace LukkelEngine {
 

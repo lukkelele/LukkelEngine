@@ -1,4 +1,5 @@
-#include <LukkelEngine/Core/Application.h>
+#include "LKpch.h"
+#include "LukkelEngine/Core/Application.h"
 
 namespace LukkelEngine {
 

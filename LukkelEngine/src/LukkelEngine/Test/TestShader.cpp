@@ -1,4 +1,4 @@
-// #include <LKpch.h>
+#include "LKpch.h"
 #include "LukkelEngine/Test/TestShader.h"
 
 namespace LukkelEngine {

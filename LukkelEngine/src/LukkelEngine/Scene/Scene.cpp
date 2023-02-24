@@ -1,5 +1,5 @@
+#include "LKpch.h"
 #include "LukkelEngine/Scene/Scene.h"
-
 #include "LukkelEngine/Core/Application.h"
 
 namespace LukkelEngine {

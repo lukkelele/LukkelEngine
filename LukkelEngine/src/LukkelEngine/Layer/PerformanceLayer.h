@@ -1,7 +1,6 @@
 #include "LukkelEngine/Core/Layer.h"
 
 
-
 namespace LukkelEngine {
 
 	class PerformanceLayer : public Layer

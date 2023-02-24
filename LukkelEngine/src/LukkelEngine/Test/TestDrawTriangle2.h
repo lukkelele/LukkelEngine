@@ -1,6 +1,4 @@
 #pragma once
-
-#include <vector> // FIXME
 #include "LukkelEngine/Test/Test.h"
 #include "LukkelEngine/Renderer/VertexArray.h"
 #include "LukkelEngine/Renderer/VertexBufferLayout.h"
@@ -11,6 +9,7 @@
 
 
 namespace LukkelEngine {
+
 	namespace test {
 
 		class TestDrawTriangle2 : public Test

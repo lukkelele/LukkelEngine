@@ -5,14 +5,7 @@
 
 #include <stdint.h>
 #include <cstring>
-#include <memory>
-#include <sstream>
-
-/* TODO: Insert precompiled header */
-#include <iostream>
-#include <string>
 #include <fstream>
-#include <sstream>
 
 /* OpenGL error macro */
 #define GLCall(x) GLClearError(); x ; LK_ASSERT(GLLogCall(#x, __FILE__, __LINE__))

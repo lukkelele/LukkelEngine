@@ -1,6 +1,5 @@
 #pragma once
 
-#include <vector>
 #include "LukkelEngine/Core/LKErrorHandler.h"
 
 namespace LukkelEngine {

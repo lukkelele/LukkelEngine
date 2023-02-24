@@ -1,3 +1,4 @@
+#include "LKpch.h"
 #include "LukkelEngine/Core/Window.h"
 
 #ifdef LK_PLATFORM_WINDOWS

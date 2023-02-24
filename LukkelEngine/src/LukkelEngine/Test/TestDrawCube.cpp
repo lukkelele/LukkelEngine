@@ -1,3 +1,4 @@
+#include "LKpch.h"
 #include "LukkelEngine/Test/TestDrawCube.h"
 
 namespace LukkelEngine {

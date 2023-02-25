@@ -3,8 +3,6 @@
 #include "LukkelEngine/Scene/Components.h"
 #include "LukkelEngine/Scene/Entity.h"
 
-#include "LukkelEngine/Scene/WorldObjects/Cube.h"
-
 #include "glm/glm.hpp"
 
 
@@ -50,13 +48,30 @@ namespace LukkelEngine {
 		for (entt::entity e : meshes)
 		{	
 			Entity entity = { e, this };
-			LKLOG_TRACE("Entity NAME: {0}", entity.getName());
+			auto name = entity.getName();
+			LKLOG_TRACE("Entity NAME: {0}", name);
+			// Sync the positions
 			MeshComponent& mesh = entity.getComponent<MeshComponent>();
-			RigidBody3DComponent & body3D = entity.getComponent<RigidBody3DComponent>();
+			RigidBody3DComponent& body = entity.getComponent<RigidBody3DComponent>();
+			// mesh.pos.x = body.pos.getX();
+			// mesh.pos.y = body.pos.getY();
+			// mesh.pos.z = body.pos.getZ();
+			// body.pos = btVector3(mesh.pos.x, mesh.pos.y, mesh.pos.z);
+
+			if (name == "Cube1")
+			{
+				// ImGui::SliderFloat3("Mesh position", &(float)body.pos.getX(), -20.0f, 20.0f);
+				ImGui::SliderFloat3("Mesh position", &mesh.pos.x, -15.0f, 15.0f);
+				btTransform t;
+				btMatrix3x3 mat3(btQuaternion(0, 0, 0, 1));
+				body.rigidBody->getMotionState()->getWorldTransform(t);
+				body.rigidBody->setWorldTransform(btTransform(mat3, btVector3(mesh.pos.x, mesh.pos.y, mesh.pos.z)));
+				// body.rigidBody->setWorldTransform(btTransform(mat3, body.pos));
+			}
 			auto meshTranslation = mesh.getTranslation();
-			glm::mat4 modelTransform = body3D.getModelTransform(meshTranslation);
+			glm::mat4 modelTransform = body.getModelTransform(meshTranslation);
 			mesh.updateOrientation(modelTransform, viewProj);
-			body3D.printPosition();
+			body.printPosition();
 
 			m_Renderer->draw(*mesh.va, *mesh.ib, *mesh.shader);
 		}

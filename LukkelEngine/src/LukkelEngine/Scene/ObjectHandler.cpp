@@ -58,11 +58,11 @@ namespace LukkelEngine {
 		float a = 20.0f;
 
 		float floorVertices[6 * 4]  = {
-		//   Positions (x,y,z)		Color
-		   -a, yLevel,-a,		 1.0f, 1.0f, 1.0f,
-			a, yLevel,-a,  		 1.0f, 1.0f, 1.0f,
-		    a, yLevel, a,		 1.0f, 1.0f, 1.0f,
-		   -a, yLevel, a,		 1.0f, 1.0f, 1.0f
+		//   Positions (x,y,z)		Color (GRAY)
+		   -a, yLevel,-a,		 0.77f,  0.77f,  0.77f,
+			a, yLevel,-a,  		 0.77f,  0.77f,  0.77f,
+		    a, yLevel, a,		 0.77f,  0.77f,  0.77f,
+		   -a, yLevel, a,		 0.77f,  0.77f,  0.77f
 		};
 
 		unsigned int floorIndices[3 * 3] = {
@@ -80,7 +80,14 @@ namespace LukkelEngine {
 		Entity entity = scene.createEntity(name);
 		entity.addComponent<MeshComponent>(floorVertices, floorIndices, shaderPath, floorLayout, sizeof(floorVertices) / sizeof(float), sizeof(floorIndices) / sizeof(unsigned int));
 		entity.addComponent<RigidBody3DComponent>(dimensions, offset, mass);
+
+		MeshComponent& meshComp = entity.getComponent<MeshComponent>();
 		RigidBody3DComponent& bodyComp = entity.getComponent<RigidBody3DComponent>();
+
+		meshComp.pos.x = bodyComp.pos.getX();
+		meshComp.pos.y = bodyComp.pos.getY();
+		meshComp.pos.z = bodyComp.pos.getZ();
+
 		bodyComp.rigidBody->setCollisionFlags(btCollisionObject::CF_STATIC_OBJECT);
 	}
 

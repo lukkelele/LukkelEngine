@@ -1,7 +1,6 @@
 #include "TestLayer.h"
 
 #include "LukkelEngine/Core/Application.h"
-#include "LukkelEngine/Scene/WorldObjects/Cube.h"
 #include "LukkelEngine/Scene/ObjectHandler.h"
 
 #include "glm/ext.hpp"
@@ -18,6 +17,7 @@ void TestLayer::onAttach()
 	using namespace LukkelEngine;
 	m_Scene = Application::get().getScene();
 	ObjectHandler::addFloor(*m_Scene, "Floor");
+	ObjectHandler::addCube(*m_Scene, "Cube1");
 	ObjectHandler::addCube(*m_Scene, "Cube2");
 }
 

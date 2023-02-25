@@ -79,19 +79,18 @@ namespace LukkelEngine{
 		btCollisionShape* shape = nullptr;
 		float friction = 1.0f;
 		float restitution = 0.20f;
-		btScalar mass = 0.0f;
+		btScalar mass;
 		btVector3 inertia{ 0.0f, 0.0f, 0.0f };
 		btVector3 pos{ 0.0f, 0.0f, 0.0f };
 		btRigidBody* rigidBody = nullptr;
 		btDefaultMotionState* motionState = nullptr;
 
 		RigidBody3DComponent(btVector3& dimensions, btVector3& offset, float mass = 1.0f)
+			: dimensions(dimensions), mass(mass)
 		{
 			shape = new btBoxShape(dimensions);
 			motionState = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), offset));
-			// btDefaultMotionState* MotionState = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), offset));
 			shape->calculateLocalInertia(mass, inertia);
-			// btRigidBody::btRigidBodyConstructionInfo boxBodyConstructionInfo(mass, new btDefaultMotionState(), shape, inertia);
 			btRigidBody::btRigidBodyConstructionInfo boxBodyConstructionInfo(mass, motionState, shape, inertia);
 			rigidBody = new btRigidBody(boxBodyConstructionInfo);
 			rigidBody->setFriction(friction);

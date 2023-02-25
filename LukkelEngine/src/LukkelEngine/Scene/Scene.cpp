@@ -3,6 +3,8 @@
 #include "LukkelEngine/Scene/Components.h"
 #include "LukkelEngine/Scene/Entity.h"
 
+#include "LukkelEngine/Scene/WorldObjects/Cube.h"
+
 #include "glm/glm.hpp"
 
 
@@ -33,6 +35,7 @@ namespace LukkelEngine {
 		TagComponent& tag = entity.addComponent<TagComponent>();
 		tag.tag = name.empty() ? "Entity" : name;
 		m_EntityMap[uuid] = entity;
+		m_Entities.push_back(entity);
 		return entity;
 	}
 
@@ -47,17 +50,11 @@ namespace LukkelEngine {
 		for (entt::entity e : meshes)
 		{	
 			Entity entity = { e, this };
+			LKLOG_TRACE("Entity NAME: {0}", entity.getName());
 			MeshComponent& mesh = entity.getComponent<MeshComponent>();
-			RigidBody3DComponent& body3D = entity.getComponent<RigidBody3DComponent>();
-
-			if (entity.getName() == "Cube1")
-			{
-				mesh.renderImGuiSettings();
-			}
-
+			RigidBody3DComponent & body3D = entity.getComponent<RigidBody3DComponent>();
 			auto meshTranslation = mesh.getTranslation();
 			glm::mat4 modelTransform = body3D.getModelTransform(meshTranslation);
-
 			mesh.updateOrientation(modelTransform, viewProj);
 			body3D.printPosition();
 

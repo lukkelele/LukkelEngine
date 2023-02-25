@@ -50,6 +50,7 @@ namespace LukkelEngine {
 
 		entt::registry m_Registry;
 		std::unordered_map<UUID, entt::entity> m_EntityMap;
+		std::vector<Entity> m_Entities;
 
 		s_ptr<FpsCamera> m_Camera;
 		s_ptr<Renderer> m_Renderer;

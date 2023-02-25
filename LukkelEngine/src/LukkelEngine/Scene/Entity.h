@@ -40,22 +40,24 @@ namespace LukkelEngine {
 			m_Scene->m_Registry.remove<T>(m_EntityHandle);
 		}
 
+		// template<typename T>
+		template<typename T, typename... ARGS>
+		void addExistingComponent(T) 
+		{
+			m_Scene->m_Registry.emplace<T>(m_EntityHandle, std::forward<ARGS>(args)...);
+		}
+
 		operator bool() const { return m_EntityHandle != entt::null; }
 		operator entt::entity() const { return m_EntityHandle; }
 		operator uint32_t() const { return (uint32_t)m_EntityHandle; }
-
-		UUID getUUID() { return getComponent<IDComponent>().ID; }
-		const std::string& getName() { return getComponent<TagComponent>().tag; }
-
+		bool operator!=(const Entity& other) const { return !(*this == other); }
 		bool operator==(const Entity& other) const
 		{
 			return m_EntityHandle == other.m_EntityHandle && m_Scene == other.m_Scene;
 		}
 
-		bool operator!=(const Entity& other) const
-		{
-			return !(*this == other);
-		}
+		UUID getUUID() { return getComponent<IDComponent>().ID; }
+		const std::string& getName() { return getComponent<TagComponent>().tag; }
 
 	public:
 		entt::entity m_EntityHandle{ entt::null };

@@ -16,6 +16,7 @@ namespace LukkelEngine {
 	{
 	public:
 		void clear() const;
+
 		void drawFill(const VertexArray& va,
 				  const IndexBuffer& ib,
 				  const Shader& shader) const;
@@ -23,8 +24,8 @@ namespace LukkelEngine {
 					   const IndexBuffer& ib,
 					   const Shader& shader) const;
 		void drawIndexed(const s_ptr<VertexArray>& va);
-
 		void draw(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const;
+
 		void renderImGui() const;
 
 		static void onWindowResize(uint16_t width, uint16_t height);

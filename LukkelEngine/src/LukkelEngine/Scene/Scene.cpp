@@ -18,7 +18,7 @@ namespace LukkelEngine {
 	
 	Scene::~Scene()
 	{
-		// delete m_World;
+		delete m_World;
 	}
 
 	void Scene::onUpdate(float ts)
@@ -50,12 +50,11 @@ namespace LukkelEngine {
 	}
 
 	// CIRCULAR DEPENDENCY SOMEWHERE
-	Entity Scene::createEntity(const std::string& name = std::string())
+	Entity Scene::createEntity(const std::string& name)
 	{
 		Entity entity = { m_Registry.create(), this };
 		TagComponent& tag = entity.addComponent<TagComponent>();
 		tag.Tag = name.empty() ? "Entity" : name;
-
 		// m_Registry.emblace(entity);
 		return entity;
 	}

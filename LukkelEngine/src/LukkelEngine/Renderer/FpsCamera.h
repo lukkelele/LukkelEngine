@@ -1,21 +1,16 @@
 #pragma once
 
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
+#include "GL/glew.h"
+#include "GLFW/glfw3.h"
 
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-#include <glm/gtx/rotate_vector.hpp>
-#include <glm/gtx/vector_angle.hpp>
+#include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
+#include "glm/gtc/type_ptr.hpp"
+#include "glm/gtx/rotate_vector.hpp"
+#include "glm/gtx/vector_angle.hpp"
 
-// #include "LukkelEngine/Renderer/Shader.h"
 #include "LukkelEngine/Input/Keyboard.h"
 #include "LukkelEngine/Input/Mouse.h"
-
-#include "LukkelEngine/Event/Event.h"
-#include "LukkelEngine/Event/KeyEvent.h"
-#include "LukkelEngine/Event/MouseEvent.h"
 
 
 namespace LukkelEngine {
@@ -54,7 +49,7 @@ namespace LukkelEngine {
 		void updateProjection();
 		void updateMousePosition();
 
-		void onMouseScroll(MouseScrolledEvent& e);
+		// void onMouseScroll(MouseScrolledEvent& e);
 
 	public:
 		glm::vec3 m_Position = { 0.0f, 0.0f, -6.0f };

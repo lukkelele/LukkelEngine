@@ -17,7 +17,7 @@ namespace LukkelEngine {
 		template<typename T, typename... ARGS>
 		T& addComponent(ARGS&&... args)
 		{
-			T& component = m_Scene->m_Registry.emblace<T>(m_EntityHandle, std::forward<ARGS>(args)...);
+			T& component = m_Scene->m_Registry.emplace<T>(m_EntityHandle, std::forward<ARGS>(args)...);
 			return component;
 		}
 

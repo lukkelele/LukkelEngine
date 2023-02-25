@@ -4,6 +4,8 @@
 #include "LukkelEngine/Renderer/FpsCamera.h"
 #include "LukkelEngine/Renderer/Renderer.h"
 
+#include "btBulletDynamicsCommon.h"
+#include "btBulletCollisionCommon.h"
 #include "entt/entt.hpp"
 
 #define LK_WORLD_NEUTRAL 0
@@ -17,6 +19,8 @@
 
 namespace LukkelEngine {
 
+	class Entity;
+
 	class Scene
 	{
 	public:
@@ -25,8 +29,6 @@ namespace LukkelEngine {
 
 		void onUpdate(float ts);
 		void onImGuiRender();
-		bool isRunning() const { return m_IsRunning; }
-		void pause(bool paused) { m_IsPaused = paused; }
 		const s_ptr<FpsCamera> getCamera() const { return m_Camera; }
 
 		Entity createEntity(const std::string& name = std::string());
@@ -34,7 +36,9 @@ namespace LukkelEngine {
 		void destroyEntity(Entity entity);
 		void createDynamicWorld();
 
-	// TODO: Fix access
+		bool isRunning() const { return m_IsRunning; }
+		void pause(bool paused) { m_IsPaused = paused; }
+
 	public:
 		bool m_IsRunning = false, m_IsPaused = false;
 		int m_Frames = 0;
@@ -45,8 +49,7 @@ namespace LukkelEngine {
 
 		s_ptr<FpsCamera> m_Camera;
 		s_ptr<Renderer> m_Renderer;
-
-		// btDiscreteDynamicsWorld* m_World = nullptr;
+		btDiscreteDynamicsWorld* m_World = nullptr;
 		
 		friend class Entity;
 	};

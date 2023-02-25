@@ -11,7 +11,7 @@ namespace LukkelEngine {
 	{
 	public:
 		Entity() = default;
-		Entity(entt::entity handle, Scene* scene); // Circular dependency
+		Entity(entt::entity handle, Scene* scene);
 		Entity(const Entity& other) = default;
 
 		template<typename T, typename... ARGS>
@@ -44,7 +44,7 @@ namespace LukkelEngine {
 		operator uint32_t() const { return (uint32_t)m_EntityHandle; }
 
 		UUID getUUID() { return getComponent<IDComponent>().ID; }
-		const std::string& GetName() { return getComponent<TagComponent>().Tag; }
+		const std::string& getName() { return getComponent<TagComponent>().tag; }
 
 		bool operator==(const Entity& other) const
 		{
@@ -56,7 +56,7 @@ namespace LukkelEngine {
 			return !(*this == other);
 		}
 
-	private:
+	public:
 		entt::entity m_EntityHandle{ entt::null };
 		Scene* m_Scene = nullptr;
 	};

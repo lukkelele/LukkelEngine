@@ -1,8 +1,8 @@
 #include "LukkelEngine/Core/Application.h"
 
 #include "TestLayer.h"
-
 #include <LukkelEngine/Layer/PerformanceLayer.h>
+
 
 class Sandbox : public LukkelEngine::Application
 {
@@ -15,7 +15,6 @@ public:
 	~Sandbox()
 	{
 	}
-
 };
 
 int main()

@@ -11,18 +11,18 @@ TestLayer::TestLayer()
 {
 }
 
+
 void TestLayer::onAttach()
 {
 	using namespace LukkelEngine;
 	m_Scene = Application::get().getScene();
-	// LukkelEngine::Entity* Cube2 = new LukkelEngine::Cube();
-	// LukkelEngine::Entity* Cube = new LukkelEngine::Cube();
 
-	// UUID uuid();
-	// Entity* cube = new Cube(uuid, *m_Scene);
+	Entity cube = m_Scene->createEntity("Cube1");
+	cube.addComponent<MeshComponent>();
+	cube.addComponent<RigidBody3DComponent>(LK_TEMPLATE_OBJECT_CUBE);
+	cube.m_Scene = &(*m_Scene);
 
-	Entity* cube = new Cube();
-	// m_Scene->m_Entities.push_back(*cube);
+	m_Scene->m_Registry.emplace<Entity>(cube.m_EntityHandle);
 }
 
 void TestLayer::onUpdate(float ts)

@@ -8,6 +8,7 @@
 #include "btBulletCollisionCommon.h"
 #include "glm/glm.hpp"
 
+#define LK_TEMPLATE_OBJECT_CUBE 4
 
 namespace LukkelEngine{
 
@@ -27,12 +28,12 @@ namespace LukkelEngine{
 	*/
 	struct TagComponent
 	{
-		std::string Tag;
+		std::string tag;
 
 		TagComponent() = default;
 		TagComponent(const TagComponent&) = default;
 		TagComponent(const std::string& tag)
-			: Tag(tag) {}
+			: tag(tag) {}
 	};
 	
 	/**
@@ -40,56 +41,72 @@ namespace LukkelEngine{
 	*/
 	struct MeshComponent
 	{
-		s_ptr<VertexArray> va;
-		s_ptr<IndexBuffer> ib;
-		s_ptr<Shader> shader;  // Move shader and texture to separate MaterialComponent maybe?
-		s_ptr<Texture> texture;
+		float vertices_color[8 * 8] = {
+		// Positions		  Texture coords    Color
+		-0.5f, -0.5f,  0.5f,    0.0f, 1.0f,    1.0f, 1.0f, 1.0f,
+		 0.5f, -0.5f,  0.5f,    1.0f, 0.0f,    0.2f, 0.5f, 0.0f,
+		-0.5f,  0.5f,  0.5f,    1.0f, 1.0f,    1.0f, 0.0f, 1.0f,
+		 0.5f,  0.5f,  0.5f,    1.0f, 1.0f,    0.3f, 0.5f, 0.0f,
+		-0.5f, -0.5f, -0.5f,    0.0f, 1.0f,    0.0f, 1.0f, 0.0f,
+		 0.5f, -0.5f, -0.5f,    0.0f, 1.0f,    0.0f, 0.5f, 0.5f,
+		-0.5f,  0.5f, -0.5f,    1.0f, 1.0f,    0.7f, 0.0f, 1.0f,
+		 0.5f,  0.5f, -0.5f,    0.0f, 0.0f,    1.0f, 0.5f, 0.0f
+		};
+		unsigned int indices[6 * 6] = {
+		//Top
+		2, 6, 7,
+		2, 3, 7,
+		//Bottom
+		0, 4, 5,
+		0, 1, 5,
+		//Left
+		0, 2, 6,
+		0, 4, 6,
+		//Right
+		1, 3, 7,
+		1, 5, 7,
+		//Front
+		0, 2, 3,
+		0, 1, 3,
+		//Back
+		4, 6, 7,
+		4, 5, 7
+	};
 
-		MeshComponent() = default;
-		MeshComponent(const MeshComponent&) = default;
+		s_ptr<VertexArray> va = nullptr;
+		s_ptr<IndexBuffer> ib = nullptr;
+		s_ptr<VertexBuffer> vb = nullptr;
+		s_ptr<Shader> shader = nullptr;
+
+		// MeshComponent() = default;
 		MeshComponent(s_ptr<VertexArray>& va, s_ptr<IndexBuffer>& ib, s_ptr<Shader>& shader)
 			: va(va), ib(ib), shader(shader) {}
+
+		MeshComponent()
+		{
+			va = create_s_ptr<VertexArray>();
+			vb = create_s_ptr<VertexBuffer>(vertices_color, (sizeof(vertices_color) / (sizeof(float)) * sizeof(float)));
+			ib = create_s_ptr<IndexBuffer>(indices, (sizeof(indices) / (sizeof(unsigned int)) * sizeof(unsigned int)));
+			shader = create_s_ptr<Shader>("assets/shaders/3D/flat.shader");
+			LKLOG_WARN("Creating mesh component");
+			LKLOG_TRACE("shader == nullptr : {0}", shader == nullptr);
+			LKLOG_TRACE("va == nullptr : {0}", va == nullptr);
+		}
 
 		void bind()
 		{
 			va->bind();
 			shader->bind();
-			texture->bind();
 		}
 
 		void updateOrientation(glm::mat4 modelTransform, glm::mat4 viewProjection)
 		{
+			// LKLOG_WARN("Binding shader (updateOrientation)");
 			shader->bind();
-			texture->bind();
+			// LKLOG_WARN("Updating u_Model shader uniform");
 			shader->setUniformMat4f("u_Model", modelTransform);
+			// LKLOG_WARN("Updating u_ViewProj shader uniform (View Projection)");
 			shader->setUniformMat4f("u_ViewProj", viewProjection);
-		}
-	};
-
-	// TODO: Merge with RigidBody3DComponent ? or scrap this
-	struct TransformComponent
-	{
-		glm::mat4 transform = glm::mat4(1.0f);
-		glm::vec3 translation = { 0.0f, 0.0f, 0.0f };
-		glm::vec3 rotation = { 0.0f, 0.0f, 0.0f };
-		glm::vec3 scale = { 1.0f, 1.0f, 1.0f };
-
-		TransformComponent() = default;
-		TransformComponent(const TransformComponent&) = default; // Copy
-		TransformComponent(const glm::mat4& transform)
-			: transform(transform) {}
-
-		// This is like an implicit cast which makes so you can skip e.g Component.component
-		operator glm::mat4& () { return transform; }
-		operator const glm::mat4& () const { return transform; }
-
-		glm::mat4 getTransform() const
-		{
-			glm::mat4 rotation = glm::toMat4(glm::quat(rotation));
-			// Translation * Rotation * Scale
-			return glm::translate(glm::mat4(1.0f), translation)
-				* rotation
-				* glm::scale(glm::mat4(1.0f), scale);
 		}
 	};
 
@@ -114,20 +131,45 @@ namespace LukkelEngine{
 		btVector3 linearVelocity{ 0.0f, 0.0f, 0.0f };
 		btVector3 angularVelocity{ 0.0f, 0.0f, 0.0f };
 		btVector3 inertia{ 0.0f, 0.0f, 0.0f };
-		btRigidBody* rigidbody = nullptr;
+		btVector3 position{ 0.0f, 0.0f, 0.0f };
+		btRigidBody* rigidBody = nullptr;
 		btDefaultMotionState* motionState = nullptr;
 
 		RigidBody3DComponent() = default;
-		RigidBody3DComponent(const RigidBody3DComponent&) = default; // Copy
+		RigidBody3DComponent(uint8_t template_object)
+		{
+			float xOffset = 0.0f, yOffset = 0.0f, zOffset = 0.0f;
+			float length = 0.5f, height = 0.5f, depth = 0.5f;
+			shape = new btBoxShape(btVector3(length, height, depth));
+			motionState = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1),
+							  btVector3(xOffset, yOffset, zOffset)));
+			shape->calculateLocalInertia(mass, inertia);
+			btRigidBody::btRigidBodyConstructionInfo boxBodyConstructionInfo(mass, motionState, shape, inertia);
+			rigidBody = new btRigidBody(boxBodyConstructionInfo);
+			rigidBody->setFriction(friction);
+			rigidBody->setRestitution(restitution);
+		}
 
-		// Get model matrix
+		void printPosition()
+		{
+			auto pos = rigidBody->getCenterOfMassPosition();
+			auto s = rigidBody->getMass();
+			LKLOG_TRACE("Body Position : ({0}, {1}, {2})  | Mass: {3}", pos.getX(), pos.getY(), pos.getZ(), mass);
+		}
+
+		// Get model transform
 		glm::mat4 getModelTransform(float scale = 1.0f)
 		{
 			glm::mat4 model(1.0f);
 			btTransform transform;
-			rigidbody->getMotionState()->getWorldTransform(transform);
+			
+			LKLOG_INFO("Getting rigidbody world transform");
+			rigidBody->getMotionState()->getWorldTransform(transform);
+
+			LKLOG_INFO("Getting translation and rotation");
 			btVector3 translate = transform.getOrigin();
 			btQuaternion rotation = transform.getRotation();
+
 			glm::mat4 rotMat = glm::rotate(glm::mat4(1.0f), rotation.getAngle(),
 				glm::vec3(rotation.getAxis().getX(), rotation.getAxis().getY(), rotation.getAxis().getZ()));
 
@@ -145,7 +187,9 @@ namespace LukkelEngine{
 	};
 
 	using AllComponents =
-		ComponentGroup<TransformComponent, SpriteRendererComponent,
+		ComponentGroup<IDComponent,
+					   TagComponent,
+					   SpriteRendererComponent,
 					   RigidBody3DComponent>;
 
 }

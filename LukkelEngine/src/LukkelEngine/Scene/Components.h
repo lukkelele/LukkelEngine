@@ -107,6 +107,11 @@ namespace LukkelEngine{
 			shader->setUniformMat4f("u_ViewProj", viewProjection);
 		}
 
+		glm::mat4 getTranslation()
+		{
+			return glm::translate(glm::mat4(1.0f), pos);
+		}
+
 	};
 
 	struct RigidBody3DComponent
@@ -177,13 +182,13 @@ namespace LukkelEngine{
 		}
 	};
 
-	struct SpriteRendererComponent
+	struct SpriteComponent
 	{
 		glm::vec4 color{ 1.0f, 1.0f, 1.0f, 1.0f };
 
-		SpriteRendererComponent() = default;
-		SpriteRendererComponent(const SpriteRendererComponent&) = default;
-		SpriteRendererComponent(const glm::vec4& color)
+		SpriteComponent() = default;
+		SpriteComponent(const SpriteComponent&) = default;
+		SpriteComponent(const glm::vec4& color)
 			: color(color) {}
 	};
 
@@ -196,7 +201,7 @@ namespace LukkelEngine{
 	using AllComponents =
 		ComponentGroup<IDComponent,
 					   TagComponent,
-					   SpriteRendererComponent,
+					   SpriteComponent,
 					   RigidBody3DComponent>;
 
 }

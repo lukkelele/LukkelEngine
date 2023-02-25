@@ -40,6 +40,9 @@ namespace LukkelEngine {
 		bool isRunning() const { return m_IsRunning; }
 		void pause(bool paused) { m_IsPaused = paused; }
 
+		template<typename T>
+		void onComponentAdded(Entity entity, T& component);
+
 	public:
 		bool m_IsRunning = false, m_IsPaused = false;
 		int m_Frames = 0;

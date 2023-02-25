@@ -18,6 +18,7 @@ namespace LukkelEngine {
 		T& addComponent(ARGS&&... args)
 		{
 			T& component = m_Scene->m_Registry.emplace<T>(m_EntityHandle, std::forward<ARGS>(args)...);
+			m_Scene->onComponentAdded<T>(*this, component);
 			return component;
 		}
 

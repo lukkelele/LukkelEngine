@@ -48,15 +48,17 @@ namespace LukkelEngine {
 		{	
 			Entity entity = { e, this };
 			MeshComponent& mesh = entity.getComponent<MeshComponent>();
-			// RigidBody3DComponent& body3D = entity.getComponent<RigidBody3DComponent>();
-			// glm::mat4 modelTransform = body3D.getModelTransform();
+			// glm::mat4 modelTransform(1.0f);
+			// mesh.updateModelTransform(viewProj);
 
-			glm::mat4 modelTransform(1.0f);
-			mesh.updateModelTransform(viewProj);
+			RigidBody3DComponent& body3D = entity.getComponent<RigidBody3DComponent>();
+			glm::mat4 modelTransform = body3D.getModelTransform();
+			modelTransform += mesh.getTranslation();
+
 			if (entity.getName() == "Cube1")
 				mesh.renderImGuiSettings();
-			// mesh.updateOrientation(modelTransform, viewProj);
-			// body3D.printPosition();
+			mesh.updateOrientation(modelTransform, viewProj);
+			body3D.printPosition();
 
 			m_Renderer->draw(*mesh.va, *mesh.ib, *mesh.shader);
 		}
@@ -89,4 +91,28 @@ namespace LukkelEngine {
 		return {};
 	}
 
+
+
+	template<typename T>
+		void Scene::onComponentAdded(Entity entity, T& component)
+		{
+			// static assert	
+		}
+
+		template<>
+		void Scene::onComponentAdded<RigidBody3DComponent>(Entity entity, RigidBody3DComponent& component)
+		{
+			LKLOG_WARN("Adding rigid body to dynamic world");
+			m_World->addRigidBody(component.rigidBody);
+		}
+
+		template<>
+		void Scene::onComponentAdded<MeshComponent>(Entity entity, MeshComponent& component)
+		{
+		}
+
+		template<>
+		void Scene::onComponentAdded<SpriteComponent>(Entity entity, SpriteComponent& component)
+		{
+		}
 }

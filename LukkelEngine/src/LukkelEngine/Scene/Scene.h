@@ -33,6 +33,7 @@ namespace LukkelEngine {
 
 		Entity createEntity(const std::string& name = std::string());
 		Entity createEntityWithUUID(UUID uuid, const std::string& name = std::string());
+		Entity findEntity(std::string_view name);
 		void destroyEntity(Entity entity);
 		void createDynamicWorld();
 

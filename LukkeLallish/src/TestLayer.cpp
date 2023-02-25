@@ -19,12 +19,12 @@ void TestLayer::onAttach()
 
 	Entity cube = m_Scene->createEntity("Test Cube");
 	cube.addComponent<MeshComponent>();
-	cube.m_Scene = &(*m_Scene);
+	cube.addComponent<RigidBody3DComponent>(LK_TEMPLATE_OBJECT_CUBE);
 }
 
 void TestLayer::onUpdate(float ts)
 {			
-	m_Scene->onUpdate(1.0f);
+	m_Scene->onUpdate(ts);
 	m_Scene->onImGuiRender();
 }
 

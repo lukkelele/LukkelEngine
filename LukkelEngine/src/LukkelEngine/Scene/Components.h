@@ -71,14 +71,10 @@ namespace LukkelEngine{
 		s_ptr<IndexBuffer> ib = nullptr;
 		s_ptr<VertexBuffer> vb = nullptr;
 		s_ptr<Shader> shader = nullptr;
-
-		// MeshComponent() = default;
-		MeshComponent(s_ptr<VertexArray>& va, s_ptr<IndexBuffer>& ib, s_ptr<Shader>& shader)
-			: va(va), ib(ib), shader(shader) {}
+		glm::vec3 pos{ 0.0f, 0.0f, 0.0f };
 
 		MeshComponent()
 		{
-			LKLOG_WARN("Creating mesh component");
 			va = create_s_ptr<VertexArray>();
 			vb = create_s_ptr<VertexBuffer>(vertices_color, (sizeof(vertices_color) / (sizeof(float)) * sizeof(float)));
 			ib = create_s_ptr<IndexBuffer>(indices, (sizeof(indices) / (sizeof(unsigned int)) * sizeof(unsigned int)));
@@ -88,23 +84,12 @@ namespace LukkelEngine{
 			layout.push<float>(2);
 			layout.push<float>(3);
 			va->addBuffer(*vb, layout);
-			LKLOG_TRACE("va == nullptr : {0}", va == nullptr);
-			LKLOG_TRACE("vb == nullptr : {0}", vb == nullptr);
-			LKLOG_TRACE("ib == nullptr : {0}", ib == nullptr);
-			LKLOG_TRACE("shader == nullptr : {0}", shader == nullptr);
 		}
-
-		s_ptr<VertexArray> getVertexArray() { return va; }
-		s_ptr<IndexBuffer> getIndexBuffer() { return ib; }
-		s_ptr<Shader> getShader() { return shader; }
 
 		void updateOrientation(glm::mat4 modelTransform, glm::mat4 viewProjection)
 		{
-			// LKLOG_WARN("Binding shader (updateOrientation)");
 			shader->bind();
-			// LKLOG_WARN("Updating u_Model shader uniform");
 			shader->setUniformMat4f("u_Model", modelTransform);
-			// LKLOG_WARN("Updating u_ViewProj shader uniform (View Projection)");
 			shader->setUniformMat4f("u_ViewProj", viewProjection);
 		}
 	};
@@ -121,23 +106,23 @@ namespace LukkelEngine{
 
 	struct RigidBody3DComponent
 	{
-		enum class BodyType { STATIC = 0, DYNAMIC, KINEMATIC };
+		enum class BodyType { STATIC = 0, DYNAMIC };
 
 		btCollisionShape* shape = nullptr;
 		float friction = 0.50f;
-		float restitution = 0.0f;
-		btScalar mass = 1.0f;
+		float restitution = 0.50f;
+		btScalar mass = 5.0f;
 		btVector3 linearVelocity{ 0.0f, 0.0f, 0.0f };
 		btVector3 angularVelocity{ 0.0f, 0.0f, 0.0f };
 		btVector3 inertia{ 0.0f, 0.0f, 0.0f };
 		btVector3 position{ 0.0f, 0.0f, 0.0f };
 		btRigidBody* rigidBody = nullptr;
-		btDefaultMotionState* motionState = nullptr;
+		btDefaultMotionState* motionState;
 
 		RigidBody3DComponent() = default;
 		RigidBody3DComponent(uint8_t template_object)
 		{
-			float xOffset = 0.0f, yOffset = 0.0f, zOffset = 0.0f;
+			float xOffset = 0.0f, yOffset = 4.0f, zOffset = 0.0f;
 			float length = 0.5f, height = 0.5f, depth = 0.5f;
 			shape = new btBoxShape(btVector3(length, height, depth));
 			motionState = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1),
@@ -152,8 +137,9 @@ namespace LukkelEngine{
 		void printPosition()
 		{
 			auto pos = rigidBody->getCenterOfMassPosition();
-			auto s = rigidBody->getMass();
-			LKLOG_TRACE("Body Position : ({0}, {1}, {2})  | Mass: {3}", pos.getX(), pos.getY(), pos.getZ(), mass);
+			auto s = rigidBody->getCenterOfMassPosition();
+			auto body = rigidBody;
+			LKLOG_TRACE("Mass position : ({0}, {1}, {2})  | Mass: {3} | nullptr == {4}", pos.getX(), pos.getY(), pos.getZ(), mass, body == nullptr);
 		}
 
 		// Get model transform
@@ -162,10 +148,8 @@ namespace LukkelEngine{
 			glm::mat4 model(1.0f);
 			btTransform transform;
 			
-			LKLOG_INFO("Getting rigidbody world transform");
 			rigidBody->getMotionState()->getWorldTransform(transform);
 
-			LKLOG_INFO("Getting translation and rotation");
 			btVector3 translate = transform.getOrigin();
 			btQuaternion rotation = transform.getRotation();
 

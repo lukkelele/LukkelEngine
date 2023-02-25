@@ -17,14 +17,17 @@ void TestLayer::onAttach()
 	using namespace LukkelEngine;
 	m_Scene = Application::get().getScene();
 
-	Entity cube = m_Scene->createEntity("Test Cube");
+	Entity cube = m_Scene->createEntity("Cube1");
+	Entity cube2 = m_Scene->createEntity("Cube2");
 	cube.addComponent<MeshComponent>();
-	cube.addComponent<RigidBody3DComponent>(LK_TEMPLATE_OBJECT_CUBE);
+	// cube.addComponent<RigidBody3DComponent>(LK_TEMPLATE_OBJECT_CUBE);
+	cube2.addComponent<MeshComponent>();
+	// cube2.addComponent<RigidBody3DComponent>(LK_TEMPLATE_OBJECT_CUBE);
 }
 
 void TestLayer::onUpdate(float ts)
 {			
-	m_Scene->onUpdate(ts);
+	m_Scene->onUpdate(1.0f);
 	m_Scene->onImGuiRender();
 }
 

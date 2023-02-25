@@ -92,16 +92,21 @@ namespace LukkelEngine{
 			shader->setUniformMat4f("u_Model", modelTransform);
 			shader->setUniformMat4f("u_ViewProj", viewProjection);
 		}
-	};
 
-	struct SpriteRendererComponent
-	{
-		glm::vec4 color{ 1.0f, 1.0f, 1.0f, 1.0f };
+		void renderImGuiSettings()
+		{
+			ImGui::SliderFloat3("Mesh position", &pos.x, -15.0f, 15.0f);
+		}
 
-		SpriteRendererComponent() = default;
-		SpriteRendererComponent(const SpriteRendererComponent&) = default;
-		SpriteRendererComponent(const glm::vec4& color)
-			: color(color) {}
+		void updateModelTransform(glm::mat4 viewProjection)
+		{
+			shader->bind();
+			glm::mat4 translation = glm::translate(glm::mat4(1.0f), pos);
+			glm::mat4 model = glm::mat4(1.0f) + translation;
+			shader->setUniformMat4f("u_Model", model);
+			shader->setUniformMat4f("u_ViewProj", viewProjection);
+		}
+
 	};
 
 	struct RigidBody3DComponent
@@ -115,7 +120,7 @@ namespace LukkelEngine{
 		btVector3 linearVelocity{ 0.0f, 0.0f, 0.0f };
 		btVector3 angularVelocity{ 0.0f, 0.0f, 0.0f };
 		btVector3 inertia{ 0.0f, 0.0f, 0.0f };
-		btVector3 position{ 0.0f, 0.0f, 0.0f };
+		btVector3 pos{ 0.0f, 0.0f, 0.0f };
 		btRigidBody* rigidBody = nullptr;
 		btDefaultMotionState* motionState;
 
@@ -137,17 +142,26 @@ namespace LukkelEngine{
 		void printPosition()
 		{
 			auto pos = rigidBody->getCenterOfMassPosition();
-			auto s = rigidBody->getCenterOfMassPosition();
 			auto body = rigidBody;
 			LKLOG_TRACE("Mass position : ({0}, {1}, {2})  | Mass: {3} | nullptr == {4}", pos.getX(), pos.getY(), pos.getZ(), mass, body == nullptr);
+		}
+
+		void renderImGuiSettings()
+		{
+			// ImGui::Begin;
+			// ImGui::SliderFloat3("btBody position", &(float)pos.getX(), -15.0f, 15.0f);
+			// btTransform t;
+			// btMatrix3x3 mat3(btQuaternion(0, 0, 0, 1));
+			// rigidBody->getMotionState()->getWorldTransform(t);
+			// rigidBody->setWorldTransform(btTransform(mat3, pos));
+			// ImGui::End;
 		}
 
 		// Get model transform
 		glm::mat4 getModelTransform(float scale = 1.0f)
 		{
-			glm::mat4 model(1.0f);
 			btTransform transform;
-			
+			glm::mat4 model(1.0f);
 			rigidBody->getMotionState()->getWorldTransform(transform);
 
 			btVector3 translate = transform.getOrigin();
@@ -161,6 +175,16 @@ namespace LukkelEngine{
 			glm::mat4 modelMatrix = transMat * rotMat * scaleMat;
 			return modelMatrix;
 		}
+	};
+
+	struct SpriteRendererComponent
+	{
+		glm::vec4 color{ 1.0f, 1.0f, 1.0f, 1.0f };
+
+		SpriteRendererComponent() = default;
+		SpriteRendererComponent(const SpriteRendererComponent&) = default;
+		SpriteRendererComponent(const glm::vec4& color)
+			: color(color) {}
 	};
 
 

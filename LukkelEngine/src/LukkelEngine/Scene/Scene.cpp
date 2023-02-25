@@ -10,7 +10,7 @@ namespace LukkelEngine {
 
 	Scene::Scene()
 	{
-		m_Camera = create_s_ptr<FpsCamera>(55.0f, 0.010f, 1000.0f);
+		m_Camera = create_s_ptr<FpsCamera>(45.0f, 0.010f, 1000.0f);
 		m_Camera->setPosition(glm::vec3(0.0f, 2.5f, -10.0f));
 		createDynamicWorld();
 	}
@@ -47,12 +47,16 @@ namespace LukkelEngine {
 		for (entt::entity e : meshes)
 		{	
 			Entity entity = { e, this };
-			RigidBody3DComponent& body3D = entity.getComponent<RigidBody3DComponent>();
 			MeshComponent& mesh = entity.getComponent<MeshComponent>();
+			// RigidBody3DComponent& body3D = entity.getComponent<RigidBody3DComponent>();
+			// glm::mat4 modelTransform = body3D.getModelTransform();
 
-			glm::mat4 modelTransform = body3D.getModelTransform();
-			mesh.updateOrientation(modelTransform, viewProj);
-			body3D.printPosition();
+			glm::mat4 modelTransform(1.0f);
+			mesh.updateModelTransform(viewProj);
+			if (entity.getName() == "Cube1")
+				mesh.renderImGuiSettings();
+			// mesh.updateOrientation(modelTransform, viewProj);
+			// body3D.printPosition();
 
 			m_Renderer->draw(*mesh.va, *mesh.ib, *mesh.shader);
 		}
@@ -60,19 +64,6 @@ namespace LukkelEngine {
 
 	void Scene::onImGuiRender()
 	{
-		ImGui::Begin;
-		auto entity = findEntity("Test Cube");
-		auto mesh = entity.getComponent<MeshComponent>();
-		ImGui::SliderFloat3("Entity position", &mesh.pos.x, -15.0f, 15.0f);
-		auto bc = entity.getComponent<RigidBody3DComponent>();
-		btVector3 pos(mesh.pos.x, mesh.pos.y, mesh.pos.z);
-
-		btTransform t;
-		bc.rigidBody->getMotionState()->getWorldTransform(t);
-		btMatrix3x3 mat3(btQuaternion(0, 0, 0, 1));
-		bc.rigidBody->setWorldTransform(btTransform(mat3, pos));
-		ImGui::End;
-		LKLOG_INFO("[UPDATE] Entity pos: ({0}, {1}, {2})", mesh.pos.x, mesh.pos.y, mesh.pos.z);
 	}
 
 	void Scene::createDynamicWorld()
@@ -85,7 +76,6 @@ namespace LukkelEngine {
 		m_World = new btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfig);
 		m_World->setGravity(LK_WORLD_GRAVITY_DEFAULT);
 	}
-
 
 	Entity Scene::findEntity(std::string_view name)
 	{

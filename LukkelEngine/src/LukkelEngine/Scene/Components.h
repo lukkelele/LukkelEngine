@@ -12,9 +12,6 @@
 
 namespace LukkelEngine{
 
-	/**
-	 * @brief Unique identifier for component
-	*/
 	struct IDComponent
 	{
 		UUID ID;
@@ -23,9 +20,6 @@ namespace LukkelEngine{
 		IDComponent(const IDComponent&) = default;
 	};
 
-	/**
-	 * @brief Tags and names for component
-	*/
 	struct TagComponent
 	{
 		std::string tag;
@@ -84,20 +78,25 @@ namespace LukkelEngine{
 
 		MeshComponent()
 		{
+			LKLOG_WARN("Creating mesh component");
 			va = create_s_ptr<VertexArray>();
 			vb = create_s_ptr<VertexBuffer>(vertices_color, (sizeof(vertices_color) / (sizeof(float)) * sizeof(float)));
 			ib = create_s_ptr<IndexBuffer>(indices, (sizeof(indices) / (sizeof(unsigned int)) * sizeof(unsigned int)));
 			shader = create_s_ptr<Shader>("assets/shaders/3D/flat.shader");
-			LKLOG_WARN("Creating mesh component");
-			LKLOG_TRACE("shader == nullptr : {0}", shader == nullptr);
+			VertexBufferLayout layout;
+			layout.push<float>(3);
+			layout.push<float>(2);
+			layout.push<float>(3);
+			va->addBuffer(*vb, layout);
 			LKLOG_TRACE("va == nullptr : {0}", va == nullptr);
+			LKLOG_TRACE("vb == nullptr : {0}", vb == nullptr);
+			LKLOG_TRACE("ib == nullptr : {0}", ib == nullptr);
+			LKLOG_TRACE("shader == nullptr : {0}", shader == nullptr);
 		}
 
-		void bind()
-		{
-			va->bind();
-			shader->bind();
-		}
+		s_ptr<VertexArray> getVertexArray() { return va; }
+		s_ptr<IndexBuffer> getIndexBuffer() { return ib; }
+		s_ptr<Shader> getShader() { return shader; }
 
 		void updateOrientation(glm::mat4 modelTransform, glm::mat4 viewProjection)
 		{

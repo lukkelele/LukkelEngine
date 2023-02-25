@@ -17,12 +17,9 @@ void TestLayer::onAttach()
 	using namespace LukkelEngine;
 	m_Scene = Application::get().getScene();
 
-	Entity cube = m_Scene->createEntity("Cube1");
+	Entity cube = m_Scene->createEntity("Test Cube");
 	cube.addComponent<MeshComponent>();
-	cube.addComponent<RigidBody3DComponent>(LK_TEMPLATE_OBJECT_CUBE);
 	cube.m_Scene = &(*m_Scene);
-
-	m_Scene->m_Registry.emplace<Entity>(cube.m_EntityHandle);
 }
 
 void TestLayer::onUpdate(float ts)

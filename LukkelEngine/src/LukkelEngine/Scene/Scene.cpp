@@ -48,15 +48,16 @@ namespace LukkelEngine {
 		{	
 			Entity entity = { e, this };
 			MeshComponent& mesh = entity.getComponent<MeshComponent>();
-			// glm::mat4 modelTransform(1.0f);
-			// mesh.updateModelTransform(viewProj);
-
 			RigidBody3DComponent& body3D = entity.getComponent<RigidBody3DComponent>();
-			glm::mat4 modelTransform = body3D.getModelTransform();
-			modelTransform += mesh.getTranslation();
 
 			if (entity.getName() == "Cube1")
+			{
 				mesh.renderImGuiSettings();
+			}
+
+			auto meshTranslation = mesh.getTranslation();
+			glm::mat4 modelTransform = body3D.getModelTransform(meshTranslation);
+
 			mesh.updateOrientation(modelTransform, viewProj);
 			body3D.printPosition();
 
@@ -76,7 +77,7 @@ namespace LukkelEngine {
 		btSequentialImpulseConstraintSolver* solver = new btSequentialImpulseConstraintSolver();
 
 		m_World = new btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfig);
-		m_World->setGravity(LK_WORLD_GRAVITY_DEFAULT);
+		m_World->setGravity(LK_WORLD_GRAVITY_SLOW);
 	}
 
 	Entity Scene::findEntity(std::string_view name)

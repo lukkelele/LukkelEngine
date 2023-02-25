@@ -9,6 +9,7 @@
 #include "glm/glm.hpp"
 
 #define LK_TEMPLATE_OBJECT_CUBE 4
+#define LK_TEMPLATE_OBJECT_FLOOR 5
 
 namespace LukkelEngine{
 
@@ -86,6 +87,27 @@ namespace LukkelEngine{
 			va->addBuffer(*vb, layout);
 		}
 
+		MeshComponent(float scaler)
+		{
+			int i = 0;
+			while (i < sizeof(vertices_color) / sizeof(int))
+			{
+				vertices_color[i] = vertices_color[i] * scaler;
+				i++;
+			}
+
+			va = create_s_ptr<VertexArray>();
+			vb = create_s_ptr<VertexBuffer>(vertices_color, (sizeof(vertices_color) / (sizeof(float)) * sizeof(float)));
+			ib = create_s_ptr<IndexBuffer>(indices, (sizeof(indices) / (sizeof(unsigned int)) * sizeof(unsigned int)));
+			shader = create_s_ptr<Shader>("assets/shaders/3D/flat.shader");
+			VertexBufferLayout layout;
+			layout.push<float>(3);
+			layout.push<float>(2);
+			layout.push<float>(3);
+			va->addBuffer(*vb, layout);
+		}
+
+
 		void updateOrientation(glm::mat4 modelTransform, glm::mat4 viewProjection)
 		{
 			shader->bind();
@@ -96,15 +118,6 @@ namespace LukkelEngine{
 		void renderImGuiSettings()
 		{
 			ImGui::SliderFloat3("Mesh position", &pos.x, -15.0f, 15.0f);
-		}
-
-		void updateModelTransform(glm::mat4 viewProjection)
-		{
-			shader->bind();
-			glm::mat4 translation = glm::translate(glm::mat4(1.0f), pos);
-			glm::mat4 model = glm::mat4(1.0f) + translation;
-			shader->setUniformMat4f("u_Model", model);
-			shader->setUniformMat4f("u_ViewProj", viewProjection);
 		}
 
 		glm::mat4 getTranslation()
@@ -119,29 +132,46 @@ namespace LukkelEngine{
 		enum class BodyType { STATIC = 0, DYNAMIC };
 
 		btCollisionShape* shape = nullptr;
-		float friction = 0.50f;
-		float restitution = 0.50f;
-		btScalar mass = 5.0f;
+		float friction = 1.0f;
+		float restitution = 0.20f;
+		btScalar mass = 10.0f;
 		btVector3 linearVelocity{ 0.0f, 0.0f, 0.0f };
 		btVector3 angularVelocity{ 0.0f, 0.0f, 0.0f };
 		btVector3 inertia{ 0.0f, 0.0f, 0.0f };
 		btVector3 pos{ 0.0f, 0.0f, 0.0f };
 		btRigidBody* rigidBody = nullptr;
-		btDefaultMotionState* motionState;
+		btDefaultMotionState* motionState = nullptr;
 
 		RigidBody3DComponent() = default;
-		RigidBody3DComponent(uint8_t template_object)
+		RigidBody3DComponent(uint8_t template_object, float scaler = 1.0f)
 		{
-			float xOffset = 0.0f, yOffset = 4.0f, zOffset = 0.0f;
-			float length = 0.5f, height = 0.5f, depth = 0.5f;
-			shape = new btBoxShape(btVector3(length, height, depth));
-			motionState = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1),
-							  btVector3(xOffset, yOffset, zOffset)));
-			shape->calculateLocalInertia(mass, inertia);
-			btRigidBody::btRigidBodyConstructionInfo boxBodyConstructionInfo(mass, motionState, shape, inertia);
-			rigidBody = new btRigidBody(boxBodyConstructionInfo);
-			rigidBody->setFriction(friction);
-			rigidBody->setRestitution(restitution);
+			if (template_object == LK_TEMPLATE_OBJECT_CUBE)
+			{
+				float xOffset = 0.0f, yOffset = 4.0f, zOffset = 0.0f;
+				float length = 0.5f, height = 0.5f, depth = 0.5f;
+				shape = new btBoxShape(btVector3(length, height, depth));
+				motionState = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1),
+													   btVector3(xOffset, yOffset, zOffset)));
+				shape->calculateLocalInertia(mass, inertia);
+				btRigidBody::btRigidBodyConstructionInfo boxBodyConstructionInfo(mass, motionState, shape, inertia);
+				rigidBody = new btRigidBody(boxBodyConstructionInfo);
+				rigidBody->setFriction(friction);
+				rigidBody->setRestitution(restitution);
+			}
+			else if (template_object == LK_TEMPLATE_OBJECT_FLOOR)
+			{
+				float xOffset = 0.0f, yOffset = -24.0f, zOffset = 0.0f;
+				float length = 4.0f * scaler, height = 0.5f * scaler, depth = 4.0f * scaler;
+				shape = new btBoxShape(btVector3(length, height, depth));
+				btDefaultMotionState* MotionState = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1),
+													   btVector3(xOffset, yOffset, zOffset)));
+				shape->calculateLocalInertia(mass, inertia);
+				btRigidBody::btRigidBodyConstructionInfo boxBodyConstructionInfo(0.0f, new btDefaultMotionState(), shape, inertia);
+				rigidBody = new btRigidBody(boxBodyConstructionInfo);
+				rigidBody->setFriction(friction);
+				rigidBody->setRestitution(restitution);
+				rigidBody->setCollisionFlags(btCollisionObject::CF_STATIC_OBJECT);
+			}
 		}
 
 		void printPosition()
@@ -153,17 +183,16 @@ namespace LukkelEngine{
 
 		void renderImGuiSettings()
 		{
-			// ImGui::Begin;
-			// ImGui::SliderFloat3("btBody position", &(float)pos.getX(), -15.0f, 15.0f);
-			// btTransform t;
-			// btMatrix3x3 mat3(btQuaternion(0, 0, 0, 1));
-			// rigidBody->getMotionState()->getWorldTransform(t);
-			// rigidBody->setWorldTransform(btTransform(mat3, pos));
-			// ImGui::End;
+			ImGui::Begin;
+			ImGui::SliderFloat3("btBody position", &(float)pos.getX(), -100.0f, 100.0f);
+			btTransform t;
+			btMatrix3x3 mat3(btQuaternion(0, 0, 0, 1));
+			rigidBody->getMotionState()->getWorldTransform(t);
+			rigidBody->setWorldTransform(btTransform(mat3, pos));
+			ImGui::End;
 		}
 
-		// Get model transform
-		glm::mat4 getModelTransform(float scale = 1.0f)
+		glm::mat4 getModelTransform(glm::mat4 meshTranslation, float scale = 1.0f)
 		{
 			btTransform transform;
 			glm::mat4 model(1.0f);
@@ -176,11 +205,13 @@ namespace LukkelEngine{
 				glm::vec3(rotation.getAxis().getX(), rotation.getAxis().getY(), rotation.getAxis().getZ()));
 
 			glm::mat4 scaleMat = glm::scale(glm::mat4(1.0f), glm::vec3(scale));
-			glm::mat4 transMat = glm::translate(glm::mat4(1.0f), glm::vec3(translate.getX(), translate.getY(), translate.getZ()));
+			// glm::mat4 transMat = glm::translate(glm::mat4(1.0f), glm::vec3(translate.getX(), translate.getY(), translate.getZ()));
+			glm::mat4 transMat = glm::translate(meshTranslation, glm::vec3(translate.getX(), translate.getY(), translate.getZ()));
 			glm::mat4 modelMatrix = transMat * rotMat * scaleMat;
 			return modelMatrix;
 		}
 	};
+
 
 	struct SpriteComponent
 	{
@@ -191,6 +222,8 @@ namespace LukkelEngine{
 		SpriteComponent(const glm::vec4& color)
 			: color(color) {}
 	};
+
+
 
 
 	template<typename... Component>

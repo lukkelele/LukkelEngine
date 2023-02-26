@@ -7,6 +7,8 @@
 
 #include "entt/entt.hpp"
 
+#define LK_OBJECT_CUBE 10
+#define LK_OBJECT_FLOOR 11
 
 namespace LukkelEngine {
 
@@ -20,12 +22,16 @@ namespace LukkelEngine {
 		~Editor() = default;
 
 		void displayMenu();
+		void objectManagementMenu();
 		void listEntities();
+		void inspectEntity(Entity& entity);
 
+		bool addCubeFlag = false;
+		bool addFloorFlag = false;
 
 	public:
 		s_ptr<Scene> m_Scene = nullptr;
 		Entity* selectedEntity = nullptr;
-		std::string selectedName = "";
+		int selectedIdx = 0;
 	};
 }

@@ -22,7 +22,7 @@ void TestLayer::onAttach()
 
 	// Add new objects to the scene
 	ObjectHandler::addFloor(*m_Scene, "Floor");
-	ObjectHandler::addCube(*m_Scene, "Cube1");
+	ObjectHandler::addCube(*m_Scene, "Cube");
 	// ObjectHandler::addCube(*m_Scene, "Cube2");
 }
 

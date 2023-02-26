@@ -15,6 +15,7 @@ namespace LukkelEngine {
 		btVector3 dimensions{ 1.0f, 1.0f, 1.0f };
 		btCollisionShape* shape = nullptr;
 		btScalar mass = 1.0f;
+		float scale = 1.0f;
 		float friction = 1.0f;
 		float restitution = 0.20f;
 		btVector3 inertia{ 0.0f, 0.0f, 0.0f };

@@ -15,6 +15,7 @@ namespace LukkelEngine {
 		s_ptr<IndexBuffer> ib = nullptr;
 		s_ptr<VertexBuffer> vb = nullptr;
 		s_ptr<Shader> shader = nullptr;
+		// float scale;
 
 		MeshComponent() = default;
 

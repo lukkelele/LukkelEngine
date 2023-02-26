@@ -44,7 +44,7 @@ namespace LukkelEngine {
 		std::vector<int> floorLayout = { 3, 3 };
 		entity.addComponent<MeshComponent>(vertices, indices, cubeShaderPath, cubeLayout, sizeof(vertices) / sizeof(float), sizeof(indices) / sizeof(unsigned int));
 		LKLOG_INFO("Cube name: {0}", entity.getName());
-		btVector3 dimensions{ 1.0f, 1.0f, 1.0f };
+		btVector3 dimensions{ 0.5f, 0.5f, 0.5f };
 		btVector3 offset{ 0.0f, 10.0f, 0.0f };
 		float mass = 1.0f;
 		entity.addComponent<RigidBodyComponent>(dimensions, offset, mass);

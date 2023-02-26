@@ -10,17 +10,23 @@ namespace LukkelEngine {
 
 	struct RigidBodyComponent
 	{
-		// enum Dimension { };
 		btVector3 pos{ 0.0f, 0.0f, 0.0f };
 		btVector3 dimensions{ 1.0f, 1.0f, 1.0f };
 		btCollisionShape* shape = nullptr;
+		btRigidBody* rigidBody = nullptr;
+		btDefaultMotionState* motionState = nullptr;
+
 		btScalar mass = 1.0f;
 		float scale = 1.0f;
 		float friction = 1.0f;
 		float restitution = 0.20f;
 		btVector3 inertia{ 0.0f, 0.0f, 0.0f };
-		btRigidBody* rigidBody = nullptr;
-		btDefaultMotionState* motionState = nullptr;
+		btVector3 linearVelocity{ 1.0f, 0.0f, 0.0f };
+		btVector3 angularVelocity{ 0.0f, 0.0f, 0.0f };
+
+		enum class BodyType { STATIC, DYNAMIC };
+		BodyType bodyType = BodyType::STATIC;
+
 		const btQuaternion quat0{ 0.0f ,0.0f, 0.0f, 1.0f }; // Reused for 0 degree transforms
 
 		RigidBodyComponent(btVector3& dimensions, btVector3& offset, float mass = 1.0f)
@@ -74,5 +80,17 @@ namespace LukkelEngine {
 		}
 	};
 
+	struct RigidBodyComponent2D
+	{
+		glm::vec2 pos{ 0.0f, 0.0 };
+		glm::vec2 dimensions{ 1.0f, 1.0 };
+		btScalar mass = 1.0f;
+		float scale = 1.0f;
+		float friction = 1.0f, restitution = 0.20f;
+		btCollisionShape* shape = nullptr;
+		glm::vec2 inertia{ 0.0f, 0.0f };
+		btRigidBody* rigidBody = nullptr;
+		btDefaultMotionState* motionState = nullptr;
+	};
 
 }

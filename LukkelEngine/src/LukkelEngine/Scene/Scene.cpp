@@ -60,6 +60,7 @@ namespace LukkelEngine {
 			MeshComponent& mesh = entity.getComponent<MeshComponent>();
 			RigidBodyComponent& body = entity.getComponent<RigidBodyComponent>();
 
+			// TODO: Move this to inspector in Editor instead
 			if (name == "Cube1")
 			{
 				ImGui::SliderFloat3("Mesh position", &(float)body.pos.getX(), -10.0f, 10.0f);

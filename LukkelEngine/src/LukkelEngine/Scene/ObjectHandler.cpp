@@ -46,13 +46,15 @@ namespace LukkelEngine {
 		};
 		std::string cubeShaderPath = "assets/shaders/3D/flat.shader";
 		std::vector<int> cubeLayout  = { 3, 2, 4 };
-		entity.addComponent<MeshComponent>(vertices, indices, cubeShaderPath, cubeLayout, sizeof(vertices) / sizeof(float), sizeof(indices) / sizeof(unsigned int));
-		LKLOG_INFO("Cube name: {0}", entity.getName());
 		btVector3 dimensions{ 0.5f, 0.5f, 0.5f };
 		btVector3 offset{ 0.0f, 10.0f, 0.0f };
 		float mass = 1.0f;
+
+		entity.addComponent<MeshComponent>(vertices, indices, cubeShaderPath, cubeLayout, sizeof(vertices) / sizeof(float), sizeof(indices) / sizeof(unsigned int));
 		entity.addComponent<RigidBodyComponent>(dimensions, offset, mass);
+
 		RigidBodyComponent& body = entity.getComponent<RigidBodyComponent>();
+		body.bodyType = RigidBodyComponent::BodyType::DYNAMIC;
 		body.rigidBody->setCollisionFlags(btCollisionObject::CF_KINEMATIC_OBJECT);
 	}
 

@@ -1,11 +1,11 @@
-# LukkelEngine :palm_tree:
+# LukkelEngine :vertical_traffic_light:
 > Graphics Engine written in C++<br>
 
 This is a project for me to improve at writing C++ code (or code in general).  
 <br>
 Combined with my severe dissapointment in the gaming world with games running horribly bad on high-end hardware
 (I'm looking at you Battlefield 2042 :angry:)
-made me think that a game engine would be fun starting project to begin working on.  
+made me think that a game engine would be a fun starting project to begin working on.  
 I'm very new to graphics programming in general so this has been an adventure to say the least.  
 <br>
 I'm by no means that great of a programmer to solve all the problems and implement all the features
@@ -47,8 +47,10 @@ pursue this professionally or have been in this field for a long time! :blush:<b
 ### Upcoming implementations
 :black_square_button: Component syncing for MeshComponents<br>
 :black_square_button: Template objects ready for spawning (e.g cubes, ground objects, spheres)<br>
-:black_square_button: ImGui menues for individual objects<br>
 :black_square_button: Settings menu (mouse sensitivity, camera speed etc..)<br>
+
+### Bugs
+:black_square_button: Inspector menu for objects in scene only selects last entry -> imgui selectable bug
 
 ---
 ## Engine design
@@ -63,21 +65,38 @@ Abstracted OpenGL to create an API that is way more clean than raw OpenGL calls.
 To be honest, the way that OpenGL works with its context and states is kind of hard to get a grasp on.
 My goal is to have a solid API that takes care of the raw OpenGL without me being forced to use it *directly*.
 > VertexArray<br>
-> VerteBuffer<br>
+> VerterBuffer<br>
 > VertexBufferLayout<br>
 > Shader<br>
 > Texture<br>
 
 ### Scene
 Projected world. Holds entities (world objects).<br>
-> Container of:
->> Entity
- 
+
+---
+
+## Screenshots
+
+### 26 February 2023
+
+<div align="center">
+	<img align="center" src="/doc/img/engine-26-2-2023-pic1.png" width=740 height=440>
+</div>
+<p align="center">Scene overview with a cube</p>
+
+<br>
+<div align="center">
+	<img align="center" src="/doc/img/engine-26-2-2023-pic2.png" width=740 height=440>
+<p align="center">The same cube but from a closer distance</p>
+</div>
+
+
+--- 
 
 
 ## Mathematics
-<p align="center">The linear algebra used to create the projection and view matrices to create the 3D feel.</p>
+<p align="center">Some of the linear algebra used to create the projection and view matrices to create the 3D feel.</p>
 <div align="center">
-	<img align="center" src="/doc/img/matrix-transformations.png" width=600 height=600>
+	<img align="center" src="/doc/img/matrix-transformations.png" width=440 height=400>
 </div>
 

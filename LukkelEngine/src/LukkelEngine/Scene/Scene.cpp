@@ -5,14 +5,19 @@
 
 #include "glm/glm.hpp"
 
+#include "GLDebugDrawer.h"
 
 namespace LukkelEngine {
+
+	GLDebugDrawer debugDrawer;
 
 	Scene::Scene()
 	{
 		m_Camera = create_s_ptr<FpsCamera>(45.0f, 0.010f, 1000.0f);
 		m_Camera->setPosition(glm::vec3(0.0f, 2.5f, -10.0f));
 		createDynamicWorld();
+		debugDrawer.setDebugMode(btIDebugDraw::DBG_DrawWireframe);
+		m_World->setDebugDrawer(&debugDrawer);
 	}
 	
 	Scene::~Scene()
@@ -49,30 +54,35 @@ namespace LukkelEngine {
 		{	
 			Entity entity = { e, this };
 			auto name = entity.getName();
-			LKLOG_TRACE("Entity NAME: {0}", name);
 			// Sync the positions
 			MeshComponent& mesh = entity.getComponent<MeshComponent>();
-			RigidBody3DComponent& body = entity.getComponent<RigidBody3DComponent>();
-			// mesh.pos.x = body.pos.getX();
-			// mesh.pos.y = body.pos.getY();
-			// mesh.pos.z = body.pos.getZ();
-			// body.pos = btVector3(mesh.pos.x, mesh.pos.y, mesh.pos.z);
+			RigidBodyComponent& body = entity.getComponent<RigidBodyComponent>();
+			body.syncPosition();
+
+			btTransform t;
+			body.rigidBody->getMotionState()->getWorldTransform(t);
+			m_World->debugDrawObject(t, body.shape, btVector3(1, 1, 1));
+			body.rigidBody->setWorldTransform(btTransform(body.quat0, body.pos));
 
 			if (name == "Cube1")
 			{
-				// ImGui::SliderFloat3("Mesh position", &(float)body.pos.getX(), -20.0f, 20.0f);
-				ImGui::SliderFloat3("Mesh position", &mesh.pos.x, -15.0f, 15.0f);
-				btTransform t;
-				btMatrix3x3 mat3(btQuaternion(0, 0, 0, 1));
-				body.rigidBody->getMotionState()->getWorldTransform(t);
-				body.rigidBody->setWorldTransform(btTransform(mat3, btVector3(mesh.pos.x, mesh.pos.y, mesh.pos.z)));
-				// body.rigidBody->setWorldTransform(btTransform(mat3, body.pos));
+				// ImGui::SliderFloat3("Mesh position", &(float)body.pos.getX(), -10.0f, 10.0f);
+				// btTransform t;
+				// body.rigidBody->getMotionState()->getWorldTransform(t);
+				// m_World->debugDrawObject(t, body.shape, btVector3(1, 1, 1));
+				// body.rigidBody->setWorldTransform(btTransform(body.quat0, body.pos));
 			}
-			auto meshTranslation = mesh.getTranslation();
-			glm::mat4 modelTransform = body.getModelTransform(meshTranslation);
-			mesh.updateOrientation(modelTransform, viewProj);
-			body.printPosition();
+			if (name != "Floor")
+			{
+				if (name == "Cube1") LKLOG_WARN("Entity NAME: {0}", name);
+				if (name == "Cube2") LKLOG_INFO("Entity NAME: {0}", name);
+				body.printPosition();
+			}
 
+			glm::mat4 modelTransform = body.getModelTransform();
+			mesh.updateOrientation(modelTransform, viewProj);
+
+			// m_World->debugDrawWorld();
 			m_Renderer->draw(*mesh.va, *mesh.ib, *mesh.shader);
 		}
 	}
@@ -113,7 +123,7 @@ namespace LukkelEngine {
 		}
 
 		template<>
-		void Scene::onComponentAdded<RigidBody3DComponent>(Entity entity, RigidBody3DComponent& component)
+		void Scene::onComponentAdded<RigidBodyComponent>(Entity entity, RigidBodyComponent& component)
 		{
 			LKLOG_WARN("Adding rigid body to dynamic world");
 			m_World->addRigidBody(component.rigidBody);

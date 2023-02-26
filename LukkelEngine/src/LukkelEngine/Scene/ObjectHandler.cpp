@@ -47,8 +47,8 @@ namespace LukkelEngine {
 		btVector3 dimensions{ 1.0f, 1.0f, 1.0f };
 		btVector3 offset{ 0.0f, 30.0f, 0.0f };
 		float mass = 2.0f;
-		entity.addComponent<RigidBody3DComponent>(dimensions, offset, mass);
-		RigidBody3DComponent& body = entity.getComponent<RigidBody3DComponent>();
+		entity.addComponent<RigidBodyComponent>(dimensions, offset, mass);
+		RigidBodyComponent& body = entity.getComponent<RigidBodyComponent>();
 	}
 
 	void ObjectHandler::addFloor(Scene& scene, const std::string name)
@@ -79,14 +79,10 @@ namespace LukkelEngine {
 		std::string shaderPath = "assets/shaders/3D/default.shader";
 		Entity entity = scene.createEntity(name);
 		entity.addComponent<MeshComponent>(floorVertices, floorIndices, shaderPath, floorLayout, sizeof(floorVertices) / sizeof(float), sizeof(floorIndices) / sizeof(unsigned int));
-		entity.addComponent<RigidBody3DComponent>(dimensions, offset, mass);
+		entity.addComponent<RigidBodyComponent>(dimensions, offset, mass);
 
 		MeshComponent& meshComp = entity.getComponent<MeshComponent>();
-		RigidBody3DComponent& bodyComp = entity.getComponent<RigidBody3DComponent>();
-
-		meshComp.pos.x = bodyComp.pos.getX();
-		meshComp.pos.y = bodyComp.pos.getY();
-		meshComp.pos.z = bodyComp.pos.getZ();
+		RigidBodyComponent& bodyComp = entity.getComponent<RigidBodyComponent>();
 
 		bodyComp.rigidBody->setCollisionFlags(btCollisionObject::CF_STATIC_OBJECT);
 	}

@@ -18,7 +18,7 @@ void TestLayer::onAttach()
 	m_Scene = Application::get().getScene();
 	ObjectHandler::addFloor(*m_Scene, "Floor");
 	ObjectHandler::addCube(*m_Scene, "Cube1");
-	ObjectHandler::addCube(*m_Scene, "Cube2");
+	// ObjectHandler::addCube(*m_Scene, "Cube2");
 }
 
 void TestLayer::onUpdate(float ts)

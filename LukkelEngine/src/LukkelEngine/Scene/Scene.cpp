@@ -45,37 +45,24 @@ namespace LukkelEngine {
 	void Scene::onUpdate(float ts)
 	{
 		m_Camera->onUpdate(ts);
-		m_World->stepSimulation(ts);
 		glm::mat4 viewProj = m_Camera->getViewProjection();
 
 		entt::basic_view meshes = m_Registry.view<MeshComponent>();
 
 		for (entt::entity e : meshes)
 		{	
+			m_World->stepSimulation(ts);
 			Entity entity = { e, this };
 			auto name = entity.getName();
-			// Sync the positions
 			MeshComponent& mesh = entity.getComponent<MeshComponent>();
 			RigidBodyComponent& body = entity.getComponent<RigidBodyComponent>();
-			body.syncPosition();
-
-			btTransform t;
-			body.rigidBody->getMotionState()->getWorldTransform(t);
-			m_World->debugDrawObject(t, body.shape, btVector3(1, 1, 1));
-			body.rigidBody->setWorldTransform(btTransform(body.quat0, body.pos));
 
 			if (name == "Cube1")
 			{
-				// ImGui::SliderFloat3("Mesh position", &(float)body.pos.getX(), -10.0f, 10.0f);
-				// btTransform t;
-				// body.rigidBody->getMotionState()->getWorldTransform(t);
-				// m_World->debugDrawObject(t, body.shape, btVector3(1, 1, 1));
-				// body.rigidBody->setWorldTransform(btTransform(body.quat0, body.pos));
-			}
-			if (name != "Floor")
-			{
-				if (name == "Cube1") LKLOG_WARN("Entity NAME: {0}", name);
-				if (name == "Cube2") LKLOG_INFO("Entity NAME: {0}", name);
+				ImGui::SliderFloat3("Mesh position", &(float)body.pos.getX(), -10.0f, 10.0f);
+				btTransform t;
+				body.rigidBody->getMotionState()->getWorldTransform(t);
+				m_World->debugDrawObject(t, body.shape, btVector3(255, 255, 255));
 				body.printPosition();
 			}
 

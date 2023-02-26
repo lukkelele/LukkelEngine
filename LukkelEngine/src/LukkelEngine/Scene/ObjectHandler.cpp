@@ -45,10 +45,11 @@ namespace LukkelEngine {
 		entity.addComponent<MeshComponent>(vertices, indices, cubeShaderPath, cubeLayout, sizeof(vertices) / sizeof(float), sizeof(indices) / sizeof(unsigned int));
 		LKLOG_INFO("Cube name: {0}", entity.getName());
 		btVector3 dimensions{ 1.0f, 1.0f, 1.0f };
-		btVector3 offset{ 0.0f, 30.0f, 0.0f };
-		float mass = 2.0f;
+		btVector3 offset{ 0.0f, 10.0f, 0.0f };
+		float mass = 1.0f;
 		entity.addComponent<RigidBodyComponent>(dimensions, offset, mass);
 		RigidBodyComponent& body = entity.getComponent<RigidBodyComponent>();
+		body.rigidBody->setCollisionFlags(btCollisionObject::CF_KINEMATIC_OBJECT);
 	}
 
 	void ObjectHandler::addFloor(Scene& scene, const std::string name)
@@ -72,8 +73,7 @@ namespace LukkelEngine {
 		};
 
 		btVector3 dimensions{ a, 0.0f, a };
-		// This offset is bugged with the matrix transformations for bullet/opengl vertices
-		btVector3 offset{ 0.0f, 0.0f, 0.0f };
+		btVector3 offset{ 0.0f, -3.0f, 0.0f };
 		float mass = 0.0f; // CRUCIAL
 
 		std::string shaderPath = "assets/shaders/3D/default.shader";

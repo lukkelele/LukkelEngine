@@ -32,30 +32,35 @@ namespace LukkelEngine {
 			rigidBody = new btRigidBody(boxBodyConstructionInfo);
 			rigidBody->setFriction(friction);
 			rigidBody->setRestitution(restitution);
-			syncPosition();
+			// syncPosition();
 		}
 
 		void printPosition()
 		{
 			auto masspos = rigidBody->getCenterOfMassPosition();
 			auto body = rigidBody;
-			LKLOG_TRACE("Mass position (CENTER OF MASS) : ({0}, {1}, {2})  | Mass: {3} ", masspos.getX(), masspos.getY(), masspos.getZ(), mass);
-			LKLOG_TRACE("RigidbodyComponent position: ({0}, {1}, {2}) | Mass : {3} ", pos.getX(), pos.getY(), pos.getZ(), mass);
+			LKLOG_TRACE("Mass position: ({0}, {1}, {2})  | Mass: {3} ", masspos.getX(), masspos.getY(), masspos.getZ(), mass);
+			LKLOG_TRACE("RigidbodyComponent: ({0}, {1}, {2}) | Mass : {3} ", pos.getX(), pos.getY(), pos.getZ(), mass);
 		}
 
+		// Takes center of mass and not in the edges
 		void syncPosition()
 		{
 			btVector3 masspos = rigidBody->getCenterOfMassPosition();
+			LKLOG_WARN("Origin: ({0}, {1}, {2}),",  masspos.getX(), masspos.getY(), masspos.getZ());
 			pos = masspos;
 		}
 
 		glm::mat4 getModelTransform(float scale = 1.0f)
 		{
-			btTransform transform;
-			glm::mat4 model(1.0f);
-			rigidBody->getMotionState()->getWorldTransform(transform);
+			btTransform transform(rigidBody->getWorldTransform());
 			btVector3 translate = transform.getOrigin();
-			translate += pos;
+			transform.setOrigin(pos);
+			// transform.setOrigin(translate);
+			btVector3 masspos = rigidBody->getCenterOfMassPosition();
+			LKLOG_WARN("Origin: ({0}, {1}, {2}),",  masspos.getX(), masspos.getY(), masspos.getZ());
+			rigidBody->setWorldTransform(transform);
+			rigidBody->getMotionState()->setWorldTransform(transform);
 			btQuaternion rotation = transform.getRotation();
 
 			glm::mat4 rotMat = glm::rotate(glm::mat4(1.0f), rotation.getAngle(),

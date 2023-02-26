@@ -1,6 +1,7 @@
 #pragma once
 
 #include "LukkelEngine/Core/Application.h"
+#include "LukkelEngine/Scene/Editor.h"
 
 class TestLayer : public LukkelEngine::Layer
 {
@@ -15,16 +16,11 @@ public:
 	virtual void onImGuiRender() override;
 	void onEvent(LukkelEngine::Event& e) override;
 
-	// TESTING ONLY
 	float r = 0.0f;
 	float b = 0.5f;
 	float inc = 0.02;
 
-	glm::vec3 colorSlider1 = { 1.0f, 1.0f, 1.0f };
-	glm::vec3 colorSlider2 = { 1.0f, 1.0f, 1.0f };
-	glm::vec3 sliderBuff2 = { 0.0f, 0.0f, 0.0f };
-	glm::vec3 sliderBuff3 = { 0.0f, 0.0f, 0.0f };
-
 private:
-	LukkelEngine::s_ptr<LukkelEngine::Scene> m_Scene;
+	LukkelEngine::s_ptr<LukkelEngine::Scene> m_Scene = nullptr;
+	LukkelEngine::s_ptr<LukkelEngine::Editor> m_Editor = nullptr;
 };

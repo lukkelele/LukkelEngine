@@ -18,6 +18,7 @@ namespace LukkelEngine {
 			virtual void onImGuiRender() {}
 		};
 
+
 		class TestMenu : public Test
 		{
 		public:
@@ -28,14 +29,14 @@ namespace LukkelEngine {
 			template<typename T>
 			void registerTest(const std::string& name)
 			{
-				// LK_CORE_TRACE("Registering test {0}", name);
 				m_tests.push_back(std::make_pair(name, []() { return new T; }));
 			}
 
 		private:
 			Test*& m_currentTest;
 			/* Vector [ String name, Test pointer ] -> instantiate tests on the fly */
-			std::vector< std::pair< std::string, std::function<Test* () >>> m_tests;
+			std::vector<std::pair<std::string, std::function<Test*()>>> m_tests;
+			// Test*() is a type conversion -> user defined conversion
 		};
 	}
 }

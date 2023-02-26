@@ -4,19 +4,24 @@
 
 namespace LukkelEngine {
 
+	/**
+	 * @brief Add a new cube to the scene
+	 * @param scene where the cube is to be added
+	 * @param name is the desired name of the new cube
+	*/
 	void ObjectHandler::addCube(Scene& scene, const std::string name)
 	{
 		Entity entity = scene.createEntity(name);
-		float vertices[8 * 8] = {
+		float vertices[9 * 8] = {
 			// Positions (x,y,z)  Texture coords     Color
-			-0.5f, -0.5f,  0.5f,    0.0f, 1.0f,    1.0f, 1.0f, 1.0f,
-			 0.5f, -0.5f,  0.5f,    1.0f, 0.0f,    0.2f, 0.5f, 0.0f,
-			-0.5f,  0.5f,  0.5f,    1.0f, 1.0f,    1.0f, 0.0f, 1.0f,
-			 0.5f,  0.5f,  0.5f,    1.0f, 1.0f,    0.3f, 0.5f, 0.0f,
-			-0.5f, -0.5f, -0.5f,    0.0f, 1.0f,    0.0f, 1.0f, 0.0f,
-			 0.5f, -0.5f, -0.5f,    0.0f, 1.0f,    0.0f, 0.5f, 0.5f,
-			-0.5f,  0.5f, -0.5f,    1.0f, 1.0f,    0.7f, 0.0f, 1.0f,
-			 0.5f,  0.5f, -0.5f,    0.0f, 0.0f,    1.0f, 0.5f, 0.0f
+			-0.5f, -0.5f,  0.5f,    0.0f, 1.0f,    1.0f, 1.0f, 1.0f, 0.7, 
+			 0.5f, -0.5f,  0.5f,    1.0f, 0.0f,    0.2f, 0.5f, 0.0f, 0.7,
+			-0.5f,  0.5f,  0.5f,    1.0f, 1.0f,    1.0f, 0.0f, 1.0f, 0.7,
+			 0.5f,  0.5f,  0.5f,    1.0f, 1.0f,    0.3f, 0.5f, 0.0f, 0.7,
+			-0.5f, -0.5f, -0.5f,    0.0f, 1.0f,    0.0f, 1.0f, 0.0f, 0.7,
+			 0.5f, -0.5f, -0.5f,    0.0f, 1.0f,    0.0f, 0.5f, 0.5f, 0.7,
+			-0.5f,  0.5f, -0.5f,    1.0f, 1.0f,    0.7f, 0.0f, 1.0f, 0.7,
+			 0.5f,  0.5f, -0.5f,    0.0f, 0.0f,    1.0f, 0.5f, 0.0f, 0.7
 		};
 
 		unsigned int indices[6 * 6] = {
@@ -40,8 +45,7 @@ namespace LukkelEngine {
 			4, 5, 7
 		};
 		std::string cubeShaderPath = "assets/shaders/3D/flat.shader";
-		std::vector<int> cubeLayout  = { 3, 2, 3 };
-		std::vector<int> floorLayout = { 3, 3 };
+		std::vector<int> cubeLayout  = { 3, 2, 4 };
 		entity.addComponent<MeshComponent>(vertices, indices, cubeShaderPath, cubeLayout, sizeof(vertices) / sizeof(float), sizeof(indices) / sizeof(unsigned int));
 		LKLOG_INFO("Cube name: {0}", entity.getName());
 		btVector3 dimensions{ 0.5f, 0.5f, 0.5f };
@@ -54,22 +58,23 @@ namespace LukkelEngine {
 
 	void ObjectHandler::addFloor(Scene& scene, const std::string name)
 	{
-		std::vector<int> floorLayout = { 3, 3 };
+		// 3 vertex positions + 4 floats for color
+		std::vector<int> floorLayout = { 3, 4 };
 		float yLevel = 0.5f;
-		float a = 20.0f;
-
-		float floorVertices[6 * 4]  = {
+		float side = 18.0f;
+		float a = 0.99;
+		float c = 0.90;
+		float floorVertices[7 * 4]  = {
 		//   Positions (x,y,z)		Color (GRAY)
-		   -a, yLevel,-a,		 0.77f,  0.77f,  0.77f,
-			a, yLevel,-a,  		 0.77f,  0.77f,  0.77f,
-		    a, yLevel, a,		 0.77f,  0.77f,  0.77f,
-		   -a, yLevel, a,		 0.77f,  0.77f,  0.77f
+		   -side, yLevel, -side,	c, c, c, a,
+			side, yLevel, -side,  	c, c, c, a,
+		    side, yLevel,  side,	c, c, c, a,
+		   -side, yLevel,  side,	c, c, c, a
 		};
 
-		unsigned int floorIndices[3 * 3] = {
+		unsigned int floorIndices[3 * 2] = {
 			0, 1, 2,
-			2, 1, 3,
-			3, 0, 1
+			2, 3, 0
 		};
 
 		btVector3 dimensions{ a, 0.0f, a };

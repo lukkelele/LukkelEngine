@@ -3,7 +3,7 @@
 
 layout(location = 0) in vec3 pos;
 layout(location = 1) in vec2 texCoord;
-layout(location = 2) in vec3 Color;
+layout(location = 2) in vec4 Color;
 
 uniform mat4 u_ViewProj;
 uniform mat4 u_Model;
@@ -15,7 +15,7 @@ void main()
 {
 	gl_Position = u_ViewProj * u_Model * vec4(pos, 1.0);
     v_TexCoord = texCoord;
-    v_Color = vec4(Color, 1.0f);
+    v_Color = Color;
 }
 
 #shader fragment

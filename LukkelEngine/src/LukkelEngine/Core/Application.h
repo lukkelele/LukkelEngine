@@ -47,7 +47,6 @@ namespace LukkelEngine {
 		void run(bool test = LK_DEBUG);
 		void onUpdate(float ts = 1.0f);
 		void shutdown();
-
 		void onEvent(Event& e);
 
 		GLFWwindow* getGLFWWindow() const { return m_Window->getWindow(); }
@@ -59,13 +58,10 @@ namespace LukkelEngine {
 		int getViewportWidth() { return m_Details.width; }
 		int getViewportHeight() { return m_Details.height; }
 
-
 		void pushLayer(Layer* layer);
 		void popLayer(Layer* layer);
 		void pushOverlay(Layer* layer);
 		void popOverlay(Layer* layer);
-
-		static Application& get() { return *s_Instance; }
 
 		bool onWindowClose(WindowCloseEvent& e);
 		bool onWindowResize(WindowResizeEvent& e);
@@ -73,6 +69,8 @@ namespace LukkelEngine {
 
 		void testRunner();
 		void registerTests();
+
+		static Application& get() { return *s_Instance; }
 
 	private:
 		ApplicationDetails m_Details;

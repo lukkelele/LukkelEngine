@@ -14,8 +14,11 @@ namespace LukkelEngine {
 	Scene::Scene()
 	{
 		m_Camera = create_s_ptr<FpsCamera>(45.0f, 0.010f, 1000.0f);
-		m_Camera->setPosition(glm::vec3(0.0f, 2.5f, -10.0f));
+		m_Camera->setPosition(glm::vec3(0.0f, 15.0f, -46.0f));
+		
+		// Set up physics
 		createDynamicWorld();
+		// Physics debugger
 		debugDrawer.setDebugMode(btIDebugDraw::DBG_DrawWireframe);
 		m_World->setDebugDrawer(&debugDrawer);
 	}
@@ -63,7 +66,7 @@ namespace LukkelEngine {
 				btTransform t;
 				body.rigidBody->getMotionState()->getWorldTransform(t);
 				m_World->debugDrawObject(t, body.shape, btVector3(255, 255, 255));
-				body.printPosition();
+				// body.printPosition();
 			}
 
 			glm::mat4 modelTransform = body.getModelTransform();
@@ -87,6 +90,18 @@ namespace LukkelEngine {
 
 		m_World = new btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfig);
 		m_World->setGravity(LK_WORLD_GRAVITY_SLOW);
+	}
+
+	/**
+	 * @brief Get an entity from the scene
+	 * @param uuid is the uuid of the entity
+	 * @return the entity if found, else { }
+	*/
+	Entity Scene::getEntityWithUUID(UUID uuid)
+	{
+		if (m_EntityMap.find(uuid) != m_EntityMap.end())
+			return { m_EntityMap.at(uuid), this };
+		return { };
 	}
 
 	Entity Scene::findEntity(std::string_view name)

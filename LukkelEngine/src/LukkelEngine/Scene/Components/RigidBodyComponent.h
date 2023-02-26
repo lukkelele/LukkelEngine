@@ -47,7 +47,7 @@ namespace LukkelEngine {
 		void syncPosition()
 		{
 			btVector3 masspos = rigidBody->getCenterOfMassPosition();
-			LKLOG_WARN("Origin: ({0}, {1}, {2}),",  masspos.getX(), masspos.getY(), masspos.getZ());
+			// LKLOG_WARN("Origin: ({0}, {1}, {2}),",  masspos.getX(), masspos.getY(), masspos.getZ());
 			pos = masspos;
 		}
 
@@ -58,7 +58,7 @@ namespace LukkelEngine {
 			transform.setOrigin(pos);
 			// transform.setOrigin(translate);
 			btVector3 masspos = rigidBody->getCenterOfMassPosition();
-			LKLOG_WARN("Origin: ({0}, {1}, {2}),",  masspos.getX(), masspos.getY(), masspos.getZ());
+			// LKLOG_WARN("Origin: ({0}, {1}, {2}),",  masspos.getX(), masspos.getY(), masspos.getZ());
 			rigidBody->setWorldTransform(transform);
 			rigidBody->getMotionState()->setWorldTransform(transform);
 			btQuaternion rotation = transform.getRotation();

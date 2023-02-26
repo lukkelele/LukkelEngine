@@ -5,11 +5,13 @@
 namespace LukkelEngine {
 
 	bool Renderer::s_DrawMode;
+	float c = 150.0f; // Color
 
 	void Renderer::clear() const
 	{
 		// glClearColor(float(51.0f/255.0f), float(98.0f/255.0f), float(125.0f/255.0f), 1.0f); // Light blue
-		glClearColor(float(87.0f/255.0f), float(44.0f/255.0f), float(70.0f/255.0f), 1.0f);
+		// glClearColor(float(87.0f/255.0f), float(44.0f/255.0f), float(70.0f/255.0f), 1.0f); // Gray
+		glClearColor(float(c/255.0f), float(c/255.0f), float(c/255.0f), 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
 

@@ -31,7 +31,6 @@ public:
 	virtual void	setDebugMode(int debugMode);
 
 	virtual int		getDebugMode() const { return m_debugMode; }
-
 };
 
 #endif//GL_DEBUG_DRAWER_H

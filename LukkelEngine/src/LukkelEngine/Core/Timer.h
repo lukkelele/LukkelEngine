@@ -39,7 +39,16 @@ namespace LukkelEngine {
 			return elapsed() * 1000.0f;
 		}
 
+		float Timer::getDeltaTime()
+		{
+			float now = elapsedMs();
+			float deltaTime = now - m_LastTime;
+			m_LastTime = now;
+			return deltaTime;
+		}
+
 	private:
 		std::chrono::time_point<std::chrono::high_resolution_clock> m_Start;
+		float m_LastTime = 0.0f;
 	};
 }

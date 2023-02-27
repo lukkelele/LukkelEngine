@@ -1,5 +1,5 @@
 #include "LKpch.h"
-#include "LukkelEngine/Test/Test.h"
+#include "LukkelEngine/Debug/Test/Test.h"
 
 namespace LukkelEngine {
 	namespace test {

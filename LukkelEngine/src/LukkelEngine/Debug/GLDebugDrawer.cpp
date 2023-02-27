@@ -17,7 +17,7 @@ GLDebugDrawer::~GLDebugDrawer()
 {
 }
 
-void	GLDebugDrawer::drawLine(const btVector3& from, const btVector3& to, const btVector3& fromColor, const btVector3& toColor)
+void GLDebugDrawer::drawLine(const btVector3& from, const btVector3& to, const btVector3& fromColor, const btVector3& toColor)
 {
 	glBegin(GL_LINES);
 	glColor3f(fromColor.getX(), fromColor.getY(), fromColor.getZ());
@@ -27,7 +27,7 @@ void	GLDebugDrawer::drawLine(const btVector3& from, const btVector3& to, const b
 	glEnd();
 }
 
-void	GLDebugDrawer::drawLine(const btVector3& from, const btVector3& to, const btVector3& color)
+void GLDebugDrawer::drawLine(const btVector3& from, const btVector3& to, const btVector3& color)
 {
 	drawLine(from, to, color, color);
 }
@@ -70,7 +70,7 @@ void GLDebugDrawer::drawSphere(const btVector3& p, btScalar radius, const btVect
 
 
 
-void	GLDebugDrawer::drawTriangle(const btVector3& a, const btVector3& b, const btVector3& c, const btVector3& color, btScalar alpha)
+void GLDebugDrawer::drawTriangle(const btVector3& a, const btVector3& b, const btVector3& c, const btVector3& color, btScalar alpha)
 {
 	//	if (m_debugMode > 0)
 	{
@@ -85,7 +85,7 @@ void	GLDebugDrawer::drawTriangle(const btVector3& a, const btVector3& b, const b
 	}
 }
 
-void	GLDebugDrawer::setDebugMode(int debugMode)
+void GLDebugDrawer::setDebugMode(int debugMode)
 {
 	m_debugMode = debugMode;
 
@@ -97,12 +97,12 @@ void	GLDebugDrawer::draw3dText(const btVector3& location, const char* textString
 	//BMF_DrawString(BMF_GetFont(BMF_kHelvetica10),textString);
 }
 
-void	GLDebugDrawer::reportErrorWarning(const char* warningString)
+void GLDebugDrawer::reportErrorWarning(const char* warningString)
 {
 	printf("%s\n", warningString);
 }
 
-void	GLDebugDrawer::drawContactPoint(const btVector3& pointOnB, const btVector3& normalOnB, btScalar distance, int lifeTime, const btVector3& color)
+void GLDebugDrawer::drawContactPoint(const btVector3& pointOnB, const btVector3& normalOnB, btScalar distance, int lifeTime, const btVector3& color)
 {
 
 	{
@@ -115,14 +115,12 @@ void	GLDebugDrawer::drawContactPoint(const btVector3& pointOnB, const btVector3&
 		glVertex3d(to.getX(), to.getY(), to.getZ());
 		glEnd();
 
-
 		//		glRasterPos3f(from.x(),  from.y(),  from.z());
 		//		char buf[12];
 		//		sprintf(buf," %d",lifeTime);
 				//BMF_DrawString(BMF_GetFont(BMF_kHelvetica10),buf);
-
-
 	}
+
 }
 
 

@@ -28,13 +28,14 @@ namespace LukkelEngine {
 	}
 
 	// TODO: Need close event on window to change boolean member
-	void Application::run(bool test)
+	void Application::run()
 	{
 		// while (m_Running)
 		while (!glfwWindowShouldClose(m_Window->getWindow()))
 		{
-			float delta = m_Timer.elapsedMs();
-			onUpdate(delta);
+			float deltaTime = m_Timer.getDeltaTime();
+			// LKLOG_TRACE("Delta time: {0}", deltaTime);
+			onUpdate(deltaTime);
 		}
 	}
 

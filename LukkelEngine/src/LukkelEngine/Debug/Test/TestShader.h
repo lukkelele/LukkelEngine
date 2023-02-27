@@ -1,5 +1,5 @@
 #pragma once
-#include "LukkelEngine/Test/Test.h"
+#include "LukkelEngine/Debug/Test/Test.h"
 #include "LukkelEngine/Renderer/VertexBuffer.h"
 #include "LukkelEngine/Renderer/VertexBufferLayout.h"
 #include "LukkelEngine/Renderer/IndexBuffer.h"

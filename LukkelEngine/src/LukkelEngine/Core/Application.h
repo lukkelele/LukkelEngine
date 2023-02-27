@@ -44,7 +44,7 @@ namespace LukkelEngine {
 		Application(const ApplicationDetails& details = ApplicationDetails());
 		~Application();
 
-		void run(bool test = LK_DEBUG);
+		void run();
 		void onUpdate(float ts = 1.0f);
 		void shutdown();
 		void onEvent(Event& e);

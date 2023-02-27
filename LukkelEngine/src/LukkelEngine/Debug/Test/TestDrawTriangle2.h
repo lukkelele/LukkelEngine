@@ -1,7 +1,5 @@
 #pragma once
-
-#include <vector> // FIXME: Remove ?
-#include "LukkelEngine/Test/Test.h"
+#include "LukkelEngine/Debug/Test/Test.h"
 #include "LukkelEngine/Renderer/VertexArray.h"
 #include "LukkelEngine/Renderer/VertexBufferLayout.h"
 #include "LukkelEngine/Renderer/VertexBuffer.h"
@@ -9,17 +7,16 @@
 #include "LukkelEngine/Renderer/Texture.h"
 #include "LukkelEngine/Renderer/Shader.h"
 
-#include <glm/ext.hpp>
 
 namespace LukkelEngine {
 
 	namespace test {
 
-		class TestDrawCube : public Test
+		class TestDrawTriangle2 : public Test
 		{
 		public:
-			TestDrawCube();
-			~TestDrawCube();
+			TestDrawTriangle2();
+			~TestDrawTriangle2();
 
 			std::unique_ptr<VertexArray> m_VAO;
 			std::unique_ptr<VertexBuffer> m_VBO;
@@ -32,7 +29,6 @@ namespace LukkelEngine {
 			void onImGuiRender() override;
 
 		private:
-			float m_clearColor[4];
 		};
 	}
 }

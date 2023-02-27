@@ -1,5 +1,5 @@
 #pragma once
-#include "LukkelEngine/Test/Test.h"
+#include "LukkelEngine/Debug/Test/Test.h"
 #include "LukkelEngine/Renderer/VertexArray.h"
 #include "LukkelEngine/Renderer/VertexBufferLayout.h"
 #include "LukkelEngine/Renderer/VertexBuffer.h"
@@ -12,24 +12,23 @@ namespace LukkelEngine {
 
 	namespace test {
 
-		class TestDrawTriangle2 : public Test
+		class TestDrawTriangle : public Test
 		{
 		public:
-			TestDrawTriangle2();
-			~TestDrawTriangle2();
+			TestDrawTriangle();
+			~TestDrawTriangle();
 
-			std::unique_ptr<VertexArray> m_VAO;
-			std::unique_ptr<VertexBuffer> m_VBO;
-			std::unique_ptr<IndexBuffer> m_IBO;
-			std::unique_ptr<Shader> m_Shader;
-			std::unique_ptr<Renderer> m_Renderer;
+			unsigned int m_VAO;
+			unsigned int m_VBO;
+			unsigned int m_VertexShader;
+			unsigned int m_FragmentShader;
+			unsigned int m_Shader;
 
 			void onUpdate(float deltaTime) override;
 			void onRender() override;
 			void onImGuiRender() override;
-
-		private:
 		};
-	}
-}
 
+	}
+
+}

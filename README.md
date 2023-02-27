@@ -4,7 +4,7 @@
 This is a project for me to improve at writing C++ code (or code in general).  
 <br>
 Combined with my severe dissapointment in the gaming world with games running horribly bad on high-end hardware
-(I'm looking at you Battlefield 2042 :angry:)
+(I'm looking at you, **Battlefield 2042**)
 made me think that a game engine would be a fun starting project to begin working on.  
 I'm very new to graphics programming in general so this has been an adventure to say the least.  
 <br>
@@ -17,14 +17,20 @@ quickly that I was in dire need of something else than the code I implemented as
 **My workflow has been like this:**
 - *Implement a core feature*
 - *Try it out*
-- *Realize that my implementation is **ABSOLUTE** garbage* :unamused:
+- *Realize that my implementation is **ABSOLUTE** garbage*
 - *Delete and start over again* :sunglasses:
 
 I've promised myself to not spend too much time being stuck as that has been the main cause for me to quit projects in the past.
 So if I see myself getting stuck for too long, I check out some real good implementations and try to see how I can change
-my current one into something similar.<br><br>
-Game architecture and graphics programming is **very difficult** and I have gained massive amounts of respect towards those who
-pursue this professionally or have been in this field for a long time! :blush:<br>
+my current one into something similar.
+<br><br>
+
+As I am doing this project I'm reading game architecture and rendering books to learn as much as possible.<br>
+The base layout of the engine is bound to change because the more I learn :custom_arrow_right: the more able I get to
+tweak and customize the entire engine without making everything explode. Also because I have performance in mind 
+and let me tell you, the current implementation surely does **NOT** care about performance. I'll do it in this order:<br>
+1. Make it work
+2. Make it better
 
 
 ---

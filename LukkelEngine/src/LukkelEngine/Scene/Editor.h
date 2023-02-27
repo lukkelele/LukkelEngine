@@ -1,10 +1,10 @@
 #pragma once
 #include "LukkelEngine/Scene/Scene.h"
 #include "LukkelEngine/Scene/Entity.h"
-#include "LukkelEngine/Scene/Components.h"
 #include "LukkelEngine/Core/Timer.h"
 #include "LukkelEngine/Core/UUID.h"
 
+#include "imgui/imgui_internal.h"
 #include "entt/entt.hpp"
 
 #define LK_OBJECT_CUBE 10
@@ -21,17 +21,22 @@ namespace LukkelEngine {
 		Editor(s_ptr<Scene> scene);
 		~Editor() = default;
 
-		void displayMenu();
+		void onImGuiRender();
 		void objectManagementMenu();
-		void listEntities();
-		void inspectEntity(Entity& entity);
+
+		void drawEntityNode(Entity entity);
+		void drawComponents(Entity entity);
+
+		template<typename T>
+		void displayAddComponentEntry(const std::string& entryName);
 
 		bool addCubeFlag = false;
 		bool addFloorFlag = false;
 
+
 	public:
 		s_ptr<Scene> m_Scene = nullptr;
-		Entity* selectedEntity = nullptr;
+		Entity m_SelectedEntity;
 		int selectedIdx = 0;
 	};
 }

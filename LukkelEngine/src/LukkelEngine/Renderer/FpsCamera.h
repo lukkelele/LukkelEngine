@@ -21,10 +21,11 @@ namespace LukkelEngine {
 		~FpsCamera() = default;
 
 		void onUpdate(float ts);
+		void onImGuiRender();
 
 		glm::mat4 getView() const { return m_View; }
 		glm::mat4 getProjection() const { return m_Projection; }
-		glm::mat4 getViewProjection() { return m_ViewProjection; }
+		glm::mat4 getViewProjection() const { return m_ViewProjection; }
 		glm::vec3 calculatePosition() const;
 
 		glm::quat getOrientation() const;
@@ -51,7 +52,7 @@ namespace LukkelEngine {
 
 		// void onMouseScroll(MouseScrolledEvent& e);
 
-	public:
+	private:
 		glm::vec3 m_Position = { 0.0f, 0.0f, -6.0f };
 		glm::vec3 m_Direction = { 0.0f, 0.0f, 0.0f };
 		glm::vec3 m_Origin = { 0.0f, 0.0f, 0.0f };
@@ -59,12 +60,11 @@ namespace LukkelEngine {
 
 		glm::vec3 m_ForwardDir = { 0.0f, 0.0f, 1.0f };
 		glm::vec3 m_UpDir = glm::vec3(0.0f, 1.0f, 0.0f);
-
         glm::vec3 m_Target = { 0.0f, 0.0f, 0.0f };
 
 		float m_FOV = 50.0f, m_NearPlane = 0.10f, m_FarPlane = 1000.0f;
-		float m_Speed = 0.05f;
-		float m_Distance = 0.5f;
+		float m_TravelSpeed = 0.10f;
+		float m_Distance = 0.50f;
 
 		bool m_MouseEnabled = true;
 		bool m_KeyboardEnabled = true;

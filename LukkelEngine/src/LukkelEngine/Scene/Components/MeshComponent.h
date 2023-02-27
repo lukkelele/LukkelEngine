@@ -15,6 +15,8 @@ namespace LukkelEngine {
 		s_ptr<IndexBuffer> ib = nullptr;
 		s_ptr<VertexBuffer> vb = nullptr;
 		s_ptr<Shader> shader = nullptr;
+		glm::vec3 scale{ 1.0f, 1.0f, 1.0f };
+		glm::vec3 pos{ 0.0f, 0.0f, 0.0f };
 		// float scale;
 
 		MeshComponent() = default;

@@ -14,6 +14,7 @@
 #define LK_TEMPLATE_OBJECT_CUBE 4
 #define LK_TEMPLATE_OBJECT_FLOOR 5
 
+
 namespace LukkelEngine{
 
 	struct IDComponent

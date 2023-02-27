@@ -69,13 +69,13 @@ namespace LukkelEngine {
 		{
 			// WASD
 			if (Keyboard::isKeyPressed(Key::W))
-				m_Position += m_ForwardDir * m_Speed * ts;
+				m_Position += m_ForwardDir * m_TravelSpeed * ts;
 			else if (Keyboard::isKeyPressed(Key::S))
-				m_Position -= m_ForwardDir * m_Speed * ts;
+				m_Position -= m_ForwardDir * m_TravelSpeed * ts;
 			if (Keyboard::isKeyPressed(Key::A)) 
-				m_Position -= rightDir * m_Speed * ts;
+				m_Position -= rightDir * m_TravelSpeed * ts;
 			else if (Keyboard::isKeyPressed(Key::D))
-				m_Position += rightDir * m_Speed * ts;
+				m_Position += rightDir * m_TravelSpeed * ts;
 
 		}
 			
@@ -112,9 +112,17 @@ namespace LukkelEngine {
 				m_ForwardDir = glm::rotate(quat, m_ForwardDir);
 			}
 		}
-
 		updateProjection();
 		updateView();
 		m_ViewProjection = m_Projection * m_View;
 	}
+
+	void FpsCamera::onImGuiRender()
+	{
+		ImGui::Checkbox("Draw lines", &Renderer::s_DrawMode);
+		ImGui::SliderFloat("Camera speed", &m_TravelSpeed, 0.010f, 2.0f);
+		ImGui::SliderFloat("FOV", &m_FOV, 25.0f, 120.0f);
+		ImGui::SliderFloat3("Camera position", &m_Position.x, -40.0f, 40.0f);
+	}
+
 }

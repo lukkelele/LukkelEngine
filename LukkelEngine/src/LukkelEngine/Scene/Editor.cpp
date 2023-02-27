@@ -1,11 +1,16 @@
 #include "LKpch.h"
 #include "LukkelEngine/Scene/Editor.h"
 #include "LukkelEngine/Scene/ObjectHandler.h"
+#include "LukkelEngine/Scene/Components.h"
 
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_glfw.h"
 #include "imgui/imgui_impl_opengl3.h"
 
+/*
+	The ImGui code is mostly taken from:
+	https://github.com/TheCherno/Hazel/blob/4da60765d9164f801d57dadca57b386d2aff1d08/Hazelnut/src/Panels/SceneHierarchyPanel.cpp
+*/
 
 namespace LukkelEngine {
 
@@ -14,101 +19,285 @@ namespace LukkelEngine {
 	{
 	}
 
-	/**
-	 * @brief Show the editor menu
-	*/
-	void Editor::displayMenu()
+	void Editor::onImGuiRender()
 	{
 		ImGui::Begin("Editor menu");
 
-		objectManagementMenu();
-		ImGui::Separator();
-		listEntities();
+		if (m_Scene)
+		{
+			m_Scene->m_Registry.each([&](auto entityID)
+			{
+				Entity entity{ entityID, m_Scene.get() };
+				drawEntityNode(entity);
+			});
 
-		if (selectedEntity)
-			inspectEntity(*selectedEntity);
+			if (ImGui::IsMouseDown(0) && ImGui::IsWindowHovered())
+				m_SelectedEntity = {};
+
+			// Right click on blank space to get popup menu
+			if (ImGui::BeginPopupContextWindow(0, 1, false)) // id, mouse button, if on item (bool)
+			{
+				if (ImGui::MenuItem("New entity"))
+					m_Scene->createEntity("Empty Entity");
+
+				else if (ImGui::MenuItem("New Cube"))
+					ObjectHandler::addCube(*m_Scene, "Cube");
+
+				else if (ImGui::MenuItem("New floor (ground object)"))
+					ObjectHandler::addFloor(*m_Scene, "Floor");
+
+				ImGui::EndPopup();
+			}
+		}
+
+		ImGui::Begin("Properties");
+		if (m_SelectedEntity)
+		{
+			drawComponents(m_SelectedEntity);
+		}
+		ImGui::End();
 
 		ImGui::End();
 	}
 
-	void Editor::objectManagementMenu()
+	void Editor::drawEntityNode(Entity entity)
 	{
-		int collection[] = { LK_OBJECT_CUBE, LK_OBJECT_FLOOR };
-		ImGui::Begin;
-		ImGui::PushItemWidth(30);
-		ImGui::Text("World objects");
-		ImGui::PopItemWidth();
+		auto& tag = entity.getComponent<TagComponent>().tag;
 
-		ImGui::Checkbox("Cube", &addCubeFlag);
-		ImGui::Checkbox("Floor", &addFloorFlag);
-
-		ImGui::AlignTextToFramePadding();
-		if (ImGui::Button("Add"))
+		ImGuiTreeNodeFlags flags = ((m_SelectedEntity == entity) ? ImGuiTreeNodeFlags_Selected : 0) | ImGuiTreeNodeFlags_OpenOnArrow;
+		flags |= ImGuiTreeNodeFlags_SpanAvailWidth;
+		bool opened = ImGui::TreeNodeEx((void*)(uint64_t)(uint32_t)entity, flags, tag.c_str());
+		if (ImGui::IsItemClicked())
 		{
-			ObjectHandler::addCube(*m_Scene, "Cube");
+			m_SelectedEntity = entity;
 		}
-		// ImGui::SameLine(); ImGui::Button("Delete");
 
-		ImGui::End;
-
-	}
-
-	/**
-	 * @brief List all entites in scene
-	*/
-	void Editor::listEntities()
-	{
-		ImGui::SetNextItemOpen(true, ImGuiCond_Once);
-		if (ImGui::TreeNode("Scene entities"))
+		bool entityDeleted = false;
+		bool entityReset = false;
+		if (ImGui::BeginPopupContextItem())
 		{
-			for (auto& worldObject : m_Scene->m_EntityMap)
-			{
-				UUID uuid = worldObject.first;
-				Entity& entity = m_Scene->getEntityWithUUID(uuid);
-				// if (ImGui::Button(entity.getName().c_str()))
-				// if (ImGui::Selectable(entity.getName().c_str(), &selectedEntity))
-				if (ImGui::Selectable(entity.getName().c_str(), selectedEntity))
-				{
-					selectedEntity = &entity;
-				}
-			}
+			if (ImGui::MenuItem("Delete Entity"))
+				entityDeleted = true;
+			else if (ImGui::MenuItem("Reset entity"))
+				entityReset = true;
 
+			ImGui::EndPopup();
+		}
+
+		if (opened)
+		{
+			ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_SpanAvailWidth;
+			bool opened = ImGui::TreeNodeEx((void*)9817239, flags, tag.c_str());
+			if (opened)
+				ImGui::TreePop();
 			ImGui::TreePop();
 		}
-		else // if treenode is to be closed
+
+		if (entityReset)
 		{
-			selectedEntity = nullptr;
+			// FIXME: Delete allocated memory first
+			// Also have a set world origin
+			auto& body = entity.getComponent<RigidBodyComponent>();
+			body.pos = btVector3(0.0f, 0.0f, 0.0f);
+			LKLOG_CRITICAL("Reset entity");
+			body.shape = new btBoxShape(body.dimensions);
+			body.motionState = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), body.offset));
+			body.shape->calculateLocalInertia(body.mass, body.inertia);
+			btRigidBody::btRigidBodyConstructionInfo boxBodyConstructionInfo(body.mass, body.motionState, body.shape, body.inertia);
+			body.rigidBody = new btRigidBody(boxBodyConstructionInfo);
+			body.rigidBody->setFriction(body.friction);
+			body.rigidBody->setRestitution(body.restitution);
+			m_Scene->m_World->addRigidBody(body.rigidBody);
+		}
+
+		if (entityDeleted)
+		{
+			m_Scene->destroyEntity(entity);
+				if (m_SelectedEntity == entity)
+					m_SelectedEntity = {};
+			LKLOG_ERROR("Entity deleted (EDITOR)");
 		}
 	}
 
-	// FIXME: Fix indentation for property entries
-	void Editor::inspectEntity(Entity& entity)
+	static void drawVec3Control(const std::string& label, glm::vec3& values, float resetValue = 0.0f, float columnWidth = 100.0f)
 	{
-		auto e = entity; // Necessary for rest to work, bugged, sometimes cant refer to passed entity parameter ?
-		RigidBodyComponent& body = e.getComponent<RigidBodyComponent>();
-		ImGui::Begin;
-		// Inspector Title
-		ImGui::Separator(); ImGui::Indent(); ImGui::Text("Object properties"); ImGui::Separator();
-		// Show selected object name
-		ImGui::Text("Selected object: %s", e.getName().c_str());
-		// Position
-		ImGui::Text("Position");
-		ImGui::SameLine(); ImGui::SliderFloat3("", &(float)body.pos.getX(), -10.0f, 10.0f);
-		// Scaler
-		ImGui::Text("Scale"); ImGui::Indent(); ImGui::Indent(); ImGui::SameLine(); ImGui::Indent();
-		ImGui::SliderFloat("", &body.scale, 0.01f, 10.0f);
-		// Velocity (if applicable)
-		if (body.bodyType == RigidBodyComponent::BodyType::DYNAMIC)
+		ImGuiIO& io = ImGui::GetIO();
+		auto boldFont = io.Fonts->Fonts[0];
+
+		ImGui::PushID(label.c_str());
+
+		ImGui::Columns(2);
+		ImGui::SetColumnWidth(0, columnWidth);
+		ImGui::Text(label.c_str());
+		ImGui::NextColumn();
+
+		ImGui::PushMultiItemsWidths(3, ImGui::CalcItemWidth());
+		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2{ 0, 0 });
+
+		float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
+		ImVec2 buttonSize = { lineHeight + 3.0f, lineHeight };
+
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.8f, 0.1f, 0.15f, 1.0f });
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.9f, 0.2f, 0.2f, 1.0f });
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.8f, 0.1f, 0.15f, 1.0f });
+		ImGui::PushFont(boldFont);
+		if (ImGui::Button("X", buttonSize))
+			values.x = resetValue;
+		ImGui::PopFont();
+		ImGui::PopStyleColor(3);
+
+		ImGui::SameLine();
+		ImGui::DragFloat("##X", &values.x, 0.1f, 0.0f, 0.0f, "%.2f");
+		ImGui::PopItemWidth();
+		ImGui::SameLine();
+
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.2f, 0.7f, 0.2f, 1.0f });
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.3f, 0.8f, 0.3f, 1.0f });
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.2f, 0.7f, 0.2f, 1.0f });
+		ImGui::PushFont(boldFont);
+		if (ImGui::Button("Y", buttonSize))
+			values.y = resetValue;
+		ImGui::PopFont();
+		ImGui::PopStyleColor(3);
+
+		ImGui::SameLine();
+		ImGui::DragFloat("##Y", &values.y, 0.1f, 0.0f, 0.0f, "%.2f");
+		ImGui::PopItemWidth();
+		ImGui::SameLine();
+
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.1f, 0.25f, 0.8f, 1.0f });
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.2f, 0.35f, 0.9f, 1.0f });
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.1f, 0.25f, 0.8f, 1.0f });
+		ImGui::PushFont(boldFont);
+		if (ImGui::Button("Z", buttonSize))
+			values.z = resetValue;
+		ImGui::PopFont();
+		ImGui::PopStyleColor(3);
+
+		ImGui::SameLine();
+		ImGui::DragFloat("##Z", &values.z, 0.1f, 0.0f, 0.0f, "%.2f");
+		ImGui::PopItemWidth();
+
+		ImGui::PopStyleVar();
+
+		ImGui::Columns(1);
+
+		ImGui::PopID();
+	}
+
+	template<typename T, typename UIFunction>
+	static void drawComponent(const std::string& name, Entity entity, UIFunction uiFunction)
+	{
+		const ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_Framed | ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_AllowItemOverlap | ImGuiTreeNodeFlags_FramePadding;
+		if (entity.hasComponent<T>())
 		{
-			// Linear, angular and pos is somehow moving eachother, need to fix 
-			ImGui::Text("Linear velocity");
-			ImGui::SliderFloat3("", &(float)body.linearVelocity.getX(), 0.0f, 70.0f);
-			ImGui::Text("Angular velocity");
-			ImGui::SliderFloat3("", &(float)body.angularVelocity.getX(), 0.0f, 70.0f);
+			auto& component = entity.getComponent<T>();
+			ImVec2 contentRegionAvailable = ImGui::GetContentRegionAvail();
+
+			ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2{ 4, 4 });
+			float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
+			ImGui::Separator();
+			bool open = ImGui::TreeNodeEx((void*)typeid(T).hash_code(), treeNodeFlags, name.c_str());
+			ImGui::PopStyleVar(
+			);
+			ImGui::SameLine(contentRegionAvailable.x - lineHeight * 0.5f);
+			if (ImGui::Button("+", ImVec2{ lineHeight, lineHeight }))
+			{
+				ImGui::OpenPopup("ComponentSettings");
+			}
+
+			bool removeComponent = false;
+			if (ImGui::BeginPopup("ComponentSettings"))
+			{
+				if (ImGui::MenuItem("Remove component"))
+					removeComponent = true;
+
+				ImGui::EndPopup();
+			}
+
+			if (open)
+			{
+				uiFunction(component);
+				ImGui::TreePop();
+			}
+
+			if (removeComponent)
+				entity.removeComponent<T>();
+		}
+	}
+
+	template<typename T>
+	void Editor::displayAddComponentEntry(const std::string& entryName)
+	{
+		if (!m_SelectedEntity.hasComponent<T>())
+		{
+			if (ImGui::MenuItem(entryName.c_str()))
+			{
+				m_SelectedEntity.addComponent<T>();
+				ImGui::CloseCurrentPopup();
+			}
+		}
+	}
+
+	void Editor::drawComponents(Entity entity)
+	{
+		if (entity.hasComponent<TagComponent>())
+		{
+			auto& tag = entity.getComponent<TagComponent>().tag;
+
+			char buffer[256];
+			memset(buffer, 0, sizeof(buffer));
+			std::strncpy(buffer, tag.c_str(), sizeof(buffer));
+			if (ImGui::InputText("##Tag", buffer, sizeof(buffer)))
+			{
+				tag = std::string(buffer);
+			}
+		}
+		ImGui::SameLine();
+		ImGui::PushItemWidth(-1);
+
+		if (ImGui::Button("Add Component"))
+			ImGui::OpenPopup("AddComponent");
+
+		if (ImGui::BeginPopup("AddComponent"))
+		{
+			displayAddComponentEntry<RigidBodyComponent>("Rigidbody 3D");
+			// displayAddComponentEntry<MeshComponent>("Mesh Component");
+			ImGui::EndPopup();
 		}
 
-		ImGui::End;
+		ImGui::PopItemWidth();
+
+		drawComponent<RigidBodyComponent>("Body", entity, [](auto& component)
+		{
+		// TODO: Fix the conversion issues here between bullet and glm
+		// btVector3 -> glm::vec3 conversion
+		glm::vec3 position{ component.pos.getX(), component.pos.getY(), component.pos.getZ() };
+		drawVec3Control("Position", position);
+		component.pos = btVector3(position.x, position.y, position.z);
+		glm::vec3 velocity{ component.linearVelocity.getX(), component.linearVelocity.getY(), component.linearVelocity.getZ() };
+		drawVec3Control("Velocity (lin)", velocity);
+		component.linearVelocity = btVector3(velocity.x, velocity.y, velocity.z);
+		ImGui::Separator();
+		drawVec3Control("Translation", component.translation);
+		glm::vec3 rotation = glm::degrees(component.rotation);
+		drawVec3Control("Rotation", rotation);
+		component.rotation = glm::radians(rotation);
+		drawVec3Control("Scale", component.scale, 1.0f);
+
+		if (ImGui::Button("Stop moving"))
+		{
+			component.linearVelocity = btVector3(0.0f, 0.0f, 0.0f);
+		}
+
+		});
+
+		// drawComponent<MeshComponent>("Mesh", entity, [](auto& component)
+		// {
+		// drawVec3Control("Position", component.pos);
+		// drawVec3Control("Scale", component.scale, 1.0f);
+		// });
+
 	}
-	
 
 }

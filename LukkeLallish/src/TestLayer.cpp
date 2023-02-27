@@ -28,13 +28,13 @@ void TestLayer::onAttach()
 
 void TestLayer::onUpdate(float ts)
 {			
-	m_Scene->onUpdate(1.0f); // Fix the speed issue when using ts
+	m_Scene->onUpdate(ts); // Fix the speed issue when using ts
 }
 
 void TestLayer::onImGuiRender()
 {
 	m_Scene->onImGuiRender();
-	m_Editor->displayMenu();
+	m_Editor->onImGuiRender();
 }
 
 void TestLayer::onEvent(LukkelEngine::Event& e)

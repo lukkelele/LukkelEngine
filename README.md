@@ -45,18 +45,21 @@ and let me tell you, the current implementation surely does **NOT** care about p
 :black_square_button: Manipulation of in world objects (rigid bodies)<br>
 :black_square_button: Realtime changes of shaders/textures and manipulation of them<br>
 :black_square_button: Collision system<br>
+:black_square_button: Vector and matrix classes<br>
 
 ## Todo
 :black_square_button: Objects ready for spawning (e.g cubes, ground objects, spheres)<br>
 :black_square_button: ImGui menues for individual objects<br>
 :black_square_button: Settings menu (mouse sensitivity, camera speed etc..)<br>
 ### Upcoming implementations
-:black_square_button: Component syncing for MeshComponents<br>
-:black_square_button: Template objects ready for spawning (e.g cubes, ground objects, spheres)<br>
+:white_check_mark: Template objects ready for spawning (e.g cubes, ground objects, spheres)<br>
 :black_square_button: Settings menu (mouse sensitivity, camera speed etc..)<br>
+:black_square_button: Change name of namespace (not sure yet :custom_arrow_right: LK, LE, LKE, LKEN, etc...)<br>
+:black_square_button: Raycasting<br>
 
-### Bugs
-:black_square_button: Inspector menu for objects in scene only selects last entry -> imgui selectable bug
+### Needs fixing
+:black_square_button: Memory leak at entity resets from inspector menu<br>
+:black_square_button: Translation at the model transformation. Need to fix the position vector there
 
 ---
 ## Engine design
@@ -70,16 +73,18 @@ Inherits from **Application** and is the main implementation of the engine.
 Abstracted OpenGL to create an API that is way more clean than raw OpenGL calls.<br>
 To be honest, the way that OpenGL works with its context and states is kind of hard to get a grasp on.
 My goal is to have a solid API that takes care of the raw OpenGL without me being forced to use it *directly*.
-> VertexArray<br>
-> VerterBuffer<br>
-> VertexBufferLayout<br>
-> Shader<br>
-> Texture<br>
 
 ### Scene
 Projected world. Holds entities (world objects).<br>
 
 ---
+
+## Notes for myself
+Need to set up a roadmap and daily goals. I also need to refine the current implementation before I begin implementing new things.
+I also need to separate the 3D 'FpsCamera' to a new 3D camera and then create a ortographic camera without projections. 
+Before I start reading more about raycasting and further interaction functionality, I need to tidy up the current code. 
+I'm not happy with the current state of the code. I need to step back for a second and make sure I am creating
+an abstract API that is simple to use. Therefore I also need to fix the btVector3 :custom_arrow_left_right: glm::vec3 issues.
 
 ## Screenshots
 

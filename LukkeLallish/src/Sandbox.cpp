@@ -23,6 +23,7 @@ int main()
 	using namespace LukkelEngine;
 	Sandbox app;
 
+	// This will later be added in application as a 'New' scene button or just loading an old one
 	s_ptr<Scene>scene = std::make_shared<Scene>();
 	app.setScene(scene);
 

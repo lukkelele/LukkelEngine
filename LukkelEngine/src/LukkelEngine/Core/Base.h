@@ -23,10 +23,6 @@
 	#define LK_DEBUGBREAK()
 #endif
 
-// Draw modes
-#define LK_DRAW_FILL 0
-#define LK_DRAW_LINE 1
-
 #define LK_EXPAND_MACRO(x) x
 #define LK_STRINGIFY_MACRO(x) #x
 

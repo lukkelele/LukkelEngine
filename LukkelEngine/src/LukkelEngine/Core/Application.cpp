@@ -8,7 +8,7 @@ namespace LukkelEngine {
 	Application::Application(const ApplicationDetails& details)
 	{
 		s_Instance = this;
-		Renderer::s_DrawMode = LK_DRAW_FILL;
+		Renderer::s_DrawMode = LK_DRAW_TRIANGLES;
 		LukkeLog::Log::init("LukkelEngine.log", "App", "Client");
 		LKLOG_TRACE("Starting application");
 

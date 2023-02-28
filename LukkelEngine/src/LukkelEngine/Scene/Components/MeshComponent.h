@@ -14,10 +14,10 @@ namespace LukkelEngine {
 		s_ptr<VertexArray> va = nullptr;
 		s_ptr<IndexBuffer> ib = nullptr;
 		s_ptr<VertexBuffer> vb = nullptr;
-		s_ptr<Shader> shader = nullptr;
 		glm::vec3 scale{ 1.0f, 1.0f, 1.0f };
 		glm::vec3 pos{ 0.0f, 0.0f, 0.0f };
-		// float scale;
+
+		// s_ptr<Shader> shader = nullptr; // REMOVE ME
 
 		MeshComponent() = default;
 
@@ -27,20 +27,13 @@ namespace LukkelEngine {
 			va = create_s_ptr<VertexArray>();
 			vb = create_s_ptr<VertexBuffer>(vertices, vertCount * sizeof(float));
 			ib = create_s_ptr<IndexBuffer>(indices, idxsCount * sizeof(unsigned int));
-			shader = create_s_ptr<Shader>(shaderPath);
+			// shader = create_s_ptr<Shader>(shaderPath); // REMOVE ME
 			VertexBufferLayout layout;
 
 			for (int num : vertbufLayout) // VertexBufferLayout
 				layout.push<float>(num);
 
 			va->addBuffer(*vb, layout);
-		}
-
-		void updateOrientation(glm::mat4 modelTransform, glm::mat4 viewProjection)
-		{
-			shader->bind();
-			shader->setUniformMat4f("u_Model", modelTransform);
-			shader->setUniformMat4f("u_ViewProj", viewProjection);
 		}
 
 	};

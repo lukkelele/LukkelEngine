@@ -1,14 +1,12 @@
 #include "LKpch.h"
 #include "LukkelEngine/Scene/ObjectHandler.h"
 
+// TODO: Clean this up and create functionality to get pointers to the same array
+//		 which in turn will decrease memory usage because the current implementation
+//		 reinstatiates the same array for each object
 
 namespace LukkelEngine {
 
-	/**
-	 * @brief Add a new cube to the scene
-	 * @param scene where the cube is to be added
-	 * @param name is the desired name of the new cube
-	*/
 	void ObjectHandler::addCube(Scene& scene, const std::string name)
 	{
 		Entity entity = scene.createEntity(name);
@@ -23,7 +21,6 @@ namespace LukkelEngine {
 			-0.5f,  0.5f, -0.5f,    1.0f, 1.0f,    0.7f, 0.0f, 1.0f, 0.7,
 			 0.5f,  0.5f, -0.5f,    0.0f, 0.0f,    1.0f, 0.5f, 0.0f, 0.7
 		};
-
 		unsigned int indices[6 * 6] = {
 			//Top
 			2, 6, 7,
@@ -44,6 +41,7 @@ namespace LukkelEngine {
 			4, 6, 7,
 			4, 5, 7
 		};
+
 		std::string cubeShaderPath = "assets/shaders/3D/flat.shader";
 		std::vector<int> cubeLayout  = { 3, 2, 4 }; // 3 vertices, 2 texture coords, 4 color values
 		btVector3 dimensions{ 0.5f, 0.5f, 0.5f };
@@ -52,6 +50,8 @@ namespace LukkelEngine {
 
 		entity.addComponent<MeshComponent>(vertices, indices, cubeShaderPath, cubeLayout, sizeof(vertices) / sizeof(float), sizeof(indices) / sizeof(unsigned int));
 		entity.addComponent<RigidBodyComponent>(dimensions, offset, mass);
+		// entity.addComponent<MaterialComponent>("");
+
 		
 		MeshComponent& mesh = entity.getComponent<MeshComponent>();
 		// Set offset value to be same as position/origin
@@ -66,8 +66,6 @@ namespace LukkelEngine {
 		// Necessary to tweak the sleep threshold aka the min values for linear and angular velocity
 		body.rigidBody->setSleepingThresholds(0.0f, 0.0f);
 	}
-
-
 
 	void ObjectHandler::addFloor(Scene& scene, const std::string name)
 	{
@@ -90,15 +88,17 @@ namespace LukkelEngine {
 			2, 3, 0
 		};
 
-		btVector3 dimensions{ side, 1.0f, side };
+		btVector3 dimensions{ side * 10.0f, 1.0f, side };
 		// btVector3 offset{ 0.0f, -3.0f, 0.0f };
 		btVector3 offset{ 0.0f, 0.0f, 0.0f };
 		float mass = 0.0f; // CRUCIAL
 
-		std::string shaderPath = "assets/shaders/3D/default.shader";
+		std::string floorShaderPath = "assets/shaders/3D/default.shader";
 		Entity entity = scene.createEntity(name);
-		entity.addComponent<MeshComponent>(floorVertices, floorIndices, shaderPath, floorLayout, sizeof(floorVertices) / sizeof(float), sizeof(floorIndices) / sizeof(unsigned int));
+		entity.addComponent<MeshComponent>(floorVertices, floorIndices, floorShaderPath, floorLayout,
+				sizeof(floorVertices) / sizeof(float), sizeof(floorIndices) / sizeof(unsigned int));
 		entity.addComponent<RigidBodyComponent>(dimensions, offset, mass);
+		// entity.addComponent<MaterialComponent>("");
 
 		RigidBodyComponent& bodyComp = entity.getComponent<RigidBodyComponent>();
 
@@ -106,8 +106,9 @@ namespace LukkelEngine {
 		// Set offset value to be same as position/origin
 		mesh.pos.x = offset.getX(); mesh.pos.y = offset.getY(); mesh.pos.z= offset.getZ();
 
-
 		bodyComp.rigidBody->setCollisionFlags(btCollisionObject::CF_STATIC_OBJECT);
+		bodyComp.bodyType = RigidBodyComponent::BodyType::STATIC;
+		bodyComp.rigidBody->setSleepingThresholds(0.0f, 0.0f);
 	}
 
 }

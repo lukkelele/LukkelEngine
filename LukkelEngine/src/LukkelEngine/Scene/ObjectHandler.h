@@ -16,10 +16,9 @@ namespace LukkelEngine {
 		static void addFloor(Scene& scene, const std::string name);
 
 	private:
-		std::string shaderPath = "assets/shaders/3D/default.shader";
+		std::string floorShaderPath = "assets/shaders/3D/default.shader";
 		std::string cubeShaderPath = "assets/shaders/3D/flat.shader";
 		std::vector<int> cubeLayout  = { 3, 2, 3 };
 		std::vector<int> floorLayout = { 3, 3 };
-
 	};
 }

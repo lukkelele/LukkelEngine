@@ -5,7 +5,7 @@
 namespace LukkelEngine {
 
 	using MouseCode = uint16_t;
-	namespace Mousecodes
+	namespace MouseButton
 	{
 		enum : MouseCode
 		{

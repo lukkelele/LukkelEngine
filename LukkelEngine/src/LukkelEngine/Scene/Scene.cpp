@@ -9,23 +9,19 @@
 
 namespace LukkelEngine {
 
-	GLDebugDrawer debugDrawer;
 
 	Scene::Scene()
 	{
 		m_Camera = create_s_ptr<FpsCamera>(45.0f, 0.010f, 1000.0f);
 		m_Camera->setPosition(glm::vec3(0.0f, 15.0f, -46.0f));
-		
-		// Set up physics
-		createDynamicWorld();
-		// Physics debugger
-		debugDrawer.setDebugMode(btIDebugDraw::DBG_DrawWireframe);
-		m_World->setDebugDrawer(&debugDrawer);
+		m_Camera->setScene(this);
+
+		m_World = create_s_ptr<World>();
+		m_World->initPhysics(this);
 	}
 	
 	Scene::~Scene()
 	{
-		delete m_World;
 	}
 
 	Entity Scene::createEntity(const std::string& name)
@@ -53,26 +49,35 @@ namespace LukkelEngine {
 
 	void Scene::onUpdate(float ts)
 	{
+		m_World->onUpdate(ts);
 		m_Camera->onUpdate(ts);
+		m_Camera->updateDirection();
 		glm::mat4 viewProj = m_Camera->getViewProjection();
 
-		m_World->stepSimulation(ts);
-		m_World->debugDrawWorld();
+		// float distance = 40.0f;
+		// RaycastResult res;
+		// btVector3 pos = Vector3::btVec3(m_Camera->m_Position);
+		// btVector3 dir = Vector3::btVec3(m_Camera->m_ForwardDir) * distance;
+		// bool hitreg = m_World->raycast(res, pos, dir);
 
 		entt::basic_view meshes = m_Registry.view<MeshComponent>();
-
 		for (entt::entity e : meshes)
 		{	
 			Entity entity = { e, this };
 			MeshComponent& mesh = entity.getComponent<MeshComponent>();
 			RigidBodyComponent& body = entity.getComponent<RigidBodyComponent>();
-			// body.printPosition();
+			// MaterialComponent& material = entity.getComponent<MaterialComponent>();
 
 			glm::mat4 modelTransform = body.getModelTransform(ts);
-			mesh.updateOrientation(modelTransform, viewProj);
+			// Move this
+			mesh.shader->bind();
+			mesh.shader->setUniformMat4f("u_Model", modelTransform);
+			mesh.shader->setUniformMat4f("u_ViewProj", viewProj);
 
 			m_Renderer->draw(*mesh.va, *mesh.ib, *mesh.shader);
 		}
+
+		m_World->m_World->debugDrawWorld();
 	}
 
 	void Scene::onImGuiRender()
@@ -80,22 +85,6 @@ namespace LukkelEngine {
 		m_Camera->onImGuiRender();
 	}
 
-	void Scene::createDynamicWorld()
-	{
-		btBroadphaseInterface* broadphase = new btDbvtBroadphase();
-		btDefaultCollisionConfiguration* collisionConfig = new btDefaultCollisionConfiguration();
-		btCollisionDispatcher* dispatcher = new btCollisionDispatcher(collisionConfig);
-		btSequentialImpulseConstraintSolver* solver = new btSequentialImpulseConstraintSolver();
-
-		m_World = new btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfig);
-		m_World->setGravity(LK_WORLD_GRAVITY_SLOW);
-	}
-
-	/**
-	 * @brief Get an entity from the scene
-	 * @param uuid is the uuid of the entity
-	 * @return the entity if found, else { }
-	*/
 	Entity Scene::getEntityWithUUID(UUID uuid)
 	{
 		if (m_EntityMap.find(uuid) != m_EntityMap.end())
@@ -115,8 +104,6 @@ namespace LukkelEngine {
 		return {};
 	}
 
-
-
 	template<typename T>
 		void Scene::onComponentAdded(Entity entity, T& component)
 		{
@@ -126,8 +113,8 @@ namespace LukkelEngine {
 		template<>
 		void Scene::onComponentAdded<RigidBodyComponent>(Entity entity, RigidBodyComponent& component)
 		{
-			LKLOG_WARN("Adding rigid body to dynamic world");
-			m_World->addRigidBody(component.rigidBody);
+			LKLOG_INFO("Adding rigid body to world");
+			m_World->addRigidBodyToWorld(component.rigidBody);
 		}
 
 		template<>
@@ -136,7 +123,13 @@ namespace LukkelEngine {
 		}
 
 		template<>
+		void Scene::onComponentAdded<MaterialComponent>(Entity entity, MaterialComponent& component)
+		{
+		}
+
+		template<>
 		void Scene::onComponentAdded<SpriteComponent>(Entity entity, SpriteComponent& component)
 		{
 		}
+
 }

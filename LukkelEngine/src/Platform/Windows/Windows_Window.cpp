@@ -74,7 +74,6 @@ namespace LukkelEngine {
 
 		setInputLock(true);
 
-
 		// Setup ImGui
 		ImGui::CreateContext();
 		ImGuiIO& io = ImGui::GetIO();

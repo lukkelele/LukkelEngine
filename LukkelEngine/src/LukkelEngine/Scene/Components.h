@@ -6,6 +6,7 @@
 
 #include "LukkelEngine/Scene/Components/MeshComponent.h"
 #include "LukkelEngine/Scene/Components/RigidBodyComponent.h"
+#include "LukkelEngine/Scene/Components/MaterialComponent.h"
 
 #include "btBulletDynamicsCommon.h"
 #include "btBulletCollisionCommon.h"
@@ -37,6 +38,7 @@ namespace LukkelEngine{
 	
 	struct MeshComponent;
 	struct RigidBodyComponent;
+	struct MaterialComponent;
 
 	struct SpriteComponent
 	{
@@ -56,9 +58,7 @@ namespace LukkelEngine{
 	};
 
 	using AllComponents =
-		ComponentGroup<IDComponent,
-					   TagComponent,
-					   SpriteComponent,
-					   RigidBodyComponent>;
+		ComponentGroup<IDComponent, TagComponent, RigidBodyComponent,
+					   MeshComponent, MaterialComponent, SpriteComponent >;
 
 }

@@ -1,6 +1,5 @@
 #include "LKpch.h"
 #include "LukkelEngine/Renderer/FpsCamera.h"
-
 #include "LukkelEngine/Core/Application.h"
 
 namespace LukkelEngine {
@@ -54,6 +53,22 @@ namespace LukkelEngine {
 		return glm::quat(glm::vec3(-m_Pitch, -m_Yaw, 0.0f));
 	}
 
+	glm::vec3 FpsCamera::getDirection() const
+	{
+		return m_Direction;
+	}
+
+	void FpsCamera::updateDirection()
+	{
+		// If not in radians
+		// m_Direction.x = cos(glm::radians(m_Yaw));
+		// m_Direction.y = sin(glm::radians(m_Pitch));
+		// m_Direction.z = sin(glm::radians(m_Yaw));
+		m_Direction.x = cos(m_Yaw);
+		m_Direction.y = sin(m_Pitch);
+		m_Direction.z = sin(m_Yaw);
+	}
+
 	glm::vec3 FpsCamera::calculatePosition() const
 	{
 		return m_Origin - getForwardDirection() * m_Distance;
@@ -62,7 +77,6 @@ namespace LukkelEngine {
 
 	void FpsCamera::onUpdate(float ts)
 	{
-		// FIXME: Gets calculated even though both mouse and keyboard can be disconnected
 		glm::vec3 rightDir = glm::cross(m_ForwardDir, m_UpDir); 
 
 		if (m_KeyboardEnabled)
@@ -76,9 +90,21 @@ namespace LukkelEngine {
 				m_Position -= rightDir * m_TravelSpeed * ts;
 			else if (Keyboard::isKeyPressed(Key::D))
 				m_Position += rightDir * m_TravelSpeed * ts;
-
 		}
-			
+
+		if (Mouse::isButtonPressed(MouseButton::Button0))
+		{
+			RaycastResult r;
+			btVector3 pos = Vector3::btVec3(m_Position);
+			btVector3 target = Vector3::btVec3(m_ForwardDir);
+			bool hitReg = m_Scene->m_World->raycast(r, pos, target);
+			if (hitReg)
+				LKLOG_CRITICAL("HITREG: 1");
+			else
+				LKLOG_INFO("HITREG: 0");
+		}
+
+
 		// Release mouse focus
 		if (Keyboard::isKeyPressed(Key::Escape))
 		{
@@ -89,7 +115,7 @@ namespace LukkelEngine {
 			}
 		}
 		// Reinstate mouse focus
-		if (Keyboard::isKeyPressed(Key::G))
+		else if (Keyboard::isKeyPressed(Key::G))
 		{
 			if (!m_MouseEnabled)
 			{
@@ -106,11 +132,14 @@ namespace LukkelEngine {
 			{
 				float yaw = m_MouseDelta.x * m_RotationSpeed;
 				float pitch = m_MouseDelta.y * m_RotationSpeed;
+				m_Yaw = yaw; m_Pitch = pitch;
+
 				glm::quat quat = glm::normalize(glm::cross(glm::angleAxis(pitch, rightDir),
 					glm::angleAxis(yaw, glm::vec3(0.0f, 1.0f, 0.0f))));
 
 				m_ForwardDir = glm::rotate(quat, m_ForwardDir);
 			}
+
 		}
 		updateProjection();
 		updateView();
@@ -119,7 +148,17 @@ namespace LukkelEngine {
 
 	void FpsCamera::onImGuiRender()
 	{
-		ImGui::Checkbox("Draw lines", &Renderer::s_DrawMode);
+		ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+		if (ImGui::TreeNode("Draw mode"))
+		{
+			if (ImGui::MenuItem("Lines"))
+				Renderer::s_DrawMode = LK_DRAW_LINES;
+			else if (ImGui::MenuItem("Triangles"))
+				Renderer::s_DrawMode = LK_DRAW_TRIANGLES;
+			ImGui::TreePop();
+		}
+		ImGui::Separator();
+
 		ImGui::SliderFloat("Camera speed", &m_TravelSpeed, 0.010f, 2.0f);
 		ImGui::SliderFloat("FOV", &m_FOV, 25.0f, 120.0f);
 		ImGui::SliderFloat3("Camera position", &m_Position.x, -40.0f, 40.0f);

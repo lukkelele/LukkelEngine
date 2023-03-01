@@ -4,7 +4,7 @@
 
 namespace LukkelEngine {
 
-	bool Renderer::s_DrawMode;
+	LK_DRAW_MODE Renderer::s_DrawMode;
 	float c = 150.0f; // Color
 
 	void Renderer::clear() const
@@ -15,15 +15,27 @@ namespace LukkelEngine {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
 
-	// FIXME: Delta time
-	void Renderer::drawFill(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const {
+	/**
+	 * @brief Renders accordingly to the current draw mode (LK_LINES, LK_TRIANGLES etc..)
+	 * @param va 
+	 * @param ib 
+	 * @param shader 
+	*/
+	void Renderer::draw(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const
+	{
+		shader.bind();
+		va.bind();
+		ib.bind();
+		glDrawElements(s_DrawMode, ib.getCount(), GL_UNSIGNED_INT, nullptr);
+	}
+
+	void Renderer::drawTriangles(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const {
 		shader.bind();
 		va.bind();
 		ib.bind();
 		GLCall(glDrawElements(GL_TRIANGLES, ib.getCount(), GL_UNSIGNED_INT, nullptr));
 	}
 
-	// FIXME: Delta time
 	void Renderer::drawLines(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const {
 		shader.bind();
 		va.bind();
@@ -38,14 +50,6 @@ namespace LukkelEngine {
 		glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
 	}
 
-	void Renderer::draw(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const
-	{
-		if (s_DrawMode == LK_DRAW_LINE)
-			drawLines(va, ib, shader);
-		else
-			drawFill(va, ib, shader);
-	}
-
 	void Renderer::renderImGui() const
 	{
 		ImGui::Render();
@@ -55,6 +59,11 @@ namespace LukkelEngine {
 	void Renderer::onWindowResize(uint16_t width, uint16_t height)
 	{
 		glViewport(0, 0, width, height);
+	}
+
+	void Renderer::setDrawMode(LK_DRAW_MODE drawMode)
+	{
+		s_DrawMode = drawMode;
 	}
 
 }

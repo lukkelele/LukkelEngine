@@ -107,7 +107,8 @@ namespace LukkelEngine {
 			body.rigidBody = new btRigidBody(boxBodyConstructionInfo);
 			body.rigidBody->setFriction(body.friction);
 			body.rigidBody->setRestitution(body.restitution);
-			m_Scene->m_World->addRigidBody(body.rigidBody);
+			// m_Scene->m_World->m_World->addRigidBody(body.rigidBody);
+			m_Scene->m_World->addRigidBodyToWorld(body.rigidBody);
 		}
 
 		if (entityDeleted)
@@ -179,9 +180,7 @@ namespace LukkelEngine {
 		ImGui::PopItemWidth();
 
 		ImGui::PopStyleVar();
-
 		ImGui::Columns(1);
-
 		ImGui::PopID();
 	}
 

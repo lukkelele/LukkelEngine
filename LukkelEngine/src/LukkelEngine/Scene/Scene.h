@@ -3,10 +3,11 @@
 #include "LukkelEngine/Core/UUID.h"
 #include "LukkelEngine/Renderer/FpsCamera.h"
 #include "LukkelEngine/Renderer/Renderer.h"
+#include "LukkelEngine/Physics/World.h"
 
-#include "btBulletDynamicsCommon.h"
-#include "btBulletCollisionCommon.h"
 #include "entt/entt.hpp"
+
+#include "LukkelEngine/Debug/Debugger.h"
 
 #define LK_WORLD_NEUTRAL 0
 #define LK_WORLD_DYNAMIC 1
@@ -37,7 +38,6 @@ namespace LukkelEngine {
 		Entity findEntity(std::string_view name);
 
 		void destroyEntity(Entity entity);
-		void createDynamicWorld();
 
 		bool isRunning() const { return m_IsRunning; }
 		void pause(bool paused) { m_IsPaused = paused; }
@@ -46,6 +46,7 @@ namespace LukkelEngine {
 		void onComponentAdded(Entity entity, T& component);
 
 	public:
+		friend class Entity;
 		bool m_IsRunning = false, m_IsPaused = false;
 		int m_Frames = 0;
 		Timer m_Timer;
@@ -55,8 +56,7 @@ namespace LukkelEngine {
 
 		s_ptr<FpsCamera> m_Camera;
 		s_ptr<Renderer> m_Renderer;
-		btDiscreteDynamicsWorld* m_World = nullptr;
-		
-		friend class Entity;
+
+		s_ptr<World> m_World;
 	};
 }

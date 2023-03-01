@@ -7,9 +7,10 @@ layout(location = 2) in vec4 Color;
 
 uniform mat4 u_ViewProj;
 uniform mat4 u_Model;
+uniform mat4 u_Transform;
+
 out vec2 v_TexCoord; 
 out vec4 v_Color;
-// uniform mat4 u_Transform;
 
 void main()
 {

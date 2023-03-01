@@ -7,7 +7,9 @@ namespace LukkelEngine {
 	// FIXME
 	bool Mouse::isButtonPressed(MouseCode button)
 	{
-		return false;
+		GLFWwindow* window = static_cast<GLFWwindow*>(Application::get().getGLFWWindow());
+		auto state = glfwGetMouseButton(window, static_cast<int32_t>(button));
+		return state == GLFW_PRESS;
 	}
 
 	std::pair<float, float> Mouse::getMousePosition()

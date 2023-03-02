@@ -66,8 +66,8 @@ and let me tell you, the current implementation surely does **NOT** care about p
 ### Application
 Main application.<br>
 
-### Sandbox
-Inherits from **Application** and is the main implementation of the engine.
+### LukkeLallish (Sandbox)
+Inherits from **Application** and is the current runtime of the engine.
 
 ### Renderer
 Abstracted OpenGL to create an API that is way more clean than raw OpenGL calls.<br>

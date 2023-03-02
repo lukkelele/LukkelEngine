@@ -21,4 +21,17 @@ namespace LukkelEngine {
 		return std::make_pair(x, y);
 	}
 
+	float Mouse::getMouseX()
+	{
+		auto [x, y] = getMousePosition();
+		return x;
+	}
+
+	float Mouse::getMouseY()
+	{
+		auto [x, y] = getMousePosition();
+		return y;
+	}
+
+
 }

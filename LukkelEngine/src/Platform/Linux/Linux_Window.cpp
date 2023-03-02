@@ -72,7 +72,7 @@ namespace LukkelEngine {
 			data.eventCallback(event);
 		});
 
-		setInputLock(true);
+		// setInputLock(true);
 
 
 		// Setup ImGui
@@ -113,18 +113,18 @@ namespace LukkelEngine {
 		return m_Data.VSync;
 	}
 
-	void Linux_Window::setInputLock(bool enabled)
-	{
-		m_InputLock = enabled;
-		if (m_InputLock == false)
-		{
-			glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-		}
-		else if (m_InputLock == true)
-		{
-			glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-		}
-	}
+	// void Linux_Window::setInputLock(bool enabled)
+	// {
+	// 	m_InputLock = enabled;
+	// 	if (m_InputLock == false)
+	// 	{
+	// 		glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+	// 	}
+	// 	else if (m_InputLock == true)
+	// 	{
+	// 		glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	// 	}
+	// }
 
 	GLFWwindow* Linux_Window::getWindow() const { return m_Window; }
 

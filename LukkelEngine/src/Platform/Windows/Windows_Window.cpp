@@ -63,7 +63,6 @@ namespace LukkelEngine {
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 		glfwSetInputMode(m_Window, GLFW_STICKY_KEYS, GLFW_TRUE);
-		glfwSetInputMode(m_Window, GLFW_RAW_MOUSE_MOTION, GLFW_TRUE);
 
 		glfwSetScrollCallback(m_Window, [](GLFWwindow* window, double x, double y)
 		{
@@ -72,7 +71,9 @@ namespace LukkelEngine {
 			data.eventCallback(event);
 		});
 
-		setInputLock(true);
+		// setInputLock(true);
+		glfwSetWindowAttrib(m_Window, GLFW_FOCUSED, GL_TRUE);
+		glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 		// Setup ImGui
 		ImGui::CreateContext();
@@ -112,18 +113,18 @@ namespace LukkelEngine {
 		return m_Data.VSync;
 	}
 
-	void Windows_Window::setInputLock(bool enabled)
-	{
-		m_InputLock = enabled;
-		if (m_InputLock == false)
-		{
-			glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-		}
-		else if (m_InputLock == true)
-		{
-			glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-		}
-	}
+	// void Windows_Window::setInputLock(bool enabled)
+	// {
+	// 	m_InputLock = enabled;
+	// 	if (m_InputLock == false)
+	// 	{
+	// 		glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+	// 	}
+	// 	else if (m_InputLock == true)
+	// 	{
+	// 		glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	// 	}
+	// }
 
 	GLFWwindow* Windows_Window::getWindow() const { return m_Window; }
 

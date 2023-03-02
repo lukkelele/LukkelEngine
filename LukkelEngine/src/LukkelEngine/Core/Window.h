@@ -28,7 +28,7 @@ namespace LukkelEngine {
 		virtual uint16_t getWidth() = 0;
 		virtual uint16_t getHeight() = 0;
 
-		virtual void setInputLock(bool enabled = true) = 0;
+		// virtual void setInputLock(bool enabled = true) = 0;
 		virtual void setVSync(bool enabled) = 0;
 		virtual bool isVSync() const = 0;
 

@@ -11,7 +11,7 @@ namespace LukkelEngine {
 		template<>
 		void Debugger::printVec2<glm::vec2>(glm::vec2 vector, const std::string name)
 		{
-			LKLOG_WARN("VEC3 -> ({0}, {1}, {2})", vector.x, vector.y);
+			LKLOG_WARN("VEC2 {2}: ({0}, {1})", vector.x, vector.y, name);
 		}
 
 

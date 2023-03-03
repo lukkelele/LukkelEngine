@@ -1,5 +1,6 @@
 #pragma once
 #include "LukkelEngine/Core/Base.h"
+#include "LukkelEngine/Debug/Debugger.h"
 
 #include "btBulletDynamicsCommon.h"
 #include "btBulletCollisionCommon.h"
@@ -10,7 +11,7 @@ namespace LukkelEngine {
 
 	struct RigidBodyComponent
 	{
-		btVector3 pos{ 0.0f, 0.0f, 0.0f };
+		btVector3 position{ 0.0f, 0.0f, 0.0f };
 		btVector3 dimensions{ 1.0f, 1.0f, 1.0f };
 		btCollisionShape* shape = nullptr;
 		btRigidBody* rigidBody = nullptr;
@@ -45,34 +46,47 @@ namespace LukkelEngine {
 			rigidBody->setRestitution(restitution);
 		}
 
-		glm::mat4 getModelTransform(float ts)
+		glm::mat4 getModelTransform()
+		{
+			btTransform transform = rigidBody->getWorldTransform();
+			position = transform.getOrigin();
+			glm::mat4 rotationMatrix = getRotation(transform);
+			glm::mat4 scaleMatrix = glm::scale(glm::mat4(1.0f), scale);
+			glm::mat4 translationMatrix = getTranslation(transform);
+			glm::mat4 modelTransform = translationMatrix * rotationMatrix * scaleMatrix;
+
+			return modelTransform;
+		}
+
+		glm::mat4 getTranslation(btTransform worldTransform)
 		{
 			btTransform transform(rigidBody->getWorldTransform());
-			auto dv = linearVelocity * ts / 100.0f;
-			btVector3 translate = transform.getOrigin() + dv;
-			transform.setOrigin(translate);
-			btQuaternion rot = transform.getRotation();
-			rigidBody->setWorldTransform(transform);
-			rigidBody->getMotionState()->setWorldTransform(transform); // Affects velocity
-			
-			glm::mat4 rotMat = glm::rotate(glm::mat4(1.0f), rot.getAngle(),
-				glm::vec3(rot.getAxis().getX(), rot.getAxis().getY(), rot.getAxis().getZ()) + rotation);
-
-			glm::mat4 scaleMat = glm::scale(glm::mat4(1.0f), scale);
-			glm::mat4 transMat= glm::translate(glm::mat4(1.0f), glm::vec3(translate.getX(), translate.getY(), translate.getZ()));
-			glm::mat4 modelMatrix = transMat * rotMat * scaleMat;
-			return modelMatrix;
+			btVector3 translate = transform.getOrigin();
+			glm::mat4 translation = glm::translate(glm::mat4(1.0f),
+										glm::vec3(translate.getX(), translate.getY(), translate.getZ()));
+			return translation;
 		}
 
-
-		void printPosition()
+		glm::mat4 getRotation(btTransform worldTransform)
 		{
-			auto masspos = rigidBody->getCenterOfMassPosition();
-			LKLOG_INFO("Mass position: ({0}, {1}, {2})  | Mass: {3} ", masspos.getX(), masspos.getY(), masspos.getZ(), mass);
-			LKLOG_WARN("RigidbodyComponent: ({0}, {1}, {2}) | Mass : {3} ", pos.getX(), pos.getY(), pos.getZ(), mass);
+			btQuaternion rot = worldTransform.getRotation();
+			glm::mat4 rotation = glm::rotate(glm::mat4(1.0f), rot.getAngle(),
+				glm::vec3(rot.getAxis().getX(), rot.getAxis().getY(), rot.getAxis().getZ()));
+
+			return rotation;
 		}
 
-	};
+		btRigidBody* getRigidBody() { return rigidBody; }
 
+		void updateBodyProperties(glm::vec3& pos)
+		{
+			Debugger::printVec3(position, "Rigidbody pos");
+			pos = { position.getX(), position.getY(), position.getZ() };
+		}
+		
+		// void setPosition(glm::vec3 newPos) { position = btVector3{ newPos.x, newPos.y, newPos.z }; }
+		glm::vec3 getPosition() { return glm::vec3(position.getX(), position.getY(), position.getZ()); }
+			
+	};
 
 }

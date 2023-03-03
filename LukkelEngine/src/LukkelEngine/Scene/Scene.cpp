@@ -51,30 +51,17 @@ namespace LukkelEngine {
 	{
 		m_World->onUpdate(ts);
 		m_Camera->onUpdate(ts);
-		m_Camera->updateDirection();
+
 		glm::mat4 viewProj = m_Camera->getViewProjection();
 
-		// float distance = 40.0f;
-		// RaycastResult res;
-		// btVector3 pos = Vector3::btVec3(m_Camera->m_Position);
-		// btVector3 dir = Vector3::btVec3(m_Camera->m_ForwardDir) * distance;
-		// bool hitreg = m_World->raycast(res, pos, dir);
-
-		entt::basic_view meshes = m_Registry.view<MeshComponent>();
-		for (entt::entity e : meshes)
+		auto meshes = m_Registry.view<Mesh>();
+		for (auto e : meshes)
 		{	
 			Entity entity = { e, this };
-			MeshComponent& mesh = entity.getComponent<MeshComponent>();
-			RigidBodyComponent& body = entity.getComponent<RigidBodyComponent>();
-			// MaterialComponent& material = entity.getComponent<MaterialComponent>();
+			auto& mesh = entity.getComponent<Mesh>();
+			mesh.onUpdate(ts, viewProj);
 
-			glm::mat4 modelTransform = body.getModelTransform(ts);
-			// Move this
-			mesh.shader->bind();
-			mesh.shader->setUniformMat4f("u_Model", modelTransform);
-			mesh.shader->setUniformMat4f("u_ViewProj", viewProj);
-
-			m_Renderer->draw(*mesh.va, *mesh.ib, *mesh.shader);
+			m_Renderer->draw(mesh);
 		}
 
 		m_World->m_World->debugDrawWorld();
@@ -105,6 +92,17 @@ namespace LukkelEngine {
 	}
 
 	template<typename T>
+	void Scene::add(T& item)
+	{
+	}
+
+		template<>
+		void Scene::add<Mesh>(Mesh& mesh)
+		{
+			m_Meshes.push_back(mesh);
+		}
+
+	template<typename T>
 		void Scene::onComponentAdded(Entity entity, T& component)
 		{
 			// static assert	
@@ -113,8 +111,13 @@ namespace LukkelEngine {
 		template<>
 		void Scene::onComponentAdded<RigidBodyComponent>(Entity entity, RigidBodyComponent& component)
 		{
-			LKLOG_INFO("Adding rigid body to world");
+			LKLOG_TRACE("Adding rigid body to world");
 			m_World->addRigidBodyToWorld(component.rigidBody);
+		}
+
+		template<>
+		void Scene::onComponentAdded<TransformComponent>(Entity entity, TransformComponent& component)
+		{
 		}
 
 		template<>
@@ -131,5 +134,14 @@ namespace LukkelEngine {
 		void Scene::onComponentAdded<SpriteComponent>(Entity entity, SpriteComponent& component)
 		{
 		}
+
+		template<>
+		void Scene::onComponentAdded<Mesh>(Entity entity, Mesh& component)
+		{
+			m_World->addRigidBodyToWorld(component.getRigidBody());
+			LKLOG_INFO("Added rigid body to world");
+		}
+
+
 
 }

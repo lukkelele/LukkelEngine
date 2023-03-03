@@ -4,19 +4,11 @@
 #include "LukkelEngine/Renderer/FpsCamera.h"
 #include "LukkelEngine/Renderer/Renderer.h"
 #include "LukkelEngine/Physics/World.h"
+#include "LukkelEngine/Renderer/Mesh.h"
 
 #include "entt/entt.hpp"
 
 #include "LukkelEngine/Debug/Debugger.h"
-
-#define LK_WORLD_NEUTRAL 0
-#define LK_WORLD_DYNAMIC 1
-#define LK_WORLD_GRAVITY_DEFAULT btVector3(0.0f, -9.8f, 0.0f)
-#define LK_WORLD_GRAVITY_SLOW btVector3(0.0f, -4.5f, 0.0f)
-#define LK_WORLD_GRAVITY_SLOWER btVector3(0.0f, -1.5f, 0.0f)
-#define LK_WORLD_GRAVITY_SLOWEST btVector3(0.0f, -0.5f, 0.0f)
-#define LK_WORLD_GRAVITY_FAST btVector3(0.0f, -18.0f, 0.0f)
-
 
 namespace LukkelEngine {
 
@@ -37,6 +29,9 @@ namespace LukkelEngine {
 		Entity getEntityWithUUID(UUID uuid);
 		Entity findEntity(std::string_view name);
 
+		template<typename T>
+		void add(T& item);
+
 		void destroyEntity(Entity entity);
 
 		bool isRunning() const { return m_IsRunning; }
@@ -53,6 +48,7 @@ namespace LukkelEngine {
 
 		entt::registry m_Registry;
 		std::unordered_map<UUID, entt::entity> m_EntityMap;
+		std::vector<Mesh> m_Meshes;
 
 		s_ptr<FpsCamera> m_Camera;
 		s_ptr<Renderer> m_Renderer;

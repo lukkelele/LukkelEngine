@@ -1,8 +1,8 @@
 #include "TestLayer.h"
 
 #include "LukkelEngine/Core/Application.h"
-#include "LukkelEngine/Scene/ObjectHandler.h"
 #include "LukkelEngine/Scene/Editor.h"
+#include "LukkelEngine/Scene/Spawner.h"
 
 #include "glm/ext.hpp"
 #include "glm/gtx/string_cast.hpp"
@@ -16,14 +16,15 @@ void TestLayer::onAttach()
 {
 	using namespace LukkelEngine;
 	m_Scene = Application::get().getScene();
-
+	Spawner spawner;
 	// Level Editor
 	m_Editor = create_s_ptr<Editor>(m_Scene);
 
-	// Add new objects to the scene
-	ObjectHandler::addFloor(*m_Scene, "Floor");
-	ObjectHandler::addCube(*m_Scene, "Cube");
-	ObjectHandler::addCube(*m_Scene, "Cube2");
+
+	spawner.createGround(*m_Scene, "Ground");
+	spawner.createCube(*m_Scene, "Cube");
+	// spawner.createBarrel(*m_Scene, "Barrel");
+	// spawner.createPyramid(*m_Scene, "Pyramid");
 }
 
 void TestLayer::onUpdate(float ts)

@@ -19,24 +19,47 @@
 
 namespace LukkelEngine {
 
-	class Vector3
-	{
-	public:		
-		
+
+    template <typename V>
+    class Vec3
+    {
+    public:
+        Vec3() {}
+        Vec3(V const& vec) 
+            :m_Vec(vec) {}
+
+        V m_Vec;
+
+        template <typename T>
+        Vec3(Vec3<T> const& vec) {
+            m_Vec.x = vec.getX();
+            m_Vec.y = vec.getY();
+            m_Vec.z = vec.getZ();
+        }
+
+        template <typename T>
+        Vec3& operator=(Vec3<T> const& vec) {
+            m_Vec.x = vec.getX();
+            m_Vec.y = vec.getY();
+            m_Vec.z = vec.getZ();
+            return *this;
+        }
+
 		template<typename T, typename Z>
 		static Z& convertVec3(T vector);
 
-		static btVector3 btVec3(const glm::vec3& vec);
-		static glm::vec3 glmVec3(const btVector3& vec);
+        Vec3 operator+(Vec3 const& vec) const { return Vec3(m_Vec + vec.m_Vec); }
+        Vec3 operator-(Vec3 const& vec) const { return Vec3(m_Vec - vec.m_Vec); }
+        Vec3 operator*(float const scalar) const { return Vec3(m_Vec * scalar); }
 
-	};
+        float getX() const { return m_Vec.x; }
+        float getY() const { return m_Vec.y; }
+        float getZ() const { return m_Vec.z; }
+        V getVec3() const { return m_Vec; }
 
 
-	class Vector2
-	{
-	public:		
-
-	};
-
+    // typedef Vec3<btVector3> BulletVec3;
+    // typedef Vec3<glm::vec3> GLMVec3;
+    };
 
 }

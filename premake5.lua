@@ -33,6 +33,7 @@ include "LukkeLallish/premake5.lua"
 include "lib/GLFW/glfw.lua"
 include "lib/imgui/imgui.lua"
 include "lib/bullet3/bullet3.lua"
+include "lib/glad/glad.lua"
 
 project "LukkelEngine"
     location "LukkelEngine"
@@ -49,12 +50,13 @@ project "LukkelEngine"
 
     defines
     {
-        "GLEW_STATIC",
+        -- "GLEW_STATIC",
         "LKLOG_ADVANCED",
 		"_GLM_WIN32",
 		"GLFW_INCLUDE_NONE",
 		"_CRT_SECURE_NO_WARNINGS",
-        "BT_USE_SSE_IN_API"
+        "BT_USE_SSE_IN_API",
+        "IMGUI_IMPL_OPENGL_LOADER_GLAD"
     }
 
     files
@@ -64,24 +66,11 @@ project "LukkelEngine"
 
         "%{wks.location}/lib/stb_image/**.h",
         "%{wks.location}/lib/stb_image/**.cpp",
-
-        -- "%{wks.location}/lib/imgui/imgui.cpp",
-		-- "%{wks.location}/lib/imgui/imgui.h",
-		-- "%{wks.location}/lib/imgui/imgui_draw.cpp",
-		-- "%{wks.location}/lib/imgui/imgui_impl_glfw_gl3.cpp",
-		-- "%{wks.location}/lib/imgui/imgui_impl_glfw_gl3.h",
-		-- "%{wks.location}/lib/imgui/imgui_widgets.cpp",
-		-- "%{wks.location}/lib/entt/entt.hpp",
-        -- "%{wks.location}/glm/glm/**.hpp",
-        -- "%{wks.location}/lib/ImGuizmo/*.cpp",
-        -- "%{wks.location}/lib/ImGuizmo/*.h",
-
-		"%{wks.locaton}/lib/glew/include/GL/glew.h",
    	}
 
     libdirs
     {
-        "%{wks.location}/lib/glew/lib",
+        -- "%{wks.location}/lib/glew/lib",
         "%{wks.location}/lib/GLFW/lib",
         "%{wks.location}/lib/bullet3/lib"
     }
@@ -94,10 +83,13 @@ project "LukkelEngine"
 		"%{wks.location}/lib",
 		"%{wks.location}/lib/glm",
 		"%{wks.location}/lib/imgui",
+		"%{wks.location}/lib/imgui/examples",
+		"%{wks.location}/lib/glad",
+		"%{wks.location}/lib/glad/include",
 		"%{wks.location}/lib/ImGuizmo",
 		"%{wks.location}/lib/stb_image",
 		"%{wks.location}/lib/GLFW/include",
-		"%{wks.location}/lib/glew/include",
+		-- "%{wks.location}/lib/glew/include",
 		"%{wks.location}/lib/spdlog/include",
 		"%{wks.location}/lib/entt/src",
 
@@ -107,17 +99,18 @@ project "LukkelEngine"
     links
     {
         "GLFW",
+        "glad",
         "opengl32",
-        "glew32s",
+        -- "glew32s",
         "ImGui",
-        "Bullet3"
+        "Bullet3",
     }
 
 	filter "system:windows"
 		defines 
         { 
 			"LK_PLATFORM_WINDOWS",
-			"GLEW_STATIC",
+			-- "GLEW_STATIC",
 			"_IMGUI_WIN32",
 			"_CRT_SECURE_NO_WARNINGS",
 		}

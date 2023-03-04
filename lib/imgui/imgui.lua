@@ -18,14 +18,17 @@ project "ImGui"
 		"imstb_textedit.h",
 		"imstb_truetype.h",
 		"imgui_demo.cpp",
-		"imgui_impl_glfw_gl3.cpp",
-		"imgui_impl_glfw_gl3.h",
+		"imgui_impl_glfw.cpp",
+		"imgui_impl_glfw.h",
+		"imgui_impl_opengl3.cpp",
+		"imgui_impl_opengl3.h",
 	}
 
     includedirs
     {
-        "%{wks.location}/lib/glew/include",
-        "%{wks.location}/lib/GLFW/include"
+        -- "%{wks.location}/lib/glew/include",
+        "%{wks.location}/lib/GLFW/include",
+        "%{wks.location}/lib/glad/include"
     }
 
 	filter "system:windows"

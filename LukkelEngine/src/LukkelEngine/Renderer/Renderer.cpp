@@ -1,6 +1,9 @@
 #include "LKpch.h"
 #include "LukkelEngine/Renderer/Renderer.h"
-#include <imgui_impl_glfw_gl3.h> // FIXME
+#include "LukkelEngine/Renderer/Mesh.h"
+// #include <imgui_impl_glfw_gl3.h> // FIXME
+#include "imgui/examples/imgui_impl_glfw.h"
+#include "imgui/examples/imgui_impl_opengl3.h"
 
 namespace LukkelEngine {
 
@@ -9,18 +12,10 @@ namespace LukkelEngine {
 
 	void Renderer::clear() const
 	{
-		// glClearColor(float(51.0f/255.0f), float(98.0f/255.0f), float(125.0f/255.0f), 1.0f); // Light blue
-		// glClearColor(float(87.0f/255.0f), float(44.0f/255.0f), float(70.0f/255.0f), 1.0f); // Gray
 		glClearColor(float(c/255.0f), float(c/255.0f), float(c/255.0f), 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
 
-	/**
-	 * @brief Renders accordingly to the current draw mode (LK_LINES, LK_TRIANGLES etc..)
-	 * @param va 
-	 * @param ib 
-	 * @param shader 
-	*/
 	void Renderer::draw(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const
 	{
 		shader.bind();
@@ -29,14 +24,23 @@ namespace LukkelEngine {
 		glDrawElements(s_DrawMode, ib.getCount(), GL_UNSIGNED_INT, nullptr);
 	}
 
-	void Renderer::drawTriangles(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const {
+	void Renderer::draw(Mesh& mesh) const
+	{
+		mesh.bind();
+		unsigned int count = mesh.getIndexBuffer()->getCount();
+		glDrawElements(s_DrawMode, count, GL_UNSIGNED_INT, nullptr);
+	}
+
+	void Renderer::drawTriangles(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const
+	{
 		shader.bind();
 		va.bind();
 		ib.bind();
 		GLCall(glDrawElements(GL_TRIANGLES, ib.getCount(), GL_UNSIGNED_INT, nullptr));
 	}
 
-	void Renderer::drawLines(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const {
+	void Renderer::drawLines(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const
+	{
 		shader.bind();
 		va.bind();
 		ib.bind();
@@ -50,10 +54,19 @@ namespace LukkelEngine {
 		glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
 	}
 
+	template<typename T, typename S, typename C>
+	void Renderer::drawShape(T&, S, C)
+	{
+	}
+		template<>
+		void Renderer::drawShape(btTransform& transform, btCollisionShape* shape, btVector3 color)
+		{
+		}
+
 	void Renderer::renderImGui() const
 	{
 		ImGui::Render();
-		ImGui_ImplGlfwGL3_RenderDrawData(ImGui::GetDrawData());
+		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 	}
 
 	void Renderer::onWindowResize(uint16_t width, uint16_t height)
@@ -65,5 +78,7 @@ namespace LukkelEngine {
 	{
 		s_DrawMode = drawMode;
 	}
+
+
 
 }

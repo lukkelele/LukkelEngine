@@ -32,12 +32,15 @@ namespace LukkelEngine {
 		void drawTriangles(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const;
 		void drawLines(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const;
 		void drawIndexed(const s_ptr<VertexArray>& va);
+
 		void drawLine(const glm::vec3& p1, const glm::vec3& p2, const glm::vec4& color = glm::vec4(1.0f));
+		void drawLine(const glm::vec3& p1, const glm::vec3& p2, const glm::mat4& viewProj, const glm::vec4& color = glm::vec4(1.0f));
+
+		void drawBox(btVector3& halfSize);
+		void drawShape(btCollisionShape* shape, btVector3& color);
 
 		template<typename T, typename S, typename C>
 		void drawShape(T&, S, C);
-
-		void drawSphere(btScalar radius, int lats, int longs);
 
 		void renderImGui() const;
 		void setDrawMode(LK_DRAW_MODE drawMode);

@@ -16,81 +16,53 @@
 #include <stdio.h> //printf debugging
 
 
-PhysicsDebugger::PhysicsDebugger()
-	:m_debugMode(0)
-{
+namespace LukkelEngine {
+
+	PhysicsDebugger::PhysicsDebugger()
+		:m_debugMode(0)
+	{
+	}
+
+	PhysicsDebugger::~PhysicsDebugger()
+	{
+	}
+
+	void PhysicsDebugger::drawLine(const btVector3& from, const btVector3& to, const btVector3& color)
+	{
+		btVector3 result = to - from;
+		float alpha = 1.0f;
+		glm::vec4 colors = { result.x(), result.y(), result.z(), alpha };
+		glm::vec3 p0(from.x(), from.y(), from.z());
+		glm::vec3 p1(to.x(), to.y(), to.z());
+		Renderer::drawLine(p0, p1, colors);
+	}
+
+	void PhysicsDebugger::drawSphere(const btVector3& p, btScalar radius, const btVector3& color)
+	{
+	}
+
+
+
+	void PhysicsDebugger::drawTriangle(const btVector3& a, const btVector3& b, const btVector3& c, const btVector3& color, btScalar alpha)
+	{
+	}
+
+	void PhysicsDebugger::setDebugMode(int debugMode)
+	{
+		m_debugMode = debugMode;
+	}
+
+	void	PhysicsDebugger::draw3dText(const btVector3& location, const char* textString)
+	{
+	}
+
+	void PhysicsDebugger::reportErrorWarning(const char* warningString)
+	{
+		printf("%s\n", warningString);
+	}
+
+	void PhysicsDebugger::drawContactPoint(const btVector3& pointOnB, const btVector3& normalOnB, btScalar distance, int lifeTime, const btVector3& color)
+	{
+	}
+
 }
-
-PhysicsDebugger::~PhysicsDebugger()
-{
-}
-
-void PhysicsDebugger::drawLine(const btVector3& from, const btVector3& to, const btVector3& color)
-{
-
-	btLine lines(from, to);
-	btVector3 result = to - from;
-	glm::vec3 colors = { result.x(), result.y(), result.z() };
-
-	GLuint indices[] = { 0, 1 };
-	GLuint vao, vbo, ebo;
-
-	glGenVertexArrays(1, &vao);
-	glGenBuffers(1, &vbo);
-	glGenBuffers(1, &ebo);
-	glBindVertexArray(vao);
-	
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 6, lines.vertices, GL_STATIC_DRAW);
-
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint) * 2, indices, GL_STATIC_DRAW);
-
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 3, (GLvoid*)0); glBindVertexArray(0);
-
-	auto viewProjection = LukkelEngine::Application::get().getCamera()->getViewProjection();
-	// LukkelEngine::Shader shader("assets/shaders/3D/line.shader");
-	// shader.bind();
-	// shader.setUniformMat4f("u_ViewProj", viewProjection);
-
-	glBindVertexArray(vao);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,ebo);
-	glDrawElements(GL_LINES, 2, GL_UNSIGNED_INT, 0);
-	glBindVertexArray(0);
-
-	//delete buffers
-	glDeleteVertexArrays(1, &vao);
-	glDeleteBuffers(1, &vbo);
-	glDeleteBuffers(1, &ebo);
-}
-
-void PhysicsDebugger::drawSphere(const btVector3& p, btScalar radius, const btVector3& color)
-{
-}
-
-
-
-void PhysicsDebugger::drawTriangle(const btVector3& a, const btVector3& b, const btVector3& c, const btVector3& color, btScalar alpha)
-{
-}
-
-void PhysicsDebugger::setDebugMode(int debugMode)
-{
-	m_debugMode = debugMode;
-}
-
-void	PhysicsDebugger::draw3dText(const btVector3& location, const char* textString)
-{
-}
-
-void PhysicsDebugger::reportErrorWarning(const char* warningString)
-{
-	printf("%s\n", warningString);
-}
-
-void PhysicsDebugger::drawContactPoint(const btVector3& pointOnB, const btVector3& normalOnB, btScalar distance, int lifeTime, const btVector3& color)
-{
-}
-
-

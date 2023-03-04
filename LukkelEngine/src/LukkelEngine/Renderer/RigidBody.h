@@ -19,11 +19,12 @@ namespace LukkelEngine {
 		RigidBody() = default;
 		RigidBody(btVector3& dimensions, btVector3& offset, float mass = 1.0f);
 
-		glm::mat4 getModelTransform(float ts);
-		glm::mat4 getRotation(btTransform worldTransform);
 		glm::vec3 getPosition() { return glm::vec3(m_Position.getX(), m_Position.getY(), m_Position.getZ()); }
-
+		glm::mat4 getModelTransform(float ts);
+		void getWorldTransform(btScalar* transform);
 		btTransform getWorldTransform() { return m_RigidBody->getWorldTransform(); }
+
+		glm::mat4 getRotation(btTransform worldTransform);
 		btRigidBody* m_RigidBody = nullptr;
 
 	public:

@@ -19,24 +19,26 @@ namespace LukkelEngine {
 
 	glm::mat4 RigidBody::getModelTransform(float ts)
 	{
-		btTransform translation;
-		btTransform worldTransform = m_RigidBody->getWorldTransform();
-		// worldTransform.setOrigin(m_Position);
+		float m[16];
+		float glMat[16];
+		btTransform tr;
+		btMatrix3x3 rot;
+		
+		btDefaultMotionState* motionState = (btDefaultMotionState*)m_RigidBody->getMotionState();
+		motionState->m_graphicsWorldTrans.getOpenGLMatrix(glMat);
+		glm::mat4 model = glm::make_mat4(glMat);
+		return model;
+	}
 
-		// m_Position = worldTransform.getOrigin();
-		btTransformUtil::integrateTransform(worldTransform, m_LinearVelocity, m_AngularVelocity, ts, translation);
-		m_RigidBody->getMotionState()->setWorldTransform(translation);
-
-		btVector3 t = translation.getOrigin();
-		glm::mat4 translationMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(t.getX(), t.getY(), t.getZ()));
-
-		// // Debugger::printVec3(t, "TRANSLATION");
-		glm::mat4 rotationMatrix = getRotation(translation);
-		// glm::mat4 translationMatrix(1.0f);
-		glm::mat4 scaleMatrix = glm::scale(glm::mat4(1.0f), m_Scale);
-		glm::mat4 modelTransform = translationMatrix * rotationMatrix * scaleMatrix;
-
-		return modelTransform;
+	void RigidBody::getWorldTransform(btScalar* transform)
+	{
+		btTransform t;
+		btDefaultMotionState* motionState = (btDefaultMotionState*)m_RigidBody->getMotionState();
+		if (motionState)
+		{
+			motionState->getWorldTransform(t);
+			t.getOpenGLMatrix(transform);
+		}
 	}
 
 	glm::mat4 RigidBody::getRotation(btTransform worldTransform)

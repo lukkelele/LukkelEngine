@@ -39,5 +39,6 @@ namespace LukkelEngine {
 		virtual void setEventCallback(const EventCallbackFn& callback) = 0;
 
 		float m_ViewportWidth, m_ViewportHeight;
+
 	};
 }

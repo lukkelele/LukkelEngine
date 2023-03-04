@@ -2,9 +2,9 @@
 #include "LukkelEngine/Core/Window.h"
 
 #ifdef LK_PLATFORM_WINDOWS
-	#include <Platform/Windows/Windows_Window.h>
+	#include "LukkelEngine/Platform/Windows/Windows_Window.h"
 #elif defined(LK_PLATFORM_LINUX)
-    #include "Platform/Linux/Linux_Window.h" 
+    #include "LukkelEngine/Platform/Linux/Linux_Window.h" 
 #endif
 
 namespace LukkelEngine {

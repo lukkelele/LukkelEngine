@@ -56,6 +56,7 @@ project "LukkelEngine"
 		"GLFW_INCLUDE_NONE",
 		"_CRT_SECURE_NO_WARNINGS",
         "BT_USE_SSE_IN_API",
+        "B3_USE_GLFW",
         "IMGUI_IMPL_OPENGL_LOADER_GLAD"
     }
 

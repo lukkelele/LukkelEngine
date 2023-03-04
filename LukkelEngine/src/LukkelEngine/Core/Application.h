@@ -1,9 +1,11 @@
 #pragma once
-#include "GL/glew.h"
+// #include "GL/glew.h"
+#include "glad/glad.h"
 #include "GLFW/glfw3.h"
 #include "imgui/imgui.h"
-#include "imgui/imgui_impl_glfw.h"
-#include "imgui/imgui_impl_opengl3.h"
+
+#include "imgui/examples/imgui_impl_glfw.h"
+#include "imgui/examples/imgui_impl_opengl3.h"
 
 #include "LukkelEngine/Core/Base.h"
 #include "LukkelEngine/Core/Window.h"
@@ -13,7 +15,7 @@
 
 #include "LukkelEngine/Scene/Scene.h"
 #include "LukkelEngine/Event/Event.h"
-#include <LukkelEngine/Event/ApplicationEvent.h>
+#include "LukkelEngine/Event/ApplicationEvent.h"
 
 #include "LukkelEngine/Layer/DebugLayer.h"
 

@@ -23,7 +23,7 @@ void TestLayer::onAttach()
 
 	spawner.createGround(*m_Scene, "Ground");
 	auto cube = spawner.createCube(*m_Scene, "Cube");
-	spawner.addConstraint(*m_Scene, cube);
+	// spawner.addConstraint(*m_Scene, cube);
 }
 
 void TestLayer::onUpdate(float ts)

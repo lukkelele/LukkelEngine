@@ -42,7 +42,9 @@ namespace LukkelEngine {
 	void Application::onUpdate(float ts)
 	{
 		m_Renderer->clear();
-		ImGui_ImplGlfwGL3_NewFrame();
+		ImGui_ImplOpenGL3_NewFrame();
+		ImGui_ImplGlfw_NewFrame();
+		ImGui::NewFrame();
 
 		for (auto it = m_LayerStack.rbegin(); it != m_LayerStack.rend(); ++it) 
 		{

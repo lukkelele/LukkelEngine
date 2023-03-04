@@ -1,6 +1,7 @@
 #pragma once
 
-#include "GL/glew.h"
+// #include "GL/glew.h"
+#include "glad/glad.h"
 #include "LukkelEngine/Core/Base.h"
 
 #include <stdint.h>

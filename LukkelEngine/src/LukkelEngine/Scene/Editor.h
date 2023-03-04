@@ -3,6 +3,8 @@
 #include "LukkelEngine/Scene/Entity.h"
 #include "LukkelEngine/Core/Timer.h"
 #include "LukkelEngine/Core/UUID.h"
+#include "LukkelEngine/Renderer/Mesh.h"
+#include "LukkelEngine/Renderer/RigidBody.h"
 
 #include "imgui/imgui_internal.h"
 #include "entt/entt.hpp"
@@ -29,9 +31,6 @@ namespace LukkelEngine {
 
 		template<typename T>
 		void displayAddComponentEntry(const std::string& entryName);
-
-		bool addCubeFlag = false;
-		bool addFloorFlag = false;
 
 
 	public:

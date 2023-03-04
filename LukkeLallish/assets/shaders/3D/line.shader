@@ -4,14 +4,16 @@
 layout(location = 0) in vec3 pos;
 layout(location = 1) in vec4 Color;
 
-uniform mat4 u_ViewProj;
+// uniform mat4 u_ViewProj;
+// uniform mat4 u_Model;
 
 out vec2 v_TexCoord; 
 out vec4 v_Color;
 
 void main()
 {
-	vec4 position = u_ViewProj * vec4(pos, 1.0);
+	// vec4 position = u_ViewProj * u_Model *  vec4(pos, 1.0);
+	vec4 position = vec4(pos, 1.0);
     gl_Position = position;
 
     v_Color = Color;
@@ -27,6 +29,6 @@ in vec4 v_Color;
 
 void main()
 {
-    // color = v_Color;
-    color = vec4(1.0f, 1.0f, 1.0f, 1.0f);
+    color = v_Color;
+    // color = vec4(1.0f, 1.0f, 1.0f, 1.0f);
 }

@@ -1,16 +1,12 @@
 #include "LKpch.h"
 #include "LukkelEngine/Scene/Editor.h"
-#include "LukkelEngine/Scene/ObjectHandler.h"
+#include "LukkelEngine/Scene/Spawner.h"
 #include "LukkelEngine/Scene/Components.h"
 
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_glfw.h"
 #include "imgui/imgui_impl_opengl3.h"
 
-/*
-	The ImGui code is mostly taken from:
-	https://github.com/TheCherno/Hazel/blob/4da60765d9164f801d57dadca57b386d2aff1d08/Hazelnut/src/Panels/SceneHierarchyPanel.cpp
-*/
 
 namespace LukkelEngine {
 
@@ -41,10 +37,10 @@ namespace LukkelEngine {
 					m_Scene->createEntity("Empty Entity");
 
 				else if (ImGui::MenuItem("New Cube"))
-					ObjectHandler::addCube(*m_Scene, "Cube");
+					Spawner::createCube(*m_Scene, "Cube");
 
 				else if (ImGui::MenuItem("New floor (ground object)"))
-					ObjectHandler::addFloor(*m_Scene, "Floor");
+					Spawner::createGround(*m_Scene, "Floor");
 
 				ImGui::EndPopup();
 			}
@@ -91,24 +87,6 @@ namespace LukkelEngine {
 			if (opened)
 				ImGui::TreePop();
 			ImGui::TreePop();
-		}
-
-		if (entityReset)
-		{
-			// FIXME: Delete allocated memory first
-			// Also have a set world origin
-			auto& body = entity.getComponent<RigidBodyComponent>();
-			body.pos = btVector3(0.0f, 0.0f, 0.0f);
-			LKLOG_CRITICAL("Reset entity");
-			body.shape = new btBoxShape(body.dimensions);
-			body.motionState = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), body.offset));
-			body.shape->calculateLocalInertia(body.mass, body.inertia);
-			btRigidBody::btRigidBodyConstructionInfo boxBodyConstructionInfo(body.mass, body.motionState, body.shape, body.inertia);
-			body.rigidBody = new btRigidBody(boxBodyConstructionInfo);
-			body.rigidBody->setFriction(body.friction);
-			body.rigidBody->setRestitution(body.restitution);
-			// m_Scene->m_World->m_World->addRigidBody(body.rigidBody);
-			m_Scene->m_World->addRigidBodyToWorld(body.rigidBody);
 		}
 
 		if (entityDeleted)
@@ -260,42 +238,42 @@ namespace LukkelEngine {
 
 		if (ImGui::BeginPopup("AddComponent"))
 		{
-			displayAddComponentEntry<RigidBodyComponent>("Rigidbody 3D");
+			// displayAddComponentEntry<RigidBody>("Rigidbody 3D");
 			// displayAddComponentEntry<MeshComponent>("Mesh Component");
 			ImGui::EndPopup();
 		}
 
 		ImGui::PopItemWidth();
 
-		drawComponent<RigidBodyComponent>("Body", entity, [](auto& component)
+		drawComponent<Mesh>("Mesh", entity, [](auto& component)
 		{
-		// TODO: Fix the conversion issues here between bullet and glm
-		// btVector3 -> glm::vec3 conversion
-		glm::vec3 position{ component.pos.getX(), component.pos.getY(), component.pos.getZ() };
-		drawVec3Control("Position", position);
-		component.pos = btVector3(position.x, position.y, position.z);
-		glm::vec3 velocity{ component.linearVelocity.getX(), component.linearVelocity.getY(), component.linearVelocity.getZ() };
-		drawVec3Control("Velocity (lin)", velocity);
-		component.linearVelocity = btVector3(velocity.x, velocity.y, velocity.z);
-		ImGui::Separator();
-		drawVec3Control("Translation", component.translation);
-		glm::vec3 rotation = glm::degrees(component.rotation);
-		drawVec3Control("Rotation", rotation);
-		component.rotation = glm::radians(rotation);
-		drawVec3Control("Scale", component.scale, 1.0f);
+			glm::vec3 position{ component.m_RigidBody->m_Position.getX(),
+								component.m_RigidBody->m_Position.getY(),
+								component.m_RigidBody->m_Position.getZ() };
 
-		if (ImGui::Button("Stop moving"))
-		{
-			component.linearVelocity = btVector3(0.0f, 0.0f, 0.0f);
-		}
+			drawVec3Control("Position", position);
+			component.m_RigidBody->m_Position = btVector3(position.x, position.y, position.z);
+
+			glm::vec3 velocity{ component.m_RigidBody->m_LinearVelocity.getX(),
+								component.m_RigidBody->m_LinearVelocity.getY(),
+								component.m_RigidBody->m_LinearVelocity.getZ() };
+			drawVec3Control("Velocity (lin)", velocity);
+			component.m_RigidBody->m_LinearVelocity = btVector3(velocity.x, velocity.y, velocity.z);
+
+			ImGui::Separator();
+			drawVec3Control("Translation", component.m_RigidBody->m_Translation);
+
+			glm::vec3 rotation = glm::degrees(component.m_RigidBody->m_Rotation);
+			drawVec3Control("Rotation", rotation);
+			component.m_RigidBody->m_Rotation = glm::radians(rotation);
+			drawVec3Control("Scale", component.m_RigidBody->m_Scale, 1.0f);
+
+			if (ImGui::Button("Stop moving"))
+			{
+				component.m_RigidBody->m_LinearVelocity = btVector3(0.0f, 0.0f, 0.0f);
+			}
 
 		});
-
-		// drawComponent<MeshComponent>("Mesh", entity, [](auto& component)
-		// {
-		// drawVec3Control("Position", component.pos);
-		// drawVec3Control("Scale", component.scale, 1.0f);
-		// });
 
 	}
 

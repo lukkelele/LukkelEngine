@@ -49,7 +49,6 @@ namespace LukkelEngine {
 		Mesh mesh(vertices, indices, cubeShaderPath, cubeLayout, sizeof(vertices) / sizeof(float), sizeof(indices) / sizeof(unsigned int));
 		mesh.createRigidBody(dimensions, offset);
 		// mesh.getRigidBody()->setCollisionFlags(btCollisionObject::CF_KINEMATIC_OBJECT);
-
 		entity.addComponent<Mesh>(mesh); // Has to be last
 		return entity;
 	}

@@ -3,14 +3,11 @@
 #include "LukkelEngine/Renderer/Shader.h"
 #include "LukkelEngine/Renderer/Texture.h"
 #include "LukkelEngine/Core/UUID.h"
+#include "LukkelEngine/Renderer/Mesh.h"
 
-#include "LukkelEngine/Scene/Components/MeshComponent.h"
-#include "LukkelEngine/Scene/Components/RigidBodyComponent.h"
-#include "LukkelEngine/Scene/Components/MaterialComponent.h"
-
+#include <glm/glm.hpp>
 #include "btBulletDynamicsCommon.h"
 #include "btBulletCollisionCommon.h"
-#include "glm/glm.hpp"
 
 #define LK_TEMPLATE_OBJECT_CUBE 4
 #define LK_TEMPLATE_OBJECT_FLOOR 5
@@ -35,10 +32,6 @@ namespace LukkelEngine{
 		TagComponent(const std::string& tag)
 			: tag(tag) {}
 	};
-	
-	struct MeshComponent;
-	struct RigidBodyComponent;
-	struct MaterialComponent;
 
 	struct SpriteComponent
 	{
@@ -58,7 +51,6 @@ namespace LukkelEngine{
 	};
 
 	using AllComponents =
-		ComponentGroup<IDComponent, TagComponent, RigidBodyComponent,
-					   MeshComponent, MaterialComponent, SpriteComponent >;
+		ComponentGroup<IDComponent, TagComponent, SpriteComponent, Mesh>;
 
 }

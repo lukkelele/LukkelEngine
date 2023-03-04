@@ -7,6 +7,7 @@
 
 #include "btBulletDynamicsCommon.h"
 #include "btBulletCollisionCommon.h"
+#include "BulletSoftBody/btSoftBody.h"
 #include "bullet3/src/BulletCollision/NarrowPhaseCollision/btRaycastCallback.h"
 #include "BulletDynamics/Dynamics/btDiscreteDynamicsWorld.h"
 #include "CommonCallbacks.h"
@@ -59,6 +60,8 @@ namespace LukkelEngine {
 		bool mouseMoveCallback(float x, float y);
 		bool movePickedBody(btVector3& rayFrom, btVector3& rayTo);
 
+		void createCollisionObject(btCollisionObject* body);
+
 		class btRigidBody* m_pickedBody;
 		class btTypedConstraint* m_pickedConstraint;
 		int m_savedState;
@@ -79,7 +82,7 @@ namespace LukkelEngine {
 		b3MouseButtonCallback m_PrevMouseButtonCallback = 0;
 		b3MouseMoveCallback m_PrevMouseMoveCallback = 0;
 	
-		bool m_ConstraintsEnabled = true;
+		bool m_ConstraintsEnabled = false;
 
 		// TODO: Implement an application function to set this automatically and even without 
 		//		 them as members here. Should change on resize events

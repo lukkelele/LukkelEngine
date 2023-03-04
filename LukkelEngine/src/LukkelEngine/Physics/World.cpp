@@ -64,11 +64,6 @@ namespace LukkelEngine {
 
 		float screenWidth = 1600;
 		float screenHeight = 1024;
-
-		// btVector3 camPos, camTarget;
-		// renderer->getActiveCamera()->getCameraPosition(camPos);
-		// renderer->getActiveCamera()->getCameraTargetPosition(camTarget);
-
 		btVector3 rayFrom = pos;
 		btVector3 rayForward = (target - pos);
 		rayForward.normalize();
@@ -77,10 +72,7 @@ namespace LukkelEngine {
 
 		btVector3 rightOffset;
 		btVector3 cameraUp = btVector3(0, 1, 0);
-		// cameraUp[m_guiHelper->getAppInterface()->getUpAxis()] = 1;
-
 		btVector3 vertical = cameraUp;
-
 		btVector3 hor;
 		hor = rayForward.cross(vertical);
 		hor.safeNormalize();
@@ -88,7 +80,6 @@ namespace LukkelEngine {
 		vertical.safeNormalize();
 
 		float tanfov = tanf(0.5f * fov);
-
 		hor *= 2.f * farPlane * tanfov;
 		vertical *= 2.f * farPlane * tanfov;
 
@@ -97,7 +88,6 @@ namespace LukkelEngine {
 		float height = float(screenHeight);
 
 		aspect = width / height;
-
 		hor *= aspect;
 
 		btVector3 rayToCenter = rayFrom + rayForward;
@@ -108,7 +98,6 @@ namespace LukkelEngine {
 		rayTo += btScalar(x) * dHor;
 		rayTo -= btScalar(y) * dVert;
 		return rayTo;
-
 	}
 
 	bool World::raycast(RaycastResult& raycastResult, btVector3 pos, btVector3 direction)
@@ -224,18 +213,23 @@ namespace LukkelEngine {
 
 	bool World::mouseMoveCallback(float x, float y)
 	{
-		auto cam = m_Scene->getCamera();
-		auto camPos = cam->getPosition();
-		auto dir = cam->getDirection();
-		btVector3 from{ camPos.x, camPos.y, camPos.z };
-		btVector3 rayFrom = from;
-		btVector3 to{ dir.x, dir.y, dir.z };
+		if (m_ConstraintsEnabled)
+		{
+			auto cam = m_Scene->getCamera();
+			auto camPos = cam->getPosition();
+			auto dir = cam->getDirection();
+			btVector3 from{ camPos.x, camPos.y, camPos.z };
+			btVector3 rayFrom = from;
+			btVector3 to{ dir.x, dir.y, dir.z };
 
-		LKLOG_TRACE("Sending ray");
-		btVector3 rayTo = shootRay(x, y, from, to);
+			LKLOG_TRACE("Sending ray");
+			btVector3 rayTo = shootRay(x, y, from, to);
 
-		LKLOG_TRACE("Checking if to move body");
-		movePickedBody(rayFrom, rayTo);
+			LKLOG_TRACE("Checking if to move body");
+			movePickedBody(rayFrom, rayTo);
+
+			return false;
+		}
 
 		return false;
 	}
@@ -326,5 +320,28 @@ namespace LukkelEngine {
 		m_DynamicWorld->addConstraint(constraint, true);
 		LKLOG_WARN("New constraint added!");
 	}
+
+
+	void World::createCollisionObject(btCollisionObject* body)
+	{
+		if (body->getUserIndex() < 0)
+		{
+			btCollisionShape* shape = body->getCollisionShape();
+			btTransform startTransform = body->getWorldTransform();
+			int graphicsShapeId = shape->getUserIndex();
+			if (graphicsShapeId >= 0)
+			{
+				btVector3 localScaling(1, 1, 1);
+
+				btSoftBody* softBody = btSoftBody::upcast(body);
+				if (softBody)
+				{
+					// ASSERTION HERE
+					LKLOG_WARN("SOFTBODY CREATED");
+				}
+			}
+		}
+	}
+
 
 }

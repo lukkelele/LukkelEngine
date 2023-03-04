@@ -23,15 +23,16 @@ namespace LukkelEngine {
 		}
 
 		template<typename T>
-		T& getComponent()
-		{
-			return m_Scene->m_Registry.get<T>(m_EntityHandle);
-		}
-
-		template<typename T>
 		bool hasComponent()
 		{
 			return m_Scene->m_Registry.all_of<T>(m_EntityHandle);
+		}
+
+		template<typename T>
+		T& getComponent()
+		{
+			if (hasComponent<T>())
+				return m_Scene->m_Registry.get<T>(m_EntityHandle);
 		}
 
 		template<typename T>

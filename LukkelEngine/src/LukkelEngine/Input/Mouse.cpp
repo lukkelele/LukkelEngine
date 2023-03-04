@@ -33,5 +33,4 @@ namespace LukkelEngine {
 		return y;
 	}
 
-
 }

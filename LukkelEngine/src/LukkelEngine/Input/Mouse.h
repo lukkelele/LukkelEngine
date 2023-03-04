@@ -8,7 +8,6 @@ namespace LukkelEngine {
 	class Mouse
 	{
 	public:
-		// TODO: Static necessary?
 		static bool isButtonPressed(MouseCode button);
 		static std::pair<float, float> getMousePosition();
 		static float Mouse::getMouseX();

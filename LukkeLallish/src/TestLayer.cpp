@@ -22,7 +22,8 @@ void TestLayer::onAttach()
 	m_Editor = create_s_ptr<Editor>(m_Scene);
 
 	spawner.createGround(*m_Scene, "Ground");
-	spawner.createCube(*m_Scene, "Cube");
+	auto cube = spawner.createCube(*m_Scene, "Cube");
+	spawner.addConstraint(*m_Scene, cube);
 }
 
 void TestLayer::onUpdate(float ts)

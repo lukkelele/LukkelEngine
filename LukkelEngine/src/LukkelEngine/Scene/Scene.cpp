@@ -2,10 +2,10 @@
 #include "LukkelEngine/Scene/Scene.h"
 #include "LukkelEngine/Scene/Components.h"
 #include "LukkelEngine/Scene/Entity.h"
+#include "LukkelEngine/Debug/PhysicsDebugger.h"
 
 #include "glm/glm.hpp"
 
-#include "LukkelEngine/Debug/GLDebugDrawer.h"
 
 namespace LukkelEngine {
 
@@ -52,7 +52,20 @@ namespace LukkelEngine {
 		m_World->onUpdate(ts);
 		m_Camera->onUpdate(ts);
 
+		// If mouse has moved -> send World Mouse move event
+		if (m_Camera->hasMouseMoved)
+		{
+			LKLOG_INFO("Mouse moved");
+			m_World->mouseMoveCallback(Mouse::getMouseX(), Mouse::getMouseY());
+		}
+
 		glm::mat4 viewProj = m_Camera->getViewProjection();
+
+		if (Mouse::isButtonPressed(MouseButton::Button0))
+		{
+			LKLOG_INFO("Mouse0 click");
+			m_World->mouseButtonCallback(MouseButton::Button0, 1, Mouse::getMouseX(), Mouse::getMouseY());
+		}
 
 		auto meshes = m_Registry.view<Mesh>();
 		for (auto e : meshes)
@@ -64,7 +77,6 @@ namespace LukkelEngine {
 			m_Renderer->draw(mesh);
 		}
 
-		m_World->m_World->debugDrawWorld();
 	}
 
 	void Scene::onImGuiRender()
@@ -91,16 +103,7 @@ namespace LukkelEngine {
 		return {};
 	}
 
-	template<typename T>
-	void Scene::add(T& item)
-	{
-	}
 
-		template<>
-		void Scene::add<Mesh>(Mesh& mesh)
-		{
-			m_Meshes.push_back(mesh);
-		}
 
 	template<typename T>
 		void Scene::onComponentAdded(Entity entity, T& component)
@@ -109,37 +112,15 @@ namespace LukkelEngine {
 		}
 
 		template<>
-		void Scene::onComponentAdded<RigidBodyComponent>(Entity entity, RigidBodyComponent& component)
+		void Scene::onComponentAdded<Mesh>(Entity entity, Mesh& component)
 		{
-			LKLOG_TRACE("Adding rigid body to world");
-			m_World->addRigidBodyToWorld(component.rigidBody);
-		}
-
-		template<>
-		void Scene::onComponentAdded<TransformComponent>(Entity entity, TransformComponent& component)
-		{
-		}
-
-		template<>
-		void Scene::onComponentAdded<MeshComponent>(Entity entity, MeshComponent& component)
-		{
-		}
-
-		template<>
-		void Scene::onComponentAdded<MaterialComponent>(Entity entity, MaterialComponent& component)
-		{
+			m_World->addRigidBodyToWorld(component.getRigidBody());
+			LKLOG_INFO("Added rigid body to world");
 		}
 
 		template<>
 		void Scene::onComponentAdded<SpriteComponent>(Entity entity, SpriteComponent& component)
 		{
-		}
-
-		template<>
-		void Scene::onComponentAdded<Mesh>(Entity entity, Mesh& component)
-		{
-			m_World->addRigidBodyToWorld(component.getRigidBody());
-			LKLOG_INFO("Added rigid body to world");
 		}
 
 

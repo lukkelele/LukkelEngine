@@ -5,7 +5,7 @@
 
 namespace LukkelEngine {
 
-	void Spawner::createCube(Scene& scene, const std::string& name)
+	Entity& Spawner::createCube(Scene& scene, const std::string& name)
 	{
 		Entity entity = scene.createEntity(name);
 		float vertices[9 * 8] = {
@@ -48,10 +48,13 @@ namespace LukkelEngine {
 
 		Mesh mesh(vertices, indices, cubeShaderPath, cubeLayout, sizeof(vertices) / sizeof(float), sizeof(indices) / sizeof(unsigned int));
 		mesh.createRigidBody(dimensions, offset);
-		mesh.getRigidBody()->setCollisionFlags(btCollisionObject::CF_KINEMATIC_OBJECT);
+		// mesh.getRigidBody()->setCollisionFlags(btCollisionObject::CF_KINEMATIC_OBJECT);
 
 		entity.addComponent<Mesh>(mesh); // Has to be last
+		return entity;
 	}
+
+
 
 	void Spawner::createGround(Scene& scene, const std::string& name)
 	{
@@ -59,7 +62,7 @@ namespace LukkelEngine {
 		Entity entity = scene.createEntity(name);
 		std::vector<int> floorLayout = { 3, 4 };
 		float yLevel = 0.5f;
-		float side = 18.0f;
+		float side = 70.0f;
 		float a = 0.00; // Transparent
 		float c = 0.90; 
 
@@ -75,33 +78,12 @@ namespace LukkelEngine {
 			2, 3, 0
 		};
 
-		glm::vec3 dimensions{ side * 10.0f, 1.0f, side };
-		glm::vec3 offset{ 0.0f, -3.0f, 0.0f };
+		glm::vec3 dimensions{ side, 0.10f, side };
+		glm::vec3 offset{ 0.0f, -10.0f, 0.0f };
 		float mass = 0.0f; // CRUCIAL
 
 		std::string floorShaderPath = "assets/shaders/3D/default.shader";
-		Mesh groundMesh(floorVertices, floorIndices, floorShaderPath, floorLayout, sizeof(floorVertices) / sizeof(float), sizeof(floorIndices) / sizeof(unsigned int));
-		groundMesh.createRigidBody(dimensions, offset, mass);
-		auto rigidbody = groundMesh.getRigidBody();
-		rigidbody->setCollisionFlags(btCollisionObject::CF_STATIC_OBJECT);
-		rigidbody->setSleepingThresholds(0.0f, 0.0f);
-
-		entity.addComponent<Mesh>(groundMesh); // Has to be last
-	}
-
-	void Spawner::createBarrel(Scene& scene, const std::string& name)
-	{
-		// 3 vertex positions + 4 floats for color
-		Entity entity = scene.createEntity(name);
-		std::vector<int> layout = { 3 };
-
-		glm::vec3 dimensions{ 5.0f, 5.0f, 5.0f };
-		glm::vec3 offset{ 0.0f, 0.0f, 0.0f };
-		float mass = 0.0f; // CRUCIAL
-
-
-		std::string shader = "assets/shaders/3D/flat.shader";
-		Mesh mesh(barrel_vertices, barrel_indices, shader, layout, sizeof(barrel_vertices) / sizeof(float), sizeof(barrel_vertices) / sizeof(unsigned int));
+		Mesh mesh(floorVertices, floorIndices, floorShaderPath, floorLayout, sizeof(floorVertices) / sizeof(float), sizeof(floorIndices) / sizeof(unsigned int));
 		mesh.createRigidBody(dimensions, offset, mass);
 		auto rigidbody = mesh.getRigidBody();
 		rigidbody->setCollisionFlags(btCollisionObject::CF_STATIC_OBJECT);
@@ -110,22 +92,49 @@ namespace LukkelEngine {
 		entity.addComponent<Mesh>(mesh); // Has to be last
 	}
 
-	void Spawner::createPyramid(Scene& scene, const std::string& name)
+	void Spawner::addConstraint(Scene& scene, Entity entity)
 	{
-		Entity entity = scene.createEntity(name);
-		std::vector<int> layout = { 3 };
-		glm::vec3 dimensions{ 1.0f, 1.0f, 1.0f };
-		glm::vec3 offset{ 10.0f, 0.0f, 0.0f };
-		float mass = 0.0f; // CRUCIAL
+		auto mesh = entity.getComponent<Mesh>();
+		// Get the rigidbody that is to be added a constraint
+		btRigidBody* rigidbody = mesh.getRigidBody();
+		rigidbody->setActivationState(DISABLE_DEACTIVATION);
 
-		std::string shader = "assets/shaders/3D/flat.shader";
-		Mesh mesh(pyramid_vertices, pyramid_indices, shader, layout, sizeof(pyramid_vertices) / sizeof(float), sizeof(pyramid_indices) / sizeof(unsigned int));
-		mesh.createRigidBody(dimensions, offset, mass);
-		auto rigidbody = mesh.getRigidBody();
-		rigidbody->setCollisionFlags(btCollisionObject::CF_STATIC_OBJECT);
-		rigidbody->setSleepingThresholds(0.0f, 0.0f);
+		// Create a transform for the pivot point
+		btTransform pivot;
+		pivot.setIdentity();
+	
+		// Create our constraint object
+		btGeneric6DofConstraint* dof6 = new btGeneric6DofConstraint(*rigidbody, pivot, true);
+		bool bLimitAngularMotion = true;
+		if (bLimitAngularMotion) {
+			dof6->setAngularLowerLimit(btVector3(0,0,0));
+			dof6->setAngularUpperLimit(btVector3(0,0,0));
+		}
 
-		entity.addComponent<Mesh>(mesh); // Has to be last
+		auto world = scene.m_World;
+		// Add the constraint to the world
+		world->addConstraint(dof6, rigidbody);
+		// Store a pointer to the constraint
+		world->m_PickedConstraint = dof6;
+	
+		// Define the 'strength'
+		float cfm = 0.5f;
+		dof6->setParam(BT_CONSTRAINT_STOP_CFM, cfm, 0);
+		dof6->setParam(BT_CONSTRAINT_STOP_CFM, cfm, 1);
+		dof6->setParam(BT_CONSTRAINT_STOP_CFM, cfm, 2);
+		dof6->setParam(BT_CONSTRAINT_STOP_CFM, cfm, 3);
+		dof6->setParam(BT_CONSTRAINT_STOP_CFM, cfm, 4);
+		dof6->setParam(BT_CONSTRAINT_STOP_CFM, cfm, 5);
+	
+		// Define the 'error reduction'
+		float erp = 0.5f;
+		dof6->setParam(BT_CONSTRAINT_STOP_ERP,erp,0);
+		dof6->setParam(BT_CONSTRAINT_STOP_ERP,erp,1);
+		dof6->setParam(BT_CONSTRAINT_STOP_ERP,erp,2);
+		dof6->setParam(BT_CONSTRAINT_STOP_ERP,erp,3);
+		dof6->setParam(BT_CONSTRAINT_STOP_ERP,erp,4);
+		dof6->setParam(BT_CONSTRAINT_STOP_ERP,erp,5);
+
 	}
 
 

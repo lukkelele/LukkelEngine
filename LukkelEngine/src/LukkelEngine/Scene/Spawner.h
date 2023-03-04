@@ -25,10 +25,13 @@ namespace LukkelEngine {
 			SPHERE
 		};
 			
-		static void createCube(Scene& scene, const std::string& = "");
+		static Entity& createCube(Scene& scene, const std::string& = "");
+
 		static void createGround(Scene& scene, const std::string& = "");
 		static void createBarrel(Scene& scene, const std::string& = "");
 		static void createPyramid(Scene& scene, const std::string& = "");
+
+		static void addConstraint(Scene& scene, Entity entity);
 
 	private:
 

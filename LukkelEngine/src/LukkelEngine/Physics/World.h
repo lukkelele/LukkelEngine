@@ -1,13 +1,15 @@
 #pragma once
 #include "LukkelEngine/Core/Base.h"
 #include "LukkelEngine/Debug/Debugger.h"
-#include "LukkelEngine/Debug/GLDebugDrawer.h"
+#include "LukkelEngine/Debug/PhysicsDebugger.h"
 #include "LukkelEngine/Scene/Components.h"
+#include "LukkelEngine/Renderer/FpsCamera.h"
 
 #include "btBulletDynamicsCommon.h"
 #include "btBulletCollisionCommon.h"
 #include "bullet3/src/BulletCollision/NarrowPhaseCollision/btRaycastCallback.h"
 #include "BulletDynamics/Dynamics/btDiscreteDynamicsWorld.h"
+#include "CommonCallbacks.h"
 
 #include "entt/entt.hpp"
 
@@ -42,17 +44,42 @@ namespace LukkelEngine {
 
 		btVector3 shootRay(uint16_t x, uint16_t y, btVector3 pos, btVector3 target);
 		bool raycast(RaycastResult& rayresult, btVector3 pos, btVector3 target);
-		
-		void addRigidBodyToWorld(btRigidBody* body) { m_World->addRigidBody(body); }
+		std::pair<glm::vec3, glm::vec3> castRay(FpsCamera& cam, float mx, float my);
 
-		void testCastRays();
+		void stepSimulation(float ts);
+		void addRigidBodyToWorld(btRigidBody* body) { m_DynamicWorld->addRigidBody(body); }
+		bool pickBody(btVector3& rayFrom, btVector3& rayTo);
+
+		void addConstraint(btTypedConstraint* constraint, btRigidBody* body);
+		void createPickingConstraint(float x, float y);
+		void createPickingConstraint(Mesh& mesh);
+		void removePickConstraint();
+
+		bool mouseButtonCallback(int button, int state, float x, float y);
+		bool mouseMoveCallback(float x, float y);
+		bool movePickedBody(btVector3& rayFrom, btVector3& rayTo);
+
+		class btRigidBody* m_pickedBody;
+		class btTypedConstraint* m_pickedConstraint;
+		int m_savedState;
+		btVector3 m_oldPickingPos;
+		btVector3 m_hitPos;
+		btScalar m_oldPickingDist;
+
+		std::vector<btTypedConstraint*> constraints;
+		btTypedConstraint* m_PickedConstraint;
 
 	private:
-		btDiscreteDynamicsWorld* m_World = nullptr;
+		btDiscreteDynamicsWorld* m_DynamicWorld = nullptr;
 		btBroadphaseInterface* m_Broadphase = nullptr;
 		btDefaultCollisionConfiguration* m_CollisionConfig = nullptr;
 		btCollisionDispatcher* m_Dispatcher = nullptr;
 		btSequentialImpulseConstraintSolver* m_Solver = nullptr;
+
+		b3MouseButtonCallback m_PrevMouseButtonCallback = 0;
+		b3MouseMoveCallback m_PrevMouseMoveCallback = 0;
+	
+		bool m_ConstraintsEnabled = true;
 
 		// TODO: Implement an application function to set this automatically and even without 
 		//		 them as members here. Should change on resize events

@@ -1,7 +1,7 @@
 #include "LKpch.h"
 #include "LukkelEngine/Renderer/Renderer.h"
 #include "LukkelEngine/Renderer/Mesh.h"
-// #include <imgui_impl_glfw_gl3.h> // FIXME
+
 #include "imgui/examples/imgui_impl_glfw.h"
 #include "imgui/examples/imgui_impl_opengl3.h"
 
@@ -53,6 +53,26 @@ namespace LukkelEngine {
 		unsigned int count = va->getIndexBuffer()->getCount();
 		glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
 	}
+
+	void Renderer::drawLine(const glm::vec3& p0, const glm::vec3& p1, const glm::vec4& color)
+	{
+		float Line[] = {
+			p0.x, p0.y, p0.z,
+			p1.x, p1.y, p1.z
+		};
+		unsigned int indices[] = { 0, 1 };
+		VertexArray va;
+		VertexBuffer vb(Line, 6 * sizeof(float));
+		IndexBuffer ib(indices, 2 * sizeof(unsigned int));
+		// Shader shader("assets/shaders/3D/line.shader");
+
+		VertexBufferLayout layout;
+		layout.push<float>(3);
+		va.addBuffer(vb, layout);
+
+		glDrawElements(GL_LINES, 2, GL_UNSIGNED_INT, 0);
+	}
+
 
 	template<typename T, typename S, typename C>
 	void Renderer::drawShape(T&, S, C)

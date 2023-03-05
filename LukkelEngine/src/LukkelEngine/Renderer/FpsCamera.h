@@ -37,11 +37,12 @@ namespace LukkelEngine {
 		glm::vec3 getForwardDirection() const;
 		glm::vec3 getUpDirection() const;
 
+		glm::mat4& getInverseViewProjection() { return m_InverseViewProjection; }
+
 		float getFOV() const { return m_FOV; }
 		float getNearClip() const { return m_NearPlane; }
 		float getFarClip() const { return m_FarPlane; }
 		float getRotation() { return glm::radians(m_Rotation); }
-		const glm::vec3& getPosition() const { return m_Position; }
 
 		void setPosition(glm::vec3& pos) { m_Position = pos; }
 		void setRotation(float rot) { m_Rotation = rot; }
@@ -82,7 +83,6 @@ namespace LukkelEngine {
 		float m_RotationSpeed = 0.0002f;
 		float m_Yaw = 0.0f, m_Pitch = 0.0f;
 		float m_YawDelta = 0.0f, m_PitchDelta = 0.0f;
-
 
 		friend class Scene;
 		Scene* m_Scene;

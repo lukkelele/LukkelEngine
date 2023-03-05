@@ -1,6 +1,7 @@
 #include "LKpch.h"
 #include "LukkelEngine/Renderer/IndexBuffer.h"
 #include "LukkelEngine/Renderer/Renderer.h"
+#include "LukkelEngine/Core/Base.h"
 
 namespace LukkelEngine {
 

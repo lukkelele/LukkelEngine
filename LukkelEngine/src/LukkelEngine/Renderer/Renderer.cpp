@@ -49,9 +49,9 @@ namespace LukkelEngine {
 	void Renderer::drawLines(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const
 	{
 		shader.bind();
-va.bind();
-ib.bind();
-glDrawElements(GL_LINES, ib.getCount(), GL_UNSIGNED_INT, nullptr);
+		va.bind();
+		ib.bind();
+		glDrawElements(GL_LINES, ib.getCount(), GL_UNSIGNED_INT, nullptr);
 	}
 
 	void Renderer::drawIndexed(const s_ptr<VertexArray>& va)
@@ -148,9 +148,12 @@ glDrawElements(GL_LINES, ib.getCount(), GL_UNSIGNED_INT, nullptr);
 		glDrawElements(GL_LINES, ib.getCount(), GL_UNSIGNED_INT, nullptr);
 	}
 
-	void Renderer::drawShape(btCollisionShape* shape, btVector3& color)
+	// void Renderer::drawShape(btCollisionShape* shape, btVector3& color)
+	void Renderer::drawShape(Mesh& mesh, btVector3& color)
 	{
-		auto shapeType = shape->getShapeType();
+		auto body = mesh.getRigidBody();
+		auto shape = body->getCollisionShape();
+		auto shapeType = mesh.getShapeType();
 		// Box 
 		if (shapeType == BOX_SHAPE_PROXYTYPE)
 		{

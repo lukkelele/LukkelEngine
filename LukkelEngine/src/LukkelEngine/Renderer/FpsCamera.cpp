@@ -20,7 +20,6 @@ namespace LukkelEngine {
 
 		auto mousePos = Mouse::getMousePosition();
 		m_InitialMousePos = { mousePos.first, mousePos.second };
-		//m_Direction = glm::eulerAngles(orientation) * (180.0f / glm::pi<float>());
 	}
 
 	void FpsCamera::updateProjection()
@@ -60,7 +59,7 @@ namespace LukkelEngine {
 
 	glm::quat FpsCamera::getOrientation() const
 	{
-		return glm::quat(glm::vec3(-m_Pitch, -m_Yaw, 0.0f));
+		return glm::quat(glm::vec3(m_Pitch, m_Yaw, 0.0f));
 	}
 
 	glm::vec3 FpsCamera::getDirection()
@@ -141,6 +140,7 @@ namespace LukkelEngine {
 		updateView();
 		m_InverseView = glm::inverse(m_View);
 		m_InverseProjection = glm::inverse(m_Projection);
+		m_InverseViewProjection = m_InverseProjection * m_InverseView;
 		m_ViewProjection = m_Projection * m_View;
 	}
 

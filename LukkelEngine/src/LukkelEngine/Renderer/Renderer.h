@@ -33,14 +33,13 @@ namespace LukkelEngine {
 		void drawLines(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const;
 		void drawIndexed(const s_ptr<VertexArray>& va);
 
-		void drawLine(const glm::vec3& p1, const glm::vec3& p2, const glm::vec4& color = glm::vec4(1.0f));
+		// Static because debugging for raycast
+		static void drawLine(const glm::vec3& p1, const glm::vec3& p2, const glm::vec4& color = glm::vec4(1.0f));
 		void drawLine(const glm::vec3& p1, const glm::vec3& p2, const glm::mat4& viewProj, const glm::vec4& color = glm::vec4(1.0f));
 
 		void drawBox(btVector3& halfSize);
 		void drawShape(btCollisionShape* shape, btVector3& color);
-
-		template<typename T, typename S, typename C>
-		void drawShape(T&, S, C);
+		void drawShape(Mesh& mesh, btVector3& color);
 
 		void renderImGui() const;
 		void setDrawMode(LK_DRAW_MODE drawMode);

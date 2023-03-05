@@ -44,16 +44,13 @@ namespace LukkelEngine {
 		std::vector<int> cubeLayout  = { 3, 2, 4 }; // 3 vertices, 2 texture coords, 4 color values
 		float mass = 3.0f;
 		glm::vec3 dimensions(0.5f, 0.5f, 0.5f);
-		glm::vec3 offset(0.0f, 5.0f, 0.0f);
+		glm::vec3 offset(0.0f, 1.0f, 0.0f);
 
 		Mesh mesh(vertices, indices, cubeShaderPath, cubeLayout, sizeof(vertices) / sizeof(float), sizeof(indices) / sizeof(unsigned int));
-		mesh.createRigidBody(dimensions, offset);
-		// mesh.getRigidBody()->setCollisionFlags(btCollisionObject::CF_KINEMATIC_OBJECT);
+		mesh.createRigidBody(dimensions, offset, mass, RigidBody::Type::DYNAMIC);
 		entity.addComponent<Mesh>(mesh); // Has to be last
 		return entity;
 	}
-
-
 
 	void Spawner::createGround(Scene& scene, const std::string& name)
 	{
@@ -83,10 +80,7 @@ namespace LukkelEngine {
 
 		std::string floorShaderPath = "assets/shaders/3D/default.shader";
 		Mesh mesh(floorVertices, floorIndices, floorShaderPath, floorLayout, sizeof(floorVertices) / sizeof(float), sizeof(floorIndices) / sizeof(unsigned int));
-		mesh.createRigidBody(dimensions, offset, mass);
-		auto rigidbody = mesh.getRigidBody();
-		rigidbody->setCollisionFlags(btCollisionObject::CF_STATIC_OBJECT);
-		rigidbody->setSleepingThresholds(0.0f, 0.0f);
+		mesh.createRigidBody(dimensions, offset, mass, RigidBody::Type::STATIC);
 
 		entity.addComponent<Mesh>(mesh); // Has to be last
 	}
@@ -133,7 +127,6 @@ namespace LukkelEngine {
 		dof6->setParam(BT_CONSTRAINT_STOP_ERP,erp,3);
 		dof6->setParam(BT_CONSTRAINT_STOP_ERP,erp,4);
 		dof6->setParam(BT_CONSTRAINT_STOP_ERP,erp,5);
-
 	}
 
 

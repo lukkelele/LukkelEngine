@@ -33,6 +33,7 @@ namespace LukkelEngine {
 
 		static void addConstraint(Scene& scene, Entity entity);
 
+
 	private:
 
 	};

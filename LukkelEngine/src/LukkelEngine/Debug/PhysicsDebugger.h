@@ -1,5 +1,4 @@
-#ifndef GL_DEBUG_DRAWER_H
-#define GL_DEBUG_DRAWER_H
+#pragma once
 
 #include "LukkelEngine/Renderer/Renderer.h"
 #include "LinearMath/btIDebugDraw.h"
@@ -11,9 +10,9 @@ namespace LukkelEngine {
 
 	class PhysicsDebugger : public btIDebugDraw, public Renderer
 	{
-		struct btLine{
+		struct btLine
+		{
 			float vertices[6] = {};
-
 			btLine(const btVector3& f, const btVector3& t){
 			  vertices[0] = f.x(); vertices[1] = f.y(); vertices[2] = f.z();
 			  vertices[3] = t.x(); vertices[4] = t.y(); vertices[5] = t.z(); 
@@ -37,4 +36,3 @@ namespace LukkelEngine {
 	};
 
 }
-#endif //GL_DEBUG_DRAWER_H

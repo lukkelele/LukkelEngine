@@ -49,8 +49,8 @@ namespace LukkelEngine {
 
 	void Scene::onUpdate(float ts)
 	{
-		m_World->onUpdate(ts);
 		m_Camera->onUpdate(ts);
+		m_World->onUpdate(ts);
 
 		// If mouse has moved -> send World Mouse move event
 		if (m_Camera->hasMouseMoved)
@@ -61,14 +61,7 @@ namespace LukkelEngine {
 		glm::mat4 viewProj = m_Camera->getViewProjection();
 
 		if (Mouse::isButtonPressed(MouseButton::Button0))
-		{
-			// LKLOG_INFO("Mouse0 click");
 			m_World->mouseButtonCallback(MouseButton::Button0, 1, Mouse::getMouseX(), Mouse::getMouseY());
-			auto camPos = m_Camera->getPosition();
-			auto forward = m_Camera->getDirection();
-			btVector3 box{ 5.0f, 5.0f, 5.0f };
-			m_Renderer->drawBox(box);
-		}
 
 		auto meshes = m_Registry.view<Mesh>();
 		for (auto e : meshes)
@@ -77,8 +70,7 @@ namespace LukkelEngine {
 			auto& mesh = entity.getComponent<Mesh>();
 			mesh.onUpdate(ts, viewProj);
 
-			m_Renderer->drawShape(mesh.getRigidBody()->getCollisionShape(), btVector3(1, 1, 1));
-
+			m_Renderer->drawShape(mesh, btVector3(1, 1, 1));
 			m_Renderer->draw(mesh);
 		}
 
@@ -107,7 +99,6 @@ namespace LukkelEngine {
 		}
 		return {};
 	}
-
 
 
 	template<typename T>

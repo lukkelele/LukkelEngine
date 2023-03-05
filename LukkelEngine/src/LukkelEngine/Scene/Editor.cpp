@@ -263,9 +263,11 @@ namespace LukkelEngine {
 			ImGui::Separator();
 			drawVec3Control("Translation", component.m_RigidBody->m_Translation);
 
-			glm::vec3 rotation = glm::degrees(component.m_RigidBody->m_Rotation);
-			drawVec3Control("Rotation", rotation);
-			component.m_RigidBody->m_Rotation = glm::radians(rotation);
+			// FIXME -> Switch from quat caused issues
+			// glm::vec3 rot = glm::make_vec3(component.m_RigidBody->m_Rotation);
+			// glm::vec3 rotation = glm::degrees(rot);
+			// drawVec3Control("Rotation", rotation);
+			// component.m_RigidBody->m_Rotation = glm::radians(rotation);
 			drawVec3Control("Scale", component.m_RigidBody->m_Scale, 1.0f);
 
 			if (ImGui::Button("Stop moving"))

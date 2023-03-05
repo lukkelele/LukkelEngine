@@ -1,7 +1,5 @@
 #include "LKpch.h"
 #include "LukkelEngine/Debug/PhysicsDebugger.h"
-// #include "GLDebugFont.h"
-// #include "GL/glew.h"
 
 #include "LukkelEngine/Renderer/Renderer.h"
 #include "LukkelEngine/Renderer/VertexArray.h"
@@ -40,7 +38,6 @@ namespace LukkelEngine {
 	void PhysicsDebugger::drawSphere(const btVector3& p, btScalar radius, const btVector3& color)
 	{
 	}
-
 
 
 	void PhysicsDebugger::drawTriangle(const btVector3& a, const btVector3& b, const btVector3& c, const btVector3& color, btScalar alpha)

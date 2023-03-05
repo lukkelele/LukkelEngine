@@ -90,11 +90,10 @@ project "LukkelEngine"
 		"%{wks.location}/lib/ImGuizmo",
 		"%{wks.location}/lib/stb_image",
 		"%{wks.location}/lib/GLFW/include",
-		-- "%{wks.location}/lib/glew/include",
 		"%{wks.location}/lib/spdlog/include",
 		"%{wks.location}/lib/entt/src",
-
 		"%{wks.location}/lib/bullet3/src",
+		-- "%{wks.location}/lib/glew/include",
     }
 
     links

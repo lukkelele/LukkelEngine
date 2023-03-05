@@ -35,17 +35,20 @@ namespace LukkelEngine {
 
 		void bind();
 		void onUpdate(float ts, glm::mat4 viewProj = glm::mat4(1.0f));
-
 		s_ptr<Shader> getShader() { return m_Shader; }
 		s_ptr<Texture> getTexture() { return m_Texture; }
 		s_ptr<IndexBuffer> getIndexBuffer() { return m_IBO; }
 
-
+		glm::mat4 createModelMatrix(btTransform& transform);
 		void createRigidBody(glm::vec3& dimensions = glm::vec3(0.5f, 0.5f, 0.5f),
-			glm::vec3& offset = glm::vec3(0.0f, 0.0f, 0.0f), float mass = 5.0f);
-		s_ptr<RigidBody> m_RigidBody;
+							glm::vec3& offset = glm::vec3(0.0f, 0.0f, 0.0f),
+							float mass = 5.0f, RigidBody::Type bodyType = RigidBody::Type::DYNAMIC);
 
 		btRigidBody* getRigidBody() { return m_RigidBody->m_RigidBody; }
+		int getShapeType() { return m_RigidBody->getShapeType(); }
+
+		// Is accessed directly by the editor when modifying matrix values and other properties
+		s_ptr<RigidBody> m_RigidBody;
 
 	private:
 		s_ptr<VertexArray> m_VAO;

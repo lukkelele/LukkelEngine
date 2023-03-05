@@ -5,6 +5,7 @@
 
 #include "LukkelEngine/Core/Application.h"
 
+
 namespace LukkelEngine {
 
 	PhysicsDebugger physicsDebugger;
@@ -22,11 +23,10 @@ namespace LukkelEngine {
 	void World::onUpdate(float ts)
 	{
 		m_DynamicWorld->stepSimulation(ts);
-
 		m_DynamicWorld->updateAabbs();
 		m_DynamicWorld->computeOverlappingPairs();
-
-		m_DynamicWorld->debugDrawWorld();
+		// Might need to flush shader here because of draw problems
+		// m_DynamicWorld->debugDrawWorld(); // BUGGED
 	}
 
 	void World::initPhysics(Scene* scene)
@@ -53,82 +53,18 @@ namespace LukkelEngine {
 		delete m_Solver;
 	}
 
-
-	btVector3 World::shootRay(uint16_t x, uint16_t y, btVector3 pos, btVector3 target)
-	{
-		float top = 1.f;
-		float bottom = -1.f;
-		float nearPlane = 1.f;
-		float tanFov = (top - bottom) * 0.5f / nearPlane;
-		float fov = btScalar(2.0) * btAtan(tanFov);
-
-		float screenWidth = 1600;
-		float screenHeight = 1024;
-		btVector3 rayFrom = pos;
-		btVector3 rayForward = (target - pos);
-		rayForward.normalize();
-		float farPlane = 10000.f;
-		rayForward *= farPlane;
-
-		btVector3 rightOffset;
-		btVector3 cameraUp = btVector3(0, 1, 0);
-		btVector3 vertical = cameraUp;
-		btVector3 hor;
-		hor = rayForward.cross(vertical);
-		hor.safeNormalize();
-		vertical = hor.cross(rayForward);
-		vertical.safeNormalize();
-
-		float tanfov = tanf(0.5f * fov);
-		hor *= 2.f * farPlane * tanfov;
-		vertical *= 2.f * farPlane * tanfov;
-
-		btScalar aspect;
-		float width = float(screenWidth);
-		float height = float(screenHeight);
-
-		aspect = width / height;
-		hor *= aspect;
-
-		btVector3 rayToCenter = rayFrom + rayForward;
-		btVector3 dHor = hor * 1.f / width;
-		btVector3 dVert = vertical * 1.f / height;
-
-		btVector3 rayTo = rayToCenter - 0.5f * hor + 0.5f * vertical;
-		rayTo += btScalar(x) * dHor;
-		rayTo -= btScalar(y) * dVert;
-		return rayTo;
-	}
-
-	bool World::raycast(RaycastResult& raycastResult, btVector3 pos, btVector3 direction)
-	{
-		return false;
-	}
-
-	std::pair<glm::vec3, glm::vec3> World::castRay(FpsCamera& camera, float mx, float my)
-	{
-		glm::vec4 mouseClipPos = { mx, my, -1.0f, 1.0f };
-
-		auto inverseProj = glm::inverse(camera.getProjection());
-		auto inverseView = glm::inverse(glm::mat3(camera.getView()));
-
-		glm::vec4 ray = inverseProj * mouseClipPos;
-		glm::vec3 rayPos = camera.getPosition();
-		glm::vec3 rayDir = inverseView * glm::vec3(ray);
-		
-		return { rayPos, rayDir };
-	}
-
-
-	bool World::pickBody(btVector3& rayFrom, btVector3& rayTo)
+	bool World::pickBody(glm::vec3& rayFrom, glm::vec3& rayTo)
 	{
 		if (!m_DynamicWorld)
 			return false;
 
-		btCollisionWorld::ClosestRayResultCallback rayCallback(rayFrom, rayTo);
+		btVector3 from{ rayFrom.x, rayFrom.y, rayFrom.z };
+		btVector3 to{ rayTo.x, rayTo.y, rayTo.z };
+
+		btCollisionWorld::ClosestRayResultCallback rayCallback(from, to);
 
 		rayCallback.m_flags |= btTriangleRaycastCallback::kF_UseGjkConvexCastRaytest; // TODO: Switch the flag to the newly optimized one
-		m_DynamicWorld->rayTest(rayFrom, rayTo, rayCallback);
+		m_DynamicWorld->rayTest(from, to, rayCallback);
 
 		if (rayCallback.hasHit())
 		{
@@ -136,28 +72,28 @@ namespace LukkelEngine {
 			btRigidBody* body = (btRigidBody*)btRigidBody::upcast(rayCallback.m_collisionObject);
 			if (body)
 			{
-				//other exclusions?
 				if (!(body->isStaticObject() || body->isKinematicObject()))
 				{
-					m_pickedBody = body;
-					m_savedState = m_pickedBody->getActivationState();
-					m_pickedBody->setActivationState(DISABLE_DEACTIVATION);
-					//printf("pickPos=%f,%f,%f\n",pickPos.getX(),pickPos.getY(),pickPos.getZ());
+					LKLOG_CRITICAL("PICKED OBJECT!");
+					m_PickedBody = body;
+					m_SavedState = m_PickedBody->getActivationState();
+					m_PickedBody->setActivationState(DISABLE_DEACTIVATION);
+
 					btVector3 localPivot = body->getCenterOfMassTransform().inverse() * pickPos;
 					btPoint2PointConstraint* p2p = new btPoint2PointConstraint(*body, localPivot);
 					m_DynamicWorld->addConstraint(p2p, true);
-					m_pickedConstraint = p2p;
+					m_PickedConstraint = p2p;
+
 					btScalar mousePickClamping = 30.f;
 					p2p->m_setting.m_impulseClamp = mousePickClamping;
-					//very weak constraint for picking
+					// Very weak constraint for picking
 					p2p->m_setting.m_tau = 0.001f;
 				}
 			}
 
-			//					pickObject(pickPos, rayCallback.m_collisionObject);
-			m_oldPickingPos = rayTo;
-			m_hitPos = pickPos;
-			m_oldPickingDist = (pickPos - rayFrom).length();
+			m_OldPickingPos = to;
+			m_HitPos = pickPos;
+			m_OldPickingDist = (pickPos - from).length();
 		}
 		return false;
 	}
@@ -170,14 +106,15 @@ namespace LukkelEngine {
 
 	void World::removePickConstraint()
 	{
-		if (m_pickedConstraint)
+		if (m_PickedConstraint)
 		{
-			m_pickedBody->forceActivationState(m_savedState);
-			m_pickedBody->activate();
-			m_DynamicWorld->removeConstraint(m_pickedConstraint);
-			delete m_pickedConstraint;
-			m_pickedConstraint = 0;
-			m_pickedBody = 0;
+			m_PickedBody->forceActivationState(m_SavedState);
+			m_PickedBody->activate();
+			m_DynamicWorld->removeConstraint(m_PickedConstraint);
+
+			delete m_PickedConstraint;
+			m_PickedConstraint = 0;
+			m_PickedBody = 0;
 		}
 	}
 
@@ -185,19 +122,26 @@ namespace LukkelEngine {
 	{
 		if (state == 1)
 		{
-			if (button == 0 && m_ConstraintsEnabled)
+			if (button == 0)
 			{
 				auto cam = m_Scene->getCamera();
-				auto camPos = cam->getPosition();
-				auto dir = cam->getDirection();
-				btVector3 from{ camPos.x, camPos.y, camPos.z };
-				btVector3 rayFrom = from;
-				btVector3 to{ dir.x, dir.y, dir.z };
-				LKLOG_TRACE("Sending ray");
-				btVector3 rayTo = shootRay(x, y, from, to);
-	
-				LKLOG_WARN("Picking body");
-				pickBody(rayFrom, rayTo);
+				glm::mat4 viewProj = cam->getViewProjection();
+
+				float distance = 500.0f;
+				auto [rayFrom, rayTo] = raycast(*cam);
+				Renderer::drawLine(rayFrom, rayTo * distance);
+				btCollisionWorld::ClosestRayResultCallback rayCallback(btVector3(rayFrom.x, rayFrom.y, rayFrom.z), btVector3(rayTo.x, rayTo.y, rayTo.z));
+				m_DynamicWorld->rayTest(btVector3(rayFrom.x, rayFrom.y, rayFrom.z), btVector3(rayTo.x, rayTo.y, rayTo.z), rayCallback);
+
+				if (rayCallback.hasHit())
+				{
+					LKLOG_CRITICAL("Raycast: HIT REGISTERED");
+				} 
+				else
+				{
+					LKLOG_INFO("Raycast: NO HIT");
+				}
+				// pickBody(rayFrom, rayTo);
 			}
 		}
 		else
@@ -215,59 +159,78 @@ namespace LukkelEngine {
 	{
 		if (m_ConstraintsEnabled)
 		{
-			auto cam = m_Scene->getCamera();
-			auto camPos = cam->getPosition();
-			auto dir = cam->getDirection();
-			btVector3 from{ camPos.x, camPos.y, camPos.z };
-			btVector3 rayFrom = from;
-			btVector3 to{ dir.x, dir.y, dir.z };
-
-			LKLOG_TRACE("Sending ray");
-			btVector3 rayTo = shootRay(x, y, from, to);
-
-			LKLOG_TRACE("Checking if to move body");
-			movePickedBody(rayFrom, rayTo);
-
 			return false;
 		}
-
 		return false;
 	}
 
-	bool World::movePickedBody(btVector3& rayFrom, btVector3& rayTo)
+	bool World::movePickedBody(glm::vec3& rayFrom, glm::vec3& rayTo)
 	{
-		LKLOG_TRACE("pick constraint");
-		if (m_pickedBody && m_pickedConstraint)
+		btVector3 from{ rayFrom.x, rayFrom.y, rayFrom.z };
+		btVector3 to{ rayTo.x, rayTo.y, rayTo.z };
+
+		if (m_PickedBody && m_PickedConstraint)
 		{
-			LKLOG_TRACE("getting picked constraint");
-			try {
-				btPoint2PointConstraint* pickCon = static_cast<btPoint2PointConstraint*>(m_pickedConstraint);
-				LKLOG_WARN("Got picked constraint");
-				if (pickCon)
-				{
-					// Keep it at the same picking distance
-					btVector3 newPivotB;
+			LKLOG_TRACE("Getting picked constraint");
+			btPoint2PointConstraint* pickCon = static_cast<btPoint2PointConstraint*>(m_PickedConstraint);
+			LKLOG_WARN("Got picked constraint");
+			if (pickCon)
+			{
+				// Keep it at the same picking distance
+				btVector3 newPivotB;
 
-					btVector3 dir = rayTo - rayFrom;
-					dir.normalize();
-					dir *= m_oldPickingDist;
+				btVector3 dir = to - from;
+				dir.normalize();
+				dir *= m_OldPickingDist;
 
-					newPivotB = rayFrom + dir;
-					pickCon->setPivotB(newPivotB);
-					return true;
-				}
-			} catch (const std::exception& e) {
-				LKLOG_CRITICAL("[ERROR] {0}", e.what());
-				return false;
+				newPivotB = from + dir;
+				pickCon->setPivotB(newPivotB);
+				return true;
 			}
 		}
 		return false;
 	}
 
+	std::pair<glm::vec3, glm::vec3> World::raycast(const Camera& camera)
+	{
+		auto [mouseX, mouseY] = Mouse::getMousePosition();
+		auto cam = camera;
+		auto screenWidth = cam.getScreenWidth();
+		auto screenHeight = cam.getScreenHeight();
+		auto projection = cam.getProjection();
+		auto view = cam.getView();
+		// Lock the ray to the middle of the screen, test for now
+		mouseX = screenWidth / 2;
+		mouseY = screenHeight / 2;
+
+		glm::vec4 rayStart_NDC(
+			((float)mouseX/(float)screenWidth  - 0.5f) * 2.0f, // [0,  width] -> [-1,1]
+			((float)mouseY/(float)screenHeight - 0.5f) * 2.0f, // [0, height] -> [-1,1]
+			-1.0, // The near plane maps to Z=-1
+			1.0f
+		);
+		glm::vec4 rayEnd_NDC(
+			((float)mouseX/(float)screenWidth  - 0.5f) * 2.0f,
+			((float)mouseY/(float)screenHeight - 0.5f) * 2.0f,
+			0.0,
+			1.0f
+		);
+
+		glm::mat4 invViewProjection = glm::inverse(projection * view);
+		glm::vec4 rayStart_world = invViewProjection * rayStart_NDC; rayStart_world/=rayStart_world.w;
+		glm::vec4 rayEnd_world   = invViewProjection * rayEnd_NDC  ; rayEnd_world  /=rayEnd_world.w;
+
+		glm::vec3 rayDirection_world(rayEnd_world - rayStart_world);
+		rayDirection_world = glm::normalize(rayDirection_world);
+		glm::vec3 rayPos(rayStart_world);
+		glm::vec3 rayDir(glm::normalize(rayDirection_world));
+
+		return { rayPos, rayDir };
+	}
+
 
 	void World::createPickingConstraint(float x, float y)
 	{
-
 	}
 
 	void World::createPickingConstraint(Mesh& mesh)
@@ -343,5 +306,37 @@ namespace LukkelEngine {
 		}
 	}
 
+	glm::vec3 World::convertWorldToNDC(const btVector3& worldCoords, float screenWidth, float screenHeight)
+	{
+		// Convert world space coordinates to OpenGL clip space coordinates
+		glm::vec4 clipCoords = glm::vec4(worldCoords.x(), worldCoords.y(), -worldCoords.z(), 1.0f);
+		// Convert from clip space to NDC
+		clipCoords /= clipCoords.w;
+		// Convert to screen space
+		float halfScreenWidth = screenWidth / 2.0f;
+		float halfScreenHeight = screenHeight / 2.0f;
+		glm::vec3 screenCoords = glm::vec3((clipCoords.x + 1.0f) * halfScreenWidth, (1.0f - clipCoords.y) * halfScreenHeight, clipCoords.z);
 
+		return screenCoords;
+	}
+
+	glm::vec3 World::convertNDCToWorld(const glm::vec3& ndcCoords, float screenWidth, float screenHeight, const glm::mat4& viewMatrix, const glm::mat4& projectionMatrix)
+	{
+		// Convert from screen space to clip space
+		float halfScreenWidth = screenWidth / 2.0f;
+		float halfScreenHeight = screenHeight / 2.0f;
+		glm::vec4 clipCoords = glm::vec4((ndcCoords.x / halfScreenWidth) - 1.0f, 1.0f - (ndcCoords.y / halfScreenHeight), ndcCoords.z, 1.0f);
+
+		// Convert from clip space to eye space
+		glm::vec4 eyeCoords = glm::inverse(projectionMatrix) * clipCoords;
+		eyeCoords = glm::vec4(eyeCoords.x, eyeCoords.y, -1.0f, 0.0f);
+
+		// Convert from eye space to world space
+		glm::mat4 viewProjectionMatrix = projectionMatrix * viewMatrix;
+		glm::mat4 inverseViewProjectionMatrix = glm::inverse(viewProjectionMatrix);
+		glm::vec4 worldCoords = inverseViewProjectionMatrix * eyeCoords;
+		worldCoords /= worldCoords.w;
+
+		return glm::vec3(worldCoords.x, worldCoords.y, -worldCoords.z);
+	}
 }

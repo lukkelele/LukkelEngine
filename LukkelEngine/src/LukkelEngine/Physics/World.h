@@ -4,6 +4,7 @@
 #include "LukkelEngine/Debug/PhysicsDebugger.h"
 #include "LukkelEngine/Scene/Components.h"
 #include "LukkelEngine/Renderer/FpsCamera.h"
+#include "LukkelEngine/Renderer/Shader.h"
 
 #include "btBulletDynamicsCommon.h"
 #include "btBulletCollisionCommon.h"
@@ -17,10 +18,10 @@
 #define LK_WORLD_NEUTRAL 0
 #define LK_WORLD_DYNAMIC 1
 #define LK_WORLD_GRAVITY_DEFAULT btVector3(0.0f, -9.8f, 0.0f)
-#define LK_WORLD_GRAVITY_SLOW btVector3(0.0f, -4.5f, 0.0f)
-#define LK_WORLD_GRAVITY_SLOWER btVector3(0.0f, -1.5f, 0.0f)
+#define LK_WORLD_GRAVITY_SLOW    btVector3(0.0f, -4.5f, 0.0f)
+#define LK_WORLD_GRAVITY_SLOWER  btVector3(0.0f, -1.5f, 0.0f)
 #define LK_WORLD_GRAVITY_SLOWEST btVector3(0.0f, -0.5f, 0.0f)
-#define LK_WORLD_GRAVITY_FAST btVector3(0.0f, -18.0f, 0.0f)
+#define LK_WORLD_GRAVITY_FAST    btVector3(0.0f, -18.0f, 0.0f)
 
 
 namespace LukkelEngine {
@@ -43,34 +44,33 @@ namespace LukkelEngine {
 		void initPhysics(Scene* scene);
 		void shutdownPhysics();
 
-		btVector3 shootRay(uint16_t x, uint16_t y, btVector3 pos, btVector3 target);
-		bool raycast(RaycastResult& rayresult, btVector3 pos, btVector3 target);
-		std::pair<glm::vec3, glm::vec3> castRay(FpsCamera& cam, float mx, float my);
-
 		void stepSimulation(float ts);
 		void addRigidBodyToWorld(btRigidBody* body) { m_DynamicWorld->addRigidBody(body); }
-		bool pickBody(btVector3& rayFrom, btVector3& rayTo);
+		bool pickBody(glm::vec3& rayFrom, glm::vec3& rayTo);
 
 		void addConstraint(btTypedConstraint* constraint, btRigidBody* body);
 		void createPickingConstraint(float x, float y);
 		void createPickingConstraint(Mesh& mesh);
 		void removePickConstraint();
+		void createCollisionObject(btCollisionObject* body);
 
 		bool mouseButtonCallback(int button, int state, float x, float y);
 		bool mouseMoveCallback(float x, float y);
-		bool movePickedBody(btVector3& rayFrom, btVector3& rayTo);
+		bool movePickedBody(glm::vec3& rayFrom, glm::vec3& rayTo);
+		std::pair<glm::vec3, glm::vec3> raycast(const Camera& camera);
 
-		void createCollisionObject(btCollisionObject* body);
+		static glm::vec3 convertWorldToNDC(const btVector3& worldCoords, float screenWidth, float screenHeight);
+		static glm::vec3 convertNDCToWorld(const glm::vec3& ndcCoords, float screenWidth, float screenHeight, const glm::mat4& viewMatrix, const glm::mat4& projectionMatrix);
 
-		class btRigidBody* m_pickedBody;
-		class btTypedConstraint* m_pickedConstraint;
-		int m_savedState;
-		btVector3 m_oldPickingPos;
-		btVector3 m_hitPos;
-		btScalar m_oldPickingDist;
+		class btRigidBody* m_PickedBody;
+		class btTypedConstraint* m_PickedConstraint;
+		btVector3 m_HitPos;
+		btVector3 m_OldPickingPos;
+		btScalar m_OldPickingDist;
+		int m_SavedState;
 
 		std::vector<btTypedConstraint*> constraints;
-		btTypedConstraint* m_PickedConstraint;
+		// btTypedConstraint* m_PickedConstraint;
 
 	private:
 		btDiscreteDynamicsWorld* m_DynamicWorld = nullptr;

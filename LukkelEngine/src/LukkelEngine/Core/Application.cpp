@@ -9,7 +9,7 @@ namespace LukkelEngine {
 	{
 		s_Instance = this;
 		Renderer::s_DrawMode = LK_DRAW_TRIANGLES;
-		LukkeLog::Log::init("LukkelEngine.log", "App", "Client");
+		LukkeLog::init("LukkelEngine.log", "App", "Client");
 		LKLOG_TRACE("Starting application");
 
 		WindowProps properties = WindowProps(details.title, details.width, details.height);
@@ -66,20 +66,12 @@ namespace LukkelEngine {
 	}
 
 
-	/**
-	 * Push a layer to the layer stack
-	 * @param layer is the layer to be pushed
-	*/
 	void Application::pushLayer(Layer* layer)
 	{
 		m_LayerStack.pushLayer(layer);
 		layer->onAttach();
 	}
 
-	/**
-	 * Push an overlay to the layer stack
-	 * @param layer is the layer to be pushed
-	*/
 	void Application::pushOverlay(Layer* layer)
 	{
 		m_LayerStack.pushOverlay(layer);

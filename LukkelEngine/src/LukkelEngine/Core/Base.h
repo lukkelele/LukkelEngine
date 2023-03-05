@@ -8,20 +8,20 @@
 #include <stdint.h>
 #include <filesystem>
 
-#ifdef LK_DEBUG
-	#if defined(LK_PLATFORM_WINDOWS)
-		#define LK_DEBUGBREAK() __debugbreak()
-	#elif defined(LK_PLATFORM_LINUX)
-		#include <signal.h>
-		#define LK_DEBUGBREAK() raise(SIGTRAP)
-	#else
-		#error "Debugbreak could not be implemented"
-	#endif
-	#define LK_ASSERTS_ENABLED
-#else
-	/* Release or Dist */
-	#define LK_DEBUGBREAK()
-#endif
+// #ifdef LK_DEBUG
+// 	#if defined(LK_PLATFORM_WINDOWS)
+// 		#define LK_DEBUGBREAK() __debugbreak()
+// 	#elif defined(LK_PLATFORM_LINUX)
+// 		#include <signal.h>
+// 		#define LK_DEBUGBREAK() raise(SIGTRAP)
+// 	#else
+// 		#error "Debugbreak could not be implemented"
+// 	#endif
+// 	#define LK_ASSERTS_ENABLED
+// #else
+// 	/* Release or Dist */
+// 	#define LK_DEBUGBREAK()
+// #endif
 
 #define LK_EXPAND_MACRO(x) x
 #define LK_STRINGIFY_MACRO(x) #x

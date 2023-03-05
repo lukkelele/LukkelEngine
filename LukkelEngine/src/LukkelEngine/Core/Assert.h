@@ -1,6 +1,5 @@
 #pragma once
 
-/* TODO: Insert precompiled header */
 #include <memory>
 #include <stdint.h>
 #include <cstring>
@@ -9,26 +8,35 @@
 #include <fstream>
 #include <sstream>
 
-#ifdef LK_PLATFORM_LINUX
-    #define __debugbreak() \
-        asm("0:"                              \
-            ".pushsection embed-breakpoints;" \
-            ".quad 0b;"                       \
-            ".popsection;")
+#include "LukkelEngine/Core/LukkeLog.h"
+
+#ifdef LK_DEBUG
+	#if defined(LK_PLATFORM_WINDOWS)
+		#define LK_DEBUGBREAK __debugbreak()
+	#elif defined(LK_PLATFORM_LINUX)
+		#include <signal.h>
+		#define LK_DEBUGBREAK raise(SIGTRAP)
+		#ifndef LK_DEBUGBREAK
+			#define __debugbreak() \
+				asm("0:"                              \
+					".pushsection embed-breakpoints;" \
+					".quad 0b;"                       \
+					".popsection;")
+		#endif
+	#else
+		#error "Debugbreak could not be implemented"
+	#endif
+	#define LK_ASSERTS_ENABLED
+#else
+	/* Release or Dist */
+	#define LK_DEBUGBREAK()
 #endif
 
 /* Assertion for debugging */
-#ifdef LK_DEBUG
-	#define LK_ASSERT(x) if (!(x)) __debugbreak();
-	#define LK_INTERNAL_ASSERT_IMPL(type, check, msg, ...) { if(!(check)) { LK##type##ERROR(msg, __VA_ARGS__); LK_DEBUGBREAK(); } }
-	#define LK_INTERNAL_ASSERT_WITH_MSG(type, check, ...) LK_INTERNAL_ASSERT_IMPL(type, check, "Assertion failed: {0}", __VA_ARGS__)
-	#define LK_INTERNAL_ASSERT_NO_MSG(type, check) LK_INTERNAL_ASSERT_IMPL(type, check, "Assertion '{0}' failed at {1}:{2}", LK_STRINGIFY_MACRO(check), std::filesystem::path(__FILE__).filename().string(), __LINE__)
-	#define LK_INTERNAL_ASSERT_GET_MACRO_NAME(arg1, arg2, macro, ...) macro
-	#define LK_INTERNAL_ASSERT_GET_MACRO(...) LK_EXPAND_MACRO( LK_INTERNAL_ASSERT_GET_MACRO_NAME(__VA_ARGS__, LK_INTERNAL_ASSERT_WITH_MSG, LK_INTERNAL_ASSERT_NO_MSG) )
-
-	// #define LK_ASSERT(...) LK_EXPAND_MACRO( LK_INTERNAL_ASSERT_GET_MACRO(__VA_ARGS__)(_, __VA_ARGS__) )
-	#define LK_CORE_ASSERT(...) LK_EXPAND_MACRO( LK_INTERNAL_ASSERT_GET_MACRO(__VA_ARGS__)(_CORE_, __VA_ARGS__) )
+#ifdef LK_ASSERTS_ENABLED
+	// #define LK_ASSERT(x) if (!(x)) __debugbreak();
+	#define LK_ASSERT_MESSAGE(...) ::LukkelEngine::LukkeLog::printMessage(::LukkelEngine::LukkeLog::LK_ASSERT_LEVEL::CRITICAL, __VA_ARGS__)
+	#define LK_ASSERT(condition, ...) { if (!(condition)) { LK_ASSERT_MESSAGE(__VA_ARGS__); LK_DEBUGBREAK; } }
 #else
 	#define LK_ASSERT(...)
-	#define LK_CORE_ASSERT(...)
 #endif

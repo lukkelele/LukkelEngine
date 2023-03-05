@@ -19,7 +19,7 @@ namespace LukkelEngine {
 	public:
 		unsigned int m_RendererID;
 		Shader(const std::string& filepath);
-		Shader();
+		Shader() = default;
 		~Shader();
 
 		void bind() const;

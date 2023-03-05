@@ -36,7 +36,7 @@ namespace LukkelEngine {
 	/* Bind vertex array */
 	void VertexArray::bind() const
 	{
-		GLCall(glBindVertexArray(m_RendererID))
+		GLCall(glBindVertexArray(m_RendererID));
 	}
 
 	/* Unbind vertex array */

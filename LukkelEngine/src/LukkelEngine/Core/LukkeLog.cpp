@@ -1,12 +1,12 @@
 #include "LKpch.h"
 #include "LukkelEngine/Core/LukkeLog.h"
 
-namespace LukkeLog {
+namespace LukkelEngine {
 
-	std::shared_ptr<spdlog::logger> Log::s_CoreLogger;
-	std::shared_ptr<spdlog::logger> Log::s_ClientLogger;
+	std::shared_ptr<spdlog::logger> LukkeLog::s_CoreLogger;
+	std::shared_ptr<spdlog::logger> LukkeLog::s_ClientLogger;
 
-	void Log::init(std::string logfilename,
+	void LukkeLog::init(std::string logfilename,
 		           std::string coreLoggerName,
 			       std::string clientLoggerName)
 	{
@@ -28,15 +28,5 @@ namespace LukkeLog {
 		s_ClientLogger->flush_on(spdlog::level::trace);
 	}
 
-	void Log::printVec3(glm::vec3& vector)
-	{
-		s_CoreLogger->debug("| Vector3 ({0}, {1}, {2})", vector[0], vector[1], vector[2]);
-	}
-
-	template<typename T>
-	std::ostream& operator<<(std::ostream& out, const T& g)
-	{
-		return out << glm::to_string(g);
-	}
 
 }

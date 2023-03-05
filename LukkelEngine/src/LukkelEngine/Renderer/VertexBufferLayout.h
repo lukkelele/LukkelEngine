@@ -1,6 +1,7 @@
 #pragma once
 
 #include "LukkelEngine/Core/LKErrorHandler.h"
+#include "LukkelEngine/Core/LukkeLog.h"
 
 namespace LukkelEngine {
 

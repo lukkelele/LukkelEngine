@@ -10,7 +10,7 @@
 
 namespace LukkelEngine {
 
-	Entity SceneManager::m_SelectedEntity;
+	WorldObject SceneManager::m_SelectedObject;
 
 	SceneManager::SceneManager(Scene& scene)
 		: m_Scene(&scene)
@@ -25,67 +25,68 @@ namespace LukkelEngine {
 		{
 			m_Scene->m_Registry.each([&](auto entityID)
 			{
-				Entity entity{ entityID, m_Scene.get() };
-				drawEntityNode(entity);
+				WorldObject entity{ entityID, m_Scene.get() };
+				drawObjectNode(entity);
 			});
 
 			if (ImGui::IsMouseDown(0) && ImGui::IsWindowHovered())
-				m_SelectedEntity = {};
+				m_SelectedObject = {};
 
 			// Right click on blank space to get popup menu
 			if (ImGui::BeginPopupContextWindow(0, 1, false)) // id, mouse button, if on item (bool)
 			{
-				if (ImGui::MenuItem("New entity"))
-					m_Scene->createEntity("Empty Entity");
+				// if (ImGui::MenuItem("New entity"))
+				// 	m_Scene->createWorldObject("Empty WorldObject");
 
-				else if (ImGui::MenuItem("New Cube"))
-					// Spawner::createCube(*m_Scene, "Cube");
-					void;
+				// else if (ImGui::MenuItem("New Cube"))
+				// 	// Spawner::createCube(*m_Scene, "Cube");
+				// 	void;
 
-				else if (ImGui::MenuItem("New floor (ground object)"))
-					void;
-					// Spawner::createGround(*m_Scene, "Floor");
+				// else if (ImGui::MenuItem("New floor (ground object)"))
+				// 	void;
+				// 	// Spawner::createGround(*m_Scene, "Floor");
 
 				ImGui::EndPopup();
 			}
 		}
 
 		ImGui::Begin("Properties");
-		if (m_SelectedEntity)
+		if (m_SelectedObject)
 		{
-			drawComponents(m_SelectedEntity);
+			drawComponents(m_SelectedObject);
 		}
 		ImGui::End();
 
 		ImGui::End();
 	}
 
-	void SceneManager::selectEntity(Entity& entity)
+	void SceneManager::selectObject(WorldObject& entity)
 	{
-		if (m_SelectedEntity != entity)
-			m_SelectedEntity = entity;
+		if (m_SelectedObject != entity)
+			m_SelectedObject = entity;
 	}
 
-	void SceneManager::drawEntityNode(Entity entity)
+	void SceneManager::drawObjectNode(WorldObject worldObject)
 	{
-		auto& tag = entity.getComponent<TagComponent>().tag;
+		auto& tag = worldObject.getComponent<TagComponent>().tag;
 
-		ImGuiTreeNodeFlags flags = ((m_SelectedEntity == entity) ? ImGuiTreeNodeFlags_Selected : 0) | ImGuiTreeNodeFlags_OpenOnArrow;
+		ImGuiTreeNodeFlags flags = ((m_SelectedObject == worldObject) ? ImGuiTreeNodeFlags_Selected : 0) | ImGuiTreeNodeFlags_OpenOnArrow;
 		flags |= ImGuiTreeNodeFlags_SpanAvailWidth;
-		bool opened = ImGui::TreeNodeEx((void*)(uint64_t)(uint32_t)entity, flags, tag.c_str());
+		bool opened = ImGui::TreeNodeEx((void*)(uint64_t)(uint32_t)worldObject, flags, tag.c_str());
 		if (ImGui::IsItemClicked())
 		{
-			m_SelectedEntity = entity;
+			m_SelectedObject = worldObject;
 		}
 
-		bool entityDeleted = false;
-		bool entityReset = false;
+		bool objectDeleted = false;
+		bool objectReset = false;
+
 		if (ImGui::BeginPopupContextItem())
 		{
-			if (ImGui::MenuItem("Delete Entity"))
-				entityDeleted = true;
-			else if (ImGui::MenuItem("Reset entity"))
-				entityReset = true;
+			if (ImGui::MenuItem("Delete object"))
+				objectDeleted= true;
+			else if (ImGui::MenuItem("Reset object"))
+				objectReset = true;
 
 			ImGui::EndPopup();
 		}
@@ -99,12 +100,12 @@ namespace LukkelEngine {
 			ImGui::TreePop();
 		}
 
-		if (entityDeleted)
+		if (objectDeleted)
 		{
-			m_Scene->destroyEntity(entity);
-				if (m_SelectedEntity == entity)
-					m_SelectedEntity = {};
-			LKLOG_ERROR("Entity deleted (EDITOR)");
+			m_Scene->destroyObject(worldObject);
+				if (m_SelectedObject == worldObject)
+					m_SelectedObject = {};
+			LKLOG_ERROR("WorldObject deleted (EDITOR)");
 		}
 	}
 
@@ -173,7 +174,7 @@ namespace LukkelEngine {
 	}
 
 	template<typename T, typename UIFunction>
-	static void drawComponent(const std::string& name, Entity entity, UIFunction uiFunction)
+	static void drawComponent(const std::string& name, WorldObject entity, UIFunction uiFunction)
 	{
 		const ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_Framed | ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_AllowItemOverlap | ImGuiTreeNodeFlags_FramePadding;
 		if (entity.hasComponent<T>())
@@ -216,17 +217,17 @@ namespace LukkelEngine {
 	template<typename T>
 	void SceneManager::displayAddComponentEntry(const std::string& entryName)
 	{
-		if (!m_SelectedEntity.hasComponent<T>())
+		if (!m_SelectedObject.hasComponent<T>())
 		{
 			if (ImGui::MenuItem(entryName.c_str()))
 			{
-				m_SelectedEntity.addComponent<T>();
+				m_SelectedObject.addComponent<T>();
 				ImGui::CloseCurrentPopup();
 			}
 		}
 	}
 
-	void SceneManager::drawComponents(Entity entity)
+	void SceneManager::drawComponents(WorldObject entity)
 	{
 		if (entity.hasComponent<TagComponent>())
 		{

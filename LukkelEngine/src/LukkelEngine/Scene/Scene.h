@@ -6,12 +6,11 @@
 #include "LukkelEngine/Physics/World.h"
 
 #include "entt/entt.hpp"
-
 #include "LukkelEngine/Debug/Debugger.h"
 
 namespace LukkelEngine {
 
-	class Entity;
+	class WorldObject;
 
 	class Scene
 	{
@@ -23,21 +22,15 @@ namespace LukkelEngine {
 		void onImGuiRender();
 		const s_ptr<FpsCamera> getCamera() const { return m_Camera; }
 
-		Entity createEntity(const std::string& name = std::string());
-		Entity createEntityWithUUID(UUID uuid, const std::string& name = std::string());
-		Entity getEntityWithUUID(UUID uuid);
-		Entity findEntity(std::string_view name);
-
-		template<typename T>
-		void add(T& item);
-
-		void destroyEntity(Entity entity);
+		WorldObject createObject(const std::string& name);
+		WorldObject createObjectWithUUID(UUID uuid, const std::string& name);
+		void destroyObject(WorldObject entity);
 
 		bool isRunning() const { return m_IsRunning; }
 		void pause(bool paused) { m_IsPaused = paused; }
 
 		template<typename T>
-		void onComponentAdded(Entity entity, T& component);
+		void onComponentAdded(WorldObject wObject, T& component);
 
 	public:
 		bool m_IsRunning = false, m_IsPaused = false;
@@ -45,12 +38,10 @@ namespace LukkelEngine {
 		Timer m_Timer;
 
 		entt::registry m_Registry;
-		std::unordered_map<UUID, entt::entity> m_EntityMap;
-		std::vector<Mesh> m_Meshes;
+		std::unordered_map<UUID, entt::entity> m_ObjectMap;
 
 		s_ptr<FpsCamera> m_Camera;
 		s_ptr<Renderer> m_Renderer;
-
 		s_ptr<World> m_World;
 	};
 

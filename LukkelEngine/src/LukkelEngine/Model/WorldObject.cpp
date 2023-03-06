@@ -10,6 +10,11 @@ namespace LukkelEngine {
 		m_RigidBody = create_u_ptr<RigidBody>(rigidBody);
 	}
 
+	 WorldObject::WorldObject(entt::entity handle, Scene* scene)
+	 	: m_ObjectHandle(handle), m_Scene(scene)
+	 {
+	 }
+
 	WorldObject::~WorldObject()
 	{
 	}
@@ -40,8 +45,5 @@ namespace LukkelEngine {
 				* glm::scale(glm::mat4(1.0f), m_Scale);
 	}
 
-	void WorldObject::addComponent(Entity& entity)
-	{
-	}
 
 }

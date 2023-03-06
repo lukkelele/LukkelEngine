@@ -1,7 +1,6 @@
 #pragma once
 
 #include "LukkelEngine/Scene/Scene.h"
-#include "LukkelEngine/Scene/Entity.h"
 #include "LukkelEngine/Core/UUID.h"
 #include "LukkelEngine/Model/WorldObject.h"
 
@@ -18,16 +17,16 @@ namespace LukkelEngine {
 		~SceneManager() = default;
 
 		void onImGuiRender();
-		void drawEntityNode(Entity entity);
-		void drawComponents(Entity entity);
-		void selectEntity(Entity& entity);
+		void drawObjectNode(WorldObject worldObject);
+		void drawComponents(WorldObject worldObject);
+		void selectObject(WorldObject& worldObject);
 
 		template<typename T>
 		void displayAddComponentEntry(const std::string& entryName);
 
 	private:
 		s_ptr<Scene> m_Scene = nullptr;
-		static Entity m_SelectedEntity;
+		static WorldObject m_SelectedObject;
 	};
 
 }

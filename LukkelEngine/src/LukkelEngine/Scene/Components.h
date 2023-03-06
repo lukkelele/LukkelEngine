@@ -3,14 +3,11 @@
 #include "LukkelEngine/Renderer/Shader.h"
 #include "LukkelEngine/Renderer/Texture.h"
 #include "LukkelEngine/Core/UUID.h"
-#include "LukkelEngine/Renderer/Mesh.h"
+#include "LukkelEngine/Model/Mesh.h"
 
 #include <glm/glm.hpp>
 #include "btBulletDynamicsCommon.h"
 #include "btBulletCollisionCommon.h"
-
-#define LK_TEMPLATE_OBJECT_CUBE 4
-#define LK_TEMPLATE_OBJECT_FLOOR 5
 
 
 namespace LukkelEngine{
@@ -33,17 +30,6 @@ namespace LukkelEngine{
 			: tag(tag) {}
 	};
 
-	struct SpriteComponent
-	{
-		glm::vec4 color{ 1.0f, 1.0f, 1.0f, 1.0f };
-
-		SpriteComponent() = default;
-		SpriteComponent(const SpriteComponent&) = default;
-		SpriteComponent(const glm::vec4& color)
-			: color(color) {}
-	};
-
-
 
 	template<typename... Component>
 	struct ComponentGroup
@@ -51,6 +37,6 @@ namespace LukkelEngine{
 	};
 
 	using AllComponents =
-		ComponentGroup<IDComponent, TagComponent, SpriteComponent, Mesh>;
+		ComponentGroup<IDComponent, TagComponent, Mesh>;
 
 }

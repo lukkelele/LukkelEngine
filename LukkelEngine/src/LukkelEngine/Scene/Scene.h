@@ -4,7 +4,6 @@
 #include "LukkelEngine/Renderer/FpsCamera.h"
 #include "LukkelEngine/Renderer/Renderer.h"
 #include "LukkelEngine/Physics/World.h"
-#include "LukkelEngine/Renderer/Mesh.h"
 
 #include "entt/entt.hpp"
 
@@ -41,7 +40,6 @@ namespace LukkelEngine {
 		void onComponentAdded(Entity entity, T& component);
 
 	public:
-		friend class Entity;
 		bool m_IsRunning = false, m_IsPaused = false;
 		int m_Frames = 0;
 		Timer m_Timer;
@@ -55,4 +53,5 @@ namespace LukkelEngine {
 
 		s_ptr<World> m_World;
 	};
+
 }

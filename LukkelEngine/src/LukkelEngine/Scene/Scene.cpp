@@ -9,7 +9,6 @@
 
 namespace LukkelEngine {
 
-
 	Scene::Scene()
 	{
 		m_Camera = create_s_ptr<FpsCamera>(45.0f, 0.010f, 1000.0f);
@@ -68,12 +67,11 @@ namespace LukkelEngine {
 		{	
 			Entity entity = { e, this };
 			auto& mesh = entity.getComponent<Mesh>();
-			mesh.onUpdate(ts, viewProj);
+			// mesh.onUpdate(ts, viewProj);
 
 			m_Renderer->drawShape(mesh, btVector3(1, 1, 1));
-			m_Renderer->draw(mesh);
+			// m_Renderer->draw(mesh);
 		}
-
 	}
 
 	void Scene::onImGuiRender()
@@ -105,18 +103,6 @@ namespace LukkelEngine {
 		void Scene::onComponentAdded(Entity entity, T& component)
 		{
 			// static assert	
-		}
-
-		template<>
-		void Scene::onComponentAdded<Mesh>(Entity entity, Mesh& component)
-		{
-			m_World->addRigidBodyToWorld(component.getRigidBody());
-			LKLOG_INFO("Added rigid body to world");
-		}
-
-		template<>
-		void Scene::onComponentAdded<SpriteComponent>(Entity entity, SpriteComponent& component)
-		{
 		}
 
 

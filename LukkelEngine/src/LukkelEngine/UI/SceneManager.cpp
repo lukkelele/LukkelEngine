@@ -1,7 +1,7 @@
+#pragma once
+
 #include "LKpch.h"
-#include "LukkelEngine/Scene/Editor.h"
-#include "LukkelEngine/Scene/Spawner.h"
-#include "LukkelEngine/Scene/Components.h"
+#include "LukkelEngine/UI/SceneManager.h"
 
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_glfw.h"
@@ -10,12 +10,14 @@
 
 namespace LukkelEngine {
 
-	Editor::Editor(s_ptr<Scene> scene)
-		: m_Scene(scene)
+	Entity SceneManager::m_SelectedEntity;
+
+	SceneManager::SceneManager(Scene& scene)
+		: m_Scene(&scene)
 	{
 	}
 
-	void Editor::onImGuiRender()
+	void SceneManager::onImGuiRender()
 	{
 		ImGui::Begin("Editor menu");
 
@@ -37,10 +39,12 @@ namespace LukkelEngine {
 					m_Scene->createEntity("Empty Entity");
 
 				else if (ImGui::MenuItem("New Cube"))
-					Spawner::createCube(*m_Scene, "Cube");
+					// Spawner::createCube(*m_Scene, "Cube");
+					void;
 
 				else if (ImGui::MenuItem("New floor (ground object)"))
-					Spawner::createGround(*m_Scene, "Floor");
+					void;
+					// Spawner::createGround(*m_Scene, "Floor");
 
 				ImGui::EndPopup();
 			}
@@ -56,7 +60,13 @@ namespace LukkelEngine {
 		ImGui::End();
 	}
 
-	void Editor::drawEntityNode(Entity entity)
+	void SceneManager::selectEntity(Entity& entity)
+	{
+		if (m_SelectedEntity != entity)
+			m_SelectedEntity = entity;
+	}
+
+	void SceneManager::drawEntityNode(Entity entity)
 	{
 		auto& tag = entity.getComponent<TagComponent>().tag;
 
@@ -204,7 +214,7 @@ namespace LukkelEngine {
 	}
 
 	template<typename T>
-	void Editor::displayAddComponentEntry(const std::string& entryName)
+	void SceneManager::displayAddComponentEntry(const std::string& entryName)
 	{
 		if (!m_SelectedEntity.hasComponent<T>())
 		{
@@ -216,7 +226,7 @@ namespace LukkelEngine {
 		}
 	}
 
-	void Editor::drawComponents(Entity entity)
+	void SceneManager::drawComponents(Entity entity)
 	{
 		if (entity.hasComponent<TagComponent>())
 		{
@@ -247,33 +257,6 @@ namespace LukkelEngine {
 
 		drawComponent<Mesh>("Mesh", entity, [](auto& component)
 		{
-			glm::vec3 position{ component.m_RigidBody->m_Position.getX(),
-								component.m_RigidBody->m_Position.getY(),
-								component.m_RigidBody->m_Position.getZ() };
-
-			drawVec3Control("Position", position);
-			component.m_RigidBody->m_Position = btVector3(position.x, position.y, position.z);
-
-			glm::vec3 velocity{ component.m_RigidBody->m_LinearVelocity.getX(),
-								component.m_RigidBody->m_LinearVelocity.getY(),
-								component.m_RigidBody->m_LinearVelocity.getZ() };
-			drawVec3Control("Velocity (lin)", velocity);
-			component.m_RigidBody->m_LinearVelocity = btVector3(velocity.x, velocity.y, velocity.z);
-
-			ImGui::Separator();
-			drawVec3Control("Translation", component.m_RigidBody->m_Translation);
-
-			// FIXME -> Switch from quat caused issues
-			// glm::vec3 rot = glm::make_vec3(component.m_RigidBody->m_Rotation);
-			// glm::vec3 rotation = glm::degrees(rot);
-			// drawVec3Control("Rotation", rotation);
-			// component.m_RigidBody->m_Rotation = glm::radians(rotation);
-			drawVec3Control("Scale", component.m_RigidBody->m_Scale, 1.0f);
-
-			if (ImGui::Button("Stop moving"))
-			{
-				component.m_RigidBody->m_LinearVelocity = btVector3(0.0f, 0.0f, 0.0f);
-			}
 
 		});
 

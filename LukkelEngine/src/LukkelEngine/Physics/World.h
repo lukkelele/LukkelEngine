@@ -27,6 +27,7 @@
 namespace LukkelEngine {
 
 	class Scene;
+	class Editor;
 
 	struct RaycastResult 
 	{
@@ -54,16 +55,20 @@ namespace LukkelEngine {
 		void removePickConstraint();
 		void createCollisionObject(btCollisionObject* body);
 
+		// static btRigidBody* getRigidBody(int id);
+
 		bool mouseButtonCallback(int button, int state, float x, float y);
 		bool mouseMoveCallback(float x, float y);
 		bool movePickedBody(glm::vec3& rayFrom, glm::vec3& rayTo);
 		std::pair<glm::vec3, glm::vec3> raycast(const Camera& camera);
 
 		static glm::vec3 convertWorldToNDC(const btVector3& worldCoords, float screenWidth, float screenHeight);
+
+
 		static glm::vec3 convertNDCToWorld(const glm::vec3& ndcCoords, float screenWidth, float screenHeight, const glm::mat4& viewMatrix, const glm::mat4& projectionMatrix);
 
-		class btRigidBody* m_PickedBody;
-		class btTypedConstraint* m_PickedConstraint;
+		btRigidBody* m_PickedBody;
+		btTypedConstraint* m_PickedConstraint;
 		btVector3 m_HitPos;
 		btVector3 m_OldPickingPos;
 		btScalar m_OldPickingDist;
@@ -71,6 +76,7 @@ namespace LukkelEngine {
 
 		std::vector<btTypedConstraint*> constraints;
 		// btTypedConstraint* m_PickedConstraint;
+		static uint64_t s_CurrentWorldObjects;
 
 	private:
 		btDiscreteDynamicsWorld* m_DynamicWorld = nullptr;
@@ -81,7 +87,7 @@ namespace LukkelEngine {
 
 		b3MouseButtonCallback m_PrevMouseButtonCallback = 0;
 		b3MouseMoveCallback m_PrevMouseMoveCallback = 0;
-	
+
 		bool m_ConstraintsEnabled = false;
 
 		// TODO: Implement an application function to set this automatically and even without 
@@ -95,7 +101,7 @@ namespace LukkelEngine {
 		float m_TravelSpeed = 0.10f;
 		float m_Distance = 0.50f;
 
-		friend class Scene;
 		Scene* m_Scene;
+		Editor* m_Editor;
 	};
 }

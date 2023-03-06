@@ -1,5 +1,6 @@
 #include "LKpch.h"
 #include "LukkelEngine/Physics/World.h"
+#include "LukkelEngine/Editor/Editor.h"
 #include "LukkelEngine/Scene/Scene.h"
 #include "LukkelEngine/Scene/Entity.h"
 
@@ -9,10 +10,10 @@
 namespace LukkelEngine {
 
 	PhysicsDebugger physicsDebugger;
+	uint64_t World::s_CurrentWorldObjects;
 
 	World::World()
 	{
-
 	}
 
 	World::~World()
@@ -25,8 +26,6 @@ namespace LukkelEngine {
 		m_DynamicWorld->stepSimulation(ts);
 		m_DynamicWorld->updateAabbs();
 		m_DynamicWorld->computeOverlappingPairs();
-		// Might need to flush shader here because of draw problems
-		// m_DynamicWorld->debugDrawWorld(); // BUGGED
 	}
 
 	void World::initPhysics(Scene* scene)
@@ -40,7 +39,7 @@ namespace LukkelEngine {
 		m_DynamicWorld = new btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfig);
 		m_DynamicWorld->setGravity(LK_WORLD_GRAVITY_SLOW);
 
-		physicsDebugger.setDebugMode(btIDebugDraw::DBG_DrawWireframe + btIDebugDraw::DBG_DrawContactPoints);
+		physicsDebugger.setDebugMode(btIDebugDraw::DBG_DrawWireframe + btIDebugDraw::DBG_DrawContactPoints + btIDebugDraw::DBG_DrawAabb);
 		m_DynamicWorld->setDebugDrawer(&physicsDebugger);
 	}
 
@@ -66,28 +65,20 @@ namespace LukkelEngine {
 		rayCallback.m_flags |= btTriangleRaycastCallback::kF_UseGjkConvexCastRaytest; // TODO: Switch the flag to the newly optimized one
 		m_DynamicWorld->rayTest(from, to, rayCallback);
 
+
 		if (rayCallback.hasHit())
 		{
+			LKLOG_TRACE("RAY HIT");
 			btVector3 pickPos = rayCallback.m_hitPointWorld;
 			btRigidBody* body = (btRigidBody*)btRigidBody::upcast(rayCallback.m_collisionObject);
 			if (body)
 			{
 				if (!(body->isStaticObject() || body->isKinematicObject()))
 				{
-					LKLOG_CRITICAL("PICKED OBJECT!");
 					m_PickedBody = body;
 					m_SavedState = m_PickedBody->getActivationState();
 					m_PickedBody->setActivationState(DISABLE_DEACTIVATION);
-
-					btVector3 localPivot = body->getCenterOfMassTransform().inverse() * pickPos;
-					btPoint2PointConstraint* p2p = new btPoint2PointConstraint(*body, localPivot);
-					m_DynamicWorld->addConstraint(p2p, true);
-					m_PickedConstraint = p2p;
-
-					btScalar mousePickClamping = 30.f;
-					p2p->m_setting.m_impulseClamp = mousePickClamping;
-					// Very weak constraint for picking
-					p2p->m_setting.m_tau = 0.001f;
+					LKLOG_CRITICAL("Raycast hit: {0}", body->getUserIndex());
 				}
 			}
 
@@ -95,6 +86,7 @@ namespace LukkelEngine {
 			m_HitPos = pickPos;
 			m_OldPickingDist = (pickPos - from).length();
 		}
+		LKLOG_INFO("");
 		return false;
 	}
 
@@ -127,19 +119,21 @@ namespace LukkelEngine {
 				auto cam = m_Scene->getCamera();
 				glm::mat4 viewProj = cam->getViewProjection();
 
-				float distance = 500.0f;
+				float distance = 200.0f;
 				auto [rayFrom, rayTo] = raycast(*cam);
 				Renderer::drawLine(rayFrom, rayTo * distance);
-				btCollisionWorld::ClosestRayResultCallback rayCallback(btVector3(rayFrom.x, rayFrom.y, rayFrom.z), btVector3(rayTo.x, rayTo.y, rayTo.z));
-				m_DynamicWorld->rayTest(btVector3(rayFrom.x, rayFrom.y, rayFrom.z), btVector3(rayTo.x, rayTo.y, rayTo.z), rayCallback);
 
+				btVector3 from = btVector3(rayFrom.x, rayFrom.y, rayFrom.z);
+				btVector3 to = btVector3(rayTo.x, rayTo.y, rayTo.z);
+				btCollisionWorld::ClosestRayResultCallback rayCallback(btVector3(rayFrom.x, rayFrom.y, rayFrom.z), btVector3(rayTo.x, rayTo.y, rayTo.z));
+				m_DynamicWorld->rayTest(from, to, rayCallback);
 				if (rayCallback.hasHit())
 				{
-					LKLOG_CRITICAL("Raycast: HIT REGISTERED");
-				} 
+					LKLOG_CRITICAL("HIT");
+				}
 				else
 				{
-					LKLOG_INFO("Raycast: NO HIT");
+					LKLOG_INFO("");
 				}
 				// pickBody(rayFrom, rayTo);
 			}
@@ -200,8 +194,8 @@ namespace LukkelEngine {
 		auto projection = cam.getProjection();
 		auto view = cam.getView();
 		// Lock the ray to the middle of the screen, test for now
-		mouseX = screenWidth / 2;
-		mouseY = screenHeight / 2;
+		// mouseX = screenWidth / 2;
+		// mouseY = screenHeight / 2;
 
 		glm::vec4 rayStart_NDC(
 			((float)mouseX/(float)screenWidth  - 0.5f) * 2.0f, // [0,  width] -> [-1,1]
@@ -235,47 +229,6 @@ namespace LukkelEngine {
 
 	void World::createPickingConstraint(Mesh& mesh)
 	{
-		// Get the rigidbody that is to be added a constraint
-		btRigidBody* rigidbody = mesh.getRigidBody();
-		rigidbody->setActivationState(DISABLE_DEACTIVATION);
-
-		// Create a transform for the pivot point
-		btTransform pivot;
-		pivot.setIdentity();
-	
-		// Create our constraint object
-		btGeneric6DofConstraint* dof6 = new btGeneric6DofConstraint(*rigidbody, pivot, true);
-		bool bLimitAngularMotion = true;
-		if (bLimitAngularMotion) {
-			dof6->setAngularLowerLimit(btVector3(0,0,0));
-			dof6->setAngularUpperLimit(btVector3(0,0,0));
-		}
-	
-		// Add the constraint to the world
-		m_DynamicWorld->addConstraint(dof6,true);
-		// Store a pointer to the constraint
-		m_PickedConstraint = dof6;
-	
-		// Define the 'strength'
-		float cfm = 0.5f;
-		dof6->setParam(BT_CONSTRAINT_STOP_CFM, cfm, 0);
-		dof6->setParam(BT_CONSTRAINT_STOP_CFM, cfm, 1);
-		dof6->setParam(BT_CONSTRAINT_STOP_CFM, cfm, 2);
-		dof6->setParam(BT_CONSTRAINT_STOP_CFM, cfm, 3);
-		dof6->setParam(BT_CONSTRAINT_STOP_CFM, cfm, 4);
-		dof6->setParam(BT_CONSTRAINT_STOP_CFM, cfm, 5);
-	
-		// Define the 'error reduction'
-		float erp = 0.5f;
-		dof6->setParam(BT_CONSTRAINT_STOP_ERP,erp,0);
-		dof6->setParam(BT_CONSTRAINT_STOP_ERP,erp,1);
-		dof6->setParam(BT_CONSTRAINT_STOP_ERP,erp,2);
-		dof6->setParam(BT_CONSTRAINT_STOP_ERP,erp,3);
-		dof6->setParam(BT_CONSTRAINT_STOP_ERP,erp,4);
-		dof6->setParam(BT_CONSTRAINT_STOP_ERP,erp,5);
-	
-		// Save data for future reference
-		// m_oldPickingDist  = (output.hitPoint - m_cameraPosition).length();
 	}
 
 	void World::addConstraint(btTypedConstraint* constraint, btRigidBody* body)

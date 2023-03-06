@@ -1,6 +1,5 @@
 #include "LKpch.h"
-#include "LukkelEngine/Renderer/Mesh.h"
-#include "LukkelEngine/Debug/Debugger.h"
+#include "LukkelEngine/Model/Mesh.h"
 #include "LukkelEngine/Core/Application.h"
 
 namespace LukkelEngine {
@@ -28,35 +27,6 @@ namespace LukkelEngine {
 		m_Shader->bind();
 		m_VAO->bind();
 		m_IBO->bind();
-	}
-
-	void Mesh::onUpdate(float ts, glm::mat4 viewProj)
-	{
-		glm::mat4 model = m_RigidBody->getTransform();
-		bind();
-		m_Shader->setUniformMat4f("u_ViewProj", viewProj);
-		m_Shader->setUniformMat4f("u_Model", model);
-	}
-
-	void Mesh::createRigidBody(glm::vec3& dimensions, glm::vec3& offset, float mass, RigidBody::Type bodyType)
-	{
-		btVector3 dims{ dimensions.x, dimensions.y, dimensions.z };
-		btVector3 off{ offset.x, offset.y, offset.z };
-		m_RigidBody = create_s_ptr<RigidBody>(dims, off, mass, bodyType);
-		auto rigidbody = m_RigidBody->getRigidBody();
-
-		switch (bodyType)
-		{
-			case RigidBody::Type::KINEMATIC:
-				rigidbody->setCollisionFlags(btCollisionObject::CF_KINEMATIC_OBJECT);
-				rigidbody->setActivationState(DISABLE_DEACTIVATION);
-				break;
-
-			case RigidBody::Type::STATIC:
-				rigidbody->setCollisionFlags(btCollisionObject::CF_STATIC_OBJECT);
-				rigidbody->setActivationState(DISABLE_DEACTIVATION);
-				break;
-		}
 	}
 
 	glm::mat4 Mesh::createModelMatrix(btTransform& transform)

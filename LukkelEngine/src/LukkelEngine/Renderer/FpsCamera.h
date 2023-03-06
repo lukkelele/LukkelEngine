@@ -13,9 +13,6 @@
 #include "LukkelEngine/Renderer/Camera.h"
 #include "LukkelEngine/Input/Keyboard.h"
 #include "LukkelEngine/Input/Mouse.h"
-#include "LukkelEngine/Math/Vector.h"
-
-#include "BulletDynamics/Dynamics/btDiscreteDynamicsWorld.h"
 
 namespace LukkelEngine {
 

@@ -1,7 +1,6 @@
 #include "LukkelEngine/Core/Application.h"
 
 #include "TestLayer.h"
-#include "LukkelEngine/Layer/PerformanceLayer.h"
 #include "LukkelEngine/Scene/Entity.h"
 
 
@@ -27,10 +26,8 @@ int main()
 	s_ptr<Scene>scene = std::make_shared<Scene>();
 	app.setScene(scene);
 
-	PerformanceLayer performanceOverlay;
 	TestLayer layer;
 	app.pushLayer(&layer);
-	app.pushOverlay(&performanceOverlay); 
 
 	app.run();
 

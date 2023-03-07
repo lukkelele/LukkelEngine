@@ -3,7 +3,6 @@
 #include "LukkelEngine/Core/UUID.h"
 #include "LukkelEngine/Renderer/FpsCamera.h"
 #include "LukkelEngine/Renderer/Renderer.h"
-#include "LukkelEngine/Physics/World.h"
 
 #include "entt/entt.hpp"
 #include "LukkelEngine/Debug/Debugger.h"
@@ -11,6 +10,7 @@
 namespace LukkelEngine {
 
 	class Entity;
+	class World;
 
 	class Scene
 	{
@@ -32,7 +32,7 @@ namespace LukkelEngine {
 		void pause(bool paused) { m_IsPaused = paused; }
 
 		template<typename T>
-		void onComponentAdded(Entity wObject, T& component);
+		void onComponentAdded(Entity entity, T& component);
 
 	public:
 		bool m_IsRunning = false, m_IsPaused = false;
@@ -41,6 +41,7 @@ namespace LukkelEngine {
 
 		entt::registry m_Registry;
 		std::unordered_map<UUID, entt::entity> m_EntityMap;
+		std::vector<Entity> m_Entities;
 
 		s_ptr<FpsCamera> m_Camera;
 		s_ptr<Renderer> m_Renderer;

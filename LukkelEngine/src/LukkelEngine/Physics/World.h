@@ -5,6 +5,7 @@
 #include "LukkelEngine/Scene/Components.h"
 #include "LukkelEngine/Renderer/FpsCamera.h"
 #include "LukkelEngine/Renderer/Shader.h"
+#include "LukkelEngine/Scene/Entity.h"
 
 #include "btBulletDynamicsCommon.h"
 #include "btBulletCollisionCommon.h"
@@ -51,10 +52,9 @@ namespace LukkelEngine {
 
 		void addConstraint(btTypedConstraint* constraint, btRigidBody* body);
 		void createPickingConstraint(float x, float y);
-		void createPickingConstraint(Mesh& mesh);
+		void createPickingConstraint(Entity& entity);
 		void removePickConstraint();
 		void createCollisionObject(btCollisionObject* body);
-
 		// static btRigidBody* getRigidBody(int id);
 
 		bool mouseButtonCallback(int button, int state, float x, float y);
@@ -63,8 +63,6 @@ namespace LukkelEngine {
 		std::pair<glm::vec3, glm::vec3> raycast(const Camera& camera);
 
 		static glm::vec3 convertWorldToNDC(const btVector3& worldCoords, float screenWidth, float screenHeight);
-
-
 		static glm::vec3 convertNDCToWorld(const glm::vec3& ndcCoords, float screenWidth, float screenHeight, const glm::mat4& viewMatrix, const glm::mat4& projectionMatrix);
 
 		btRigidBody* m_PickedBody;
@@ -77,7 +75,6 @@ namespace LukkelEngine {
 		std::vector<btTypedConstraint*> constraints;
 		// btTypedConstraint* m_PickedConstraint;
 		static uint64_t s_CurrentWorldObjects;
-
 	private:
 		btDiscreteDynamicsWorld* m_DynamicWorld = nullptr;
 		btBroadphaseInterface* m_Broadphase = nullptr;

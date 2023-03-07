@@ -1,6 +1,6 @@
 #pragma once
 #include "LukkelEngine/Renderer/Mesh.h"
-#include "LukkelEngine/Scene/Entity.h"
+#include "LukkelEngine/Renderer/Material.h"
 #include "LukkelEngine/Scene/Components.h"
 #include "LukkelEngine/Scene/Scene.h"
 
@@ -10,48 +10,17 @@ namespace LukkelEngine {
 	class MeshFactory
 	{
 	public:
-		MeshFactory();
+		MeshFactory() = default;
 		~MeshFactory() = default;
 
-		void createMesh(float* vertices, unsigned int* indices, std::string_view shaderPath);
+		static Mesh createBox(glm::vec3& side);
+		// static Mesh createMesh(float vertices[], unsigned int indices[]);
+		// static Mesh createSphere(float radius);
 
-	private:
-
-		float m_CubeVertices[9 * 8] = {
-			// Positions (x,y,z)  Texture coords     Color
-			-0.5f, -0.5f,  0.5f,    0.0f, 1.0f,    1.0f, 1.0f, 1.0f, 0.7, 
-			 0.5f, -0.5f,  0.5f,    1.0f, 0.0f,    0.2f, 0.5f, 0.0f, 0.7,
-			-0.5f,  0.5f,  0.5f,    1.0f, 1.0f,    1.0f, 0.0f, 1.0f, 0.7,
-			 0.5f,  0.5f,  0.5f,    1.0f, 1.0f,    0.3f, 0.5f, 0.0f, 0.7,
-			-0.5f, -0.5f, -0.5f,    0.0f, 1.0f,    0.0f, 1.0f, 0.0f, 0.7,
-			 0.5f, -0.5f, -0.5f,    0.0f, 1.0f,    0.0f, 0.5f, 0.5f, 0.7,
-			-0.5f,  0.5f, -0.5f,    1.0f, 1.0f,    0.7f, 0.0f, 1.0f, 0.7,
-			 0.5f,  0.5f, -0.5f,    0.0f, 0.0f,    1.0f, 0.5f, 0.0f, 0.7
-		};
-
-		// Make static
-		unsigned int m_CubeIndices[6 * 6] = {
-			//Top
-			2, 6, 7,
-			2, 3, 7,
-			//Bottom
-			0, 4, 5,
-			0, 1, 5,
-			//Left
-			0, 2, 6,
-			0, 4, 6,
-			//Right
-			1, 3, 7,
-			1, 5, 7,
-			//Front
-			0, 2, 3,
-			0, 1, 3,
-			//Back
-			4, 6, 7,
-			4, 5, 7
-		};
 
 	};
 
 
+	// Will implement new system to insert data to Vertex arrays and Vertex buffers
+	// static Mesh createMesh(std::vector<Vertex> vertices, std::vector<Index> indices);
 }

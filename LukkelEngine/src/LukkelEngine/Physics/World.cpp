@@ -14,6 +14,7 @@ namespace LukkelEngine {
 
 	World::World()
 	{
+		LKLOG_TRACE("World created");
 	}
 
 	World::~World()
@@ -227,7 +228,7 @@ namespace LukkelEngine {
 	{
 	}
 
-	void World::createPickingConstraint(Mesh& mesh)
+	void World::createPickingConstraint(Entity& entity)
 	{
 	}
 

@@ -2,9 +2,8 @@
 #include "LukkelEngine/Scene/Scene.h"
 #include "LukkelEngine/Scene/Entity.h"
 #include "LukkelEngine/Scene/Components.h"
+#include "LukkelEngine/Physics/World.h"
 #include "LukkelEngine/Debug/PhysicsDebugger.h"
-
-#include "glm/glm.hpp"
 
 
 namespace LukkelEngine {
@@ -34,7 +33,7 @@ namespace LukkelEngine {
 		Entity entity = { m_Registry.create(), this };
 		entity.addComponent<IDComponent>(uuid);
 		TagComponent& tag = entity.addComponent<TagComponent>();
-		tag.tag = name.empty() ? "Object" : name;
+		tag.tag = name.empty() ? "Entity" : name;
 		m_EntityMap[uuid] = entity;
 		return entity;
 	}
@@ -81,13 +80,16 @@ namespace LukkelEngine {
 		if (Mouse::isButtonPressed(MouseButton::Button0))
 			m_World->mouseButtonCallback(MouseButton::Button0, 1, Mouse::getMouseX(), Mouse::getMouseY());
 
-		auto Entitys = m_Registry.view<Entity>();
-		for (auto wo : Entitys)
-		{	
-			Entity Entity = { wo, this };
-			Entity.onUpdate(ts, viewProj);
+		auto entities = m_Registry.view<Entity>();
+		LKLOG_INFO("entities: {0}", entities.size());
 
-			// m_Renderer->drawShape(mesh, btVector3(1, 1, 1));
+		// for (auto ent : entities)
+		for (auto ent : m_Entities)
+		{	
+			Entity entity = { ent, this };
+			LKLOG_TRACE("-> {0}", entity.getName());
+			entity.onUpdate(ts, viewProj);
+			m_Renderer->drawShape(entity);
 			// m_Renderer->draw(mesh);
 		}
 	}

@@ -1,6 +1,6 @@
 #include "LKpch.h"
 #include "LukkelEngine/Renderer/Renderer.h"
-#include "LukkelEngine/Renderer/Mesh.h"
+#include "LukkelEngine/Scene/Entity.h"
 
 #include "imgui/examples/imgui_impl_glfw.h"
 #include "imgui/examples/imgui_impl_opengl3.h"
@@ -24,8 +24,9 @@ namespace LukkelEngine {
 		glDrawElements(s_DrawMode, ib.getCount(), GL_UNSIGNED_INT, nullptr);
 	}
 
-	void Renderer::draw(Mesh& mesh) const
+	void Renderer::draw(Entity& entity) const
 	{
+		auto mesh = entity.getComponent<Mesh>();
 		mesh.bind();
 		unsigned int count = mesh.getIndexBuffer()->getCount();
 		glDrawElements(s_DrawMode, count, GL_UNSIGNED_INT, nullptr);
@@ -149,11 +150,11 @@ namespace LukkelEngine {
 	}
 
 	// void Renderer::drawShape(btCollisionShape* shape, btVector3& color)
-	void Renderer::drawShape(Mesh& mesh, btVector3& color)
+	void Renderer::drawShape(Entity& entity)
 	{
-		auto body = mesh.getRigidBody();
-		auto shape = body->getCollisionShape();
-		auto shapeType = mesh.getShapeType();
+		auto body = entity.getComponent<RigidBody>();
+		auto shape = body.getCollisionShape();
+		auto shapeType = body.getShapeType();
 		// Box 
 		if (shapeType == BOX_SHAPE_PROXYTYPE)
 		{

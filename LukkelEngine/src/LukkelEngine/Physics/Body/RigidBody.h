@@ -1,5 +1,4 @@
 #pragma once
-
 #include "LukkelEngine/Core/Base.h"
 #include "LukkelEngine/Physics/Body/MotionState.h"
 
@@ -20,14 +19,15 @@ namespace LukkelEngine {
 
 		void onUpdate(float ts);
 		glm::vec3 getPosition() { return glm::vec3(m_Position.getX(), m_Position.getY(), m_Position.getZ()); }
-		int getShapeType() { return m_RigidBody->getCollisionShape()->getShapeType(); }
 		btTransform getWorldTransform() { return m_RigidBody->getWorldTransform(); }
+		btCollisionShape* getCollisionShape() { return m_RigidBody->getCollisionShape(); }
+		int getShapeType() { return m_RigidBody->getCollisionShape()->getShapeType(); }
 
 		void setFriction(float f) { m_Friction = f; }
 		void setRestitution(float r) { m_Restitution= r; }
 		void setWorldTransform(glm::mat4& transform);
-		void setCollisionFlags(int flag);
-		void setActivationState(int state);
+		void setCollisionFlags(int flags) { m_RigidBody->setCollisionFlags(flags); }
+		void setActivationState(int state) { m_RigidBody->setActivationState(state); }
 
 	private:
 		btCollisionShape* m_Shape = nullptr;

@@ -8,6 +8,8 @@ namespace LukkelEngine {
 	{
 	}
 
-
+	void RigidBody::setWorldTransform(glm::mat4& transform)
+	{
+	}
 
 }

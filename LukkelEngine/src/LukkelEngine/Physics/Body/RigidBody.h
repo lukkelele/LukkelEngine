@@ -22,7 +22,6 @@ namespace LukkelEngine {
 		glm::vec3 getPosition() { return glm::vec3(m_Position.getX(), m_Position.getY(), m_Position.getZ()); }
 		int getShapeType() { return m_RigidBody->getCollisionShape()->getShapeType(); }
 		btTransform getWorldTransform() { return m_RigidBody->getWorldTransform(); }
-		glm::mat4 getTransform();
 
 		void setFriction(float f) { m_Friction = f; }
 		void setRestitution(float r) { m_Restitution= r; }

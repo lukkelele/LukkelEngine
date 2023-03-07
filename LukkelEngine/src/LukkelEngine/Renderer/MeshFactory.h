@@ -1,8 +1,8 @@
 #pragma once
+#include "LukkelEngine/Renderer/Mesh.h"
 #include "LukkelEngine/Scene/Entity.h"
 #include "LukkelEngine/Scene/Components.h"
 #include "LukkelEngine/Scene/Scene.h"
-#include "LukkelEngine/Model/Mesh.h"
 
 
 namespace LukkelEngine {

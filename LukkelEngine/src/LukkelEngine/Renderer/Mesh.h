@@ -25,9 +25,8 @@ namespace LukkelEngine {
 		s_ptr<Texture> getTexture() { return m_Texture; }
 		s_ptr<IndexBuffer> getIndexBuffer() { return m_IBO; }
 
-		void setUniform3f(std::string_view uniformName, glm::vec3& vec3);
-		void setUniform4f(std::string_view uniformName, glm::vec4& vec4);
-		void setUniformMat4f(std::string_view uniformName, glm::mat4& mat);
+		void setUniform4f(const std::string uniformName, glm::vec4& vec4);
+		void setUniformMat4f(const std::string uniformName, glm::mat4& mat);
 
 		glm::mat4 createModelMatrix(btTransform& transform);
 

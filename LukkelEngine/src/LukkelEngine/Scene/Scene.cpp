@@ -1,7 +1,7 @@
 #include "LKpch.h"
 #include "LukkelEngine/Scene/Scene.h"
+#include "LukkelEngine/Scene/Entity.h"
 #include "LukkelEngine/Scene/Components.h"
-#include "LukkelEngine/Model/WorldObject.h"
 #include "LukkelEngine/Debug/PhysicsDebugger.h"
 
 #include "glm/glm.hpp"
@@ -23,20 +23,46 @@ namespace LukkelEngine {
 	{
 	}
 
-	WorldObject Scene::createObject(const std::string& name)
+	Entity Scene::createEntity(const std::string& name)
 	{
-		WorldObject worldObject = createObjectWithUUID(UUID(), name);
-		return worldObject;
+		Entity entity = createEntityWithUUID(UUID(), name);
+		return entity;
 	}
 
-	WorldObject Scene::createObjectWithUUID(UUID uuid, const std::string& name)
+	Entity Scene::createEntityWithUUID(UUID uuid, const std::string& name)
 	{
-		WorldObject worldObject = { m_Registry.create(), this };
-		worldObject.addComponent<IDComponent>(uuid);
-		TagComponent& tag = worldObject.addComponent<TagComponent>();
+		Entity entity = { m_Registry.create(), this };
+		entity.addComponent<IDComponent>(uuid);
+		TagComponent& tag = entity.addComponent<TagComponent>();
 		tag.tag = name.empty() ? "Object" : name;
-		m_ObjectMap[uuid] = worldObject;
-		return worldObject;
+		m_EntityMap[uuid] = entity;
+		return entity;
+	}
+
+	Entity Scene::getEntityWithUUID(UUID uuid)
+	{
+		if (m_EntityMap.find(uuid) != m_EntityMap.end())
+			return { m_EntityMap.at(uuid), this };
+		return { };
+	}
+
+	Entity Scene::findEntity(std::string_view name)
+	{
+		auto view = m_Registry.view<TagComponent>();
+		for (auto entity : view)
+		{
+			const TagComponent& tc = view.get<TagComponent>(entity);
+			if (tc.tag == name)
+				return Entity{ entity , this };
+		}
+		return {};
+	}
+
+	void Scene::destroyEntity(Entity entity)
+	{
+		m_EntityMap.erase(entity.getUUID());
+		m_Registry.destroy(entity);
+		LKLOG_CRITICAL("Entity successfully deleted");
 	}
 
 	void Scene::onUpdate(float ts)
@@ -55,11 +81,11 @@ namespace LukkelEngine {
 		if (Mouse::isButtonPressed(MouseButton::Button0))
 			m_World->mouseButtonCallback(MouseButton::Button0, 1, Mouse::getMouseX(), Mouse::getMouseY());
 
-		auto worldObjects = m_Registry.view<WorldObject>();
-		for (auto wo : worldObjects)
+		auto Entitys = m_Registry.view<Entity>();
+		for (auto wo : Entitys)
 		{	
-			WorldObject worldObject = { wo, this };
-			worldObject.onUpdate(ts, viewProj);
+			Entity Entity = { wo, this };
+			Entity.onUpdate(ts, viewProj);
 
 			// m_Renderer->drawShape(mesh, btVector3(1, 1, 1));
 			// m_Renderer->draw(mesh);
@@ -72,11 +98,10 @@ namespace LukkelEngine {
 	}
 
 	template<typename T>
-		void Scene::onComponentAdded(WorldObject entity, T& component)
+		void Scene::onComponentAdded(Entity entity, T& component)
 		{
 			// static assert	
 		}
-
 
 
 }

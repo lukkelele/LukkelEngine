@@ -1,5 +1,5 @@
 #include "LKpch.h"
-#include "LukkelEngine/Model/Mesh.h"
+#include "LukkelEngine/Renderer/Mesh.h"
 #include "LukkelEngine/Core/Application.h"
 
 namespace LukkelEngine {
@@ -28,6 +28,17 @@ namespace LukkelEngine {
 		m_VAO->bind();
 		m_IBO->bind();
 	}
+
+	void Mesh::setUniform4f(const std::string uniformName, glm::vec4& vec4)
+	{
+		m_Shader->setUniform4f(uniformName, vec4.x, vec4.y, vec4.z, vec4.w);
+	}
+
+	void Mesh::setUniformMat4f(const std::string uniformName, glm::mat4& mat)
+	{
+
+	}
+
 
 	glm::mat4 Mesh::createModelMatrix(btTransform& transform)
 	{

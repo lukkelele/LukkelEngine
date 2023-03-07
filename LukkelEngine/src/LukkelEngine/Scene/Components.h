@@ -3,7 +3,7 @@
 #include "LukkelEngine/Renderer/Shader.h"
 #include "LukkelEngine/Renderer/Texture.h"
 #include "LukkelEngine/Core/UUID.h"
-#include "LukkelEngine/Model/Mesh.h"
+#include "LukkelEngine/Renderer/Mesh.h"
 
 #include <glm/glm.hpp>
 #include "btBulletDynamicsCommon.h"

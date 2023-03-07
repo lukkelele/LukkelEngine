@@ -10,7 +10,7 @@
 
 namespace LukkelEngine {
 
-	class WorldObject;
+	class Entity;
 
 	class Scene
 	{
@@ -22,15 +22,17 @@ namespace LukkelEngine {
 		void onImGuiRender();
 		const s_ptr<FpsCamera> getCamera() const { return m_Camera; }
 
-		WorldObject createObject(const std::string& name);
-		WorldObject createObjectWithUUID(UUID uuid, const std::string& name);
-		void destroyObject(WorldObject entity);
+		Entity getEntityWithUUID(UUID uuid);
+		Entity findEntity(std::string_view name);
+		Entity createEntity(const std::string& name);
+		Entity createEntityWithUUID(UUID uuid, const std::string& name);
+		void destroyEntity(Entity entity);
 
 		bool isRunning() const { return m_IsRunning; }
 		void pause(bool paused) { m_IsPaused = paused; }
 
 		template<typename T>
-		void onComponentAdded(WorldObject wObject, T& component);
+		void onComponentAdded(Entity wObject, T& component);
 
 	public:
 		bool m_IsRunning = false, m_IsPaused = false;
@@ -38,7 +40,7 @@ namespace LukkelEngine {
 		Timer m_Timer;
 
 		entt::registry m_Registry;
-		std::unordered_map<UUID, entt::entity> m_ObjectMap;
+		std::unordered_map<UUID, entt::entity> m_EntityMap;
 
 		s_ptr<FpsCamera> m_Camera;
 		s_ptr<Renderer> m_Renderer;

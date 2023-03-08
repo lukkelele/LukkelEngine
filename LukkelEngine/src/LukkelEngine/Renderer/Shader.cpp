@@ -3,11 +3,6 @@
 
 namespace LukkelEngine {
 
-
-	/**
-	 * Shader constructor
-	 * @param filePath is the relative path
-	*/
 	Shader::Shader(const std::string& filePath)
 		: m_filePath(filePath)   // keep for debug purposes
 	{
@@ -20,17 +15,11 @@ namespace LukkelEngine {
 		GLCall(glDeleteProgram(m_RendererID));	// successful if m_RendererID isn't 0
 	}
 
-	/**
-	 * Bind the shader
-	*/
 	void Shader::bind() const
 	{
 		GLCall(glUseProgram(m_RendererID));
 	}
 
-	/**
-	 * Unbind the shader
-	*/
 	void Shader::unbind() const
 	{
 		GLCall(glUseProgram(0));

@@ -4,6 +4,8 @@
 #include "LukkelEngine/Renderer/Texture.h"
 #include "LukkelEngine/Core/UUID.h"
 #include "LukkelEngine/Renderer/Mesh.h"
+#include "LukkelEngine/Renderer/Material.h"
+#include "LukkelEngine/Physics/Body/RigidBody.h"
 
 #include <glm/glm.hpp>
 #include "btBulletDynamicsCommon.h"
@@ -11,6 +13,10 @@
 
 
 namespace LukkelEngine{
+
+	class Material;
+	class Mesh;
+	class RigidBody;
 
 	struct IDComponent
 	{
@@ -37,6 +43,6 @@ namespace LukkelEngine{
 	};
 
 	using AllComponents =
-		ComponentGroup<IDComponent, TagComponent, Mesh>;
+		ComponentGroup<IDComponent, TagComponent, Mesh, RigidBody>;
 
 }

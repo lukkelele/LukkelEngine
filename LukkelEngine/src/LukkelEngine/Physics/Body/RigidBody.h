@@ -12,16 +12,25 @@ namespace LukkelEngine {
 	class RigidBody
 	{
 	public:
-		enum class Type { STATIC, DYNAMIC, KINEMATIC };
+		enum Type
+		{ 
+			STATIC = btCollisionObject::CF_STATIC_OBJECT,
+			DYNAMIC = btCollisionObject::CF_DYNAMIC_OBJECT,
+			KINEMATIC = btCollisionObject::CF_KINEMATIC_OBJECT
+		};
 
-		RigidBody() = default;
+		RigidBody(glm::vec3 dimensions, glm::vec3 offset, float mass, RigidBody::Type bodyType, 
+				  float friction, float restitution, glm::vec3 inertia);
+		RigidBody(const RigidBody& other) = default;
 		~RigidBody() = default;
 
 		void onUpdate(float ts);
 		glm::vec3 getPosition() { return glm::vec3(m_Position.getX(), m_Position.getY(), m_Position.getZ()); }
-		btTransform getWorldTransform() { return m_RigidBody->getWorldTransform(); }
+		btTransform getWorldTransform();
+		btRigidBody* getRigidBody() { return m_RigidBody; }
 		btCollisionShape* getCollisionShape() { return m_RigidBody->getCollisionShape(); }
 		int getShapeType() { return m_RigidBody->getCollisionShape()->getShapeType(); }
+		const RigidBody::Type getType() { return m_Type; }
 
 		void setFriction(float f) { m_Friction = f; }
 		void setRestitution(float r) { m_Restitution= r; }
@@ -46,6 +55,7 @@ namespace LukkelEngine {
 		float m_Restitution = 0.20f;
 
 		friend class RigidBodyFactory;
+		friend class World;
 	};
 
 }

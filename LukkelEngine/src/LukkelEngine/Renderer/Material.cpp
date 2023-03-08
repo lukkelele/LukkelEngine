@@ -5,6 +5,14 @@
 
 namespace LukkelEngine {
 
+	// FIXME
+	Material::Material()
+	{ // Set default values
+		std::string path = "assets/shaders/basic.shader";
+		m_Shader = create_s_ptr<Shader>(path);
+		LKLOG_TRACE("[MATERIAL] Creating shader using -> {0}", path);
+		// m_Texture = create_s_ptr<Texture>("");
+	}
 
 	Material::Material(const std::string& shaderPath, const std::string& texturePath)
 	{
@@ -14,14 +22,16 @@ namespace LukkelEngine {
 
 	void Material::bind()
 	{
-		m_Shader->bind();
-		m_Texture->bind();
+		if (m_Shader)
+			m_Shader->bind();
+		if (m_Texture)
+			m_Texture->bind();
 	}
 
-	Material& Material::create()
-	{
-		return Materials::DebugMaterial(); // For now
-	}
+	// Material& Material::create()
+	// {
+	// 	// return Materials::DebugMaterial(); // For now
+	// }
 
 	template<typename T>
 	void Material::set(const std::string& uniform, T& value)

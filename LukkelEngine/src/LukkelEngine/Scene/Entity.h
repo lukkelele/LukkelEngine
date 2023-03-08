@@ -17,17 +17,12 @@ namespace LukkelEngine {
 	{
 	public:
 		Entity() = default;
-		Entity(Mesh mesh, RigidBody rigidBody, Material material);
 		Entity(entt::entity handle, Scene* scene);
 		~Entity() {}
 
 		void bind();
 		void onUpdate(float ts, glm::mat4 viewProj);
 		void remove();
-
-		void setMesh(s_ptr<Mesh> mesh) { m_Mesh = mesh; }
-		void setRigidBody(s_ptr<RigidBody> rigidBody) { m_RigidBody = rigidBody; }
-		void setMaterial(s_ptr<Material> material) { m_Material = material; }
 
 		glm::mat4 getTransform(glm::mat4& viewProj);
 
@@ -78,10 +73,6 @@ namespace LukkelEngine {
 		entt::entity m_EntityHandle{ entt::null };
 		int m_ID; // Rigidbody identifier
 		Scene* m_Scene = nullptr;
-
-		s_ptr<Mesh> m_Mesh = nullptr;
-		s_ptr<RigidBody> m_RigidBody = nullptr;
-		s_ptr<Material> m_Material;
 
 		glm::vec3 m_Position{ 1.0f, 1.0f, 1.0f };
 		glm::vec3 m_Scale{ 1.0f, 1.0f, 1.0f };

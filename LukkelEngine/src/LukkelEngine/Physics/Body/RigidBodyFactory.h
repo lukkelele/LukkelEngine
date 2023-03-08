@@ -19,7 +19,7 @@ namespace LukkelEngine {
 		RigidBodyFactory();
 		~RigidBodyFactory() = default;
 		
-		static RigidBody& createRigidBody(glm::vec3 dimensions, glm::vec3 offset, float mass,
+		static RigidBody createRigidBody(glm::vec3 dimensions, glm::vec3 offset, float mass,
 										  RigidBody::Type bodyType, float friction = 0.90f,
 										  float restitution = 0.30f, glm::vec3 inertia = glm::vec3(0.0f, 0.0f, 0.0f));
 

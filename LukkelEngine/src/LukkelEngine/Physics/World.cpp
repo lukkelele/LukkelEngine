@@ -10,10 +10,11 @@
 namespace LukkelEngine {
 
 	PhysicsDebugger physicsDebugger;
-	uint64_t World::s_CurrentWorldObjects;
+	uint64_t World::s_EntitiesInWorld;
 
 	World::World()
 	{
+		s_EntitiesInWorld = 0;
 		LKLOG_TRACE("World created");
 	}
 
@@ -94,6 +95,13 @@ namespace LukkelEngine {
 	void World::stepSimulation(float ts)
 	{
 		m_DynamicWorld->stepSimulation(ts);
+	}
+
+	void World::addRigidBodyToWorld(btRigidBody* rigidbody)
+	{ 
+		LKLOG_WARN("Adding rigidbody to world");
+		m_DynamicWorld->addRigidBody(rigidbody);
+		s_EntitiesInWorld++;
 	}
 
 

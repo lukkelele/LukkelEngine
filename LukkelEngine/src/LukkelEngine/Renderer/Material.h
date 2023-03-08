@@ -9,12 +9,12 @@ namespace LukkelEngine {
 	class Material
 	{
 	public:
-		Material() = default;
+		Material();
 		Material(const std::string& shaderPath, const std::string& texturePath);
 		virtual ~Material() = default;
 
 		void bind();
-		static Material& create();
+		// static Material& create();
 		// virtual void onReload();
 		// virtual void copy(const Material& other, const std::string& name);
 		// virtual void create(const Material&, const std::string& name);

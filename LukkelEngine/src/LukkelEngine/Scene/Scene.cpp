@@ -80,17 +80,14 @@ namespace LukkelEngine {
 		if (Mouse::isButtonPressed(MouseButton::Button0))
 			m_World->mouseButtonCallback(MouseButton::Button0, 1, Mouse::getMouseX(), Mouse::getMouseY());
 
-		auto entities = m_Registry.view<Entity>();
-		LKLOG_INFO("entities: {0}", entities.size());
+		auto entities = m_Registry.view<Mesh>();
 
-		// for (auto ent : entities)
-		for (auto ent : m_Entities)
+		for (auto& ent : entities)
 		{	
 			Entity entity = { ent, this };
-			LKLOG_TRACE("-> {0}", entity.getName());
 			entity.onUpdate(ts, viewProj);
 			m_Renderer->drawShape(entity);
-			// m_Renderer->draw(mesh);
+			// m_Renderer->draw(entity);
 		}
 	}
 
@@ -104,6 +101,28 @@ namespace LukkelEngine {
 		{
 			// static assert	
 		}
+
+		template<>
+		void Scene::onComponentAdded<Mesh>(Entity entity, Mesh& mesh)
+		{
+			LKLOG_TRACE("Mesh Component added to {0}", entity.getName());
+		}
+
+		template<>
+		void Scene::onComponentAdded<RigidBody>(Entity entity, RigidBody& rigidbody)
+		{
+			LKLOG_TRACE("RigidBody Component added to {0}", entity.getName());
+			auto rigidBody = rigidbody.getRigidBody();
+			m_World->addRigidBodyToWorld(rigidBody);
+			rigidBody->setCollisionFlags(rigidbody.getType());
+		}
+
+		template<>
+		void Scene::onComponentAdded<Material>(Entity entity, Material& rigidbody)
+		{
+			LKLOG_TRACE("Material Component added to {0}", entity.getName());
+		}
+
 
 
 }

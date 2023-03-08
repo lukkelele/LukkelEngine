@@ -47,7 +47,7 @@ namespace LukkelEngine {
 		void shutdownPhysics();
 
 		void stepSimulation(float ts);
-		void addRigidBodyToWorld(btRigidBody* body) { m_DynamicWorld->addRigidBody(body); }
+		void addRigidBodyToWorld(btRigidBody* rigidbody);
 		bool pickBody(glm::vec3& rayFrom, glm::vec3& rayTo);
 
 		void addConstraint(btTypedConstraint* constraint, btRigidBody* body);
@@ -74,7 +74,7 @@ namespace LukkelEngine {
 
 		std::vector<btTypedConstraint*> constraints;
 		// btTypedConstraint* m_PickedConstraint;
-		static uint64_t s_CurrentWorldObjects;
+		static uint64_t s_EntitiesInWorld;
 	private:
 		btDiscreteDynamicsWorld* m_DynamicWorld = nullptr;
 		btBroadphaseInterface* m_Broadphase = nullptr;

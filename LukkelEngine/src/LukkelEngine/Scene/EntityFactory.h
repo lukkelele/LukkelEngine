@@ -12,7 +12,7 @@ namespace LukkelEngine {
 		EntityFactory() = default;
 		~EntityFactory() = default;
 
-		static void createBox(glm::vec3& dims, const std::string& name, Scene& scene);
+		static Entity createBox(glm::vec3& dims, glm::vec3& offset, const std::string& name, RigidBody::Type bodytype, Scene& scene);
 	};
 
 }

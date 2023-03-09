@@ -14,11 +14,10 @@ namespace LukkelEngine {
 		virtual ~Material() = default;
 
 		void bind();
-		// static Material& create();
-		// virtual void onReload();
-		// virtual void copy(const Material& other, const std::string& name);
-		// virtual void create(const Material&, const std::string& name);
-		// virtual void detachShader();
+		s_ptr<Shader> getShader() const { return m_Shader; }
+
+		glm::vec4 getMaterialColor() const { return m_Color; }
+		void setMaterialColor(glm::vec4 color) { m_Color = color; }
 		
 		template<typename T>
 		void set(const std::string& uniform, T& value);
@@ -26,6 +25,7 @@ namespace LukkelEngine {
 	protected:
 		s_ptr<Shader> m_Shader = nullptr;
 		s_ptr<Texture> m_Texture = nullptr;
+		glm::vec4 m_Color{ 1.0f, 1.0f, 1.0f, 1.0f };
 	};
 
 }

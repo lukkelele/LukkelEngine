@@ -2,6 +2,9 @@
 #include "LukkelEngine/Scene/Scene.h"
 #include "LukkelEngine/Scene/Entity.h"
 #include "LukkelEngine/Scene/Components.h"
+#include "LukkelEngine/Renderer/Mesh.h"
+#include "LukkelEngine/Physics/Body/RigidBody.h"
+#include "LukkelEngine/Renderer/Material.h"
 
 #include "imgui/imgui_internal.h"
 #include "entt/entt.hpp"

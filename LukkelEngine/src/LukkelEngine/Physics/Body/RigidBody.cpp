@@ -10,6 +10,7 @@ namespace LukkelEngine {
 	{
 		btVector3 dims{ dimensions.x, dimensions.y, dimensions.z };
 		btVector3 off{ offset.x, offset.y, offset.z };
+		m_Dimensions = dims;
 		m_Shape = new btBoxShape(dims);
 		btTransform transform;
 		transform.setIdentity();
@@ -25,22 +26,6 @@ namespace LukkelEngine {
 		m_RigidBody->setRestitution(m_Restitution);
 		m_RigidBody->forceActivationState(DISABLE_DEACTIVATION);
 
-		// Does not change collisions, might need to be set AFTER world insertion
-		switch (bodyType)
-		{
-			case RigidBody::Type::DYNAMIC:
-				LKLOG_WARN("Setting body: DYNAMIC");
-				m_RigidBody->setCollisionFlags(btCollisionObject::CF_DYNAMIC_OBJECT);
-				break;
-			case RigidBody::Type::KINEMATIC:
-				LKLOG_WARN("Setting body: KINEMATIC");
-				m_RigidBody->setCollisionFlags(btCollisionObject::CF_KINEMATIC_OBJECT);
-				break;
-			case RigidBody::Type::STATIC:
-				LKLOG_WARN("Setting body: STATIC");
-				m_RigidBody->setCollisionFlags(btCollisionObject::CF_STATIC_OBJECT);
-				break;
-		}
 
 	}
 

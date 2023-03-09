@@ -5,11 +5,14 @@
 
 namespace LukkelEngine {
 
-	Mesh::Mesh(float vertices[], unsigned int indices[], std::vector<int> vertbufLayout)
+	Mesh::Mesh(float vertices[], unsigned int indices[], std::vector<int> vertbufLayout, unsigned int vertCount, unsigned int indexCount)
 	{
 		m_VAO = create_s_ptr<VertexArray>();
-		m_VBO = create_s_ptr<VertexBuffer>(vertices, (sizeof(vertices) / sizeof(float)) * sizeof(float));
-		m_IBO = create_s_ptr<IndexBuffer>(indices, (sizeof(indices) / sizeof(unsigned int)) * sizeof(unsigned int));
+		LKLOG_INFO("");
+		// m_VBO = create_s_ptr<VertexBuffer>(vertices, (sizeof(vertices) / sizeof(float)) * sizeof(float));
+		// m_IBO = create_s_ptr<IndexBuffer>(indices, (sizeof(indices) / sizeof(unsigned int)) * sizeof(unsigned int));
+		m_VBO = create_s_ptr<VertexBuffer>(vertices, vertCount * sizeof(float));
+		m_IBO = create_s_ptr<IndexBuffer>(indices, indexCount * sizeof(unsigned int));
 
 		VertexBufferLayout layout;
 		for (int num : vertbufLayout)

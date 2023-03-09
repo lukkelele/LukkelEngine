@@ -20,7 +20,6 @@ namespace LukkelEngine {
 		Entity(entt::entity handle, Scene* scene);
 		~Entity() {}
 
-		void bind();
 		void onUpdate(float ts, glm::mat4 viewProj);
 		void remove();
 
@@ -69,13 +68,16 @@ namespace LukkelEngine {
 		bool operator==(const Entity& other) const { return m_EntityHandle == other.m_EntityHandle && m_Scene == other.m_Scene; }
 		bool operator!=(const Entity& other) const { return !(*this == other); }
 
+		void setScale(glm::vec3 scale) { m_Scale = scale; }
+		glm::vec3 getScale() const { return m_Scale; }
+
+		glm::vec3 m_Scale{ 1.0f, 1.0f, 1.0f };
 	private:
 		entt::entity m_EntityHandle{ entt::null };
 		int m_ID; // Rigidbody identifier
 		Scene* m_Scene = nullptr;
 
 		glm::vec3 m_Position{ 1.0f, 1.0f, 1.0f };
-		glm::vec3 m_Scale{ 1.0f, 1.0f, 1.0f };
 		glm::vec3 m_Translation{ 0.0f, 0.0f, 0.0f };
 		glm::quat m_Rotation{ 1.0f, 0.0f, 0.0f, 0.0f };
 

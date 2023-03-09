@@ -16,7 +16,8 @@ namespace LukkelEngine {
 		RigidBody rigidBody(dimensions, offset, mass, bodyType, friction, restitution, inertia);
 		// rigidBody.m_RigidBody->setUserPointer((void*)id);
 		// rigidBody.m_RigidBody->setUserIndex(id);
-
+		// rigidBody.setCollisionFlags(btCollisionObject::CF_STATIC_OBJECT);
+		rigidBody.setCollisionFlags(bodyType);
 		return rigidBody;
 	}
 

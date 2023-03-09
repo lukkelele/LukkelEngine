@@ -19,13 +19,19 @@ void TestLayer::onAttach()
 	m_Editor = create_s_ptr<Editor>(m_Scene);
 	
 	glm::vec3 boxDims{ 2.0f, 2.0f, 2.0f };
+	glm::vec3 smallerBoxDims{ 1.0f, 1.0f, 1.0f };
 	glm::vec3 boxOffset{ 0.0f, 6.0f, 0.0f };
 
 	glm::vec3 groundOffset{ 0.0f, -6.0f, 0.0f };
 	glm::vec3 groundDims{ 50.0f, 2.0f, 50.0f };
 
-	auto box = EntityFactory::createBox(boxDims, boxOffset, "Cube", RigidBody::Type::DYNAMIC, *m_Scene);
-	auto ground = EntityFactory::createBox(groundDims, groundOffset, "Ground", RigidBody::Type::STATIC, *m_Scene);
+	EntityProperties cubeProps("Cube", boxDims, boxOffset, 5.0f, RigidBody::Type::DYNAMIC);
+	EntityProperties smallerCubeProps("Smaller Cube", smallerBoxDims, boxOffset, 3.0f, RigidBody::Type::DYNAMIC);
+	EntityProperties groundProps("Ground", groundDims, groundOffset, 0.0f, RigidBody::Type::STATIC);
+
+	EntityFactory::createBox(cubeProps, *m_Scene);
+	EntityFactory::createBox(smallerCubeProps, *m_Scene);
+	EntityFactory::createBox(groundProps, *m_Scene);
 }
 
 void TestLayer::onUpdate(float ts)

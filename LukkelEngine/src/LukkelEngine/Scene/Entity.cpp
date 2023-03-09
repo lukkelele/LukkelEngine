@@ -10,6 +10,7 @@ namespace LukkelEngine {
 	 {
 	 }
 
+	// Remove
 	void Entity::onUpdate(float ts, glm::mat4 viewProj)
 	{
 		glm::mat4 model = getTransform(viewProj);

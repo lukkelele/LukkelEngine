@@ -8,8 +8,10 @@
 #include "LukkelEngine/Physics/Body/RigidBody.h"
 
 #include <glm/glm.hpp>
-#include "btBulletDynamicsCommon.h"
-#include "btBulletCollisionCommon.h"
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtx/quaternion.hpp>
+#include <btBulletDynamicsCommon.h>
+#include <btBulletCollisionCommon.h>
 
 
 namespace LukkelEngine{
@@ -34,6 +36,26 @@ namespace LukkelEngine{
 		TagComponent(const TagComponent&) = default;
 		TagComponent(const std::string& tag)
 			: tag(tag) {}
+	};
+
+	struct TransformComponent
+	{
+		glm::vec3 translation = { 0.0f, 0.0f, 0.0f };
+		glm::vec3 scale = { 1.0f, 1.0f, 1.0f };
+		glm::quat rotation = { 1.0f, 0.0f, 0.0f, 0.0f };
+
+		TransformComponent() = default;
+		TransformComponent(const TransformComponent& other) = default;
+		TransformComponent(const glm::vec3& translation)
+			: translation(translation) {}
+
+		glm::mat4 GetTransform() const
+		{
+			return glm::translate(glm::mat4(1.0f), translation)
+				 * glm::toMat4(rotation)
+				 * glm::scale(glm::mat4(1.0f), scale);
+		}
+
 	};
 
 

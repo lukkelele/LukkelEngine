@@ -47,8 +47,9 @@ namespace LukkelEngine {
 		void shutdownPhysics();
 
 		void stepSimulation(float ts);
-		void addRigidBodyToWorld(btRigidBody* rigidbody);
 		bool pickBody(glm::vec3& rayFrom, glm::vec3& rayTo);
+		template<typename T>
+		void addRigidBodyToWorld(T& rigidbody);
 
 		void addConstraint(btTypedConstraint* constraint, btRigidBody* body);
 		void createPickingConstraint(float x, float y);

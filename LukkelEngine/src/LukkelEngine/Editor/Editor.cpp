@@ -259,8 +259,9 @@ namespace LukkelEngine {
 
 		if (ImGui::BeginPopup("AddComponent"))
 		{
-			// displayAddComponentEntry<RigidBody>("Rigidbody 3D");
-			// displayAddComponentEntry<MeshComponent>("Mesh Component");
+			displayAddComponentEntry<Mesh>("Mesh");
+			displayAddComponentEntry<RigidBody>("Rigidbody");
+			displayAddComponentEntry<Material>("Material");
 			ImGui::EndPopup();
 		}
 
@@ -270,6 +271,20 @@ namespace LukkelEngine {
 		{
 
 		});
+
+		drawComponent<RigidBody>("Rigidbody", entity, [](auto& component)
+		{
+
+		});
+
+		drawComponent<Material>("Material", entity, [](auto& component)
+		{
+			// glm::vec4 color = glm::vec4(component.getMaterialColor(), 1.0f);
+			glm::vec3 color = component.getMaterialColor();
+			drawVec3Control("Color", color);
+			component.setMaterialColor(glm::vec4(color, 1.0f));
+		});
+
 
 	}
 

@@ -70,7 +70,7 @@ namespace LukkelEngine {
 
 		if (rayCallback.hasHit())
 		{
-			LKLOG_TRACE("RAY HIT");
+			// LKLOG_TRACE("RAY HIT");
 			btVector3 pickPos = rayCallback.m_hitPointWorld;
 			btRigidBody* body = (btRigidBody*)btRigidBody::upcast(rayCallback.m_collisionObject);
 			if (body)
@@ -80,7 +80,7 @@ namespace LukkelEngine {
 					m_PickedBody = body;
 					m_SavedState = m_PickedBody->getActivationState();
 					m_PickedBody->setActivationState(DISABLE_DEACTIVATION);
-					LKLOG_CRITICAL("Raycast hit: {0}", body->getUserIndex());
+					// LKLOG_CRITICAL("Raycast hit: {0}", body->getUserIndex());
 				}
 			}
 
@@ -97,12 +97,25 @@ namespace LukkelEngine {
 		m_DynamicWorld->stepSimulation(ts);
 	}
 
-	void World::addRigidBodyToWorld(btRigidBody* rigidbody)
+	template<typename T>
+	void World::addRigidBodyToWorld(T& rigidbody)
 	{ 
-		LKLOG_WARN("Adding rigidbody to world");
-		m_DynamicWorld->addRigidBody(rigidbody);
-		s_EntitiesInWorld++;
 	}
+		template<>
+		void World::addRigidBodyToWorld<btRigidBody*>(btRigidBody*& rigidbody)
+		{
+			LKLOG_WARN("Adding rigidbody to world");
+			m_DynamicWorld->addRigidBody(rigidbody);
+			s_EntitiesInWorld++;
+		}
+
+		template<>
+		void World::addRigidBodyToWorld<RigidBody>(RigidBody& rigidbody)
+		{
+			LKLOG_WARN("Adding rigidbody to world");
+			m_DynamicWorld->addRigidBody(rigidbody.getRigidBody());
+			s_EntitiesInWorld++;
+		}
 
 
 	void World::removePickConstraint()
@@ -138,11 +151,11 @@ namespace LukkelEngine {
 				m_DynamicWorld->rayTest(from, to, rayCallback);
 				if (rayCallback.hasHit())
 				{
-					LKLOG_CRITICAL("HIT");
+					// LKLOG_CRITICAL("HIT");
 				}
 				else
 				{
-					LKLOG_INFO("");
+					// LKLOG_INFO("");
 				}
 				// pickBody(rayFrom, rayTo);
 			}

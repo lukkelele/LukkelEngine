@@ -6,6 +6,7 @@
 #include "LukkelEngine/Renderer/IndexBuffer.h"
 #include "LukkelEngine/Renderer/Shader.h"
 #include "LukkelEngine/Renderer/Texture.h"
+#include "LukkelEngine/Renderer/Mesh.h"
 
 #include "imgui/imgui.h"
 #include "glad/glad.h"
@@ -29,7 +30,7 @@ namespace LukkelEngine {
 		void clear() const;
 
 		void draw(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const;
-		void draw(Entity& entity) const;
+		void draw(Mesh& mesh) const;
 		void drawTriangles(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const;
 		void drawLines(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const;
 		void drawIndexed(const s_ptr<VertexArray>& va);

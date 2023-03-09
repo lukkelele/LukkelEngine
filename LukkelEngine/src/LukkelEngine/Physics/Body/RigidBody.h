@@ -19,18 +19,20 @@ namespace LukkelEngine {
 			KINEMATIC = btCollisionObject::CF_KINEMATIC_OBJECT
 		};
 
+		RigidBody() = default;
 		RigidBody(glm::vec3 dimensions, glm::vec3 offset, float mass, RigidBody::Type bodyType, 
 				  float friction, float restitution, glm::vec3 inertia);
 		RigidBody(const RigidBody& other) = default;
 		~RigidBody() = default;
 
 		void onUpdate(float ts);
-		glm::vec3 getPosition() { return glm::vec3(m_Position.getX(), m_Position.getY(), m_Position.getZ()); }
 		btTransform getWorldTransform();
+		glm::vec3 getPosition() { return glm::vec3(m_Position.getX(), m_Position.getY(), m_Position.getZ()); }
 		btRigidBody* getRigidBody() { return m_RigidBody; }
 		btCollisionShape* getCollisionShape() { return m_RigidBody->getCollisionShape(); }
 		int getShapeType() { return m_RigidBody->getCollisionShape()->getShapeType(); }
-		const RigidBody::Type getType() { return m_Type; }
+		RigidBody::Type getType() const { return m_Type; }
+		glm::vec3 getDimensions() { return glm::vec3(m_Dimensions.getX(), m_Dimensions.getY(), m_Dimensions.getZ()); }
 
 		void setFriction(float f) { m_Friction = f; }
 		void setRestitution(float r) { m_Restitution= r; }

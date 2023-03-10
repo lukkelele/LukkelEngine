@@ -85,30 +85,12 @@ namespace LukkelEngine {
 		for (auto& ent : entities)
 		{	
 			Entity entity = { ent, this };
-			// entity.onUpdate(ts, viewProj);
-
-			RigidBody& rigidbody = entity.getComponent<RigidBody>();
-			auto rigidbodyDims = rigidbody.getDimensions();
-			entity.setScale(rigidbodyDims);
-			entity.m_Scale = rigidbodyDims;
-			auto scale = entity.getScale();
-
+			entity.onUpdate(ts, viewProj);
 			Mesh& mesh = entity.getComponent<Mesh>();
-			glm::mat4 model = entity.getTransform(viewProj);
-			Material& material = entity.getComponent<Material>();
 
-			// Debugger::printVec3(scale, "Entity Scale");
-			// Debugger::printVec3(rigidbodyDims, "Rigidbody dimensions");
-
-			mesh.bind();
-			material.bind();
-
-			material.set("u_ViewProj", viewProj);
-			material.set("u_Model", model);
-			material.set("u_Color", material.getMaterialColor());
-
+			m_Renderer->drawWireframe(entity, Color::Black);
 			m_Renderer->draw(mesh);
-			m_Renderer->drawShape(entity);
+			// m_Renderer->drawShape(entity); // Does not draw correctly
 		}
 	}
 
@@ -126,19 +108,26 @@ namespace LukkelEngine {
 		template<>
 		void Scene::onComponentAdded<Mesh>(Entity entity, Mesh& mesh)
 		{
-			LKLOG_TRACE("Mesh Component added to {0}", entity.getName());
+			LKLOG_INFO("{0} : MeshComponent added!", entity.getName());
 		}
 
 		template<>
 		void Scene::onComponentAdded<RigidBody>(Entity entity, RigidBody& rigidbody)
 		{
 			m_World->addRigidBodyToWorld(rigidbody);
+			LKLOG_INFO("{0} : RigidBodyComponent added!", entity.getName());
+		}
+
+		template<>
+		void Scene::onComponentAdded<TransformComponent>(Entity entity, TransformComponent& rigidbody)
+		{
+			LKLOG_INFO("{0} : TransformComponent added!", entity.getName());
 		}
 
 		template<>
 		void Scene::onComponentAdded<Material>(Entity entity, Material& rigidbody)
 		{
-			LKLOG_TRACE("Material Component added to {0}", entity.getName());
+			LKLOG_INFO("{0} : MaterialComponent added!", entity.getName());
 		}
 
 

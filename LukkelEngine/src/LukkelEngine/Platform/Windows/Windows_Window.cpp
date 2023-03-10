@@ -27,12 +27,11 @@ namespace LukkelEngine {
 
 	void Windows_Window::init(WindowProps& props)
 	{
-		// Initiate glfw
 		glfwInit();
 		// Set core profile instead of compability one
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 		// OPENGL Version 3.3
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3); 
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 
 		// Set window properties

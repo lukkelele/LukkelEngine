@@ -104,7 +104,6 @@ namespace LukkelEngine {
 		template<>
 		void World::addRigidBodyToWorld<btRigidBody*>(btRigidBody*& rigidbody)
 		{
-			LKLOG_WARN("Adding rigidbody to world");
 			m_DynamicWorld->addRigidBody(rigidbody);
 			s_EntitiesInWorld++;
 		}
@@ -112,7 +111,6 @@ namespace LukkelEngine {
 		template<>
 		void World::addRigidBodyToWorld<RigidBody>(RigidBody& rigidbody)
 		{
-			LKLOG_WARN("Adding rigidbody to world");
 			m_DynamicWorld->addRigidBody(rigidbody.getRigidBody());
 			s_EntitiesInWorld++;
 		}

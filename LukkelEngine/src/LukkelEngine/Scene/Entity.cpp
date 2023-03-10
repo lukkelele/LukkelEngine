@@ -10,33 +10,32 @@ namespace LukkelEngine {
 	 {
 	 }
 
-	// Remove
 	void Entity::onUpdate(float ts, glm::mat4 viewProj)
 	{
-		glm::mat4 model = getTransform(viewProj);
-		Material& material = getComponent<Material>();
-		material.bind();
-		material.set("u_ViewProj", viewProj);
-		material.set("u_Model", model);
-	}
+		// Get updates from rigidbody
+		if (hasComponent<RigidBody>())
+		{
+			// if the entity has a rigidbody, sync the body with the transform component
+			RigidBody& rigidbody = getComponent<RigidBody>();
+			auto [pos, rot] = rigidbody.getPosAndRotation();
+			glm::vec3 dimensions = rigidbody.getDimensions();
 
-	void Entity::remove()
-	{
-	}
+			TransformComponent& transformComponent = getComponent<TransformComponent>();
+			transformComponent.translation = pos;
+			transformComponent.rotation = rot;
+			// Important that all meshes are in range of 1 in size because the scale depends on the dimensions from body
+			transformComponent.scale = dimensions;
 
-	glm::mat4 Entity::getTransform(glm::mat4& viewProj)
-	{
-		auto rigidbody = getComponent<RigidBody>();
-		btTransform transform = rigidbody.getWorldTransform();
-		btVector3 position = transform.getOrigin();
-		btQuaternion rotation = transform.getRotation();
+			// Debugger::printVec3(dimensions, "Dimensions");
+			// Debugger::printVec3(transformComponent.scale, "Scale");
 
-		m_Translation = glm::vec3(position.x(), position.y(), position.z());
-		m_Rotation =  glm::mat4_cast(glm::quat(rotation.getW(), rotation.getX(), rotation.getY(), rotation.getZ()));
-
-		return glm::translate(glm::mat4(1.0f), m_Translation)
-				* glm::toMat4(m_Rotation)
-				* glm::scale(glm::mat4(1.0f), m_Scale);
+			glm::mat4 model = transformComponent.getTransform();
+			Material& material = getComponent<Material>();
+			material.bind();
+			material.set("u_ViewProj", viewProj);
+			material.set("u_Model", model);
+			material.set("u_Color", material.getMaterialColor());
+		}
 	}
 
 

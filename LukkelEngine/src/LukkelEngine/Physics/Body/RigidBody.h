@@ -40,6 +40,8 @@ namespace LukkelEngine {
 		void setCollisionFlags(int flags) { m_RigidBody->setCollisionFlags(flags); }
 		void setActivationState(int state) { m_RigidBody->setActivationState(state); }
 
+		std::pair<glm::vec3, glm::quat> getPosAndRotation();
+
 	private:
 		btCollisionShape* m_Shape = nullptr;
 		btRigidBody* m_RigidBody = nullptr;

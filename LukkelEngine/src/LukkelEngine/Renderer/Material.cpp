@@ -22,10 +22,14 @@ namespace LukkelEngine {
 
 	void Material::bind()
 	{
-		if (m_Shader)
-			m_Shader->bind();
-		if (m_Texture)
-			m_Texture->bind();
+		if (m_Shader) m_Shader->bind();
+		if (m_Texture) m_Texture->bind();
+	}
+
+	void Material::unbind()
+	{
+		if (m_Shader) m_Shader->unbind();
+		if (m_Texture) m_Texture->unbind();
 	}
 
 	// Material& Material::create()

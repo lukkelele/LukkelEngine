@@ -119,7 +119,7 @@ namespace LukkelEngine {
 		}
 	}
 
-	static void drawVec3Control(const std::string& label, glm::vec3& values, float resetValue = 0.0f, float columnWidth = 100.0f)
+	void Editor::drawVec3Control(const std::string& label, glm::vec3& values, float resetValue, float columnWidth)
 	{
 		ImGuiIO& io = ImGui::GetIO();
 		auto boldFont = io.Fonts->Fonts[0];
@@ -183,8 +183,91 @@ namespace LukkelEngine {
 		ImGui::PopID();
 	}
 
+	void Editor::drawVec4Control(const std::string& label, glm::vec4& values, float min, float max, float resetValue, float columnWidth)
+	{
+		ImGuiIO& io = ImGui::GetIO();
+		auto boldFont = io.Fonts->Fonts[0];
+		float speed = 0.01f;
+
+		ImGui::PushID(label.c_str());
+
+		ImGui::Columns(2);
+		ImGui::SetColumnWidth(0, columnWidth);
+		ImGui::Text(label.c_str());
+		ImGui::NextColumn();
+
+		ImGui::PushMultiItemsWidths(4, ImGui::CalcItemWidth());
+		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2{ 0, 0 });
+
+		float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
+		ImVec2 buttonSize = { lineHeight + 3.0f, lineHeight };
+
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.8f, 0.1f, 0.15f, 1.0f });
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.9f, 0.2f, 0.2f, 1.0f });
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.8f, 0.1f, 0.15f, 1.0f });
+		/* X SLIDER */
+		ImGui::PushFont(boldFont);
+		if (ImGui::Button("X", buttonSize))
+			values.x = resetValue;
+		ImGui::PopFont();
+		ImGui::PopStyleColor(3);
+
+		ImGui::SameLine();
+		ImGui::DragFloat("##X", &values.x, speed, min, max, "%.2f");
+		ImGui::PopItemWidth();
+		ImGui::SameLine();
+
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.2f, 0.7f, 0.2f, 1.0f });
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.3f, 0.8f, 0.3f, 1.0f });
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.2f, 0.7f, 0.2f, 1.0f });
+		ImGui::PushFont(boldFont);
+		/* Y SLIDER */
+		if (ImGui::Button("Y", buttonSize))
+			values.y = resetValue;
+		ImGui::PopFont();
+		ImGui::PopStyleColor(3);
+
+		ImGui::SameLine();
+		ImGui::DragFloat("##Y", &values.y, speed, min, max, "%.2f");
+		ImGui::PopItemWidth();
+		ImGui::SameLine();
+
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.1f, 0.25f, 0.8f, 1.0f });
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.2f, 0.35f, 0.9f, 1.0f });
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.1f, 0.25f, 0.8f, 1.0f });
+		ImGui::PushFont(boldFont);
+		/* Z SLIDER */
+		if (ImGui::Button("Z", buttonSize))
+			values.z = resetValue;
+		ImGui::PopFont();
+		ImGui::PopStyleColor(3);
+
+		ImGui::SameLine();
+		ImGui::DragFloat("##Z", &values.z, speed, min, max, "%.2f");
+		ImGui::PopItemWidth();
+		ImGui::SameLine();
+
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.33f, 0.33f, 0.33f, 1.0f });
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.2f, 0.35f, 0.9f, 1.0f });
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.1f, 0.25f, 0.8f, 1.0f });
+		ImGui::PushFont(boldFont);
+		/* W SLIDER */
+		if (ImGui::Button("W", buttonSize))
+			values.w = resetValue;
+		ImGui::PopFont();
+		ImGui::PopStyleColor(3);
+
+		ImGui::SameLine();
+		ImGui::DragFloat("##W", &values.w, speed, min, max, "%.2f");
+		ImGui::PopItemWidth();
+
+		ImGui::PopStyleVar();
+		ImGui::Columns(1);
+		ImGui::PopID();
+	}
+
 	template<typename T, typename UIFunction>
-	static void drawComponent(const std::string& name, Entity entity, UIFunction uiFunction)
+	void Editor::drawComponent(const std::string& name, Entity entity, UIFunction uiFunction)
 	{
 		const ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_Framed | ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_AllowItemOverlap | ImGuiTreeNodeFlags_FramePadding;
 		if (entity.hasComponent<T>())
@@ -272,6 +355,17 @@ namespace LukkelEngine {
 
 		});
 
+		drawComponent<TransformComponent>("Transform", entity, [](auto& component)
+		{
+			/* Translation / Position */
+			glm::vec3 translation = component.translation;
+			drawVec3Control("Position", translation);
+			component.translation = translation;
+			/* Scale */
+			glm::vec3 scale = component.scale;
+			drawVec3Control("Scale", scale);
+		});
+
 		drawComponent<RigidBody>("Rigidbody", entity, [](auto& component)
 		{
 
@@ -279,10 +373,78 @@ namespace LukkelEngine {
 
 		drawComponent<Material>("Material", entity, [](auto& component)
 		{
-			// glm::vec4 color = glm::vec4(component.getMaterialColor(), 1.0f);
-			glm::vec3 color = component.getMaterialColor();
-			drawVec3Control("Color", color);
-			component.setMaterialColor(glm::vec4(color, 1.0f));
+			glm::vec4 color = component.getMaterialColor();
+			drawVec4Control("Color", color);
+			glm::vec4 newColor = { color.x, color.y, color.z, color.w };
+			component.setMaterialColor(newColor);
+
+			ImGui::Separator();
+			float columnSize = 100.0f;
+			ImGuiIO& io = ImGui::GetIO();
+			auto boldFont = io.Fonts->Fonts[0];
+			float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
+			ImVec2 listBoxSize = { columnSize , lineHeight * 5 };
+			ImVec2 buttonSize = { lineHeight + 20.0f, lineHeight };
+
+			// static glm::vec3 colors[] = { Color::Black, Color::White, Color::Cyan, Color::Red, Color::Silver };
+			static std::vector<std::pair<std::string, glm::vec4>> colors;
+			static std::pair ColorBlack = std::make_pair("Black", Color::Black); 
+			static std::pair ColorWhite = std::make_pair("White", Color::White);
+			static std::pair ColorCyan = std::make_pair("Cyan", Color::Cyan);
+			static std::pair ColorSilver = std::make_pair("Silver", Color::Silver);
+			static std::pair ColorRed = std::make_pair("Red", Color::Red);
+			static uint8_t colorsArraySize = 5;
+			colors.resize(colorsArraySize);
+			colors[0] = ColorBlack;
+			colors[1] = ColorWhite;
+			colors[2] = ColorCyan;
+			colors[3] = ColorSilver;
+			colors[4] = ColorRed;
+
+			static int currentItemIndex = 0;
+			auto currentColor = color;
+
+			// Color picker for objects
+			std::string title = "Colors";
+			float columnWidth = 100.0f;
+
+			ImGui::PushID(title.c_str());
+			ImGui::Columns(2);
+			ImGui::SetColumnWidth(0, columnWidth);
+			ImGui::Text(title.c_str());
+			ImGui::NextColumn();
+
+			ImGui::PushMultiItemsWidths(2, ImGui::CalcItemWidth());
+
+			ImGui::ListBoxHeader(title.c_str(), listBoxSize);
+			for (int i = 0; i < colorsArraySize; i++)
+			{
+				const bool isSelected = (currentItemIndex == i);
+				if (ImGui::Selectable(colors[i].first.c_str(), isSelected))
+					currentItemIndex = i;
+
+				if (isSelected)
+				{
+					ImGui::SetItemDefaultFocus();
+					auto colorPair = colors[currentItemIndex];
+					// LKLOG_INFO("Selected color: {0}", colorPair.first);
+					// If the current world objects color is not the one selected -> change it 
+					auto materialColor = component.getMaterialColor();
+
+					if (materialColor != colorPair.second)
+						currentColor = colorPair.second;
+				}
+
+			}
+			if (ImGui::Button("Apply", buttonSize))
+			{
+				component.setMaterialColor(currentColor);
+			}
+			ImGui::ListBoxFooter();
+
+			ImGui::PopItemWidth();
+			ImGui::Columns(1);
+			ImGui::PopID();
 		});
 
 

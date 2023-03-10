@@ -46,4 +46,14 @@ namespace LukkelEngine {
 		else
 			LKLOG_CRITICAL("getWorldTransform() -> rigidbody doesn't exist");
 	}
+
+	std::pair<glm::vec3, glm::quat> RigidBody::getPosAndRotation()
+	{		
+		btTransform transform = getWorldTransform();
+		btVector3 position = transform.getOrigin();
+		btQuaternion rotation = transform.getRotation();
+		glm::vec3 pos(position.x(), position.y(), position.z());
+		glm::mat4 rot = glm::mat4_cast(glm::quat(rotation.getW(), rotation.getX(), rotation.getY(), rotation.getZ()));
+		return std::make_pair(pos, rot);
+	}
 }

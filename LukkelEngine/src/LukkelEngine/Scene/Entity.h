@@ -21,9 +21,6 @@ namespace LukkelEngine {
 		~Entity() {}
 
 		void onUpdate(float ts, glm::mat4 viewProj);
-		void remove();
-
-		glm::mat4 getTransform(glm::mat4& viewProj);
 
 		template<typename T, typename... ARGS>
 		T& addComponent(ARGS&&... args)

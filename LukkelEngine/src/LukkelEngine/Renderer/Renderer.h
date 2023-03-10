@@ -38,6 +38,7 @@ namespace LukkelEngine {
 		// Static because debugging for raycast
 		static void drawLine(const glm::vec3& p1, const glm::vec3& p2, const glm::vec4& color = glm::vec4(1.0f));
 		void drawLine(const glm::vec3& p1, const glm::vec3& p2, const glm::mat4& viewProj, const glm::vec4& color = glm::vec4(1.0f));
+		void drawWireframe(Entity& entity, glm::vec4 color) const;
 
 		void drawBox(btVector3& halfSize);
 		void drawShape(Entity& entity);
@@ -46,7 +47,9 @@ namespace LukkelEngine {
 		void setDrawMode(LK_DRAW_MODE drawMode);
 
 		static void onWindowResize(uint16_t width, uint16_t height);
+
 		static LK_DRAW_MODE s_DrawMode;
+		static glm::vec4 s_BackgroundColor;
 	};
 
 }

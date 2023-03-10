@@ -8,11 +8,13 @@
 namespace LukkelEngine {
 
 	LK_DRAW_MODE Renderer::s_DrawMode;
-	float c = 150.0f; // Color
+	glm::vec4 Renderer::s_BackgroundColor = Color::DarkGray;
 
 	void Renderer::clear() const
 	{
-		glClearColor(float(c/255.0f), float(c/255.0f), float(c/255.0f), 1.0f);
+		auto c = s_BackgroundColor;
+		// glClearColor(float(c/255.0f), float(c/255.0f), float(c/255.0f), 1.0f);
+		glClearColor(c.x, c.y, c.z, c.w);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
 
@@ -29,6 +31,19 @@ namespace LukkelEngine {
 		mesh.bind();
 		unsigned int count = mesh.getIndexBuffer()->getCount();
 		glDrawElements(s_DrawMode, count, GL_UNSIGNED_INT, nullptr);
+	}
+
+	void Renderer::drawWireframe(Entity& entity, glm::vec4 color) const
+	{
+		Mesh& mesh = entity.getComponent<Mesh>();
+		Material& material = entity.getComponent<Material>();
+		mesh.bind();
+		material.bind();
+		auto oldColor = material.getMaterialColor();
+		material.setMaterialColor(color);
+		unsigned int count = mesh.getIndexBuffer()->getCount();
+		glDrawElements(GL_LINES, count, GL_UNSIGNED_INT, nullptr);
+		material.setMaterialColor(oldColor);
 	}
 
 	void Renderer::renderImGui() const

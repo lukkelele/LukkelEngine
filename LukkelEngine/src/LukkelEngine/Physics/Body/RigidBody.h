@@ -26,13 +26,16 @@ namespace LukkelEngine {
 		~RigidBody() = default;
 
 		void onUpdate(float ts);
-		btTransform getWorldTransform();
 		glm::vec3 getPosition() { return glm::vec3(m_Position.getX(), m_Position.getY(), m_Position.getZ()); }
+		glm::vec3 getDimensions() { return glm::vec3(m_Dimensions.getX(), m_Dimensions.getY(), m_Dimensions.getZ()); }
+		int getShapeType() { return m_RigidBody->getCollisionShape()->getShapeType(); }
+		std::pair<glm::vec3, glm::quat> getPosAndRotation();
+		void addConstraint();
+
+		btTransform getWorldTransform();
 		btRigidBody* getRigidBody() { return m_RigidBody; }
 		btCollisionShape* getCollisionShape() { return m_RigidBody->getCollisionShape(); }
-		int getShapeType() { return m_RigidBody->getCollisionShape()->getShapeType(); }
 		RigidBody::Type getType() const { return m_Type; }
-		glm::vec3 getDimensions() { return glm::vec3(m_Dimensions.getX(), m_Dimensions.getY(), m_Dimensions.getZ()); }
 
 		void setFriction(float f) { m_Friction = f; }
 		void setRestitution(float r) { m_Restitution= r; }
@@ -40,7 +43,6 @@ namespace LukkelEngine {
 		void setCollisionFlags(int flags) { m_RigidBody->setCollisionFlags(flags); }
 		void setActivationState(int state) { m_RigidBody->setActivationState(state); }
 
-		std::pair<glm::vec3, glm::quat> getPosAndRotation();
 
 	private:
 		btCollisionShape* m_Shape = nullptr;

@@ -5,18 +5,26 @@
 
 namespace LukkelEngine {
 
-	// FIXME
 	Material::Material()
-	{ // Set default values
-		std::string path = "assets/shaders/basic.shader";
-		m_Shader = create_s_ptr<Shader>(path);
-		LKLOG_TRACE("[MATERIAL] Creating shader using -> {0}", path);
-		// m_Texture = create_s_ptr<Texture>("");
+	{
+		// std::string path = "assets/shaders/basic.shader";
+		// m_Shader = create_s_ptr<Shader>(path);
+		// LKLOG_INFO("[MATERIAL] Used shader: {0}", path);
+		std::string vertexPath = "assets/shaders/basic.vertex";
+		std::string fragmentPath = "assets/shaders/basic.fragment";
+		m_Shader = create_s_ptr<Shader>(vertexPath, fragmentPath);
+		m_Texture = create_s_ptr<Texture>("");
 	}
 
 	Material::Material(const std::string& shaderPath, const std::string& texturePath)
 	{
 		m_Shader = create_s_ptr<Shader>(shaderPath);
+		m_Texture = create_s_ptr<Texture>(texturePath);
+	}
+
+	Material::Material(const std::string& vertexPath, const std::string& fragmentPath, const std::string& texturePath)
+	{
+		m_Shader = create_s_ptr<Shader>(vertexPath, fragmentPath);
 		m_Texture = create_s_ptr<Texture>(texturePath);
 	}
 
@@ -31,11 +39,6 @@ namespace LukkelEngine {
 		if (m_Shader) m_Shader->unbind();
 		if (m_Texture) m_Texture->unbind();
 	}
-
-	// Material& Material::create()
-	// {
-	// 	// return Materials::DebugMaterial(); // For now
-	// }
 
 	template<typename T>
 	void Material::set(const std::string& uniform, T& value)

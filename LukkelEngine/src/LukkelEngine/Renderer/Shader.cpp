@@ -4,9 +4,16 @@
 namespace LukkelEngine {
 
 	Shader::Shader(const std::string& filePath)
-		: m_filePath(filePath)   // keep for debug purposes
+		: m_FilePath(filePath)   // keep for debug purposes
 	{
 		ShaderProgramSource source = parseShader(filePath);
+		m_RendererID = createShader(source.VertexSource, source.FragmentSource);
+	}
+
+	Shader::Shader(const std::string& vertexPath, const std::string& fragmentPath)
+		: m_VertexPath(vertexPath), m_FragmentPath(fragmentPath)
+	{
+		ShaderProgramSource source = parseShaders(vertexPath, fragmentPath);
 		m_RendererID = createShader(source.VertexSource, source.FragmentSource);
 	}
 
@@ -93,36 +100,55 @@ namespace LukkelEngine {
 
 		while (getline(stream, line))
 		{
-			if (line.find("#shader") != std::string::npos) {
+			if (line.find("#shader") != std::string::npos)
+			{
 				if (line.find("vertex") != std::string::npos)
-					// set vertex mode
 					type = ShaderType::VERTEX;
 				else if (line.find("fragment") != std::string::npos)
-					// set fragment mode
 					type = ShaderType::FRAGMENT;
-			} else { // Use ShaderType to append lines appropriately 
+			} 
+			else
+			{	// Use ShaderType to append lines appropriately 
 				if (type != ShaderType::NONE)
 					ss[(int)type] << line << '\n';
 			}
 		}
-		// Return the strings of the parsed shaders using struct ShaderProgramSource 
-		// if (LK_DEBUG)
-		if (false) // just to mute it for now
-		{	// FIXME
-			std::cout << "Parsed shaderfile:\n" << std::endl;
-			std::cout << "VERTEX SHADER" << std::endl;
-			std::cout << ss[0].str() << std::endl;
-			std::cout << "FRAGMENT SHADER" << std::endl;
-			std::cout << ss[1].str() << std::endl;
-			std::cout << "Returning parsed shader" << std::endl;
+
+		return { ss[0].str(), ss[1].str() };
+	}
+
+	ShaderProgramSource Shader::parseShaders(const std::string& vertexPath, const std::string& fragmentPath)
+	{
+		enum class ShaderType
+		{
+			NONE = -1,
+			VERTEX = 0,
+			FRAGMENT = 1
+		};
+
+		std::ifstream streamVertex(vertexPath);
+		std::string line;
+		std::stringstream ss[2];
+		ShaderType type = ShaderType::VERTEX;
+
+		while (getline(streamVertex, line))
+		{
+			ss[(int)type] << line << '\n';
 		}
+
+		std::ifstream streamFrag(fragmentPath);
+		type = ShaderType::FRAGMENT;
+		while (getline(streamFrag, line))
+		{
+			ss[(int)type] << line << '\n';
+		}
+
 		return { ss[0].str(), ss[1].str() };
 	}
 
 	unsigned int Shader::compileShader(unsigned int type, const std::string& source)
 	{
 		unsigned int id = glCreateShader(type);
-		// make sure source is available when compiling takes place 
 		const char* src = source.c_str();   // &source[0] 
 		glShaderSource(id, 1, &src, nullptr);
 		glCompileShader(id);

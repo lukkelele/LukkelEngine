@@ -70,7 +70,7 @@ namespace LukkelEngine {
 
 		if (rayCallback.hasHit())
 		{
-			// LKLOG_TRACE("RAY HIT");
+			// LKLOG_CRITICAL("RAY HIT");
 			btVector3 pickPos = rayCallback.m_hitPointWorld;
 			btRigidBody* body = (btRigidBody*)btRigidBody::upcast(rayCallback.m_collisionObject);
 			if (body)
@@ -83,12 +83,10 @@ namespace LukkelEngine {
 					// LKLOG_CRITICAL("Raycast hit: {0}", body->getUserIndex());
 				}
 			}
-
 			m_OldPickingPos = to;
 			m_HitPos = pickPos;
 			m_OldPickingDist = (pickPos - from).length();
 		}
-		LKLOG_INFO("");
 		return false;
 	}
 
@@ -137,23 +135,34 @@ namespace LukkelEngine {
 			if (button == 0)
 			{
 				auto cam = m_Scene->getCamera();
-				glm::mat4 viewProj = cam->getViewProjection();
+				glm::mat4 view = cam->getView();
+				glm::mat4 projection = cam->getProjection();
+				glm::mat4 viewProjection = cam->getViewProjection();
 
 				float distance = 200.0f;
 				auto [rayFrom, rayTo] = raycast(*cam);
-				Renderer::drawLine(rayFrom, rayTo * distance);
+				// Renderer::drawLine(rayFrom, rayTo * distance);
+
+				auto camPos = cam->getPosition();
+				Debugger::printVec3(camPos, "Camera pos");
+				btVector3 camPosition = { camPos.x, camPos.y, camPos.z };
+				btVector3 To = screenToWorld(Mouse::getMouseX(), Mouse::getMouseY(), view, projection);
+				Renderer::drawLine(camPos, glm::vec3(To.x(), To.y(), To.z()) * distance);
 
 				btVector3 from = btVector3(rayFrom.x, rayFrom.y, rayFrom.z);
 				btVector3 to = btVector3(rayTo.x, rayTo.y, rayTo.z);
-				btCollisionWorld::ClosestRayResultCallback rayCallback(btVector3(rayFrom.x, rayFrom.y, rayFrom.z), btVector3(rayTo.x, rayTo.y, rayTo.z));
+				// btCollisionWorld::ClosestRayResultCallback rayCallback(btVector3(rayFrom.x, rayFrom.y, rayFrom.z), btVector3(rayTo.x, rayTo.y, rayTo.z));
+				btCollisionWorld::ClosestRayResultCallback rayCallback(camPosition, To);
+
 				m_DynamicWorld->rayTest(from, to, rayCallback);
+
 				if (rayCallback.hasHit())
 				{
-					// LKLOG_CRITICAL("HIT");
+					LKLOG_CRITICAL("HIT");
 				}
 				else
 				{
-					// LKLOG_INFO("");
+					LKLOG_INFO("");
 				}
 				// pickBody(rayFrom, rayTo);
 			}
@@ -220,14 +229,14 @@ namespace LukkelEngine {
 		glm::vec4 rayStart_NDC(
 			((float)mouseX/(float)screenWidth  - 0.5f) * 2.0f, // [0,  width] -> [-1,1]
 			((float)mouseY/(float)screenHeight - 0.5f) * 2.0f, // [0, height] -> [-1,1]
-			-1.0, // The near plane maps to Z=-1
+		   -1.0, // The near plane maps to Z=-1
 			1.0f
 		);
 		glm::vec4 rayEnd_NDC(
-			((float)mouseX/(float)screenWidth  - 0.5f) * 2.0f,
+			((float)mouseX/(float)screenWidth  - 0.5f) * -2.0f,
 			((float)mouseY/(float)screenHeight - 0.5f) * 2.0f,
 			0.0,
-			1.0f
+			-1.0f
 		);
 
 		glm::mat4 invViewProjection = glm::inverse(projection * view);
@@ -240,6 +249,26 @@ namespace LukkelEngine {
 		glm::vec3 rayDir(glm::normalize(rayDirection_world));
 
 		return { rayPos, rayDir };
+	}
+
+	btVector3 World::screenToWorld(float mx, float my, glm::mat4 view, glm::mat4 projection)
+	{
+		// Get the viewport dimensions
+		GLint viewport[4];
+		glGetIntegerv(GL_VIEWPORT, viewport);
+
+		// Calculate the mouse position in normalized device coordinates
+		float ndcX = (2.0f * mx) / viewport[2] - 1.0f;
+		float ndcY = 1.0f - (2.0f * my) / viewport[3];
+		glm::vec4 ndcPos = glm::vec4(ndcX, ndcY, 0.0f, 1.0f);
+
+		// Convert from normalized device coordinates to world coordinates
+		glm::vec4 clipPos = glm::vec4(ndcPos.x, ndcPos.y, -1.0f, 1.0f);
+		glm::vec4 eyePos = glm::inverse(projection) * clipPos;
+		eyePos = glm::vec4(eyePos.x, eyePos.y, -1.0f, 0.0f);
+		glm::vec4 worldPos = glm::inverse(view) * eyePos;
+
+		return btVector3(worldPos.x, worldPos.y, worldPos.z);
 	}
 
 

@@ -20,21 +20,12 @@ namespace LukkelEngine {
 		static const glm::vec4 DarkGray = glm::vec4(0.1f, 0.1f, 0.1f, 1.0f);
 	}
 
-	// FIXME
-	struct Color_
-	{
-		std::string name;
-		glm::vec4 rgba;
-		Color_(const std::string& name, glm::vec4 rgba)
-			: name(name), rgba(rgba)
-		{}
-	};
-
 	class Material
 	{
 	public:
 		Material();
 		Material(const std::string& shaderPath, const std::string& texturePath);
+		Material(const std::string& vertexPath, const std::string& fragmentPath, const std::string& texturePath);
 		virtual ~Material() = default;
 
 		void bind();

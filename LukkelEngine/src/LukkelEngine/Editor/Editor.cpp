@@ -386,37 +386,34 @@ namespace LukkelEngine {
 			ImVec2 listBoxSize = { columnSize , lineHeight * 5 };
 			ImVec2 buttonSize = { lineHeight + 20.0f, lineHeight };
 
-			// static glm::vec3 colors[] = { Color::Black, Color::White, Color::Cyan, Color::Red, Color::Silver };
 			static std::vector<std::pair<std::string, glm::vec4>> colors;
 			static std::pair ColorBlack = std::make_pair("Black", Color::Black); 
 			static std::pair ColorWhite = std::make_pair("White", Color::White);
 			static std::pair ColorCyan = std::make_pair("Cyan", Color::Cyan);
 			static std::pair ColorSilver = std::make_pair("Silver", Color::Silver);
 			static std::pair ColorRed = std::make_pair("Red", Color::Red);
-			static uint8_t colorsArraySize = 5;
+			static std::pair ColorMagenta = std::make_pair("Magenta", Color::Magenta);
+			static std::pair ColorYellow = std::make_pair("Yellow", Color::Yellow);
+			static uint8_t colorsArraySize = 7;
 			colors.resize(colorsArraySize);
 			colors[0] = ColorBlack;
 			colors[1] = ColorWhite;
 			colors[2] = ColorCyan;
 			colors[3] = ColorSilver;
 			colors[4] = ColorRed;
+			colors[5] = ColorYellow;
+			colors[6] = ColorMagenta;
 
 			static int currentItemIndex = 0;
 			auto currentColor = color;
 
-			// Color picker for objects
 			std::string title = "Colors";
 			float columnWidth = 100.0f;
 
 			ImGui::PushID(title.c_str());
-			ImGui::Columns(2);
-			ImGui::SetColumnWidth(0, columnWidth);
 			ImGui::Text(title.c_str());
-			ImGui::NextColumn();
-
-			ImGui::PushMultiItemsWidths(2, ImGui::CalcItemWidth());
-
-			ImGui::ListBoxHeader(title.c_str(), listBoxSize);
+			ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.1f, 0.25f, 0.8f, 1.0f });
+			ImGui::ListBoxHeader("", listBoxSize);
 			for (int i = 0; i < colorsArraySize; i++)
 			{
 				const bool isSelected = (currentItemIndex == i);
@@ -427,29 +424,21 @@ namespace LukkelEngine {
 				{
 					ImGui::SetItemDefaultFocus();
 					auto colorPair = colors[currentItemIndex];
-					// LKLOG_INFO("Selected color: {0}", colorPair.first);
-					// If the current world objects color is not the one selected -> change it 
 					auto materialColor = component.getMaterialColor();
-
 					if (materialColor != colorPair.second)
 						currentColor = colorPair.second;
 				}
-
-			}
-			if (ImGui::Button("Apply", buttonSize))
-			{
-				component.setMaterialColor(currentColor);
 			}
 			ImGui::ListBoxFooter();
-
-			ImGui::PopItemWidth();
-			ImGui::Columns(1);
+			ImGui::NextColumn();
+			ImGui::PushFont(boldFont);
+			if (ImGui::Button("Apply", buttonSize))
+				component.setMaterialColor(currentColor);
+			ImGui::PopFont();
+			ImGui::PopStyleColor(1);
 			ImGui::PopID();
 		});
 
-
 	}
-
-
 
 }

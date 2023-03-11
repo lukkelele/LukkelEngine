@@ -24,7 +24,6 @@
 #define LK_WORLD_GRAVITY_SLOWEST btVector3(0.0f, -0.5f, 0.0f)
 #define LK_WORLD_GRAVITY_FAST    btVector3(0.0f, -18.0f, 0.0f)
 
-
 namespace LukkelEngine {
 
 	class Scene;
@@ -65,6 +64,7 @@ namespace LukkelEngine {
 
 		static glm::vec3 convertWorldToNDC(const btVector3& worldCoords, float screenWidth, float screenHeight);
 		static glm::vec3 convertNDCToWorld(const glm::vec3& ndcCoords, float screenWidth, float screenHeight, const glm::mat4& viewMatrix, const glm::mat4& projectionMatrix);
+		static btVector3 screenToWorld(float mx, float my, glm::mat4 view, glm::mat4 projection);
 
 		btRigidBody* m_PickedBody;
 		btTypedConstraint* m_PickedConstraint;

@@ -33,6 +33,7 @@ namespace LukkelEngine {
 		glm::vec3 getRightDirection() const;
 		glm::vec3 getForwardDirection() const;
 		glm::vec3 getUpDirection() const;
+		const glm::vec3& getPosition() const { return m_Position; }
 
 		glm::mat4& getInverseViewProjection() { return m_InverseViewProjection; }
 
@@ -55,7 +56,7 @@ namespace LukkelEngine {
 		bool hasMouseMoved;
 
 	public:
-		glm::vec3 m_Position = { 0.0f, 0.0f, -6.0f };
+		glm::vec3 m_Position = { 0.0f, 0.0f, -10.0f };
 		glm::vec3 m_Direction;
 		glm::vec3 m_Origin = { 0.0f, 0.0f, 0.0f };
 

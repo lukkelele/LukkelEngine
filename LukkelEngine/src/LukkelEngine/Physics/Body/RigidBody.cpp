@@ -1,6 +1,6 @@
 #include "LKpch.h"
 #include "LukkelEngine/Physics/Body/RigidBody.h"
-
+#include "LukkelEngine/Physics/World.h"
 
 namespace LukkelEngine {
 
@@ -25,8 +25,7 @@ namespace LukkelEngine {
 		m_RigidBody->setFriction(m_Friction);
 		m_RigidBody->setRestitution(m_Restitution);
 		m_RigidBody->forceActivationState(DISABLE_DEACTIVATION);
-
-
+		m_RigidBody->setCollisionFlags(btCollisionObject::CF_STATIC_OBJECT);
 	}
 
 	void RigidBody::onUpdate(float ts)

@@ -31,6 +31,7 @@ namespace LukkelEngine {
 	Entity Scene::createEntityWithUUID(UUID uuid, const std::string& name)
 	{
 		Entity entity = { m_Registry.create(), this };
+		LKLOG_INFO("UUID for {0}: {1}", name, uuid);
 		entity.addComponent<IDComponent>(uuid);
 		TagComponent& tag = entity.addComponent<TagComponent>();
 		tag.tag = name.empty() ? "Entity" : name;
@@ -56,6 +57,7 @@ namespace LukkelEngine {
 		}
 		return {};
 	}
+
 
 	void Scene::destroyEntity(Entity entity)
 	{

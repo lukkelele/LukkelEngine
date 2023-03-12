@@ -62,8 +62,6 @@ namespace LukkelEngine {
 		bool movePickedBody(glm::vec3& rayFrom, glm::vec3& rayTo);
 		std::pair<glm::vec3, glm::vec3> raycast(const Camera& camera);
 
-		static glm::vec3 convertWorldToNDC(const btVector3& worldCoords, float screenWidth, float screenHeight);
-		static glm::vec3 convertNDCToWorld(const glm::vec3& ndcCoords, float screenWidth, float screenHeight, const glm::mat4& viewMatrix, const glm::mat4& projectionMatrix);
 		static btVector3 screenToWorld(float mx, float my, glm::mat4 view, glm::mat4 projection);
 
 		btRigidBody* m_PickedBody;

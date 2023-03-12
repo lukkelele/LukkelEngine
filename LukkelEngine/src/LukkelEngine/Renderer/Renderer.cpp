@@ -8,7 +8,7 @@
 namespace LukkelEngine {
 
 	LK_DRAW_MODE Renderer::s_DrawMode;
-	glm::vec4 Renderer::s_BackgroundColor = Color::DarkGray;
+	glm::vec4 Renderer::s_BackgroundColor = Color::White;
 
 	void Renderer::clear() const
 	{
@@ -87,7 +87,7 @@ namespace LukkelEngine {
 		VertexArray va;
 		VertexBuffer vb(Line, 6 * sizeof(float));
 		IndexBuffer ib(indices, 2 * sizeof(unsigned int));
-		// Shader shader("assets/shaders/3D/line.shader");
+		Shader shader("assets/shaders/basic.shader");
 
 		VertexBufferLayout layout;
 		layout.push<float>(3);

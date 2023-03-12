@@ -21,17 +21,18 @@ void TestLayer::onAttach()
 	glm::vec3 boxDims{ 2.0f, 2.0f, 2.0f };
 	glm::vec3 smallerBoxDims{ 1.0f, 1.0f, 1.0f };
 	glm::vec3 boxOffset{ 0.0f, 6.0f, 0.0f };
+	glm::vec3 smallerBoxOffset{ 5.0f, 4.0f, 3.0f };
 
 	glm::vec3 groundOffset{ 0.0f, -6.0f, 0.0f };
 	glm::vec3 groundDims{ 50.0f, 2.0f, 50.0f };
 
 	EntityProperties cubeProps("Cube", boxDims, boxOffset, 5.0f, RigidBody::Type::DYNAMIC, Color::Cyan);
-	EntityProperties smallerCubeProps("Smaller Cube", smallerBoxDims, boxOffset, 3.0f, RigidBody::Type::DYNAMIC, Color::Red);
+	EntityProperties smallerCubeProps("Smaller Cube", smallerBoxDims, smallerBoxOffset, 3.0f, RigidBody::Type::DYNAMIC, Color::Red);
 	EntityProperties groundProps("Ground", groundDims, groundOffset, 0.0f, RigidBody::Type::STATIC, Color::Gray);
 
+	EntityFactory::createBox(groundProps, *m_Scene);
 	EntityFactory::createBox(cubeProps, *m_Scene);
 	EntityFactory::createBox(smallerCubeProps, *m_Scene);
-	EntityFactory::createBox(groundProps, *m_Scene);
 }
 
 void TestLayer::onUpdate(float ts)

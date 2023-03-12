@@ -32,6 +32,9 @@ namespace LukkelEngine {
 		std::pair<glm::vec3, glm::quat> getPosAndRotation();
 		void addConstraint();
 
+		const uint64_t getID() const { return m_ID; }
+		void setID(uint64_t ID) { m_ID = ID; }
+
 		btTransform getWorldTransform();
 		btRigidBody* getRigidBody() { return m_RigidBody; }
 		btCollisionShape* getCollisionShape() { return m_RigidBody->getCollisionShape(); }
@@ -43,12 +46,12 @@ namespace LukkelEngine {
 		void setCollisionFlags(int flags) { m_RigidBody->setCollisionFlags(flags); }
 		void setActivationState(int state) { m_RigidBody->setActivationState(state); }
 
-
 	private:
 		btCollisionShape* m_Shape = nullptr;
 		btRigidBody* m_RigidBody = nullptr;
 		MotionState* m_MotionState = nullptr;
 		Type m_Type = Type::STATIC;
+		uint64_t m_ID;
 
 		btVector3 m_Position{ 0.0f, 0.0f, 0.0f };
 		btVector3 m_Dimensions{ 1.0f, 1.0f, 1.0f };

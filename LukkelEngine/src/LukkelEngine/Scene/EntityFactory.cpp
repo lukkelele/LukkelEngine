@@ -16,8 +16,11 @@ namespace LukkelEngine {
 		float restitution = 0.3f;
 		float friction = 1.0f;
 
+		UUID& entityID = entity.getUUID();
 		Mesh& mesh = MeshFactory::createBox(props.dimensions);
-		RigidBody& rigidbody = RigidBodyFactory::createRigidBody(props.dimensions, props.offset, 
+		// RigidBody& rigidbody = RigidBodyFactory::createRigidBody(props.dimensions, props.offset, 
+		// 							props.mass, props.bodytype, friction, restitution, inertia);
+		RigidBody& rigidbody = RigidBodyFactory::createRigidBody(entityID, props.dimensions, props.offset, 
 									props.mass, props.bodytype, friction, restitution, inertia);
 		Material material;
 		material.setMaterialColor(props.color);

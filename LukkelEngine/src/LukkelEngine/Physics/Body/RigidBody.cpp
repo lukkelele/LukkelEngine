@@ -25,11 +25,18 @@ namespace LukkelEngine {
 		m_RigidBody->setFriction(m_Friction);
 		m_RigidBody->setRestitution(m_Restitution);
 		m_RigidBody->forceActivationState(DISABLE_DEACTIVATION);
-		m_RigidBody->setCollisionFlags(btCollisionObject::CF_STATIC_OBJECT);
 	}
 
 	void RigidBody::onUpdate(float ts)
 	{
+	}
+
+
+	void RigidBody::setLinearVelocity(glm::vec3& linearVelocity)
+	{
+
+		m_LinearVelocity = { linearVelocity.x, linearVelocity.y, linearVelocity.z };
+		m_RigidBody->setLinearVelocity(m_LinearVelocity);
 	}
 
 	void RigidBody::setWorldTransform(glm::mat4& transform)

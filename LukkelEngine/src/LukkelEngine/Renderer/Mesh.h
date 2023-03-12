@@ -35,6 +35,7 @@ namespace LukkelEngine {
 		s_ptr<VertexArray> m_VAO;
 		s_ptr<IndexBuffer> m_IBO;
 		s_ptr<VertexBuffer> m_VBO;
+
 	};
 
 	// Upcoming implementation

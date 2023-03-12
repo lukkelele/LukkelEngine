@@ -19,8 +19,4 @@ namespace LukkelEngine {
 
 
 	};
-
-
-	// Will implement new system to insert data to Vertex arrays and Vertex buffers
-	// static Mesh createMesh(std::vector<Vertex> vertices, std::vector<Index> indices);
 }

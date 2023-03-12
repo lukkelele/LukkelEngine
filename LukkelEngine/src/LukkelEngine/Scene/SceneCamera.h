@@ -1,6 +1,4 @@
 #pragma once
-
-// #include "GL/glew.h"
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
 #include "glm/glm.hpp"
@@ -18,11 +16,11 @@ namespace LukkelEngine {
 
 	class Scene;
 
-
-	class FpsCamera	: public Camera {
+	class SceneCamera : public Camera
+	{
 	public:
-		FpsCamera(float FOV, float nearPlane, float farPlane);
-		~FpsCamera() = default;
+		SceneCamera(float FOV, float nearPlane, float farPlane);
+		~SceneCamera() = default;
 
 		void onUpdate(float ts);
 		void onImGuiRender();
@@ -33,9 +31,8 @@ namespace LukkelEngine {
 		glm::vec3 getRightDirection() const;
 		glm::vec3 getForwardDirection() const;
 		glm::vec3 getUpDirection() const;
-		const glm::vec3& getPosition() const { return m_Position; }
-
 		glm::mat4& getInverseViewProjection() { return m_InverseViewProjection; }
+		const glm::vec3& getPosition() const { return m_Position; }
 
 		float getFOV() const { return m_FOV; }
 		float getNearClip() const { return m_NearPlane; }
@@ -67,11 +64,11 @@ namespace LukkelEngine {
 
 		float m_FOV = 50.0f, m_NearPlane = 0.10f, m_FarPlane = 1000.0f;
 		float m_TravelSpeed = 0.10f;
-		float m_Distance = 0.0f;
+		float m_Distance = 500.0f;
 
 		bool m_KeyboardEnabled = true;
-
 		bool m_MouseEnabled = true;
+
 		float m_MouseSpeed = 1.0f;
 		glm::vec2 m_MousePos = { 0.0f, 0.0f };
 		glm::vec2 m_InitialMousePos{};

@@ -28,9 +28,10 @@ namespace LukkelEngine {
 		void onUpdate(float ts);
 		glm::vec3 getPosition() { return glm::vec3(m_Position.getX(), m_Position.getY(), m_Position.getZ()); }
 		glm::vec3 getDimensions() { return glm::vec3(m_Dimensions.getX(), m_Dimensions.getY(), m_Dimensions.getZ()); }
+		glm::vec3 getLinearVelocity() const { return glm::vec3(m_LinearVelocity.x(), m_LinearVelocity.y(), m_LinearVelocity.z()); }
+		void setLinearVelocity(glm::vec3& linearVelocity);
 		int getShapeType() { return m_RigidBody->getCollisionShape()->getShapeType(); }
 		std::pair<glm::vec3, glm::quat> getPosAndRotation();
-		void addConstraint();
 
 		const uint64_t getID() const { return m_ID; }
 		void setID(uint64_t ID) { m_ID = ID; }

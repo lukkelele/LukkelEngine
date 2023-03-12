@@ -1,5 +1,6 @@
 #include "LKpch.h"
 #include "LukkelEngine/Core/Application.h"
+#include "LukkelEngine/Layer/DebugLayer.h"
 
 namespace LukkelEngine {
 
@@ -12,8 +13,14 @@ namespace LukkelEngine {
 		LukkeLog::init("LukkelEngine.log", "App", "Client");
 		LKLOG_TRACE("Starting application");
 
+
 		WindowProps properties = WindowProps(details.title, details.width, details.height);
 		m_Window = Window::create(properties);
+
+		/* Doesnt work yet, OpenGL3 Init errors */
+		ImGuiLayer* imguiLayer = new ImGuiLayer(m_Window->getWindow());
+		pushOverlay(imguiLayer);
+
 		m_Window->setEventCallback(LK_BIND_EVENT_FN(Application::onEvent));
 
 		DebugLayer* debugLayer = new DebugLayer;
@@ -53,13 +60,11 @@ namespace LukkelEngine {
 		}
 
 		// Update ImGui
-		ImGui::Begin;
 		for (auto it = m_LayerStack.rbegin(); it != m_LayerStack.rend(); ++it) 
 		{
 			Layer* currentLayer = *it;
 			currentLayer->onImGuiRender();
 		}
-		ImGui::End;
 
 		m_Renderer->renderImGui();
 		m_Window->onUpdate();
@@ -68,12 +73,14 @@ namespace LukkelEngine {
 
 	void Application::pushLayer(Layer* layer)
 	{
+		LKLOG_INFO("Pushing layer -> {0}", layer->getName());
 		m_LayerStack.pushLayer(layer);
 		layer->onAttach();
 	}
 
 	void Application::pushOverlay(Layer* layer)
 	{
+		LKLOG_INFO("Pushing overlay -> {0}", layer->getName());
 		m_LayerStack.pushOverlay(layer);
 		layer->onAttach();
 	}
@@ -87,6 +94,7 @@ namespace LukkelEngine {
 		m_LayerStack.popLayer(layer);
 		layer->onDetach();
 	}
+
 	/**
 	 * Pop an overlay from the layer stack
 	 * @param layer is the layer to be popped

@@ -1,7 +1,9 @@
 #pragma once
 #include "LukkelEngine/Core/Timer.h"
 #include "LukkelEngine/Core/UUID.h"
-#include "LukkelEngine/Renderer/FpsCamera.h"
+#include "LukkelEngine/Renderer/Camera.h"
+#include "LukkelEngine/Scene/SceneCamera.h"
+#include "LukkelEngine/Renderer/EditorCamera.h"
 #include "LukkelEngine/Renderer/Renderer.h"
 
 #include "entt/entt.hpp"
@@ -20,7 +22,7 @@ namespace LukkelEngine {
 
 		void onUpdate(float ts);
 		void onImGuiRender();
-		const s_ptr<FpsCamera> getCamera() const { return m_Camera; }
+		const s_ptr<Camera> getCamera() const { return m_Camera; }
 
 		Entity getEntityWithUUID(UUID uuid);
 		Entity findEntity(std::string_view name);
@@ -30,6 +32,8 @@ namespace LukkelEngine {
 
 		bool isRunning() const { return m_IsRunning; }
 		void pause(bool paused) { m_IsPaused = paused; }
+
+		void switchCamera();
 
 		template<typename T>
 		void onComponentAdded(Entity entity, T& component);
@@ -42,9 +46,11 @@ namespace LukkelEngine {
 		entt::registry m_Registry;
 		std::unordered_map<UUID, entt::entity> m_EntityMap;
 
-		s_ptr<FpsCamera> m_Camera;
 		s_ptr<Renderer> m_Renderer;
 		s_ptr<World> m_World;
+
+		s_ptr<SceneCamera> m_Camera;
+		s_ptr<EditorCamera> m_EditorCamera;
 	};
 
 }

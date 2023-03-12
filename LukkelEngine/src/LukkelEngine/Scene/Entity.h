@@ -69,15 +69,18 @@ namespace LukkelEngine {
 		glm::vec3 getScale() const { return m_Scale; }
 
 		glm::vec3 m_Scale{ 1.0f, 1.0f, 1.0f };
+
+		bool isSelected = false;
+
 	private:
 		entt::entity m_EntityHandle{ entt::null };
-		int m_ID; // Rigidbody identifier
+		int m_ID; // Remove
 		Scene* m_Scene = nullptr;
 
+		// REMOVE 
 		glm::vec3 m_Position{ 1.0f, 1.0f, 1.0f };
 		glm::vec3 m_Translation{ 0.0f, 0.0f, 0.0f };
 		glm::quat m_Rotation{ 1.0f, 0.0f, 0.0f, 0.0f };
-
 		glm::vec3 m_Inertia{ 0.0f, 0.0f, 0.0f };
 		glm::vec3 m_LinearVelocity{ 0.0f, 0.0f, 0.0f };
 		glm::vec3 m_AngularVelocity{ 0.0f, 0.0f, 0.0f };

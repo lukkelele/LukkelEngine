@@ -4,13 +4,15 @@
 #include "LukkelEngine/Scene/Components.h"
 #include "LukkelEngine/Physics/World.h"
 #include "LukkelEngine/Debug/PhysicsDebugger.h"
+#include "LukkelEngine/Renderer/EditorCamera.h"
 
 
 namespace LukkelEngine {
 
 	Scene::Scene()
 	{
-		m_Camera = create_s_ptr<FpsCamera>(45.0f, 0.010f, 1000.0f);
+		// m_Camera = create_s_ptr<FpsCamera>(45.0f, 0.010f, 1000.0f);
+		m_Camera = create_s_ptr<SceneCamera>(45.0f, 0.010f, 1000.0f);
 		m_Camera->setPosition(glm::vec3(0.0f, 15.0f, -46.0f));
 		m_Camera->setScene(this);
 
@@ -58,7 +60,6 @@ namespace LukkelEngine {
 		return {};
 	}
 
-
 	void Scene::destroyEntity(Entity entity)
 	{
 		m_EntityMap.erase(entity.getUUID());
@@ -92,13 +93,23 @@ namespace LukkelEngine {
 
 			m_Renderer->drawWireframe(entity, Color::Black);
 			m_Renderer->draw(mesh);
-			// m_Renderer->drawShape(entity); // Does not draw correctly
 		}
 	}
 
 	void Scene::onImGuiRender()
 	{
 		m_Camera->onImGuiRender();
+	}
+
+	void Scene::switchCamera()
+	{
+		Camera* currentCamera = m_Camera.get();
+		Camera* editorCamera = dynamic_cast<Camera*>(m_EditorCamera.get());
+
+		if (currentCamera == editorCamera)
+		{
+	
+		}
 	}
 
 	template<typename T>

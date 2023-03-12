@@ -1,9 +1,9 @@
 #pragma once
-
 #include "LukkelEngine/Core/LKErrorHandler.h"
 #include "LukkelEngine/Event/Event.h"
 
 #include "GLFW/glfw3.h"
+
 
 namespace LukkelEngine {
 
@@ -12,8 +12,8 @@ namespace LukkelEngine {
 		std::string title;
 		uint16_t width, height;
 		WindowProps(const std::string& title = "LukkelEngine",
-						 uint16_t width = 800,
-						 uint16_t height = 600)
+						 uint16_t width = 1920,
+						 uint16_t height = 1080)
 			: title(title), width(width), height(height){}
 	};
 
@@ -39,6 +39,5 @@ namespace LukkelEngine {
 		virtual void setEventCallback(const EventCallbackFn& callback) = 0;
 
 		float m_ViewportWidth, m_ViewportHeight;
-
 	};
 }

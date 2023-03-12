@@ -5,6 +5,7 @@
 #include "LukkelEngine/Renderer/Mesh.h"
 #include "LukkelEngine/Physics/Body/RigidBody.h"
 #include "LukkelEngine/Renderer/Material.h"
+#include "LukkelEngine/UI/Property.h"
 
 #include "imgui/imgui_internal.h"
 #include "entt/entt.hpp"
@@ -29,9 +30,6 @@ namespace LukkelEngine {
 		void drawEntityNode(Entity entity);
 		void drawComponents(Entity entity);
 		void selectEntity(Entity& entity);
-
-		static void drawVec3Control(const std::string& label, glm::vec3& values, float resetValue = 0.0f, float columnWidth = 100.0f);
-		static void drawVec4Control(const std::string& label, glm::vec4& values, float min = 0.0f, float max = 1.0f, float resetValue = 0.0f, float columnWidth = 100.0f);
 
 		template<typename T, typename UIFunction>
 		static void drawComponent(const std::string& name, Entity entity, UIFunction uiFunction);

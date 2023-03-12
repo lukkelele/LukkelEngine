@@ -6,6 +6,7 @@
 #include "LukkelEngine/Renderer/Mesh.h"
 #include "LukkelEngine/Renderer/Material.h"
 #include "LukkelEngine/Physics/Body/RigidBody.h"
+#include "LukkelEngine/Scene/SceneCamera.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -56,6 +57,19 @@ namespace LukkelEngine{
 				 * glm::scale(glm::mat4(1.0f), scale);
 		}
 
+	};
+
+	struct CameraComponent
+	{
+		enum class Type { Null = -1, FirstPerson, ThirdPerson, Ortographic };
+		Type projectionType;
+		SceneCamera camera;
+
+		CameraComponent() = default;
+		CameraComponent(const CameraComponent& other) = default;
+
+		operator SceneCamera& () { return camera; }
+		operator const SceneCamera& () const { return camera; }
 	};
 
 

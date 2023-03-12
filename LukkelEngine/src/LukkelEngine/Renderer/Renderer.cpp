@@ -8,12 +8,11 @@
 namespace LukkelEngine {
 
 	LK_DRAW_MODE Renderer::s_DrawMode;
-	glm::vec4 Renderer::s_BackgroundColor = Color::White;
+	glm::vec4 Renderer::s_BackgroundColor = Color::DarkGray;
 
 	void Renderer::clear() const
 	{
 		auto c = s_BackgroundColor;
-		// glClearColor(float(c/255.0f), float(c/255.0f), float(c/255.0f), 1.0f);
 		glClearColor(c.x, c.y, c.z, c.w);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
@@ -93,31 +92,6 @@ namespace LukkelEngine {
 		layout.push<float>(3);
 		va.addBuffer(vb, layout);
 
-		glDrawElements(GL_LINES, 2, GL_UNSIGNED_INT, nullptr);
-	}
-
-	void Renderer::drawLine(const glm::vec3& p0, const glm::vec3& p1, const glm::mat4& viewProj, const glm::vec4& color)
-	{
-		float Line[] = {
-			p0.x, p0.y, p0.z,
-			p1.x, p1.y, p1.z
-		};
-		unsigned int indices[] = { 0, 1 };
-
-		VertexArray va;
-		VertexBuffer vb(Line, 6 * sizeof(float));
-		IndexBuffer ib(indices, 2 * sizeof(unsigned int));
-		Shader shader("assets/shaders/basic.shader");
-
-		VertexBufferLayout layout;
-		layout.push<float>(3);
-		va.addBuffer(vb, layout);
-
-		shader.bind();
-		va.bind();
-		ib.bind();
-		shader.setUniformMat4f("u_Model", glm::mat4(1.0f));
-		shader.setUniformMat4f("u_ViewProj", viewProj);
 		glDrawElements(GL_LINES, 2, GL_UNSIGNED_INT, nullptr);
 	}
 

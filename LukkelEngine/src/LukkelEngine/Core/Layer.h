@@ -1,10 +1,8 @@
-#ifndef _LUKKELENGINE_LAYER_H
-#define _LUKKELENGINE_LAYER_H
-
-#include "imgui/imgui.h"
-
+#pragma once
 #include "LukkelEngine/Core/Base.h"
 #include "LukkelEngine/Event/Event.h"
+
+#include <imgui/imgui.h>
 
 
 namespace LukkelEngine {
@@ -21,9 +19,8 @@ namespace LukkelEngine {
 		virtual void onEvent(Event& event) {}
 
 		const std::string& getName() const { return m_Name; }
+
 	protected:
-		std::string m_Name ; // Remove in release
+		std::string m_Name;
 	};
 }
-
-#endif /* _LUKKELENGINE_LAYER_H */

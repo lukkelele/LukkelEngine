@@ -56,42 +56,58 @@ namespace LukkelEngine {
 		delete m_Solver;
 	}
 
-	bool World::pickBody(glm::vec3& rayFrom, glm::vec3& rayTo)
+	bool World::pickBody(const Camera& camera, float distance)
 	{
-		if (!m_DynamicWorld)
-			return false;
+		// FIX CAMERA PASSED AS ARGUMENT
+		auto cam = camera;
+		auto camPos = cam.getPosition();
 
-		btVector3 from{ rayFrom.x, rayFrom.y, rayFrom.z };
-		btVector3 to{ rayTo.x, rayTo.y, rayTo.z };
+		auto [rayFrom, rayDir] = raycast(cam);
+		btVector3 from = btVector3(rayFrom.x, rayFrom.y, rayFrom.z);
+		btVector3 to_dir = btVector3(rayDir.x, rayDir.y, rayDir.z);
+		btVector3 to = from + (btVector3(rayDir.x, rayDir.y, rayDir.z) * distance);
 
 		btCollisionWorld::ClosestRayResultCallback rayCallback(from, to);
-
-		rayCallback.m_flags |= btTriangleRaycastCallback::kF_UseGjkConvexCastRaytest; // TODO: Switch the flag to the newly optimized one
-		m_DynamicWorld->rayTest(from, to, rayCallback);
+		m_DynamicWorld->rayTest(from , to, rayCallback);
 
 		if (rayCallback.hasHit())
 		{
-			// LKLOG_CRITICAL("RAY HIT");
 			btVector3 pickPos = rayCallback.m_hitPointWorld;
 			btRigidBody* body = (btRigidBody*)btRigidBody::upcast(rayCallback.m_collisionObject);
-			if (body)
+
+			bool picked = false;
+			if (body && body->isInWorld())
 			{
-				if (!(body->isStaticObject() || body->isKinematicObject()))
+				if (!(body->isStaticOrKinematicObject()))
 				{
-					m_PickedBody = body;
-					uint64_t bodyID = body->getUserIndex();
-					auto pickedEntity = m_Scene->getEntityWithUUID(bodyID);
-					LKLOG_INFO("Picked Entity: {0}", pickedEntity.getName());
-					m_SavedState = m_PickedBody->getActivationState();
-					m_PickedBody->setActivationState(DISABLE_DEACTIVATION);
-					// LKLOG_CRITICAL("Raycast hit: {0}", body->getUserIndex());
+					uint64_t id = (uint64_t)body->getUserPointer();
+					auto& pickedEntity = m_Scene->getEntityWithUUID(id);
+
+					if (pickedEntity && pickedEntity != m_PickedEntity)
+					{
+						// Remove the focus selection from the last picked entity
+						m_PickedEntity.isSelected = false;
+						// Setup the focus on the newly hit entity
+						m_PickedEntity = pickedEntity;
+						Editor::m_SelectedEntity = m_PickedEntity;
+						pickedEntity.isSelected = true;
+						m_PickedBody = body;
+						picked = true;
+					}
 				}
 			}
+
 			m_OldPickingPos = to;
 			m_HitPos = pickPos;
 			m_OldPickingDist = (pickPos - from).length();
+			return picked;
 		}
-		return false;
+		else
+		{
+			resetMousePick();
+			LKLOG_INFO("");
+			return false;
+		}
 	}
 
 	void World::stepSimulation(float ts)
@@ -132,71 +148,25 @@ namespace LukkelEngine {
 		}
 	}
 
+	void World::resetMousePick()
+	{
+		m_PickedBody = nullptr;
+		m_PickedEntity = {};
+		Editor::m_SelectedEntity = {};
+	}
+
 	bool World::mouseButtonCallback(int button, int state, float x, float y)
 	{
+		float distance = 800.0f; // FIXME
 		if (state == 1)
 		{
 			if (button == 0)
 			{
-				auto cam = m_Scene->getCamera();
-				auto camPos = cam->getPosition();
-				float distance = 800.0f;
-
-				auto [rayFrom, rayDir] = raycast(*cam);
-				btVector3 from = btVector3(camPos.x, camPos.y, camPos.z);
-				btVector3 to_dir = btVector3(rayDir.x, rayDir.y, rayDir.z);
-				btVector3 to = from + (btVector3(rayDir.x, rayDir.y, rayDir.z) * distance);
-				Renderer::drawLine(camPos, glm::vec3(to.x(), to.y(), to.z()));
-
-				btCollisionWorld::ClosestRayResultCallback rayCallback(from, to);
-				m_DynamicWorld->rayTest(from , to, rayCallback);
-
-				if (rayCallback.hasHit())
+				bool bodyIsPicked = pickBody(*m_Scene->getCamera(), distance);
+				if (bodyIsPicked)
 				{
-					// btRigidBody* body = (btRigidBody*)rayCallback.m_collisionObject;
-					btVector3 pickPos = rayCallback.m_hitPointWorld;
-					btRigidBody* body = (btRigidBody*)btRigidBody::upcast(rayCallback.m_collisionObject);
-					if (body && body->isInWorld())
-					{
-						if (!(body->isStaticOrKinematicObject()))
-						{
-							m_PickedBody = (btRigidBody*)rayCallback.m_collisionObject;
-							// m_PickedBody = body;
-							m_SavedState = m_PickedBody->getActivationState();
-							m_PickedBody->setActivationState(DISABLE_DEACTIVATION);
-
-							uint64_t bodyID = m_PickedBody->getUserIndex();
-							auto& pickedEntity = m_Scene->getEntityWithUUID(bodyID);
-
-							LKLOG_CRITICAL("RAY HIT");
-							if (pickedEntity)
-							{
-								LKLOG_TRACE("RAY HIT");
-								LKLOG_INFO("Picked Entity: {0}", pickedEntity.getName());
-
-							}
-						}
-						else if (body->isStaticOrKinematicObject())
-						{
-							LKLOG_WARN("STATIC HIT");
-						}
-					}
-					m_OldPickingPos = to;
-					m_HitPos = pickPos;
-					m_OldPickingDist = (pickPos - from).length();
+					LKLOG_CRITICAL("Body picked -> {0}", m_PickedEntity.getName());
 				}
-				else
-				{
-					LKLOG_INFO("");
-				}
-				// pickBody(rayFrom, rayTo);
-			}
-		}
-		else
-		{
-			if (button == 0 && m_ConstraintsEnabled)
-			{
-				removePickConstraint();
 			}
 		}
 
@@ -205,10 +175,6 @@ namespace LukkelEngine {
 
 	bool World::mouseMoveCallback(float x, float y)
 	{
-		if (m_ConstraintsEnabled)
-		{
-			return false;
-		}
 		return false;
 	}
 
@@ -242,11 +208,12 @@ namespace LukkelEngine {
 	std::pair<glm::vec3, glm::vec3> World::raycast(const Camera& camera)
 	{
 		auto [mouseX, mouseY] = Mouse::getMousePosition();
-		auto cam = camera;
-		auto screenWidth = cam.getScreenWidth();
-		auto screenHeight = cam.getScreenHeight();
-		auto projection = cam.getProjection();
-		auto view = cam.getView();
+		// auto& cam = camera;
+		auto& cam = m_Scene->getCamera();
+		auto screenWidth = cam->getScreenWidth();
+		auto screenHeight = cam->getScreenHeight();
+		auto projection = cam->getProjection();
+		auto view = cam->getView();
 		// Lock the ray to the middle of the screen, test for now
 		mouseX = screenWidth / 2;
 		mouseY = screenHeight / 2;
@@ -265,8 +232,10 @@ namespace LukkelEngine {
 		);
 
 		glm::mat4 invViewProjection = glm::inverse(projection * view);
-		glm::vec4 rayStart_world = invViewProjection * rayStart_NDC; rayStart_world /= rayStart_world.w;
-		glm::vec4 rayEnd_world   = invViewProjection * rayEnd_NDC  ; rayEnd_world   /= rayEnd_world.w;
+		glm::vec4 rayStart_world = invViewProjection * rayStart_NDC;
+		glm::vec4 rayEnd_world   = invViewProjection * rayEnd_NDC  ; 
+		rayStart_world /= rayStart_world.w;
+		rayEnd_world   /= rayEnd_world.w;
 
 		glm::vec3 rayDirection_world(rayEnd_world - rayStart_world);
 		rayDirection_world = glm::normalize(rayDirection_world);

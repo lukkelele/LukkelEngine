@@ -1,11 +1,9 @@
 #pragma once
-// #include "GL/glew.h"
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
 #include "imgui/imgui.h"
 
-#include "imgui/examples/imgui_impl_glfw.h"
-#include "imgui/examples/imgui_impl_opengl3.h"
+#include "LukkelEngine/Layer/ImGuiLayer.h"
 
 #include "LukkelEngine/Core/Base.h"
 #include "LukkelEngine/Core/Window.h"
@@ -16,9 +14,6 @@
 #include "LukkelEngine/Scene/Scene.h"
 #include "LukkelEngine/Event/Event.h"
 #include "LukkelEngine/Event/ApplicationEvent.h"
-
-#include "LukkelEngine/Layer/DebugLayer.h"
-
 
 
 namespace LukkelEngine {
@@ -45,9 +40,10 @@ namespace LukkelEngine {
 		void shutdown();
 		void onEvent(Event& e);
 
-		GLFWwindow* getGLFWWindow() const { return m_Window->getWindow(); }
+		GLFWwindow* getGLFWwindow() const { return m_Window->getWindow(); }
 		s_ptr<Window> getWindow() const { return m_Window; }
-		s_ptr<FpsCamera> getCamera() const { return m_Scene->getCamera(); }
+		// s_ptr<FpsCamera> getCamera() const { return m_Scene->getCamera(); }
+		s_ptr<Camera> getCamera() const { return m_Scene->getCamera(); }
 		s_ptr<Scene> getScene() const { return m_Scene; }
 		void setScene(s_ptr<Scene>& scene) { m_Scene = scene; }
 
@@ -62,9 +58,6 @@ namespace LukkelEngine {
 		bool onWindowClose(WindowCloseEvent& e);
 		bool onWindowResize(WindowResizeEvent& e);
 		void resizeWindow(uint16_t width, uint16_t height);
-
-		void testRunner();
-		void registerTests();
 
 		static Application& get() { return *s_Instance; }
 

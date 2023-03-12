@@ -1,18 +1,18 @@
 #include "LKpch.h"
 #include "LukkelEngine/Scene/Scene.h"
-#include "LukkelEngine/Scene/Components.h"
 #include "LukkelEngine/Scene/Entity.h"
+#include "LukkelEngine/Scene/Components.h"
+#include "LukkelEngine/Physics/World.h"
 #include "LukkelEngine/Debug/PhysicsDebugger.h"
-
-#include "glm/glm.hpp"
+#include "LukkelEngine/Renderer/EditorCamera.h"
 
 
 namespace LukkelEngine {
 
-
 	Scene::Scene()
 	{
-		m_Camera = create_s_ptr<FpsCamera>(45.0f, 0.010f, 1000.0f);
+		// m_Camera = create_s_ptr<FpsCamera>(45.0f, 0.010f, 1000.0f);
+		m_Camera = create_s_ptr<SceneCamera>(45.0f, 0.010f, 1000.0f);
 		m_Camera->setPosition(glm::vec3(0.0f, 15.0f, -46.0f));
 		m_Camera->setScene(this);
 
@@ -30,21 +30,41 @@ namespace LukkelEngine {
 		return entity;
 	}
 
-	void Scene::destroyEntity(Entity entity)
-	{
-		m_EntityMap.erase(entity.getUUID());
-		m_Registry.destroy(entity);
-		LKLOG_CRITICAL("Entity successfully deleted");
-	}
-
 	Entity Scene::createEntityWithUUID(UUID uuid, const std::string& name)
 	{
 		Entity entity = { m_Registry.create(), this };
+		LKLOG_INFO("UUID for {0}: {1}", name, uuid);
 		entity.addComponent<IDComponent>(uuid);
 		TagComponent& tag = entity.addComponent<TagComponent>();
 		tag.tag = name.empty() ? "Entity" : name;
 		m_EntityMap[uuid] = entity;
 		return entity;
+	}
+
+	Entity Scene::getEntityWithUUID(UUID uuid)
+	{
+		if (m_EntityMap.find(uuid) != m_EntityMap.end())
+			return { m_EntityMap.at(uuid), this };
+		return { };
+	}
+
+	Entity Scene::findEntity(std::string_view name)
+	{
+		auto view = m_Registry.view<TagComponent>();
+		for (auto entity : view)
+		{
+			const TagComponent& tc = view.get<TagComponent>(entity);
+			if (tc.tag == name)
+				return Entity{ entity , this };
+		}
+		return {};
+	}
+
+	void Scene::destroyEntity(Entity entity)
+	{
+		m_EntityMap.erase(entity.getUUID());
+		m_Registry.destroy(entity);
+		LKLOG_CRITICAL("Entity successfully deleted");
 	}
 
 	void Scene::onUpdate(float ts)
@@ -63,17 +83,17 @@ namespace LukkelEngine {
 		if (Mouse::isButtonPressed(MouseButton::Button0))
 			m_World->mouseButtonCallback(MouseButton::Button0, 1, Mouse::getMouseX(), Mouse::getMouseY());
 
-		auto meshes = m_Registry.view<Mesh>();
-		for (auto e : meshes)
-		{	
-			Entity entity = { e, this };
-			auto& mesh = entity.getComponent<Mesh>();
-			mesh.onUpdate(ts, viewProj);
+		auto entities = m_Registry.view<Mesh>();
 
-			m_Renderer->drawShape(mesh, btVector3(1, 1, 1));
+		for (auto& ent : entities)
+		{	
+			Entity entity = { ent, this };
+			entity.onUpdate(ts, viewProj);
+			Mesh& mesh = entity.getComponent<Mesh>();
+
+			m_Renderer->drawWireframe(entity, Color::Black);
 			m_Renderer->draw(mesh);
 		}
-
 	}
 
 	void Scene::onImGuiRender()
@@ -81,25 +101,16 @@ namespace LukkelEngine {
 		m_Camera->onImGuiRender();
 	}
 
-	Entity Scene::getEntityWithUUID(UUID uuid)
+	void Scene::switchCamera()
 	{
-		if (m_EntityMap.find(uuid) != m_EntityMap.end())
-			return { m_EntityMap.at(uuid), this };
-		return { };
-	}
+		Camera* currentCamera = m_Camera.get();
+		Camera* editorCamera = dynamic_cast<Camera*>(m_EditorCamera.get());
 
-	Entity Scene::findEntity(std::string_view name)
-	{
-		auto view = m_Registry.view<TagComponent>();
-		for (auto entity : view)
+		if (currentCamera == editorCamera)
 		{
-			const TagComponent& tc = view.get<TagComponent>(entity);
-			if (tc.tag == name)
-				return Entity{ entity, this };
+	
 		}
-		return {};
 	}
-
 
 	template<typename T>
 		void Scene::onComponentAdded(Entity entity, T& component)
@@ -108,15 +119,28 @@ namespace LukkelEngine {
 		}
 
 		template<>
-		void Scene::onComponentAdded<Mesh>(Entity entity, Mesh& component)
+		void Scene::onComponentAdded<Mesh>(Entity entity, Mesh& mesh)
 		{
-			m_World->addRigidBodyToWorld(component.getRigidBody());
-			LKLOG_INFO("Added rigid body to world");
+			LKLOG_INFO("{0} : MeshComponent added!", entity.getName());
 		}
 
 		template<>
-		void Scene::onComponentAdded<SpriteComponent>(Entity entity, SpriteComponent& component)
+		void Scene::onComponentAdded<RigidBody>(Entity entity, RigidBody& rigidbody)
 		{
+			m_World->addRigidBodyToWorld(rigidbody);
+			LKLOG_INFO("{0} : RigidBodyComponent added!", entity.getName());
+		}
+
+		template<>
+		void Scene::onComponentAdded<TransformComponent>(Entity entity, TransformComponent& rigidbody)
+		{
+			LKLOG_INFO("{0} : TransformComponent added!", entity.getName());
+		}
+
+		template<>
+		void Scene::onComponentAdded<Material>(Entity entity, Material& rigidbody)
+		{
+			LKLOG_INFO("{0} : MaterialComponent added!", entity.getName());
 		}
 
 

@@ -3,8 +3,9 @@
 #include "LukkelEngine/Debug/Debugger.h"
 #include "LukkelEngine/Debug/PhysicsDebugger.h"
 #include "LukkelEngine/Scene/Components.h"
-#include "LukkelEngine/Renderer/FpsCamera.h"
+#include "LukkelEngine/Renderer/Camera.h"
 #include "LukkelEngine/Renderer/Shader.h"
+#include "LukkelEngine/Scene/Entity.h"
 
 #include "btBulletDynamicsCommon.h"
 #include "btBulletCollisionCommon.h"
@@ -23,10 +24,10 @@
 #define LK_WORLD_GRAVITY_SLOWEST btVector3(0.0f, -0.5f, 0.0f)
 #define LK_WORLD_GRAVITY_FAST    btVector3(0.0f, -18.0f, 0.0f)
 
-
 namespace LukkelEngine {
 
 	class Scene;
+	class Editor;
 
 	struct RaycastResult 
 	{
@@ -45,12 +46,13 @@ namespace LukkelEngine {
 		void shutdownPhysics();
 
 		void stepSimulation(float ts);
-		void addRigidBodyToWorld(btRigidBody* body) { m_DynamicWorld->addRigidBody(body); }
-		bool pickBody(glm::vec3& rayFrom, glm::vec3& rayTo);
+		bool pickBody(const Camera& camera, float distance);
+		template<typename T>
+		void addRigidBodyToWorld(T& rigidbody);
 
 		void addConstraint(btTypedConstraint* constraint, btRigidBody* body);
 		void createPickingConstraint(float x, float y);
-		void createPickingConstraint(Mesh& mesh);
+		void createPickingConstraint(Entity& entity);
 		void removePickConstraint();
 		void createCollisionObject(btCollisionObject* body);
 
@@ -59,18 +61,11 @@ namespace LukkelEngine {
 		bool movePickedBody(glm::vec3& rayFrom, glm::vec3& rayTo);
 		std::pair<glm::vec3, glm::vec3> raycast(const Camera& camera);
 
-		static glm::vec3 convertWorldToNDC(const btVector3& worldCoords, float screenWidth, float screenHeight);
-		static glm::vec3 convertNDCToWorld(const glm::vec3& ndcCoords, float screenWidth, float screenHeight, const glm::mat4& viewMatrix, const glm::mat4& projectionMatrix);
-
-		class btRigidBody* m_PickedBody;
-		class btTypedConstraint* m_PickedConstraint;
-		btVector3 m_HitPos;
-		btVector3 m_OldPickingPos;
-		btScalar m_OldPickingDist;
-		int m_SavedState;
+		static btVector3 screenToWorld(float mx, float my, glm::mat4 view, glm::mat4 projection);
+		void resetMousePick();
 
 		std::vector<btTypedConstraint*> constraints;
-		// btTypedConstraint* m_PickedConstraint;
+		static uint64_t s_EntitiesInWorld;
 
 	private:
 		btDiscreteDynamicsWorld* m_DynamicWorld = nullptr;
@@ -81,7 +76,15 @@ namespace LukkelEngine {
 
 		b3MouseButtonCallback m_PrevMouseButtonCallback = 0;
 		b3MouseMoveCallback m_PrevMouseMoveCallback = 0;
-	
+
+		btRigidBody* m_PickedBody;
+		Entity m_PickedEntity;
+		btTypedConstraint* m_PickedConstraint;
+		btVector3 m_HitPos;
+		btVector3 m_OldPickingPos;
+		btScalar m_OldPickingDist;
+		int m_SavedState;
+
 		bool m_ConstraintsEnabled = false;
 
 		// TODO: Implement an application function to set this automatically and even without 
@@ -95,7 +98,7 @@ namespace LukkelEngine {
 		float m_TravelSpeed = 0.10f;
 		float m_Distance = 0.50f;
 
-		friend class Scene;
 		Scene* m_Scene;
+		Editor* m_Editor;
 	};
 }

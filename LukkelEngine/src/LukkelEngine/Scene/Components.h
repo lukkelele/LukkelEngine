@@ -4,16 +4,22 @@
 #include "LukkelEngine/Renderer/Texture.h"
 #include "LukkelEngine/Core/UUID.h"
 #include "LukkelEngine/Renderer/Mesh.h"
+#include "LukkelEngine/Renderer/Material.h"
+#include "LukkelEngine/Physics/Body/RigidBody.h"
+#include "LukkelEngine/Scene/SceneCamera.h"
 
 #include <glm/glm.hpp>
-#include "btBulletDynamicsCommon.h"
-#include "btBulletCollisionCommon.h"
-
-#define LK_TEMPLATE_OBJECT_CUBE 4
-#define LK_TEMPLATE_OBJECT_FLOOR 5
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtx/quaternion.hpp>
+#include <btBulletDynamicsCommon.h>
+#include <btBulletCollisionCommon.h>
 
 
 namespace LukkelEngine{
+
+	class Material;
+	class Mesh;
+	class RigidBody;
 
 	struct IDComponent
 	{
@@ -33,16 +39,38 @@ namespace LukkelEngine{
 			: tag(tag) {}
 	};
 
-	struct SpriteComponent
+	struct TransformComponent
 	{
-		glm::vec4 color{ 1.0f, 1.0f, 1.0f, 1.0f };
+		glm::vec3 translation = { 0.0f, 0.0f, 0.0f };
+		glm::vec3 scale = { 1.0f, 1.0f, 1.0f };
+		glm::quat rotation = { 1.0f, 0.0f, 0.0f, 0.0f };
 
-		SpriteComponent() = default;
-		SpriteComponent(const SpriteComponent&) = default;
-		SpriteComponent(const glm::vec4& color)
-			: color(color) {}
+		TransformComponent() = default;
+		TransformComponent(const TransformComponent& other) = default;
+		TransformComponent(const glm::vec3& translation)
+			: translation(translation) {}
+
+		glm::mat4 getTransform() const
+		{
+			return glm::translate(glm::mat4(1.0f), translation)
+				 * glm::toMat4(rotation)
+				 * glm::scale(glm::mat4(1.0f), scale);
+		}
+
 	};
 
+	struct CameraComponent
+	{
+		enum class Type { Null = -1, FirstPerson, ThirdPerson, Ortographic };
+		Type projectionType;
+		SceneCamera camera;
+
+		CameraComponent() = default;
+		CameraComponent(const CameraComponent& other) = default;
+
+		operator SceneCamera& () { return camera; }
+		operator const SceneCamera& () const { return camera; }
+	};
 
 
 	template<typename... Component>
@@ -51,6 +79,6 @@ namespace LukkelEngine{
 	};
 
 	using AllComponents =
-		ComponentGroup<IDComponent, TagComponent, SpriteComponent, Mesh>;
+		ComponentGroup<IDComponent, TagComponent, Mesh, RigidBody>;
 
 }

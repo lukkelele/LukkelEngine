@@ -1,7 +1,7 @@
 #pragma once
 
 #include "LukkelEngine/Core/Application.h"
-#include "LukkelEngine/Scene/Editor.h"
+#include "LukkelEngine/Editor/Editor.h"
 
 class TestLayer : public LukkelEngine::Layer
 {

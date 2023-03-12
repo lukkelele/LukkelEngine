@@ -1,11 +1,11 @@
 #include "LKpch.h"
-#include "LukkelEngine/Renderer/FpsCamera.h"
+#include "LukkelEngine/Renderer/EditorCamera.h"
 #include "LukkelEngine/Core/Application.h"
 
 
 namespace LukkelEngine {
 
-	FpsCamera::FpsCamera(float FOV, float nearPlane, float farPlane)
+	EditorCamera::EditorCamera(float FOV, float nearPlane, float farPlane)
 		: m_FOV(FOV), m_NearPlane(nearPlane), m_FarPlane(farPlane)
 	{
 		LKLOG_INFO("FPS Camera created | FOV: {0}", m_FOV);
@@ -22,17 +22,17 @@ namespace LukkelEngine {
 		m_InitialMousePos = { mousePos.first, mousePos.second };
 	}
 
-	void FpsCamera::updateProjection()
+	void EditorCamera::updateProjection()
 	{
 		m_Projection = glm::perspectiveFov(glm::radians(m_FOV), (float)m_ViewportWidth, (float)m_ViewportHeight, m_NearPlane, m_FarPlane);
 	}
 
-	void FpsCamera::updateView()
+	void EditorCamera::updateView()
 	{
 		m_View = glm::lookAt(m_Position, m_Position + m_ForwardDirection, glm::vec3(0.0f, 1.0f, 0.0f));
 	}
 
-	void FpsCamera::updateMousePosition()
+	void EditorCamera::updateMousePosition()
 	{
 		const glm::vec2& mousePos { Mouse::getMouseX(), Mouse::getMouseY() };
 		m_MouseDelta = (mousePos - m_MousePos);
@@ -42,39 +42,39 @@ namespace LukkelEngine {
 			m_MouseEnabled = false;
 	}
 
-	glm::vec3 FpsCamera::getUpDirection() const
+	glm::vec3 EditorCamera::getUpDirection() const
 	{
 		return glm::rotate(getOrientation(), glm::vec3(0.0f, 1.0f, 0.0f));
 	}
 
-	glm::vec3 FpsCamera::getRightDirection() const
+	glm::vec3 EditorCamera::getRightDirection() const
 	{
 		return glm::rotate(getOrientation(), glm::vec3(1.0f, 0.0f, 0.0f));
 	}
 
-	glm::vec3 FpsCamera::getForwardDirection() const
+	glm::vec3 EditorCamera::getForwardDirection() const
 	{
 		return glm::rotate(getOrientation(), glm::vec3(0.0f, 0.0f, -1.0f));
 	}
 
-	glm::quat FpsCamera::getOrientation() const
+	glm::quat EditorCamera::getOrientation() const
 	{
 		return glm::quat(glm::vec3(m_Pitch, m_Yaw, 0.0f));
 	}
 
-	glm::vec3 FpsCamera::getDirection()
+	glm::vec3 EditorCamera::getDirection()
 	{
 		glm::vec3 lookAt = m_Position + getForwardDirection();
 		m_Direction = glm::normalize(lookAt - m_Position);
 		return m_Direction;
 	}
 
-	glm::vec3 FpsCamera::calculatePosition() const
+	glm::vec3 EditorCamera::calculatePosition() const
 	{
 		return m_Origin - getForwardDirection() * m_Distance;
 	}
 
-	void FpsCamera::onUpdate(float ts)
+	void EditorCamera::onUpdate(float ts)
 	{
 		hasMouseMoved = false;
 
@@ -144,7 +144,7 @@ namespace LukkelEngine {
 		m_ViewProjection = m_Projection * m_View;
 	}
 
-	void FpsCamera::onImGuiRender()
+	void EditorCamera::onImGuiRender()
 	{
 		ImGui::SetNextItemOpen(true, ImGuiCond_Once);
 		if (ImGui::TreeNode("Draw mode"))

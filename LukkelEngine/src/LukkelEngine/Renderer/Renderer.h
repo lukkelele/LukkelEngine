@@ -2,11 +2,13 @@
 #include "LukkelEngine/Core/Base.h"
 #include "LukkelEngine/Core/LKErrorHandler.h"
 #include "LukkelEngine/Renderer/VertexArray.h"
+#include "LukkelEngine/Renderer/VertexBuffer.h"
 #include "LukkelEngine/Renderer/IndexBuffer.h"
 #include "LukkelEngine/Renderer/Shader.h"
+#include "LukkelEngine/Renderer/Texture.h"
+#include "LukkelEngine/Renderer/Mesh.h"
 
 #include "imgui/imgui.h"
-// #include "GL/glew.h"
 #include "glad/glad.h"
 #include "btBulletDynamicsCommon.h"
 #include "btBulletCollisionCommon.h"
@@ -20,7 +22,7 @@ typedef uint8_t LK_DRAW_MODE;
 
 namespace LukkelEngine {
 
-	class Mesh;
+	class Entity;
 
 	class Renderer
 	{
@@ -36,16 +38,18 @@ namespace LukkelEngine {
 		// Static because debugging for raycast
 		static void drawLine(const glm::vec3& p1, const glm::vec3& p2, const glm::vec4& color = glm::vec4(1.0f));
 		void drawLine(const glm::vec3& p1, const glm::vec3& p2, const glm::mat4& viewProj, const glm::vec4& color = glm::vec4(1.0f));
+		void drawWireframe(Entity& entity, glm::vec4 color) const;
 
 		void drawBox(btVector3& halfSize);
-		void drawShape(btCollisionShape* shape, btVector3& color);
-		void drawShape(Mesh& mesh, btVector3& color);
+		void drawShape(Entity& entity);
 
 		void renderImGui() const;
 		void setDrawMode(LK_DRAW_MODE drawMode);
 
 		static void onWindowResize(uint16_t width, uint16_t height);
+
 		static LK_DRAW_MODE s_DrawMode;
+		static glm::vec4 s_BackgroundColor;
 	};
 
 }

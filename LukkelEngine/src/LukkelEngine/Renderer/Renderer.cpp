@@ -1,6 +1,6 @@
 #include "LKpch.h"
 #include "LukkelEngine/Renderer/Renderer.h"
-#include "LukkelEngine/Renderer/Mesh.h"
+#include "LukkelEngine/Scene/Entity.h"
 
 #include "imgui/examples/imgui_impl_glfw.h"
 #include "imgui/examples/imgui_impl_opengl3.h"
@@ -8,11 +8,12 @@
 namespace LukkelEngine {
 
 	LK_DRAW_MODE Renderer::s_DrawMode;
-	float c = 150.0f; // Color
+	glm::vec4 Renderer::s_BackgroundColor = Color::DarkGray;
 
 	void Renderer::clear() const
 	{
-		glClearColor(float(c/255.0f), float(c/255.0f), float(c/255.0f), 1.0f);
+		auto c = s_BackgroundColor;
+		glClearColor(c.x, c.y, c.z, c.w);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
 
@@ -29,6 +30,19 @@ namespace LukkelEngine {
 		mesh.bind();
 		unsigned int count = mesh.getIndexBuffer()->getCount();
 		glDrawElements(s_DrawMode, count, GL_UNSIGNED_INT, nullptr);
+	}
+
+	void Renderer::drawWireframe(Entity& entity, glm::vec4 color) const
+	{
+		Mesh& mesh = entity.getComponent<Mesh>();
+		Material& material = entity.getComponent<Material>();
+		mesh.bind();
+		material.bind();
+		auto oldColor = material.getMaterialColor();
+		material.setMaterialColor(color);
+		unsigned int count = mesh.getIndexBuffer()->getCount();
+		glDrawElements(GL_LINES, count, GL_UNSIGNED_INT, nullptr);
+		material.setMaterialColor(oldColor);
 	}
 
 	void Renderer::renderImGui() const
@@ -72,7 +86,7 @@ namespace LukkelEngine {
 		VertexArray va;
 		VertexBuffer vb(Line, 6 * sizeof(float));
 		IndexBuffer ib(indices, 2 * sizeof(unsigned int));
-		// Shader shader("assets/shaders/3D/line.shader");
+		Shader shader("assets/shaders/basic.shader");
 
 		VertexBufferLayout layout;
 		layout.push<float>(3);
@@ -81,31 +95,7 @@ namespace LukkelEngine {
 		glDrawElements(GL_LINES, 2, GL_UNSIGNED_INT, nullptr);
 	}
 
-	void Renderer::drawLine(const glm::vec3& p0, const glm::vec3& p1, const glm::mat4& viewProj, const glm::vec4& color)
-	{
-		float Line[] = {
-			p0.x, p0.y, p0.z,
-			p1.x, p1.y, p1.z
-		};
-		unsigned int indices[] = { 0, 1 };
-
-		VertexArray va;
-		VertexBuffer vb(Line, 6 * sizeof(float));
-		IndexBuffer ib(indices, 2 * sizeof(unsigned int));
-		Shader shader("assets/shaders/3D/line.shader");
-
-		VertexBufferLayout layout;
-		layout.push<float>(3);
-		va.addBuffer(vb, layout);
-
-		shader.bind();
-		va.bind();
-		ib.bind();
-		shader.setUniformMat4f("u_Model", glm::mat4(1.0f));
-		shader.setUniformMat4f("u_ViewProj", viewProj);
-		glDrawElements(GL_LINES, 2, GL_UNSIGNED_INT, nullptr);
-	}
-
+	// FIXME: This is not synced with the rest of the scaling
 	void Renderer::drawBox(btVector3& halfSize)
 	{
 		// Get the width, height and depth
@@ -139,7 +129,9 @@ namespace LukkelEngine {
 		VertexArray va;
 		VertexBuffer vb(vertices, 3 * 8 * sizeof(float));
 		IndexBuffer ib(indices, 36 * sizeof(unsigned int));
-		Shader shader("assets/shaders/3D/proj.shader");
+		Shader shader("assets/shaders/basic.shader");
+		// Black wireframe
+		shader.setUniform4f("u_Color", 0.0f, 0.0f, 0.0f, 1.0f);
 
 		VertexBufferLayout layout;
 		layout.push<float>(3);
@@ -148,12 +140,11 @@ namespace LukkelEngine {
 		glDrawElements(GL_LINES, ib.getCount(), GL_UNSIGNED_INT, nullptr);
 	}
 
-	// void Renderer::drawShape(btCollisionShape* shape, btVector3& color)
-	void Renderer::drawShape(Mesh& mesh, btVector3& color)
+	void Renderer::drawShape(Entity& entity)
 	{
-		auto body = mesh.getRigidBody();
-		auto shape = body->getCollisionShape();
-		auto shapeType = mesh.getShapeType();
+		auto body = entity.getComponent<RigidBody>();
+		auto shape = body.getCollisionShape();
+		auto shapeType = body.getShapeType();
 		// Box 
 		if (shapeType == BOX_SHAPE_PROXYTYPE)
 		{

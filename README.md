@@ -64,17 +64,41 @@ Inherits from **Application** and is the current runtime of the engine.
 ### Renderer
 Abstracted OpenGL to create an API that is way more clean than raw OpenGL calls.<br>
 To be honest, the way that OpenGL works with its context and states is kind of hard to get a grasp on.
-My goal is to have a solid API that takes care of the raw OpenGL without me being forced to use it *directly*.  
-As I'm also reading books about **OpenGL** alongside this project, I've come to the conclusion that relying on
-the use of the states is not something I will pursue (*for now, at least*). There are early benchmarks in **Quake 3**
-that show a quite significant increase in performance for just skipping the state checks. Modern OpenGL is better of course but 
-I'm currently running **OpenGL 3.3** so I'll reduce my use of them just as a precaution.
+My goal is to have a solid API that takes care of the raw OpenGL without me being forced to use it directly.  
+There are early benchmarks in **Quake 3** that show a quite significant increase in performance for just skipping the 
+state checks that **OpenGL** uses.
+Modern OpenGL is better of course but I'm currently running
+**OpenGL 3.3** so I'll reduce my use of states just as a precaution.
 
 ---
 
 ## Screenshots
 
-### 26 February 2023
+### March 12, 2023
+
+<div align="center">
+	<img align="center" src="/doc/img/lukkelengine-03-12-1.png" width=740 height=440>
+<p align="center"></p>
+</div>
+
+<div align="center">
+	<img align="center" src="/doc/img/lukkelengine-03-12-2bodyPicked.png" width=740 height=440>
+<p align="center">Selected object with raycasting after clicking left mouse button</p>
+</div>
+
+<div align="center">
+	<img align="center" src="/doc/img/lukkelengine-03-12-3-changecolors.png" width=740 height=440>
+<p align="center">Changed color of selected object</p>
+</div>
+
+<div align="center">
+	<img align="center" src="/doc/img/lukkelengine-03-12-4.png" width=740 height=440>
+<p align="center">View of the platform</p>
+</div>
+
+---
+
+### February 26, 2023
 
 <div align="center">
 	<img align="center" src="/doc/img/engine-26-2-2023-pic1.png" width=740 height=440>
@@ -86,6 +110,8 @@ I'm currently running **OpenGL 3.3** so I'll reduce my use of them just as a pre
 	<img align="center" src="/doc/img/engine-26-2-2023-pic2.png" width=740 height=440>
 <p align="center">The same cube but from a closer distance</p>
 </div>
+
+<br>
 
 
 --- 

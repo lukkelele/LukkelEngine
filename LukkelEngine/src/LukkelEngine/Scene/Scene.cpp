@@ -4,14 +4,13 @@
 #include "LukkelEngine/Scene/Components.h"
 #include "LukkelEngine/Physics/World.h"
 #include "LukkelEngine/Debug/PhysicsDebugger.h"
-#include "LukkelEngine/Renderer/EditorCamera.h"
+#include "LukkelEngine/Editor/EditorCamera.h"
 
 
 namespace LukkelEngine {
 
 	Scene::Scene()
 	{
-		// m_Camera = create_s_ptr<FpsCamera>(45.0f, 0.010f, 1000.0f);
 		m_Camera = create_s_ptr<SceneCamera>(45.0f, 0.010f, 1000.0f);
 		m_Camera->setPosition(glm::vec3(0.0f, 15.0f, -46.0f));
 		m_Camera->setScene(this);

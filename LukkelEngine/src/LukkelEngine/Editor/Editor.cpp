@@ -3,9 +3,11 @@
 #include "LukkelEngine/Physics/World.h"
 
 #include "imgui/imgui.h"
+#include "imgui/imgui_internal.h"
 #include "imgui/imgui_impl_glfw.h"
 #include "imgui/imgui_impl_opengl3.h"
-#include "imgui/imgui_internal.h"
+
+#include "imgui/ImGuizmo.h"
 
 
 namespace LukkelEngine {
@@ -19,12 +21,10 @@ namespace LukkelEngine {
 
 	void Editor::createEntity(unsigned int objectType, std::string_view objectName)
 	{
-
 	}
 
 	void Editor::addEntity(Entity& entity)
 	{
-
 	}
 
 	void Editor::onImGuiRender()
@@ -43,21 +43,21 @@ namespace LukkelEngine {
 				m_SelectedEntity = {};
 
 			// Right click on blank space to get popup menu
-			if (ImGui::BeginPopupContextWindow(0, 1, false)) // id, mouse button, if on item (bool)
-			{
-				// if (ImGui::MenuItem("New entity"))
-				// 	m_Scene->createEntity("Empty Entity");
+			// if (ImGui::BeginPopupContextWindow(0, 1, false)) // id, mouse button, if on item (bool)
+			// {
+			// 	// if (ImGui::MenuItem("New entity"))
+			// 	// 	m_Scene->createEntity("Empty Entity");
 
-				// else if (ImGui::MenuItem("New Cube"))
-				// 	// Spawner::createCube(*m_Scene, "Cube");
-				// 	void;
+			// 	// else if (ImGui::MenuItem("New Cube"))
+			// 	// 	// Spawner::createCube(*m_Scene, "Cube");
+			// 	// 	void;
 
-				// else if (ImGui::MenuItem("New floor (ground object)"))
-				// 	void;
-				// 	// Spawner::createGround(*m_Scene, "Floor");
+			// 	// else if (ImGui::MenuItem("New floor (ground object)"))
+			// 	// 	void;
+			// 	// 	// Spawner::createGround(*m_Scene, "Floor");
 
-				ImGui::EndPopup();
-			}
+			// 	ImGui::EndPopup();
+			// }
 		}
 
 		ImGui::Begin("Properties");
@@ -68,6 +68,27 @@ namespace LukkelEngine {
 		ImGui::End();
 
 		ImGui::End();
+
+		if (m_SelectedEntity)
+		{
+			ImGuizmo::SetOrthographic(false);
+			ImGuizmo::SetDrawlist();
+			float windowWidth = (float)ImGui::GetWindowWidth();
+			float windowHeight = (float)ImGui::GetWindowHeight();
+			ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, windowWidth, windowHeight);
+
+			// This should get the current primary camera, use this for now
+			auto camera = m_Scene->getCamera();
+			// Get camera view by inversing the camera transform
+			glm::mat4 cameraView = camera->getView();
+			glm::mat4 cameraProj = camera->getProjection();
+
+			TransformComponent& tc = m_SelectedEntity.getComponent<TransformComponent>();
+			glm::mat4 transform = tc.getTransform();
+
+			ImGuizmo::Manipulate(glm::value_ptr(cameraView), glm::value_ptr(cameraProj), 
+				ImGuizmo::OPERATION::TRANSLATE, ImGuizmo::LOCAL, glm::value_ptr(transform));
+		}
 	}
 
 	void Editor::selectEntity(Entity& entity)
@@ -117,6 +138,8 @@ namespace LukkelEngine {
 					m_SelectedEntity = {};
 			LKLOG_ERROR("Entity deleted (EDITOR)");
 		}
+
+
 	}
 
 	template<typename T, typename UIFunction>
@@ -233,6 +256,7 @@ namespace LukkelEngine {
 			/* Display color menu for the entity*/
 			UI::Property::colorMenu(component);
 		});
+
 
 	}
 

@@ -1,7 +1,6 @@
 #pragma once
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
-#include "imgui/imgui.h"
 
 #include "LukkelEngine/Layer/ImGuiLayer.h"
 
@@ -75,5 +74,6 @@ namespace LukkelEngine {
 		s_ptr<Scene> m_Scene;
 		LayerStack m_LayerStack;
 		Timer m_Timer;
+		ImGuiLayer* m_ImGuiLayer;
 	};
 }

@@ -8,7 +8,6 @@
 #include "LukkelEngine/Renderer/Texture.h"
 #include "LukkelEngine/Renderer/Mesh.h"
 
-#include "imgui/imgui.h"
 #include "glad/glad.h"
 #include "btBulletDynamicsCommon.h"
 #include "btBulletCollisionCommon.h"

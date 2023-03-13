@@ -3,7 +3,7 @@
 #include "LukkelEngine/Core/UUID.h"
 #include "LukkelEngine/Renderer/Camera.h"
 #include "LukkelEngine/Scene/SceneCamera.h"
-#include "LukkelEngine/Renderer/EditorCamera.h"
+#include "LukkelEngine/Editor/EditorCamera.h"
 #include "LukkelEngine/Renderer/Renderer.h"
 
 #include "entt/entt.hpp"

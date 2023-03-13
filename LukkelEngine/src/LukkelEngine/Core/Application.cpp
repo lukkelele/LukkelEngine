@@ -13,13 +13,10 @@ namespace LukkelEngine {
 		LukkeLog::init("LukkelEngine.log", "App", "Client");
 		LKLOG_TRACE("Starting application");
 
-
 		WindowProps properties = WindowProps(details.title, details.width, details.height);
 		m_Window = Window::create(properties);
 
-		/* Doesnt work yet, OpenGL3 Init errors */
-		ImGuiLayer* imguiLayer = new ImGuiLayer(m_Window->getWindow());
-		pushOverlay(imguiLayer);
+		m_ImGuiLayer = new ImGuiLayer(m_Window->getWindow());
 
 		m_Window->setEventCallback(LK_BIND_EVENT_FN(Application::onEvent));
 
@@ -41,7 +38,6 @@ namespace LukkelEngine {
 		while (!glfwWindowShouldClose(m_Window->getWindow()))
 		{
 			float deltaTime = m_Timer.getDeltaTime();
-			// LKLOG_TRACE("Delta time: {0}", deltaTime);
 			onUpdate(deltaTime);
 		}
 	}
@@ -49,9 +45,7 @@ namespace LukkelEngine {
 	void Application::onUpdate(float ts)
 	{
 		m_Renderer->clear();
-		ImGui_ImplOpenGL3_NewFrame();
-		ImGui_ImplGlfw_NewFrame();
-		ImGui::NewFrame();
+		m_ImGuiLayer->newFrame();
 
 		for (auto it = m_LayerStack.rbegin(); it != m_LayerStack.rend(); ++it) 
 		{
@@ -66,7 +60,7 @@ namespace LukkelEngine {
 			currentLayer->onImGuiRender();
 		}
 
-		m_Renderer->renderImGui();
+		m_ImGuiLayer->endFrame();
 		m_Window->onUpdate();
 	}
 
@@ -85,20 +79,12 @@ namespace LukkelEngine {
 		layer->onAttach();
 	}
 
-	/**
-	 * Pop a layer from the layer stack
-	 * @param layer is the layer to be popped
-	*/
 	void Application::popLayer(Layer* layer)
 	{
 		m_LayerStack.popLayer(layer);
 		layer->onDetach();
 	}
 
-	/**
-	 * Pop an overlay from the layer stack
-	 * @param layer is the layer to be popped
-	*/
 	void Application::popOverlay(Layer* layer)
 	{
 		m_LayerStack.popOverlay(layer);
@@ -143,6 +129,5 @@ namespace LukkelEngine {
 	{
 		glViewport(0, 0, width, height);
 	}
-
 
 }

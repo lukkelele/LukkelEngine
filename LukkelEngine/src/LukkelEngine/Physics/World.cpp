@@ -16,7 +16,7 @@ namespace LukkelEngine {
 	World::World()
 	{
 		s_EntitiesInWorld = 0;
-		LKLOG_TRACE("World created");
+		LKLOG_INFO("World created");
 	}
 
 	World::~World()

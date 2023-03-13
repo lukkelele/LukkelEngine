@@ -4,30 +4,14 @@
 
 namespace LukkelEngine {
 
-	ImGuiLayer::ImGuiLayer()
-		: Layer("ImGuiLayer")
-	{
-	}
-
 	ImGuiLayer::ImGuiLayer(GLFWwindow* window)
 		: Layer("ImGuiLayer")
 	{
 		m_WindowContext = window;
-	}
-
-	void ImGuiLayer::onUpdate(float ts)
-	{
-
-	}
-
-
-	void ImGuiLayer::onAttach()
-	{
 		ImGui::CreateContext();
 		ImGuiIO& io = ImGui::GetIO(); (void)io;
 		io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard; 
 		io.Fonts->AddFontFromFileTTF("assets/fonts/SourceCodePro/SourceSansProSemibold.ttf", 20);
-		io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
 
 		ImGui_ImplGlfw_InitForOpenGL(m_WindowContext, true);
 		ImGui_ImplOpenGL3_Init("#version 330");
@@ -35,7 +19,20 @@ namespace LukkelEngine {
 		setDarkTheme();
 	}
 
-	void ImGuiLayer::onDetach()
+	void ImGuiLayer::newFrame()
+	{
+		ImGui_ImplOpenGL3_NewFrame();
+		ImGui_ImplGlfw_NewFrame();
+		ImGui::NewFrame();
+	}
+
+	void ImGuiLayer::endFrame()
+	{
+		ImGui::Render();
+		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+	}
+
+	void ImGuiLayer::onUpdate(float ts)
 	{
 	}
 

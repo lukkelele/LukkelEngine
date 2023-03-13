@@ -1,5 +1,5 @@
 #include "LKpch.h"
-#include "LukkelEngine/Renderer/EditorCamera.h"
+#include "LukkelEngine/Editor/EditorCamera.h"
 #include "LukkelEngine/Core/Application.h"
 
 

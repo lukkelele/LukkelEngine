@@ -7,7 +7,6 @@
 #include "LukkelEngine/Renderer/Material.h"
 #include "LukkelEngine/UI/Property.h"
 
-#include "imgui/imgui_internal.h"
 #include "entt/entt.hpp"
 
 namespace LukkelEngine {

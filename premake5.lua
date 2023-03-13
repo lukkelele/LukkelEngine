@@ -31,9 +31,9 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}"
 
 include "LukkeLallish/premake5.lua"
 include "lib/GLFW/glfw.lua"
+include "lib/glad/glad.lua"
 include "lib/imgui/imgui.lua"
 include "lib/bullet3/bullet3.lua"
-include "lib/glad/glad.lua"
 
 project "LukkelEngine"
     location "LukkelEngine"
@@ -50,14 +50,14 @@ project "LukkelEngine"
 
     defines
     {
-        -- "GLEW_STATIC",
         "LKLOG_ADVANCED",
 		"_GLM_WIN32",
 		"GLFW_INCLUDE_NONE",
 		"_CRT_SECURE_NO_WARNINGS",
         "BT_USE_SSE_IN_API",
         "B3_USE_GLFW",
-        "IMGUI_IMPL_OPENGL_LOADER_GLAD"
+        "IMGUI_IMPL_OPENGL_LOADER_GLAD",
+        "IMGUI_DEFINE_MATH_OPERATORS"
     }
 
     files
@@ -71,7 +71,6 @@ project "LukkelEngine"
 
     libdirs
     {
-        -- "%{wks.location}/lib/glew/lib",
         "%{wks.location}/lib/GLFW/lib",
         "%{wks.location}/lib/bullet3/lib"
     }
@@ -87,13 +86,12 @@ project "LukkelEngine"
 		"%{wks.location}/lib/imgui/examples",
 		"%{wks.location}/lib/glad",
 		"%{wks.location}/lib/glad/include",
-		"%{wks.location}/lib/ImGuizmo",
+		-- "%{wks.location}/lib/ImGuizmo",
 		"%{wks.location}/lib/stb_image",
 		"%{wks.location}/lib/GLFW/include",
 		"%{wks.location}/lib/spdlog/include",
 		"%{wks.location}/lib/entt/src",
 		"%{wks.location}/lib/bullet3/src",
-		-- "%{wks.location}/lib/glew/include",
     }
 
     links
@@ -101,7 +99,6 @@ project "LukkelEngine"
         "GLFW",
         "glad",
         "opengl32",
-        -- "glew32s",
         "ImGui",
         "Bullet3",
     }
@@ -110,7 +107,6 @@ project "LukkelEngine"
 		defines 
         { 
 			"LK_PLATFORM_WINDOWS",
-			-- "GLEW_STATIC",
 			"_IMGUI_WIN32",
 			"_CRT_SECURE_NO_WARNINGS",
 		}

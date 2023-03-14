@@ -1,6 +1,5 @@
 #include "LKpch.h"
 #include "LukkelEngine/Core/Application.h"
-#include "LukkelEngine/Layer/DebugLayer.h"
 
 namespace LukkelEngine {
 
@@ -15,13 +14,9 @@ namespace LukkelEngine {
 
 		WindowProps properties = WindowProps(details.title, details.width, details.height);
 		m_Window = Window::create(properties);
-
 		m_ImGuiLayer = new ImGuiLayer(m_Window->getWindow());
-
 		m_Window->setEventCallback(LK_BIND_EVENT_FN(Application::onEvent));
 
-		DebugLayer* debugLayer = new DebugLayer;
-		pushOverlay(debugLayer);
 		m_Timer; // Start the timer
 	}
 
@@ -45,7 +40,6 @@ namespace LukkelEngine {
 	void Application::onUpdate(float ts)
 	{
 		m_Renderer->clear();
-		m_ImGuiLayer->newFrame();
 
 		for (auto it = m_LayerStack.rbegin(); it != m_LayerStack.rend(); ++it) 
 		{
@@ -54,13 +48,14 @@ namespace LukkelEngine {
 		}
 
 		// Update ImGui
+		m_ImGuiLayer->newFrame();
 		for (auto it = m_LayerStack.rbegin(); it != m_LayerStack.rend(); ++it) 
 		{
 			Layer* currentLayer = *it;
 			currentLayer->onImGuiRender();
 		}
-
 		m_ImGuiLayer->endFrame();
+
 		m_Window->onUpdate();
 	}
 

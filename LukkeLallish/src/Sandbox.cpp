@@ -7,7 +7,7 @@
 class Sandbox : public LukkelEngine::Application
 {
 public:
-	Sandbox(const LukkelEngine::ApplicationDetails& details =  LukkelEngine::ApplicationDetails("Sandbox", 1920, 1080))
+	Sandbox(const LukkelEngine::ApplicationDetails& details =  LukkelEngine::ApplicationDetails("Sandbox", 2340, 1200))
 		: LukkelEngine::Application(details)
 	{	
 	}

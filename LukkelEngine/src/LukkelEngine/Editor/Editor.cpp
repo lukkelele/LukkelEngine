@@ -65,12 +65,15 @@ namespace LukkelEngine {
 		{
 			drawComponents(m_SelectedEntity);
 		}
-		ImGui::End();
+		ImGui::End(); // Properties
 
-		ImGui::End();
+		ImGui::End(); // Editor Menu
 
 		if (m_SelectedEntity)
 		{
+			auto window = ImGui::GetCurrentWindow();
+			ImGui::SetNextWindowViewport(window->ID);
+
 			ImGuizmo::SetOrthographic(false);
 			ImGuizmo::SetDrawlist();
 			float windowWidth = (float)ImGui::GetWindowWidth();
@@ -89,6 +92,8 @@ namespace LukkelEngine {
 			ImGuizmo::Manipulate(glm::value_ptr(cameraView), glm::value_ptr(cameraProj), 
 				ImGuizmo::OPERATION::TRANSLATE, ImGuizmo::LOCAL, glm::value_ptr(transform));
 		}
+
+
 	}
 
 	void Editor::selectEntity(Entity& entity)
@@ -136,7 +141,6 @@ namespace LukkelEngine {
 			m_Scene->destroyEntity(entity);
 				if (m_SelectedEntity == entity)
 					m_SelectedEntity = {};
-			LKLOG_ERROR("Entity deleted (EDITOR)");
 		}
 
 
@@ -235,11 +239,11 @@ namespace LukkelEngine {
 		{
 			/* Translation / Position */
 			glm::vec3 translation = component.translation;
-			UI::Property::vec3Control("Position", translation);
+			UI::Property::Vector3Control("Position", translation);
 			component.translation = translation;
 			/* Scale */
 			glm::vec3 scale = component.scale;
-			UI::Property::vec3Control("Scale", scale);
+			UI::Property::Vector3Control("Scale", scale);
 		});
 
 		// TODO: Selected entities shall have their (if body exists) body put under a constraint
@@ -248,13 +252,13 @@ namespace LukkelEngine {
 			/* Display menu for manipulating body properties */
 			glm::vec3 linearVelocity = component.getLinearVelocity();
 			glm::vec3 oldLinearVelocity = linearVelocity;
-			UI::Property::vec3Control("Linear Velocity", linearVelocity);
+			UI::Property::Vector3Control("Linear Velocity", linearVelocity);
 		});
 
 		drawComponent<Material>("Material", entity, [](auto& component)
 		{
 			/* Display color menu for the entity*/
-			UI::Property::colorMenu(component);
+			UI::Property::ColorMenu(component);
 		});
 
 

@@ -1,6 +1,8 @@
 #include "LKpch.h"
 #include "LukkelEngine/Layer/ImGuiLayer.h"
 
+#include "LukkelEngine/UI/Widgets.h"
+#include "LukkelEngine/Core/Application.h"
 
 namespace LukkelEngine {
 
@@ -10,7 +12,9 @@ namespace LukkelEngine {
 		m_WindowContext = window;
 		ImGui::CreateContext();
 		ImGuiIO& io = ImGui::GetIO(); (void)io;
-		io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard; 
+		io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard; // Enable Keyboard
+		io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;     // Enable Docking
+		io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;   // Enable Multi-Viewport
 		io.Fonts->AddFontFromFileTTF("assets/fonts/SourceCodePro/SourceSansProSemibold.ttf", 20);
 
 		ImGui_ImplGlfw_InitForOpenGL(m_WindowContext, true);
@@ -24,12 +28,30 @@ namespace LukkelEngine {
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
+		ImGuizmo::BeginFrame();
+
+		// Sidebars
+		UI::SideBar(UI::Dir::LEFT, 450.0f);
+		UI::SideBar(UI::Dir::RIGHT, 360.0f);
 	}
 
 	void ImGuiLayer::endFrame()
 	{
+		ImGuiIO& io = ImGui::GetIO();
+		Application& app = Application::get();
+		io.DisplaySize = ImVec2((float)app.getViewportWidth(), (float)app.getViewportHeight());
+
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+		{
+			auto currentContext = glfwGetCurrentContext();
+			ImGui::UpdatePlatformWindows();
+			ImGui::RenderPlatformWindowsDefault(); // Multi-Viewport
+			glfwMakeContextCurrent(currentContext);
+		}
+
 	}
 
 	void ImGuiLayer::onUpdate(float ts)

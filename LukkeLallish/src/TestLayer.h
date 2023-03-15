@@ -1,7 +1,7 @@
 #pragma once
 
 #include "LukkelEngine/Core/Application.h"
-#include "LukkelEngine/Editor/Editor.h"
+#include "LukkelEngine/Editor/EditorLayer.h"
 
 class TestLayer : public LukkelEngine::Layer
 {
@@ -22,5 +22,5 @@ public:
 
 private:
 	LukkelEngine::s_ptr<LukkelEngine::Scene> m_Scene = nullptr;
-	LukkelEngine::s_ptr<LukkelEngine::Editor> m_Editor = nullptr;
+	LukkelEngine::s_ptr<LukkelEngine::EditorLayer> m_EditorLayer = nullptr;
 };

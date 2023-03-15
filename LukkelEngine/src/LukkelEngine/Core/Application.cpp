@@ -48,7 +48,7 @@ namespace LukkelEngine {
 		}
 
 		// Update ImGui
-		m_ImGuiLayer->newFrame();
+		m_ImGuiLayer->beginFrame();
 		for (auto it = m_LayerStack.rbegin(); it != m_LayerStack.rend(); ++it) 
 		{
 			Layer* currentLayer = *it;
@@ -56,9 +56,9 @@ namespace LukkelEngine {
 		}
 		m_ImGuiLayer->endFrame();
 
+
 		m_Window->onUpdate();
 	}
-
 
 	void Application::pushLayer(Layer* layer)
 	{
@@ -85,7 +85,6 @@ namespace LukkelEngine {
 		m_LayerStack.popOverlay(layer);
 		layer->onDetach();
 	}
-
 
 	bool Application::onWindowClose(WindowCloseEvent& e)
 	{

@@ -42,7 +42,6 @@ namespace LukkelEngine {
 		void drawBox(btVector3& halfSize);
 		void drawShape(Entity& entity);
 
-		void renderImGui() const;
 		void setDrawMode(LK_DRAW_MODE drawMode);
 
 		static void onWindowResize(uint16_t width, uint16_t height);

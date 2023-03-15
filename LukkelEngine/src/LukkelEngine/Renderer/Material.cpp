@@ -7,9 +7,6 @@ namespace LukkelEngine {
 
 	Material::Material()
 	{
-		// std::string path = "assets/shaders/basic.shader";
-		// m_Shader = create_s_ptr<Shader>(path);
-		// LKLOG_INFO("[MATERIAL] Used shader: {0}", path);
 		std::string vertexPath = "assets/shaders/basic.vertex";
 		std::string fragmentPath = "assets/shaders/basic.fragment";
 		m_Shader = create_s_ptr<Shader>(vertexPath, fragmentPath);

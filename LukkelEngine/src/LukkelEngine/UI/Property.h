@@ -95,6 +95,7 @@ namespace LukkelEngine::UI {
 
 		static void Vector4Control(const std::string& label, glm::vec4& values, float min = 0.0f, float max = 1.0f, float resetValue = 0.0f, float columnWidth = 100.0f)
 		{
+
 			ImGuiIO& io = ImGui::GetIO();
 			auto boldFont = io.Fonts->Fonts[0];
 			float speed = 0.01f;
@@ -191,8 +192,8 @@ namespace LukkelEngine::UI {
 			ImGui::PushID(title.c_str());
 			ImGui::Text(title.c_str());
 			ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.1f, 0.25f, 0.8f, 1.0f });
-			ImGui::ListBoxHeader("", listBoxSize);
 
+			ImGui::ListBoxHeader("", listBoxSize);
 			for (int i = 0; i < colors.size(); i++)
 			{
 				const bool isSelected = (currentItemIndex == i);
@@ -208,6 +209,7 @@ namespace LukkelEngine::UI {
 				}
 			}
 			ImGui::ListBoxFooter();
+
 			ImGui::NextColumn();
 			ImGui::PushFont(boldFont);
 

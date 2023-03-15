@@ -20,8 +20,10 @@ namespace LukkelEngine {
 
 		void onUpdate(float ts);
 
-		void newFrame();
+		void beginFrame();
 		void endFrame();
+		void beginViewport();
+		void endViewport();
 
 		void setDarkTheme();
 		void setLightTheme();

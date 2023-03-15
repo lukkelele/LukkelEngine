@@ -1,12 +1,10 @@
 #pragma once
+#include "LukkelEngine/Input/Keycodes.h"
 
 #include <utility>
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
 
-// #include "GL/glew.h"
-#include "glad/glad.h"
-#include "GLFW/glfw3.h"
-
-#include "LukkelEngine/Input/Keycodes.h"
 
 namespace LukkelEngine {
 

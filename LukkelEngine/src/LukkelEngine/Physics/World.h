@@ -7,14 +7,13 @@
 #include "LukkelEngine/Renderer/Shader.h"
 #include "LukkelEngine/Scene/Entity.h"
 
-#include "btBulletDynamicsCommon.h"
-#include "btBulletCollisionCommon.h"
-#include "BulletSoftBody/btSoftBody.h"
-#include "bullet3/src/BulletCollision/NarrowPhaseCollision/btRaycastCallback.h"
-#include "BulletDynamics/Dynamics/btDiscreteDynamicsWorld.h"
-#include "CommonCallbacks.h"
-
-#include "entt/entt.hpp"
+#include <btBulletDynamicsCommon.h>
+#include <btBulletCollisionCommon.h>
+#include <BulletSoftBody/btSoftBody.h>
+#include <bullet3/src/BulletCollision/NarrowPhaseCollision/btRaycastCallback.h>
+#include <BulletDynamics/Dynamics/btDiscreteDynamicsWorld.h>
+#include <CommonCallbacks.h>
+#include <entt/entt.hpp>
 
 #define LK_WORLD_NEUTRAL 0
 #define LK_WORLD_DYNAMIC 1

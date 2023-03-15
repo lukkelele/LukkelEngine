@@ -1,33 +1,25 @@
 #include "LKpch.h"
-#include "LukkelEngine/Editor/Editor.h"
+#include "LukkelEngine/Editor/EditorLayer.h"
 #include "LukkelEngine/Physics/World.h"
+#include "LukkelEngine/Math/Math.h"
 
-#include "imgui/imgui.h"
-#include "imgui/imgui_internal.h"
-#include "imgui/imgui_impl_glfw.h"
-#include "imgui/imgui_impl_opengl3.h"
-
-#include "imgui/ImGuizmo.h"
+#include <imgui/imgui.h>
+#include <imgui/imgui_internal.h>
+#include <imgui/imgui_impl_glfw.h>
+#include <imgui/imgui_impl_opengl3.h>
+#include <imgui/ImGuizmo.h>
 
 
 namespace LukkelEngine {
 
-	Entity Editor::m_SelectedEntity;
+	Entity EditorLayer::m_SelectedEntity;
 
-	Editor::Editor(s_ptr<Scene> scene)
+	EditorLayer::EditorLayer(s_ptr<Scene> scene)
 		: m_Scene(scene)
 	{
 	}
 
-	void Editor::createEntity(unsigned int objectType, std::string_view objectName)
-	{
-	}
-
-	void Editor::addEntity(Entity& entity)
-	{
-	}
-
-	void Editor::onImGuiRender()
+	void EditorLayer::onImGuiRender()
 	{
 		ImGui::Begin("Editor menu");
 
@@ -47,15 +39,12 @@ namespace LukkelEngine {
 			// {
 			// 	// if (ImGui::MenuItem("New entity"))
 			// 	// 	m_Scene->createEntity("Empty Entity");
-
 			// 	// else if (ImGui::MenuItem("New Cube"))
 			// 	// 	// Spawner::createCube(*m_Scene, "Cube");
 			// 	// 	void;
-
 			// 	// else if (ImGui::MenuItem("New floor (ground object)"))
 			// 	// 	void;
 			// 	// 	// Spawner::createGround(*m_Scene, "Floor");
-
 			// 	ImGui::EndPopup();
 			// }
 		}
@@ -67,13 +56,28 @@ namespace LukkelEngine {
 		}
 		ImGui::End(); // Properties
 
+		ImGuiTreeNodeFlags gizmoFlags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_SpanAvailWidth;
+		ImVec2 buttonSize(76.0f, 30.0f);
+		ImGui::Begin("Gizmo", nullptr, gizmoFlags);
+		{
+			if (ImGui::Button("Translate", buttonSize))
+				m_GizmoType = GizmoType::TRANSLATE;
+			ImGui::SameLine();
+			if (ImGui::Button("Scale", buttonSize))
+				m_GizmoType = GizmoType::SCALE;
+			ImGui::SameLine();
+			if (ImGui::Button("Rotate", buttonSize))
+				m_GizmoType = GizmoType::ROTATE;
+		}
+		ImGui::End();
+
 		ImGui::End(); // Editor Menu
 
-		if (m_SelectedEntity)
+
+		if (m_SelectedEntity && m_GizmoType != -1)
 		{
 			auto window = ImGui::GetCurrentWindow();
 			ImGui::SetNextWindowViewport(window->ID);
-
 			ImGuizmo::SetOrthographic(false);
 			ImGuizmo::SetDrawlist();
 			float windowWidth = (float)ImGui::GetWindowWidth();
@@ -89,26 +93,37 @@ namespace LukkelEngine {
 			TransformComponent& tc = m_SelectedEntity.getComponent<TransformComponent>();
 			glm::mat4 transform = tc.getTransform();
 
+			// (ImGuizmo::OPERATION)m_GizmoType, ImGuizmo::LOCAL, glm::value_ptr(transform));
 			ImGuizmo::Manipulate(glm::value_ptr(cameraView), glm::value_ptr(cameraProj), 
-				ImGuizmo::OPERATION::TRANSLATE, ImGuizmo::LOCAL, glm::value_ptr(transform));
+				(ImGuizmo::OPERATION)m_GizmoType, ImGuizmo::LOCAL, glm::value_ptr(transform));
+
+			if (ImGuizmo::IsUsing())
+			{
+				glm::vec3 translation, scale;
+				glm::quat rotation;
+				Math::decomposeTransform(transform, translation, rotation, scale);
+
+				tc.translation = translation;
+				tc.rotation = rotation;
+				tc.scale = scale;
+			}
 		}
-
-
 	}
 
-	void Editor::selectEntity(Entity& entity)
+	void EditorLayer::selectEntity(Entity& entity)
 	{
 		if (m_SelectedEntity != entity)
 			m_SelectedEntity = entity;
 	}
 
-	void Editor::drawEntityNode(Entity entity)
+	void EditorLayer::drawEntityNode(Entity entity)
 	{
 		auto& tag = entity.getComponent<TagComponent>().tag;
 
 		ImGuiTreeNodeFlags flags = ((m_SelectedEntity == entity) ? ImGuiTreeNodeFlags_Selected : 0) | ImGuiTreeNodeFlags_OpenOnArrow;
 		flags |= ImGuiTreeNodeFlags_SpanAvailWidth;
 		bool opened = ImGui::TreeNodeEx((void*)(uint64_t)(uint32_t)entity, flags, tag.c_str());
+
 		if (ImGui::IsItemClicked())
 		{
 			m_SelectedEntity = entity;
@@ -143,13 +158,15 @@ namespace LukkelEngine {
 					m_SelectedEntity = {};
 		}
 
-
 	}
 
 	template<typename T, typename UIFunction>
-	void Editor::drawComponent(const std::string& name, Entity entity, UIFunction uiFunction)
+	void EditorLayer::drawComponent(const std::string& name, Entity entity, UIFunction uiFunction)
 	{
-		const ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_Framed | ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_AllowItemOverlap | ImGuiTreeNodeFlags_FramePadding;
+		const ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags_DefaultOpen 
+			| ImGuiTreeNodeFlags_Framed | ImGuiTreeNodeFlags_SpanAvailWidth
+			| ImGuiTreeNodeFlags_AllowItemOverlap | ImGuiTreeNodeFlags_FramePadding;
+
 		if (entity.hasComponent<T>())
 		{
 			auto& component = entity.getComponent<T>();
@@ -162,6 +179,7 @@ namespace LukkelEngine {
 			ImGui::PopStyleVar(
 			);
 			ImGui::SameLine(contentRegionAvailable.x - lineHeight * 0.5f);
+
 			if (ImGui::Button("+", ImVec2{ lineHeight, lineHeight }))
 			{
 				ImGui::OpenPopup("ComponentSettings");
@@ -188,7 +206,7 @@ namespace LukkelEngine {
 	}
 
 	template<typename T>
-	void Editor::displayAddComponentEntry(const std::string& entryName)
+	void EditorLayer::displayAddComponentEntry(const std::string& entryName)
 	{
 		if (!m_SelectedEntity.hasComponent<T>())
 		{
@@ -200,7 +218,7 @@ namespace LukkelEngine {
 		}
 	}
 
-	void Editor::drawComponents(Entity entity)
+	void EditorLayer::drawComponents(Entity entity)
 	{
 		if (entity.hasComponent<TagComponent>())
 		{
@@ -227,7 +245,6 @@ namespace LukkelEngine {
 			displayAddComponentEntry<Material>("Material");
 			ImGui::EndPopup();
 		}
-
 		ImGui::PopItemWidth();
 
 		drawComponent<Mesh>("Mesh", entity, [](auto& component)
@@ -249,15 +266,16 @@ namespace LukkelEngine {
 		// TODO: Selected entities shall have their (if body exists) body put under a constraint
 		drawComponent<RigidBody>("Rigidbody", entity, [](auto& component)
 		{
-			/* Display menu for manipulating body properties */
 			glm::vec3 linearVelocity = component.getLinearVelocity();
 			glm::vec3 oldLinearVelocity = linearVelocity;
 			UI::Property::Vector3Control("Linear Velocity", linearVelocity);
+			if (ImGui::Checkbox("Use physics", &m_SelectedEntity.usePhysics))
+			{
+			}
 		});
 
 		drawComponent<Material>("Material", entity, [](auto& component)
 		{
-			/* Display color menu for the entity*/
 			UI::Property::ColorMenu(component);
 		});
 

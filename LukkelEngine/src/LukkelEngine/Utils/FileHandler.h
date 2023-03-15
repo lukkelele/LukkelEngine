@@ -1,7 +1,6 @@
 #include "LukkelEngine/Core/Base.h"
 #include <fstream>
 
-
 namespace LukkelEngine::Utils::File {
 
 	bool readFile(std::string file, std::string& fileContents, bool addLineTerminator) {

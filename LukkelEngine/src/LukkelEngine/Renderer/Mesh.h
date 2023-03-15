@@ -37,7 +37,4 @@ namespace LukkelEngine {
 		s_ptr<VertexBuffer> m_VBO;
 
 	};
-
-	// Upcoming implementation
-	// Mesh(std::vector<Vertex> vertices, std::vector<Index> indices, std::vector<int> vertbufLayout);
 }

@@ -76,29 +76,29 @@ namespace LukkelEngine {
 	// Basic Camera settings
 	void Camera::onImGuiRender()
 	{
-	 	ImGui::Begin("Camera settings");
+	 	 ImGui::Begin("Camera settings");
 
-	 	ImGui::SetNextItemOpen(true, ImGuiCond_Once);
-	 	if (ImGui::TreeNode("Draw mode"))
-	 	{
-	 		if (ImGui::MenuItem("Lines"))
-	 			Renderer::s_DrawMode = LK_DRAW_LINES;
-	 		else if (ImGui::MenuItem("Triangles"))
-	 			Renderer::s_DrawMode = LK_DRAW_TRIANGLES;
-	 		ImGui::TreePop();
-	 	}
-	 	ImGui::Separator();
+	 	 ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+	 	 if (ImGui::TreeNode("Draw mode"))
+	 	 {
+	 	 	if (ImGui::MenuItem("Lines"))
+	 	 		Renderer::s_DrawMode = LK_DRAW_LINES;
+	 	 	else if (ImGui::MenuItem("Triangles"))
+	 	 		Renderer::s_DrawMode = LK_DRAW_TRIANGLES;
+	 	 	ImGui::TreePop();
+	 	 }
+	 	 ImGui::Separator();
 
-		// Sliders
-	 	ImGui::SliderFloat("Camera speed", &m_TravelSpeed, 0.010f, 2.0f);
-		float fov = getFOV();
-	 	ImGui::SliderFloat("FOV", &fov, 40.0f, 105.0f);
-		setFOV(fov);
-		glm::vec3 pos = getPosition();
-	 	ImGui::SliderFloat3("Camera position", &pos.x, -50.0f, 50.0f);
-		setPosition(pos);
+		 // Sliders
+	 	 ImGui::SliderFloat("Camera speed", &m_TravelSpeed, 0.010f, 2.0f);
+		 float fov = getFOV();
+	 	 ImGui::SliderFloat("FOV", &fov, 40.0f, 105.0f);
+		 setFOV(fov);
+		 glm::vec3 pos = getPosition();
+	 	 ImGui::SliderFloat3("Camera position", &pos.x, -50.0f, 50.0f);
+		 setPosition(pos);
 
-		ImGui::End();
+		 ImGui::End();
 	}
 
 }

@@ -1,5 +1,5 @@
 #include "LKpch.h"
-#include "LukkelEngine/Layer/ImGuiLayer.h"
+#include "LukkelEngine/UI/ImGuiLayer.h"
 
 #include "LukkelEngine/UI/Widgets.h"
 #include "LukkelEngine/Core/Application.h"
@@ -11,7 +11,7 @@ namespace LukkelEngine {
 	{
 		m_WindowContext = window;
 		ImGui::CreateContext();
-		ImGuiIO& io = ImGui::GetIO(); (void)io;
+		ImGuiIO& io = ImGui::GetIO();
 		io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard; // Enable Keyboard
 		io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;     // Enable Docking
 		io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;   // Enable Multi-Viewport
@@ -23,12 +23,15 @@ namespace LukkelEngine {
 		setDarkTheme();
 	}
 
-	void ImGuiLayer::newFrame()
+	void ImGuiLayer::beginFrame()
 	{
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
 		ImGuizmo::BeginFrame();
+
+		// Viewport context
+		beginViewport();
 
 		// Sidebars
 		UI::SideBar(UI::Dir::LEFT, 450.0f);
@@ -37,6 +40,8 @@ namespace LukkelEngine {
 
 	void ImGuiLayer::endFrame()
 	{
+		endViewport();
+
 		ImGuiIO& io = ImGui::GetIO();
 		Application& app = Application::get();
 		io.DisplaySize = ImVec2((float)app.getViewportWidth(), (float)app.getViewportHeight());
@@ -48,10 +53,26 @@ namespace LukkelEngine {
 		{
 			auto currentContext = glfwGetCurrentContext();
 			ImGui::UpdatePlatformWindows();
-			ImGui::RenderPlatformWindowsDefault(); // Multi-Viewport
+			ImGui::RenderPlatformWindowsDefault();  // Multi-Viewport
 			glfwMakeContextCurrent(currentContext);
 		}
+	}
 
+	void ImGuiLayer::beginViewport()
+	{
+		ImGuiTreeNodeFlags windowFlags = ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoDocking
+			| ImGuiWindowFlags_NoInputs | ImGuiWindowFlags_NoDecoration;
+		auto window = ImGui::GetCurrentWindow();
+		float windowWidth = (float)ImGui::GetWindowWidth();
+		float windowHeight = (float)ImGui::GetWindowHeight();
+		ImGui::SetNextWindowSize(ImGui::GetMainViewport()->Size);
+		ImGui::SetNextWindowPos(ImGui::GetMainViewport()->Pos);
+		ImGui::Begin("Viewport", (bool*)true, windowFlags);
+	}
+
+	void ImGuiLayer::endViewport()
+	{
+		ImGui::End();
 	}
 
 	void ImGuiLayer::onUpdate(float ts)

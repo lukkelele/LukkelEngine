@@ -1,6 +1,6 @@
 #include "LKpch.h"
 #include "LukkelEngine/Physics/World.h"
-#include "LukkelEngine/Editor/Editor.h"
+#include "LukkelEngine/Editor/EditorLayer.h"
 #include "LukkelEngine/Scene/Scene.h"
 #include "LukkelEngine/Scene/Entity.h"
 #include "LukkelEngine/Scene/Components.h"
@@ -89,7 +89,7 @@ namespace LukkelEngine {
 						m_PickedEntity.isSelected = false;
 						// Setup the focus on the newly hit entity
 						m_PickedEntity = pickedEntity;
-						Editor::m_SelectedEntity = m_PickedEntity;
+						EditorLayer::m_SelectedEntity = m_PickedEntity;
 						pickedEntity.isSelected = true;
 						m_PickedBody = body;
 						picked = true;
@@ -152,7 +152,7 @@ namespace LukkelEngine {
 	{
 		m_PickedBody = nullptr;
 		m_PickedEntity = {};
-		Editor::m_SelectedEntity = {};
+		EditorLayer::m_SelectedEntity = {};
 	}
 
 	bool World::mouseButtonCallback(int button, int state, float x, float y)
@@ -214,7 +214,8 @@ namespace LukkelEngine {
 		auto screenHeight = cam->getScreenHeight();
 		auto projection = cam->getProjection();
 		auto view = cam->getView();
-		// Lock the ray to the middle of the screen, test for now
+
+		// Lock the ray to the middle of the screen, need to fix the GLFW cursor pos 
 		mouseX = screenWidth / 2;
 		mouseY = screenHeight / 2;
 

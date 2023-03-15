@@ -1,7 +1,7 @@
 #include "TestLayer.h"
 
 #include "LukkelEngine/Core/Application.h"
-#include "LukkelEngine/Editor/Editor.h"
+#include "LukkelEngine/Editor/EditorLayer.h"
 #include "LukkelEngine/Scene/EntityFactory.h"
 
 #include "glm/ext.hpp"
@@ -16,12 +16,12 @@ void TestLayer::onAttach()
 {
 	using namespace LukkelEngine;
 	m_Scene = Application::get().getScene();
-	m_Editor = create_s_ptr<Editor>(m_Scene);
+	m_EditorLayer = create_s_ptr<EditorLayer>(m_Scene);
 	
 	glm::vec3 boxDims{ 2.0f, 2.0f, 2.0f };
 	glm::vec3 smallerBoxDims{ 1.0f, 1.0f, 1.0f };
-	glm::vec3 boxOffset{ 0.0f, 6.0f, 0.0f };
-	glm::vec3 smallerBoxOffset{ 5.0f, 4.0f, 3.0f };
+	glm::vec3 boxOffset{ 0.0f, 4.0f, 0.0f };
+	glm::vec3 smallerBoxOffset{ 5.0f, 5.0f, 5.0f };
 
 	glm::vec3 groundOffset{ 0.0f, -6.0f, 0.0f };
 	glm::vec3 groundDims{ 50.0f, 2.0f, 50.0f };
@@ -42,8 +42,10 @@ void TestLayer::onUpdate(float ts)
 
 void TestLayer::onImGuiRender()
 {
-	m_Scene->onImGuiRender();
-	m_Editor->onImGuiRender();
+	if (m_EditorLayer)
+		m_EditorLayer->onImGuiRender();
+	if (m_Scene)
+		m_Scene->onImGuiRender();
 }
 
 void TestLayer::onEvent(LukkelEngine::Event& e)

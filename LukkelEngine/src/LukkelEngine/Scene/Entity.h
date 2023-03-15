@@ -1,15 +1,13 @@
 #pragma once
-
-#include <vector>
-#include <glm/glm.hpp>
-
 #include "LukkelEngine/Renderer/Mesh.h"
 #include "LukkelEngine/Physics/Body/RigidBody.h"
 #include "LukkelEngine/Renderer/Material.h"
 #include "LukkelEngine/Scene/Scene.h"
 #include "LukkelEngine/Scene/Components.h"
 
-#include "entt/entt.hpp"
+#include <vector>
+#include <glm/glm.hpp>
+#include <entt/entt.hpp>
 
 
 namespace LukkelEngine {
@@ -71,10 +69,10 @@ namespace LukkelEngine {
 		glm::vec3 m_Scale{ 1.0f, 1.0f, 1.0f };
 
 		bool isSelected = false;
+		bool usePhysics = true;
 
 	private:
 		entt::entity m_EntityHandle{ entt::null };
-		int m_ID; // Remove
 		Scene* m_Scene = nullptr;
 
 		// REMOVE 

@@ -2,9 +2,6 @@
 #include "LukkelEngine/Renderer/Renderer.h"
 #include "LukkelEngine/Scene/Entity.h"
 
-#include "imgui/examples/imgui_impl_glfw.h"
-#include "imgui/examples/imgui_impl_opengl3.h"
-
 namespace LukkelEngine {
 
 	LK_DRAW_MODE Renderer::s_DrawMode;
@@ -43,12 +40,6 @@ namespace LukkelEngine {
 		unsigned int count = mesh.getIndexBuffer()->getCount();
 		glDrawElements(GL_LINES, count, GL_UNSIGNED_INT, nullptr);
 		material.setMaterialColor(oldColor);
-	}
-
-	void Renderer::renderImGui() const
-	{
-		ImGui::Render();
-		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 	}
 
 	// Remove me

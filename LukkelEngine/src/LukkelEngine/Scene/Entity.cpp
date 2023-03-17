@@ -17,18 +17,19 @@ namespace LukkelEngine {
 		{
 			// if the entity has a rigidbody, sync the body with the transform component
 			RigidBody& rigidbody = getComponent<RigidBody>();
+			TransformComponent& transformComponent = getComponent<TransformComponent>();
+
 			auto [pos, rot] = rigidbody.getPosAndRotation();
 			glm::vec3 dimensions = rigidbody.getDimensions();
 
-			TransformComponent& transformComponent = getComponent<TransformComponent>();
+			auto lv = rigidbody.getLinearVelocity();
+			Debugger::printVec3(pos, "Pos");
+			Debugger::printVec3(lv, "Linear velocity");
+			LKLOG_INFO("");
 
-			// Important that all meshes are in range of 1 in size because the scale depends on the dimensions from body
-			if (usePhysics)
-			{
-				transformComponent.translation = pos;
-				transformComponent.rotation = rot;
-				transformComponent.scale = dimensions;
-			}
+			transformComponent.translation = pos;
+			transformComponent.rotation = rot;
+			transformComponent.scale = dimensions;
 
 			glm::mat4 model = transformComponent.getTransform();
 			Material& material = getComponent<Material>();

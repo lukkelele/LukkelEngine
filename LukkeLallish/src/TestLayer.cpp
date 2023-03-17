@@ -33,6 +33,7 @@ void TestLayer::onAttach()
 	EntityFactory::createBox(groundProps, *m_Scene);
 	EntityFactory::createBox(cubeProps, *m_Scene);
 	EntityFactory::createBox(smallerCubeProps, *m_Scene);
+	// m_Scene->pause(true);
 }
 
 void TestLayer::onUpdate(float ts)

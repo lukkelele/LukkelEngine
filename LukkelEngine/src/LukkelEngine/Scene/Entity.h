@@ -16,6 +16,7 @@ namespace LukkelEngine {
 	public:
 		Entity() = default;
 		Entity(entt::entity handle, Scene* scene);
+		Entity(const Entity& other) = default;
 		~Entity() {}
 
 		void onUpdate(float ts, glm::mat4 viewProj);
@@ -70,6 +71,7 @@ namespace LukkelEngine {
 
 		bool isSelected = false;
 		bool usePhysics = true;
+		bool isSynced = true;
 
 	private:
 		entt::entity m_EntityHandle{ entt::null };

@@ -73,9 +73,7 @@ namespace LukkelEngine {
 
 		// If mouse has moved -> send World Mouse move event
 		if (m_Camera->hasMouseMoved)
-		{
 			m_World->mouseMoveCallback(Mouse::getMouseX(), Mouse::getMouseY());
-		}
 
 		glm::mat4 viewProj = m_Camera->getViewProjection();
 
@@ -93,6 +91,12 @@ namespace LukkelEngine {
 			m_Renderer->drawWireframe(entity, Color::Black);
 			m_Renderer->draw(mesh);
 		}
+	}
+
+	void Scene::pause(bool paused)
+	{
+		m_Paused = paused;
+		m_World->pause(paused);
 	}
 
 	void Scene::onImGuiRender()

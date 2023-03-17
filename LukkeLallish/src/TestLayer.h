@@ -22,5 +22,5 @@ public:
 
 private:
 	LukkelEngine::s_ptr<LukkelEngine::Scene> m_Scene = nullptr;
-	LukkelEngine::s_ptr<LukkelEngine::EditorLayer> m_EditorLayer = nullptr;
+	LukkelEngine::s_ptr<LukkelEngine::EditorLayer> m_EditorLayer = nullptr; // Change to scene
 };

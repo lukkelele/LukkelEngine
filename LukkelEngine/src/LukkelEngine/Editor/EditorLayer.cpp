@@ -58,6 +58,7 @@ namespace LukkelEngine {
 
 		ImGuiTreeNodeFlags gizmoFlags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_SpanAvailWidth;
 		ImVec2 buttonSize(76.0f, 30.0f);
+
 		ImGui::Begin("Gizmo", nullptr, gizmoFlags);
 		{
 			if (ImGui::Button("Translate", buttonSize))
@@ -71,8 +72,12 @@ namespace LukkelEngine {
 		}
 		ImGui::End();
 
-		ImGui::End(); // Editor Menu
+		if (ImGui::Button("World Physics", buttonSize))
+		{
 
+		}
+
+		ImGui::End(); // Editor Menu
 
 		if (m_SelectedEntity && m_GizmoType != -1)
 		{
@@ -91,9 +96,9 @@ namespace LukkelEngine {
 			glm::mat4 cameraProj = camera->getProjection();
 
 			TransformComponent& tc = m_SelectedEntity.getComponent<TransformComponent>();
+			RigidBody& rb = m_SelectedEntity.getComponent<RigidBody>();
 			glm::mat4 transform = tc.getTransform();
 
-			// (ImGuizmo::OPERATION)m_GizmoType, ImGuizmo::LOCAL, glm::value_ptr(transform));
 			ImGuizmo::Manipulate(glm::value_ptr(cameraView), glm::value_ptr(cameraProj), 
 				(ImGuizmo::OPERATION)m_GizmoType, ImGuizmo::LOCAL, glm::value_ptr(transform));
 
@@ -106,6 +111,8 @@ namespace LukkelEngine {
 				tc.translation = translation;
 				tc.rotation = rotation;
 				tc.scale = scale;
+				// Needs to be synced as the body is constantly affected by its environment
+				rb.moveBody(translation);
 			}
 		}
 	}
@@ -252,26 +259,30 @@ namespace LukkelEngine {
 
 		});
 
-		drawComponent<TransformComponent>("Transform", entity, [](auto& component)
+		drawComponent<TransformComponent>("Transform", entity, [&entity](auto& component)
 		{
 			/* Translation / Position */
 			glm::vec3 translation = component.translation;
 			UI::Property::Vector3Control("Position", translation);
 			component.translation = translation;
+
 			/* Scale */
 			glm::vec3 scale = component.scale;
 			UI::Property::Vector3Control("Scale", scale);
+			component.scale = scale;
 		});
 
 		// TODO: Selected entities shall have their (if body exists) body put under a constraint
 		drawComponent<RigidBody>("Rigidbody", entity, [](auto& component)
 		{
-			glm::vec3 linearVelocity = component.getLinearVelocity();
-			glm::vec3 oldLinearVelocity = linearVelocity;
-			UI::Property::Vector3Control("Linear Velocity", linearVelocity);
+			glm::vec3 lv = component.getLinearVelocity();
+			UI::Property::Vector3Control("Linear Velocity", lv);
+			if (btVector3(lv.x, lv.y, lv.z) != component.m_LinearVelocity)
+				component.setLinearVelocity(lv);
+
 			if (ImGui::Checkbox("Use physics", &m_SelectedEntity.usePhysics))
-			{
-			}
+			{ }
+
 		});
 
 		drawComponent<Material>("Material", entity, [](auto& component)

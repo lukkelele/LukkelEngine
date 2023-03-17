@@ -67,7 +67,7 @@ namespace LukkelEngine {
 		float windowHeight = (float)ImGui::GetWindowHeight();
 		ImGui::SetNextWindowSize(ImGui::GetMainViewport()->Size);
 		ImGui::SetNextWindowPos(ImGui::GetMainViewport()->Pos);
-		ImGui::Begin("Viewport", (bool*)true, windowFlags);
+		ImGui::Begin("Viewport", (bool*)true, windowFlags); // TODO: Change bool pointer to a state check for window active or not
 	}
 
 	void ImGuiLayer::endViewport()

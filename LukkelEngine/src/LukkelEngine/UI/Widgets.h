@@ -18,8 +18,9 @@ namespace LukkelEngine::UI {
 
 	void MainMenu() 
 	{
-		// ImGui::BeginMainMenuBar();
-		// ImGui::EndMainMenuBar();
+		ImGui::BeginMainMenuBar();
+
+		ImGui::EndMainMenuBar();
 	}
 
 	void SideBar(Dir direction, float width)
@@ -34,6 +35,10 @@ namespace LukkelEngine::UI {
 		ImGuiID dockspaceID = ImGui::GetID(barID);
 		static ImGuiDockNodeFlags dockspaceFlags = ImGuiDockNodeFlags_PassthruCentralNode;
 		ImGui::DockSpace(dockspaceID, ImVec2(0.0f, 0.0f), dockspaceFlags);
+
+
+		ImGui::BeginChild("Container", ImVec2(0, 0), false);
+		ImGui::EndChild();
 
 		ImGui::End();
 	}

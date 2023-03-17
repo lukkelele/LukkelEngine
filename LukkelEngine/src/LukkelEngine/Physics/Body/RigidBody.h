@@ -41,11 +41,21 @@ namespace LukkelEngine {
 		btCollisionShape* getCollisionShape() { return m_RigidBody->getCollisionShape(); }
 		RigidBody::Type getType() const { return m_Type; }
 
+
+		void moveBody(glm::vec3 translation);
 		void setFriction(float f) { m_Friction = f; }
 		void setRestitution(float r) { m_Restitution= r; }
 		void setWorldTransform(glm::mat4& transform);
 		void setCollisionFlags(int flags) { m_RigidBody->setCollisionFlags(flags); }
 		void setActivationState(int state) { m_RigidBody->setActivationState(state); }
+
+		btVector3 m_Position{ 0.0f, 0.0f, 0.0f };
+		btVector3 m_Dimensions{ 1.0f, 1.0f, 1.0f };
+		btVector3 m_Inertia{ 0.0f, 0.0f, 0.0f };
+		btVector3 m_LinearVelocity{ 0.0f, 0.0f, 0.0f };
+		btVector3 m_AngularVelocity{ 0.0f, 0.0f, 0.0f };
+
+		bool isAltered = false;
 
 	private:
 		btCollisionShape* m_Shape = nullptr;
@@ -53,12 +63,6 @@ namespace LukkelEngine {
 		MotionState* m_MotionState = nullptr;
 		Type m_Type = Type::STATIC;
 		uint64_t m_ID;
-
-		btVector3 m_Position{ 0.0f, 0.0f, 0.0f };
-		btVector3 m_Dimensions{ 1.0f, 1.0f, 1.0f };
-		btVector3 m_Inertia{ 0.0f, 0.0f, 0.0f };
-		btVector3 m_LinearVelocity{ 0.0f, 0.0f, 0.0f };
-		btVector3 m_AngularVelocity{ 0.0f, 0.0f, 0.0f };
 
 		float m_Mass = 1.0f;
 		float m_Friction = 1.0f;

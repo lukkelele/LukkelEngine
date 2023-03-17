@@ -26,9 +26,13 @@ namespace LukkelEngine {
 
 	void World::onUpdate(float ts)
 	{
-		m_DynamicWorld->stepSimulation(ts);
-		m_DynamicWorld->updateAabbs();
-		m_DynamicWorld->computeOverlappingPairs();
+		// If not paused, simulate the world
+		if (!m_Paused)
+		{
+			m_DynamicWorld->stepSimulation(ts);
+			m_DynamicWorld->updateAabbs();
+			m_DynamicWorld->computeOverlappingPairs();
+		}
 		// m_DynamicWorld->debugDrawWorld();
 	}
 

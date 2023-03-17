@@ -37,11 +37,12 @@ namespace LukkelEngine {
 		s_ptr<Scene> m_Scene = nullptr;
 		static Entity m_SelectedEntity;
 
+		// 7 equals 0b111, the gizmo types are set 1 for each axis at an offset of 3 bits
 		enum GizmoType
 		{
-			TRANSLATE = 0b111,
-			ROTATE	  = 0b111000,
-			SCALE     = 0b111000000
+			TRANSLATE = 7 << 0,
+			ROTATE	  = 7 << 3,
+			SCALE     = 7 << 6
 		};
 
 		int m_GizmoType = GizmoType::TRANSLATE;

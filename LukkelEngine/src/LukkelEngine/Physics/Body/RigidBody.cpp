@@ -31,6 +31,17 @@ namespace LukkelEngine {
 	{
 	}
 
+	void RigidBody::moveBody(glm::vec3 translation)
+	{
+		m_Position = {translation.x, translation.y, translation.z};
+		btTransform transform;
+		btMotionState* motionState = m_RigidBody->getMotionState();
+		motionState->getWorldTransform(transform);
+		transform.setOrigin(m_Position);
+		motionState->setWorldTransform(transform);
+		m_RigidBody->setCenterOfMassTransform(transform);
+	}
+
 
 	void RigidBody::setLinearVelocity(glm::vec3& linearVelocity)
 	{

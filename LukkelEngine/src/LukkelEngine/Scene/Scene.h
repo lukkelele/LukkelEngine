@@ -30,8 +30,9 @@ namespace LukkelEngine {
 		Entity createEntityWithUUID(UUID uuid, const std::string& name);
 		void destroyEntity(Entity entity);
 
+		s_ptr<World> getWorld() { return m_World; }
 		bool isRunning() const { return m_IsRunning; }
-		void pause(bool paused) { m_IsPaused = paused; }
+		void pause(bool paused);
 
 		void switchCamera();
 
@@ -39,7 +40,8 @@ namespace LukkelEngine {
 		void onComponentAdded(Entity entity, T& component);
 
 	public:
-		bool m_IsRunning = false, m_IsPaused = false;
+		bool m_IsRunning = false;
+		bool m_Paused = false;
 		int m_Frames = 0;
 		Timer m_Timer;
 
@@ -49,6 +51,7 @@ namespace LukkelEngine {
 		s_ptr<Renderer> m_Renderer;
 		s_ptr<World> m_World;
 
+		// s_ptr<EditorLayer> m_EditorLayer; // FIXME
 		s_ptr<SceneCamera> m_Camera;
 		s_ptr<EditorCamera> m_EditorCamera;
 	};

@@ -55,6 +55,8 @@ namespace LukkelEngine {
 		void removePickConstraint();
 		void createCollisionObject(btCollisionObject* body);
 
+		// TODO: Add quaternion after translation
+
 		bool mouseButtonCallback(int button, int state, float x, float y);
 		bool mouseMoveCallback(float x, float y);
 		bool movePickedBody(glm::vec3& rayFrom, glm::vec3& rayTo);
@@ -65,6 +67,8 @@ namespace LukkelEngine {
 
 		std::vector<btTypedConstraint*> constraints;
 		static uint64_t s_EntitiesInWorld;
+
+		void pause(bool paused) { m_Paused = paused; };
 
 	private:
 		btDiscreteDynamicsWorld* m_DynamicWorld = nullptr;
@@ -85,6 +89,7 @@ namespace LukkelEngine {
 		int m_SavedState;
 
 		bool m_ConstraintsEnabled = false;
+		bool m_Paused = false;
 
 		// TODO: Implement an application function to set this automatically and even without 
 		//		 them as members here. Should change on resize events

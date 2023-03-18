@@ -9,7 +9,7 @@
 namespace LukkelEngine {
 
 
-	class RigidBodyEvent : public Event
+	class RigidbodyEvent : public Event
 	{
 	public:
 		btRigidBody* getRigidbody() const { return m_Rigidbody; }
@@ -19,7 +19,7 @@ namespace LukkelEngine {
 	};
 
 
-	class LinearVelocityModificationEvent : public RigidBodyEvent
+	class LinearVelocityModificationEvent : public RigidbodyEvent
 	{
 	public:
 		LinearVelocityModificationEvent(btRigidBody* rigidbody, glm::vec3 newVelocity)

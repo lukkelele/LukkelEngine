@@ -78,25 +78,17 @@ namespace LukkelEngine {
 
 	void Rigidbody::addPivotConstraint(glm::vec3 pivot)
 	{
-		btVector3 p = { pivot.x, pivot.y, pivot.z };
 		Constraint* constraint = new PivotConstraint(*this, pivot);
 		m_Constraints.push_back(constraint);
 		LK_WORLD_REGISTER_EVENT(new ConstraintAddedEvent(*constraint));
 	}
 
-	// void Rigidbody::removeConstraint(ConstraintType type)
-	// {
-	// 	for (auto& constraint : m_Constraints)
-	// 	{
-	// 		// If the constraint type matches, remove the constraint
-	// 		if (constraint->getConstraintType() == type)
-	// 		{
-	// 			auto it = std::find(m_Constraints.begin(), m_Constraints.end(), constraint);
-	// 			LK_WORLD_REGISTER_EVENT(new ConstraintRemovedEvent(*constraint));
-	// 			m_Constraints.erase(it);
-	// 		}
-	//	}
-	// }
+	void Rigidbody::addDof6Constraint(glm::vec3 pivot, float cfm, float erp, bool angularMotion, bool referenceB)
+	{
+		Constraint* constraint = new Dof6Constraint(*this, pivot, cfm, erp, angularMotion, referenceB);
+		m_Constraints.push_back(constraint);
+		LK_WORLD_REGISTER_EVENT(new ConstraintAddedEvent(*constraint));
+	}
 
 	template<typename T>
 	void Rigidbody::removeConstraint(T constraint)

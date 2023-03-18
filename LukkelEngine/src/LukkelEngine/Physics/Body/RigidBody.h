@@ -46,8 +46,7 @@ namespace LukkelEngine {
 		void moveBody(glm::vec3 translation);
 		// Constraints
 		void addPivotConstraint(glm::vec3 pivot);
-		// Current implementation only can remove 1 type at a time
-		// void removeConstraint(ConstraintType constraintType);
+		void addDof6Constraint(glm::vec3 pivot, float cfm = 0.50f, float erp = 0.50f, bool angularMotion = true, bool referenceB = false);
 		std::vector<Constraint*> getConstraints() { return m_Constraints; }
 
 		template<typename T>

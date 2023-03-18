@@ -12,7 +12,7 @@ namespace LukkelEngine {
 		MouseButtonPressed, MouseButtonReleased, MouseMoved, MouseScrolled,
 		// Physics
 		ConstraintAdded, ConstraintRemoved, ConstraintAltered,
-		RigidBodyAdded, RigidBodyRemoved, RigidBodyAltered,
+		RigidbodyAdded, RigidbodyRemoved, RigidbodyAltered,
 	};
 
 	class Event

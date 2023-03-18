@@ -57,8 +57,39 @@ namespace LukkelEngine {
 
 	class Dof6Constraint : public Constraint
 	{
-		Dof6Constraint(Rigidbody& rigidbody)
+	public:
+		Dof6Constraint(Rigidbody& rigidbody, glm::vec3 pivot, float cfm = 0.50f, float erp = 0.50f,
+			bool angularMotion = true, bool referenceB = false)
 		{
+			// btVector3 localPosition = rigidbody.getRigidbody()->getCenterOfMassTransform().inverse() * hitpoint;
+			m_Rigidbody = rigidbody;
+			btVector3 btPivot(pivot.x, pivot.y, pivot.z);
+			btTransform p;
+			p.setIdentity();
+			p.setOrigin(btPivot);
+			btGeneric6DofConstraint* dof6 = new btGeneric6DofConstraint(*m_Rigidbody.getRigidbody(), p, referenceB);
+
+			if (angularMotion)
+			{
+				dof6->setAngularLowerLimit(btVector3(0, 0, 0));
+				dof6->setAngularUpperLimit(btVector3(0, 0, 0));
+			}
+			// Strength per axis
+			dof6->setParam(BT_CONSTRAINT_STOP_CFM, cfm, 0);
+			dof6->setParam(BT_CONSTRAINT_STOP_CFM, cfm, 1);
+			dof6->setParam(BT_CONSTRAINT_STOP_CFM, cfm, 2);
+			dof6->setParam(BT_CONSTRAINT_STOP_CFM, cfm, 3);
+			dof6->setParam(BT_CONSTRAINT_STOP_CFM, cfm, 4);
+			dof6->setParam(BT_CONSTRAINT_STOP_CFM, cfm, 5);
+			// Error reduction per axis
+			dof6->setParam(BT_CONSTRAINT_STOP_ERP, erp, 0);
+			dof6->setParam(BT_CONSTRAINT_STOP_ERP, erp, 1);
+			dof6->setParam(BT_CONSTRAINT_STOP_ERP, erp, 2);
+			dof6->setParam(BT_CONSTRAINT_STOP_ERP, erp, 3);
+			dof6->setParam(BT_CONSTRAINT_STOP_ERP, erp, 4);
+			dof6->setParam(BT_CONSTRAINT_STOP_ERP, erp, 5);
+
+			m_Constraint = dof6;
 		}
 
 		const char* getName() override { return "Dof6"; }

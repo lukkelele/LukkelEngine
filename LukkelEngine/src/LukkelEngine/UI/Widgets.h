@@ -68,15 +68,17 @@ namespace LukkelEngine::UI {
 			ImGui::TableHeadersRow();
 			ImGui::TableNextRow();
 			ImGui::TableSetColumnIndex(0);
+
 			// Buttons for different types of constraints
 			if (ImGui::Button("Pivot", ImVec2{ 0, 0 }))
-			{
 				rigidbody.addPivotConstraint(glm::vec3(0.5f, 0.5f, 0.0f));
-			}
+
 			if (ImGui::Button("Hinge", ImVec2{ 0, 0 }))
-			{
 				LKLOG_TRACE("Clicked HINGE button");
-			}
+			
+			if (ImGui::Button("Dof6", ImVec2{ 0, 0 }))
+				rigidbody.addDof6Constraint(glm::vec3(0.5f, 0.5f, 0.0f));
+
 
 			// Column 1
 			// Placed Constraints
@@ -95,7 +97,6 @@ namespace LukkelEngine::UI {
 
 			ImGui::EndTable();
 		}
-
 
 	}
 

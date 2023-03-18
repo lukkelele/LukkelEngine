@@ -1,8 +1,8 @@
 #include "LKpch.h"
 #include "LukkelEngine/Editor/EditorLayer.h"
 #include "LukkelEngine/Physics/World.h"
-#include "LukkelEngine/Math/Math.h"
 #include "LukkelEngine/Physics/Body/Constraints.h"
+#include "LukkelEngine/Math/Math.h"
 
 #include <imgui/imgui.h>
 #include <imgui/imgui_internal.h>
@@ -276,46 +276,8 @@ namespace LukkelEngine {
 
 			if (ImGui::Checkbox("Use physics", &m_SelectedEntity.usePhysics)) {}
 
-			float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
-			ImGui::Separator();
+			UI::ConstraintsMenu(component);
 
-			// if (ImGui::Button("Add", ImVec2{ lineHeight, lineHeight }))
-			static ImGuiTableFlags constraintFlags = ImGuiTableFlags_SizingFixedFit | ImGuiTableFlags_RowBg 
-				| ImGuiTableFlags_Borders | ImGuiTableFlags_SizingStretchSame;
-
-			ImGui::Text("Constraints");
-			if (ImGui::BeginTable("Constraints", 2, constraintFlags))
-			{
-				// Column 0
-				uint8_t placedConstraints = component.getConstraints().size();
-				ImGui::TableSetupColumn("Add", ImGuiTableColumnFlags_WidthFixed, 100.0f);
-				ImGui::TableSetupColumn("Placed", ImGuiTableColumnFlags_WidthFixed, 100.0f);
-				ImGui::TableHeadersRow();
-				ImGui::TableNextRow();
-				ImGui::TableSetColumnIndex(0);
-				if (ImGui::Button("Pivot", ImVec2{ 0, 0 }))
-				{
-					// The pivot should be inside the object, e.g for a cube it is: side / 2
-					component.addPivotConstraint(glm::vec3(0.5f, 0.5f, 0.0f));
-				}
-				// Column 1
-				// ImGui::TableSetColumnIndex(1);
-				if (ImGui::Button("Hinge", ImVec2{ 0, 0 }))
-				{
-					LKLOG_TRACE("Clicked HINGE button");
-				}
-
-				// Placed Constraints
-				ImGui::TableSetColumnIndex(1);
-				ImGui::Text("Total: %d", placedConstraints);
-				if (ImGui::Button("Remove constraint", ImVec2{ 0, 0 }))
-				{
-					// The pivot should be inside the object, e.g for a cube it is: side / 2
-					component.removeConstraint(ConstraintType::Pivot);
-				}
-
-				ImGui::EndTable();
-			}
 		});
 
 		drawComponent<Material>("Material", entity, [](auto& component)

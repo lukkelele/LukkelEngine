@@ -60,6 +60,7 @@ namespace LukkelEngine {
 			m_Constraint = constraint;
 			m_ConstraintType = constraint.getConstraintType();
 		}
+		~ConstraintRemovedEvent() {}
 
 		EventType getEventType() const { return EventType::ConstraintRemoved; }
 		const char* getName() const { return "ConstraintRemovedEvent"; }

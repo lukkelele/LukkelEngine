@@ -42,9 +42,13 @@ namespace LukkelEngine {
 		{
 			btVector3 p(pivot.x, pivot.y, pivot.z);
 			m_RigidBody = rigidbody;
-			btRigidBody* rb = rigidbody.getRigidBody();
-			m_Constraint = new btPoint2PointConstraint(*rb, p);
+			m_Constraint = new btPoint2PointConstraint(*m_RigidBody.getRigidBody(), p);
 			m_ConstraintType = ConstraintType::Pivot;
+		}
+
+		~PivotConstraint()
+		{
+			delete m_Constraint;
 		}
 
 	private:

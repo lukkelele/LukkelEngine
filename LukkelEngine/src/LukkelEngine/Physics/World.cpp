@@ -62,6 +62,7 @@ namespace LukkelEngine {
 				auto it = std::find(m_Events.begin(), m_Events.end(), event);
 				m_Events.erase(it);
 				LKLOG_INFO("Event handled!");
+				delete event;
 			}
 		}
 	}

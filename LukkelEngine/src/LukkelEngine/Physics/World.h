@@ -29,7 +29,6 @@
 namespace LukkelEngine {
 
 	class Scene;
-	class Editor;
 
 	struct RaycastResult 
 	{
@@ -115,6 +114,5 @@ namespace LukkelEngine {
 		float m_Distance = 0.50f;
 
 		Scene* m_Scene;
-		Editor* m_Editor;
 	};
 }

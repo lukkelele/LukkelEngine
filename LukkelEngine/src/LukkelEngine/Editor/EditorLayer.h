@@ -6,6 +6,7 @@
 #include "LukkelEngine/Physics/Body/RigidBody.h"
 #include "LukkelEngine/Renderer/Material.h"
 #include "LukkelEngine/UI/Property.h"
+#include "LukkelEngine/UI/Widgets.h"
 
 #include "entt/entt.hpp"
 

@@ -32,13 +32,12 @@ namespace LukkelEngine {
 		{
 			if (event->getEventType() == EventType::ConstraintAdded)
 			{
-				LKLOG_WARN("Handling event!");
 				ConstraintAddedEvent* conAddEvent = static_cast<ConstraintAddedEvent*>(event);
 				if (!(conAddEvent->handled))
 				{
-					m_DynamicWorld->addConstraint(conAddEvent->getConstraint());
+					LKLOG_TRACE("Adding: {0}, {1}", conAddEvent->getName(), conAddEvent->getConstraintType());
+					m_DynamicWorld->addConstraint(conAddEvent->getConstraint().getConstraint());
 					conAddEvent->handled = true;
-					m_HandledEvents.push_back(conAddEvent);
 					auto it = std::find(m_Events.begin(), m_Events.end(), conAddEvent);
 					m_Events.erase(it);
 					LKLOG_INFO("Event handled!");
@@ -46,13 +45,17 @@ namespace LukkelEngine {
 			}
 			if (event->getEventType() == EventType::ConstraintRemoved)
 			{
-				LKLOG_WARN("Handling event!");
 				ConstraintRemovedEvent* conRemoveEvent = static_cast<ConstraintRemovedEvent*>(event);
 				if (!(conRemoveEvent->handled))
 				{
-					m_DynamicWorld->removeConstraint(conRemoveEvent->getConstraint());
+					auto& constraint = conRemoveEvent->getConstraint();
+					auto& rb = conRemoveEvent->getRigidBody();
+					m_DynamicWorld->removeConstraint(constraint.getConstraint());
+
+					rb.getRigidBody()->forceActivationState(DISABLE_DEACTIVATION);
+					rb.getRigidBody()->setDeactivationTime(0.0f);
 					conRemoveEvent->handled = true;
-					m_HandledEvents.push_back(conRemoveEvent);
+
 					auto it = std::find(m_Events.begin(), m_Events.end(), conRemoveEvent);
 					m_Events.erase(it);
 					LKLOG_INFO("Event handled!");

@@ -22,6 +22,7 @@ namespace LukkelEngine {
 	public:
 		virtual ~Constraint() = default;
 
+		btTypedConstraint* getConstraint() const { return m_Constraint; }
 		ConstraintType getConstraintType() const { return m_ConstraintType; }
 
 	protected:
@@ -41,6 +42,7 @@ namespace LukkelEngine {
 			btRigidBody* rb = rigidbody.getRigidBody();
 			m_Constraint = new btPoint2PointConstraint(*rb, p);
 			m_ID = (UUID)rigidbody.getID();
+			m_ConstraintType = ConstraintType::Pivot;
 		}
 
 	private:

@@ -2,6 +2,7 @@
 #include "LukkelEngine/Editor/EditorLayer.h"
 #include "LukkelEngine/Physics/World.h"
 #include "LukkelEngine/Math/Math.h"
+#include "LukkelEngine/Physics/Body/Constraints.h"
 
 #include <imgui/imgui.h>
 #include <imgui/imgui_internal.h>
@@ -303,8 +304,16 @@ namespace LukkelEngine {
 			{
 				LKLOG_TRACE("ADDED HINGE");
 			}
+
+			// Placed Constraints
 			ImGui::TableSetColumnIndex(1);
 			ImGui::Text("Total: %d", placedConstraints);
+			if (ImGui::Button("Remove constraint", ImVec2{ 0, 0 }))
+			{
+				// The pivot should be inside the object, e.g for a cube it is: side / 2
+				LKLOG_WARN("Clicked removed constraint button");
+				component.removeConstraint(ConstraintType::Pivot);
+			}
 
 			ImGui::EndTable();
 		}

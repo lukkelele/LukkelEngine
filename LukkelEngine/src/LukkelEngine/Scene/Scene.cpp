@@ -115,10 +115,10 @@ namespace LukkelEngine {
 	}
 
 	template<typename T>
-		void Scene::onComponentAdded(Entity entity, T& component)
-		{
-			// static assert	
-		}
+	void Scene::onComponentAdded(Entity entity, T& component)
+	{
+		// static assert	
+	}
 
 		template<>
 		void Scene::onComponentAdded<Mesh>(Entity entity, Mesh& mesh)

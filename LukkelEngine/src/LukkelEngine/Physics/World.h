@@ -24,6 +24,8 @@
 #define LK_WORLD_GRAVITY_SLOWEST btVector3(0.0f, -0.5f, 0.0f)
 #define LK_WORLD_GRAVITY_FAST    btVector3(0.0f, -18.0f, 0.0f)
 
+#define LK_WORLD_REGISTER_EVENT(x) World::getCurrentWorld().registerEvent(x)
+
 namespace LukkelEngine {
 
 	class Scene;
@@ -58,8 +60,7 @@ namespace LukkelEngine {
 		void createCollisionObject(btCollisionObject* body);
 
 		void addPivotConstraint(RigidBody& rigidbody, btVector3 pivot);
-
-		void registerEvent(Event* event); // { m_Events.push_back(event); };
+		void registerEvent(Event* event);
 
 		bool mouseButtonCallback(int button, int state, float x, float y);
 		bool mouseMoveCallback(float x, float y);

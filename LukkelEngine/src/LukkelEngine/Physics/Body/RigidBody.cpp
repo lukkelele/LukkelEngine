@@ -83,8 +83,22 @@ namespace LukkelEngine {
 		// The UUID from RigidBody which is synced with the parent Entity is automatically fetched inside the Constraint constructor
 		Constraint* constraint = new PivotConstraint(*this, pivot);
 		m_Constraints.push_back(constraint);
-		// TODO: Add macro for register event
-		World::getCurrentWorld().registerEvent(new ConstraintAddedEvent(m_ID, pivotConstraint, ConstraintType::Pivot));
+		LK_WORLD_REGISTER_EVENT(new ConstraintAddedEvent(this, constraint));
+	}
+
+	void RigidBody::removeConstraint(ConstraintType type)
+	{
+		for (auto& constraint : m_Constraints)
+		{
+			// If the constraint type matches, remove the constraint
+			if (constraint->getConstraintType() == type)
+			{
+				LKLOG_TRACE("Match found for constraint");
+				auto it = std::find(m_Constraints.begin(), m_Constraints.end(), constraint);
+				LK_WORLD_REGISTER_EVENT(new ConstraintRemovedEvent(this, constraint));
+				m_Constraints.erase(it);
+			}
+		}
 	}
 
 }

@@ -10,7 +10,9 @@
 
 namespace LukkelEngine {
 
+	/* Forward declaration */
 	class Constraint;
+	enum ConstraintType;
 
 	class RigidBody
 	{
@@ -44,6 +46,8 @@ namespace LukkelEngine {
 		void moveBody(glm::vec3 translation);
 		// Constraints
 		void addPivotConstraint(glm::vec3 pivot);
+		// Current implementation only can remove 1 type at a time
+		void removeConstraint(ConstraintType constraintType);
 		std::vector<Constraint*> getConstraints() { return m_Constraints; }
 
 		void setFriction(float f) { m_Friction = f; }

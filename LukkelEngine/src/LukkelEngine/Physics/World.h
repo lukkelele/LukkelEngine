@@ -7,6 +7,7 @@
 #include "LukkelEngine/Renderer/Shader.h"
 #include "LukkelEngine/Scene/Entity.h"
 #include "LukkelEngine/Event/Event.h"
+#include "LukkelEngine/Physics/Collision.h"
 
 #include <btBulletDynamicsCommon.h>
 #include <btBulletCollisionCommon.h>
@@ -25,6 +26,7 @@
 #define LK_WORLD_GRAVITY_FAST    btVector3(0.0f, -18.0f, 0.0f)
 
 #define LK_WORLD_REGISTER_EVENT(x) World::getCurrentWorld().registerEvent(x)
+#define LK_WORLD_ENTITY_COUNT World::getCurrentWorld().getWorldEntityCount()
 
 namespace LukkelEngine {
 
@@ -46,73 +48,57 @@ namespace LukkelEngine {
 		void onEvent(Event& event);
 		void initPhysics(Scene* scene);
 		void shutdownPhysics();
-
 		void stepSimulation(float ts);
-		bool pickBody(const Camera& camera, float distance);
+		void pause(bool paused) { m_Paused = paused; };
+
 		template<typename T>
 		void addRigidbodyToWorld(T& rigidbody);
 
-		void addConstraint(btTypedConstraint* constraint, btRigidBody* body);
+		bool pickBody(const Camera& camera, float distance);
 		void addConstraint(Constraint& constraint);
 		void removeConstraint(Constraint& constraint);
 		void createPickingConstraint(float x, float y);
-		void createPickingConstraint(Entity& entity);
 		void removePickConstraint();
 		void createCollisionObject(btCollisionObject* body);
-		void addPivotConstraint(Rigidbody& rigidbody, btVector3 pivot);
+		uint64_t getWorldEntityCount() { return s_EntitiesInWorld; }
 
 		void registerEvent(Event* event);
 		void handleEvents();
 
+		void checkCollisions();
+
 		bool mouseButtonCallback(int button, int state, float x, float y);
 		bool mouseMoveCallback(float x, float y);
-		bool movePickedBody(glm::vec3& rayFrom, glm::vec3& rayTo);
-		std::pair<glm::vec3, glm::vec3> raycast(const Camera& camera);
-		static World& getCurrentWorld() { return *m_CurrentWorld; }
-
-		static btVector3 screenToWorld(float mx, float my, glm::mat4 view, glm::mat4 projection);
 		void resetMousePick();
 
-		std::vector<btTypedConstraint*> constraints;
-		void pause(bool paused) { m_Paused = paused; };
-
-		static uint64_t s_EntitiesInWorld;
+		static World& getCurrentWorld() { return *m_CurrentWorld; }
+		static btVector3 screenToWorld(float mx, float my, glm::mat4 view, glm::mat4 projection);
 
 	private:
 		btDiscreteDynamicsWorld* m_DynamicWorld = nullptr;
-		btBroadphaseInterface* m_Broadphase = nullptr;
+		btBroadphaseInterface* m_BroadphaseInterface = nullptr;
 		btDefaultCollisionConfiguration* m_CollisionConfig = nullptr;
 		btCollisionDispatcher* m_Dispatcher = nullptr;
-		btSequentialImpulseConstraintSolver* m_Solver = nullptr;
+		btSequentialImpulseConstraintSolver* m_SequentialConstraintSolver = nullptr;
 
 		b3MouseButtonCallback m_PrevMouseButtonCallback = 0;
 		b3MouseMoveCallback m_PrevMouseMoveCallback = 0;
 
-		btRigidBody* m_PickedBody;
-		Entity m_PickedEntity;
-		btTypedConstraint* m_PickedConstraint;
-		btVector3 m_HitPos;
-		btVector3 m_OldPickingPos;
-		btScalar m_OldPickingDist;
-		int m_SavedState;
+		btRigidBody* m_PickedBody = nullptr;
+		Entity m_PickedEntity{};
+		btTypedConstraint* m_PickedConstraint = nullptr;
+		btVector3 m_HitPos{};
+		btVector3 m_OldPickingPos{};
+		btScalar m_OldPickingDist{};
+		int m_SavedState = 0;
+
+		CollisionPairs m_LastCollisionPairs;
 		
 		std::vector<Event*> m_Events;
-		std::vector<Event*> m_HandledEvents; // Redundant
-		bool m_ConstraintsEnabled = false;
 		bool m_Paused = false;
+
 		static World* m_CurrentWorld;
-
-		// TODO: Implement an application function to set this automatically and even without 
-		//		 them as members here. Should change on resize events
-		float m_ViewportWidth = 1600;
-		float m_ViewportHeight = 1024;
-		float m_AspectRatio = float(1600.0f/1024.0f);
-
-		// FIXME: BELONGS TO CAMERA, ONLY TEMPORARY
-		float m_FOV = 50.0f, m_NearPlane = 0.10f, m_FarPlane = 1000.0f;
-		float m_TravelSpeed = 0.10f;
-		float m_Distance = 0.50f;
-
-		Scene* m_Scene;
+		static uint64_t s_EntitiesInWorld;
+		Scene* m_Scene = nullptr;
 	};
 }

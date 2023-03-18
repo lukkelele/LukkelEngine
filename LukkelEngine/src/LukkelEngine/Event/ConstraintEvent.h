@@ -26,8 +26,6 @@ namespace LukkelEngine {
 		ConstraintType getConstraintType() const { return m_ConstraintType; }
 		UUID getID() const { return m_ID; }
 
-		// virtual bool handleEvent() = 0;
-
 	protected:
 		UUID m_ID;
 		Constraint m_Constraint;

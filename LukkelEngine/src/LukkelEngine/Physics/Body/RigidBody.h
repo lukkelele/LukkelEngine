@@ -7,10 +7,10 @@
 #include <btBulletDynamicsCommon.h>
 #include <btBulletCollisionCommon.h>
 
-
 namespace LukkelEngine {
 
 	/* Forward declaration */
+	class Entity;
 	class Constraint;
 	enum ConstraintType;
 
@@ -60,7 +60,8 @@ namespace LukkelEngine {
 
 		const UUID getID() const { return m_ID; }
 		void setID(UUID ID) { m_ID = ID; }
-		bool isAltered = false;
+		// void setUserPointer(uint64_t ptr) { m_Rigidbody->setUserPointer((void*)(ptr)); }
+		void setUserPointer(Entity* entity) { m_Rigidbody->setUserPointer((void*)(&entity)); }
 
 	private:
 		btCollisionShape* m_Shape = nullptr;

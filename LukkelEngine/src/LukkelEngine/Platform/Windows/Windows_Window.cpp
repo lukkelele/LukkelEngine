@@ -60,6 +60,9 @@ namespace LukkelEngine {
 		glEnable(GL_LINE_SMOOTH);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+		if (glfwRawMouseMotionSupported())
+			glfwSetInputMode(m_Window, GLFW_RAW_MOUSE_MOTION, GLFW_TRUE);
+
 		glfwSetInputMode(m_Window, GLFW_STICKY_KEYS, GLFW_TRUE);
 
 		glfwSetScrollCallback(m_Window, [](GLFWwindow* window, double x, double y)

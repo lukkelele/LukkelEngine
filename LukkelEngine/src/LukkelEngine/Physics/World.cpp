@@ -17,7 +17,6 @@ namespace LukkelEngine {
 	World::World()
 	{
 		s_EntitiesInWorld = 0;
-		LKLOG_INFO("World created");
 	}
 
 	World::~World()
@@ -30,6 +29,7 @@ namespace LukkelEngine {
 		handleEvents();
 		if (!m_Paused)
 		{
+			checkCollisions();
 			m_DynamicWorld->stepSimulation(ts);
 			m_DynamicWorld->updateAabbs();
 			m_DynamicWorld->computeOverlappingPairs();
@@ -38,13 +38,13 @@ namespace LukkelEngine {
 
 	void World::initPhysics(Scene* scene)
 	{
-		btBroadphaseInterface* broadphase = new btDbvtBroadphase();
-		btDefaultCollisionConfiguration* collisionConfig = new btDefaultCollisionConfiguration();
-		btCollisionDispatcher* dispatcher = new btCollisionDispatcher(collisionConfig);
-		btSequentialImpulseConstraintSolver* solver = new btSequentialImpulseConstraintSolver();
+		m_BroadphaseInterface = new btDbvtBroadphase();
+		m_CollisionConfig = new btDefaultCollisionConfiguration();
+		m_Dispatcher = new btCollisionDispatcher(m_CollisionConfig);
+		m_SequentialConstraintSolver = new btSequentialImpulseConstraintSolver();
 
 		m_Scene = scene;
-		m_DynamicWorld = new btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfig);
+		m_DynamicWorld = new btDiscreteDynamicsWorld(m_Dispatcher, m_BroadphaseInterface, m_SequentialConstraintSolver, m_CollisionConfig);
 		m_DynamicWorld->setGravity(LK_WORLD_GRAVITY_SLOW);
 
 		physicsDebugger.setDebugMode(btIDebugDraw::DBG_DrawWireframe + btIDebugDraw::DBG_DrawContactPoints + btIDebugDraw::DBG_DrawAabb);
@@ -74,26 +74,24 @@ namespace LukkelEngine {
 	void World::shutdownPhysics()
 	{
 		delete m_DynamicWorld;
-		delete m_Broadphase;
+		delete m_BroadphaseInterface;
 		delete m_CollisionConfig;
 		delete m_Dispatcher;
-		delete m_Solver;
+		delete m_SequentialConstraintSolver;
 	}
 
 	bool World::pickBody(const Camera& camera, float distance)
 	{
-		// FIX CAMERA PASSED AS ARGUMENT
-		auto cam = camera;
-		auto camPos = cam.getPosition();
-
-		auto [rayFrom, rayDir] = raycast(cam);
+		// Cast ray
+		auto [rayFrom, rayDir] = CollisionDetector::Raycast(camera);
 		btVector3 from = btVector3(rayFrom.x, rayFrom.y, rayFrom.z);
 		btVector3 to_dir = btVector3(rayDir.x, rayDir.y, rayDir.z);
 		btVector3 to = from + (btVector3(rayDir.x, rayDir.y, rayDir.z) * distance);
-
+		// Perform ray test
 		btCollisionWorld::ClosestRayResultCallback rayCallback(from, to);
-		m_DynamicWorld->rayTest(from , to, rayCallback);
+		m_DynamicWorld->rayTest(from, to, rayCallback);
 
+		// Check if ray has hit something
 		if (rayCallback.hasHit())
 		{
 			btVector3 pickPos = rayCallback.m_hitPointWorld;
@@ -102,11 +100,11 @@ namespace LukkelEngine {
 			bool picked = false;
 			if (body && body->isInWorld())
 			{
+				// If the hit body is a valid object, continue
 				if (!(body->isStaticOrKinematicObject()))
 				{
 					uint64_t id = (uint64_t)body->getUserPointer();
 					auto& pickedEntity = m_Scene->getEntityWithUUID(id);
-
 					if (pickedEntity && pickedEntity != m_PickedEntity)
 					{
 						// Remove the focus selection from the last picked entity
@@ -128,7 +126,7 @@ namespace LukkelEngine {
 		}
 		else
 		{
-			resetMousePick();
+			// resetMousePick();
 			LKLOG_INFO("");
 			return false;
 		}
@@ -187,12 +185,13 @@ namespace LukkelEngine {
 
 	bool World::mouseButtonCallback(int button, int state, float x, float y)
 	{
-		float distance = 800.0f; // FIXME
+		float distance = 800.0f;
 		if (state == 1)
 		{
 			if (button == 0)
 			{
 				bool bodyIsPicked = pickBody(*m_Scene->getCamera(), distance);
+				LKLOG_INFO("bodyIsPicked -> {0}", bodyIsPicked);
 				if (bodyIsPicked)
 				{
 					LKLOG_CRITICAL("Body picked -> {0}", m_PickedEntity.getName());
@@ -206,75 +205,6 @@ namespace LukkelEngine {
 	bool World::mouseMoveCallback(float x, float y)
 	{
 		return false;
-	}
-
-	bool World::movePickedBody(glm::vec3& rayFrom, glm::vec3& rayTo)
-	{
-		btVector3 from{ rayFrom.x, rayFrom.y, rayFrom.z };
-		btVector3 to{ rayTo.x, rayTo.y, rayTo.z };
-
-		if (m_PickedBody && m_PickedConstraint)
-		{
-			LKLOG_TRACE("Getting picked constraint");
-			btPoint2PointConstraint* pickCon = static_cast<btPoint2PointConstraint*>(m_PickedConstraint);
-			LKLOG_WARN("Got picked constraint");
-			if (pickCon)
-			{
-				// Keep it at the same picking distance
-				btVector3 newPivotB;
-
-				btVector3 dir = to - from;
-				dir.normalize();
-				dir *= m_OldPickingDist;
-
-				newPivotB = from + dir;
-				pickCon->setPivotB(newPivotB);
-				return true;
-			}
-		}
-		return false;
-	}
-
-	std::pair<glm::vec3, glm::vec3> World::raycast(const Camera& camera)
-	{
-		auto [mouseX, mouseY] = Mouse::getMousePosition();
-		// auto& cam = camera;
-		auto& cam = m_Scene->getCamera();
-		auto screenWidth = cam->getScreenWidth();
-		auto screenHeight = cam->getScreenHeight();
-		auto projection = cam->getProjection();
-		auto view = cam->getView();
-
-		// Lock the ray to the middle of the screen, need to fix the GLFW cursor pos 
-		mouseX = screenWidth / 2;
-		mouseY = screenHeight / 2;
-
-		glm::vec4 rayStart_NDC(
-			((float)mouseX/(float)screenWidth  - 0.5f) * 2.0f, // [0,  width] -> [-1,1]
-			((float)mouseY/(float)screenHeight - 0.5f) * 2.0f, // [0, height] -> [-1,1]
-		   -1.0, // The near plane maps to Z=-1
-			1.0f
-		);
-		glm::vec4 rayEnd_NDC(
-			((float)mouseX/(float)screenWidth  - 0.5f) * 2.0f, // * -1 (?)
-			((float)mouseY/(float)screenHeight - 0.5f) * 2.0f,
-			0.0,
-			-1.0f
-		);
-
-		glm::mat4 invViewProjection = glm::inverse(projection * view);
-		glm::vec4 rayStart_world = invViewProjection * rayStart_NDC;
-		glm::vec4 rayEnd_world   = invViewProjection * rayEnd_NDC  ; 
-		rayStart_world /= rayStart_world.w;
-		rayEnd_world   /= rayEnd_world.w;
-
-		glm::vec3 rayDirection_world(rayEnd_world - rayStart_world);
-		rayDirection_world = glm::normalize(rayDirection_world);
-
-		glm::vec3 rayPos = glm::vec3(rayStart_world);
-		glm::vec3 rayDir = glm::normalize(rayDirection_world);
-
-		return { rayPos, rayDir };
 	}
 
 	btVector3 World::screenToWorld(float mx, float my, glm::mat4 view, glm::mat4 projection)
@@ -300,15 +230,6 @@ namespace LukkelEngine {
 
 	void World::createPickingConstraint(float x, float y)
 	{
-	}
-
-	void World::createPickingConstraint(Entity& entity)
-	{
-	}
-
-	void World::addConstraint(btTypedConstraint* constraint, btRigidBody* body)
-	{
-		m_DynamicWorld->addConstraint(constraint);
 	}
 
 	void World::addConstraint(Constraint& constraint)
@@ -342,10 +263,58 @@ namespace LukkelEngine {
 		}
 	}
 
-	void World::addPivotConstraint(Rigidbody& rigidbody, btVector3 pivot)
+	void World::checkCollisions()
 	{
-		btTypedConstraint* constraint = new btPoint2PointConstraint(*rigidbody.getRigidbody(), pivot);
-		m_DynamicWorld->addConstraint(constraint);
+		CollisionPairs collisionPairs;
+
+		if (m_Dispatcher)
+		{
+			for (int i = 0; i < m_Dispatcher->getNumManifolds(); i++)
+			{
+				LKLOG_WARN("Creating manifold by index");
+				btPersistentManifold* manifold = m_Dispatcher->getManifoldByIndexInternal(i);
+
+				if (manifold->getNumContacts() > 0)
+				{
+					const btRigidBody* body1 = static_cast<const btRigidBody*>(manifold->getBody0());
+					const btRigidBody* body2 = static_cast<const btRigidBody*>(manifold->getBody1());
+					bool const swapped = body1 > body2;
+					const btRigidBody* sortedBody1 = swapped ? body1 : body2;
+					const btRigidBody* sortedBody2 = swapped ? body2 : body1;
+
+					uint64_t id1 = (uint64_t)sortedBody1->getUserPointer();
+					uint64_t id2 = (uint64_t)sortedBody2->getUserPointer();
+					Entity entity1 = m_Scene->getEntityWithUUID(id1);
+					Entity entity2 = m_Scene->getEntityWithUUID(id2);
+					LKLOG_TRACE("Entity 1 name: {0}", entity1.getName());
+					LKLOG_TRACE("Entity 2 name: {0}", entity2.getName());
+					// LKLOG_TRACE("Collision ID 1: {0}", id1);
+					// LKLOG_TRACE("Collision ID 2: {0}", id2);
+					CollisionPair pair = std::make_pair(sortedBody1, sortedBody2);
+					// CollisionPair entityPair = std::make_pair(entity1, entity2);
+					// collisionPairs.insert(entityPair);
+					collisionPairs.insert(pair);
+
+					// If the collision pair is only found at the last insertion, then it is a new collision
+					if (m_LastCollisionPairs.find(pair) == m_LastCollisionPairs.end())
+					{ 
+						// Trigger collision event
+					}
+				}
+			}
+			CollisionPairs removedPairs;
+
+			std::set_difference(m_LastCollisionPairs.begin(), m_LastCollisionPairs.end(),
+				collisionPairs.begin(), collisionPairs.end(), std::inserter(removedPairs, removedPairs.begin()));
+
+			// Iterate through removed pairs and trigger separation events
+			for (CollisionPairs::const_iterator iter = removedPairs.begin(); iter != removedPairs.end(); iter++)
+			{
+				LKLOG_TRACE("Trigger Separation Event");
+			}
+
+			m_LastCollisionPairs = collisionPairs;
+		}
 	}
 
 }

@@ -92,6 +92,8 @@ namespace LukkelEngine {
 			m_Constraint = dof6;
 		}
 
+		~Dof6Constraint() { delete m_Constraint; }
+
 		const char* getName() override { return "Dof6"; }
 	};
 

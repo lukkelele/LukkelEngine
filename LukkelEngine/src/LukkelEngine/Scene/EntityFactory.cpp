@@ -18,10 +18,10 @@ namespace LukkelEngine {
 
 		UUID& entityID = entity.getUUID();
 		Mesh& mesh = MeshFactory::createBox(props.dimensions);
-		// Rigidbody& rigidbody = RigidbodyFactory::createRigidbody(props.dimensions, props.offset, 
-		// 							props.mass, props.bodytype, friction, restitution, inertia);
 		Rigidbody& rigidbody = RigidbodyFactory::createRigidbody(entityID, props.dimensions, props.offset, 
 									props.mass, props.bodytype, friction, restitution, inertia);
+		// rigidbody.setUserPointer(&entity);
+
 		Material material;
 		material.setMaterialColor(props.color);
 

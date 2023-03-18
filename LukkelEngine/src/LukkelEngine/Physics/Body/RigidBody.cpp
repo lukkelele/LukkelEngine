@@ -3,9 +3,9 @@
 #include "LukkelEngine/Physics/World.h"
 #include "LukkelEngine/Physics/Body/Constraints.h"
 #include "LukkelEngine/Event/ConstraintEvent.h"
+#include "LukkelEngine/Scene/Entity.h"
 
 namespace LukkelEngine {
-
 
 	Rigidbody::Rigidbody(glm::vec3 dimensions, glm::vec3 offset, float mass,
 				  Rigidbody::Type bodyType, float friction, float restitution, glm::vec3 inertia)

@@ -54,13 +54,16 @@ namespace LukkelEngine {
 		void addRigidBodyToWorld(T& rigidbody);
 
 		void addConstraint(btTypedConstraint* constraint, btRigidBody* body);
+		void addConstraint(Constraint& constraint);
+		void removeConstraint(Constraint& constraint);
 		void createPickingConstraint(float x, float y);
 		void createPickingConstraint(Entity& entity);
 		void removePickConstraint();
 		void createCollisionObject(btCollisionObject* body);
-
 		void addPivotConstraint(RigidBody& rigidbody, btVector3 pivot);
+
 		void registerEvent(Event* event);
+		void handleEvents();
 
 		bool mouseButtonCallback(int button, int state, float x, float y);
 		bool mouseMoveCallback(float x, float y);

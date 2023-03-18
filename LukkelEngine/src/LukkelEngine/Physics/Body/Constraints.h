@@ -24,9 +24,11 @@ namespace LukkelEngine {
 
 		btTypedConstraint* getConstraint() const { return m_Constraint; }
 		ConstraintType getConstraintType() const { return m_ConstraintType; }
+		RigidBody& getRigidBody() { return m_RigidBody; }
+		UUID getID() const { return m_RigidBody.getID(); }
 
 	protected:
-		UUID m_ID;
+		RigidBody m_RigidBody;
 		btTypedConstraint* m_Constraint = nullptr;
 		ConstraintType m_ConstraintType = Null;
 	};
@@ -39,9 +41,9 @@ namespace LukkelEngine {
 			: m_Pivot(pivot)
 		{
 			btVector3 p(pivot.x, pivot.y, pivot.z);
+			m_RigidBody = rigidbody;
 			btRigidBody* rb = rigidbody.getRigidBody();
 			m_Constraint = new btPoint2PointConstraint(*rb, p);
-			m_ID = (UUID)rigidbody.getID();
 			m_ConstraintType = ConstraintType::Pivot;
 		}
 

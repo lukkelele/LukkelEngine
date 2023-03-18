@@ -270,55 +270,52 @@ namespace LukkelEngine {
 		drawComponent<RigidBody>("Rigidbody", entity, [](auto& component)
 		{
 			glm::vec3 lv = component.getLinearVelocity();
-		UI::Property::Vector3Control("Linear Velocity", lv);
-		if (btVector3(lv.x, lv.y, lv.z) != component.m_LinearVelocity)
-			component.setLinearVelocity(lv);
+			UI::Property::Vector3Control("Linear Velocity", lv);
+			if (lv != component.getLinearVelocity())
+				component.setLinearVelocity(lv);
 
-		if (ImGui::Checkbox("Use physics", &m_SelectedEntity.usePhysics)) {}
+			if (ImGui::Checkbox("Use physics", &m_SelectedEntity.usePhysics)) {}
 
-		float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
-		ImGui::Separator();
+			float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
+			ImGui::Separator();
 
-		// if (ImGui::Button("Add", ImVec2{ lineHeight, lineHeight }))
-		static ImGuiTableFlags constraintFlags = ImGuiTableFlags_SizingFixedFit | ImGuiTableFlags_RowBg 
-			| ImGuiTableFlags_Borders | ImGuiTableFlags_SizingStretchSame;
+			// if (ImGui::Button("Add", ImVec2{ lineHeight, lineHeight }))
+			static ImGuiTableFlags constraintFlags = ImGuiTableFlags_SizingFixedFit | ImGuiTableFlags_RowBg 
+				| ImGuiTableFlags_Borders | ImGuiTableFlags_SizingStretchSame;
 
-		ImGui::Text("Constraints");
-		if (ImGui::BeginTable("Constraints", 2, constraintFlags))
-		{
-			// Column 0
-			uint8_t placedConstraints = component.getConstraints().size();
-			ImGui::TableSetupColumn("Add", ImGuiTableColumnFlags_WidthFixed, 100.0f);
-			ImGui::TableSetupColumn("Placed", ImGuiTableColumnFlags_WidthFixed, 100.0f);
-			ImGui::TableHeadersRow();
-			ImGui::TableNextRow();
-			ImGui::TableSetColumnIndex(0);
-			if (ImGui::Button("Pivot", ImVec2{ 0, 0 }))
+			ImGui::Text("Constraints");
+			if (ImGui::BeginTable("Constraints", 2, constraintFlags))
 			{
-				// The pivot should be inside the object, e.g for a cube it is: side / 2
-				component.addPivotConstraint(glm::vec3(0.5f, 0.5f, 0.0f));
+				// Column 0
+				uint8_t placedConstraints = component.getConstraints().size();
+				ImGui::TableSetupColumn("Add", ImGuiTableColumnFlags_WidthFixed, 100.0f);
+				ImGui::TableSetupColumn("Placed", ImGuiTableColumnFlags_WidthFixed, 100.0f);
+				ImGui::TableHeadersRow();
+				ImGui::TableNextRow();
+				ImGui::TableSetColumnIndex(0);
+				if (ImGui::Button("Pivot", ImVec2{ 0, 0 }))
+				{
+					// The pivot should be inside the object, e.g for a cube it is: side / 2
+					component.addPivotConstraint(glm::vec3(0.5f, 0.5f, 0.0f));
+				}
+				// Column 1
+				// ImGui::TableSetColumnIndex(1);
+				if (ImGui::Button("Hinge", ImVec2{ 0, 0 }))
+				{
+					LKLOG_TRACE("Clicked HINGE button");
+				}
+
+				// Placed Constraints
+				ImGui::TableSetColumnIndex(1);
+				ImGui::Text("Total: %d", placedConstraints);
+				if (ImGui::Button("Remove constraint", ImVec2{ 0, 0 }))
+				{
+					// The pivot should be inside the object, e.g for a cube it is: side / 2
+					component.removeConstraint(ConstraintType::Pivot);
+				}
+
+				ImGui::EndTable();
 			}
-			// Column 1
-			// ImGui::TableSetColumnIndex(1);
-			if (ImGui::Button("Hinge", ImVec2{ 0, 0 }))
-			{
-				LKLOG_TRACE("ADDED HINGE");
-			}
-
-			// Placed Constraints
-			ImGui::TableSetColumnIndex(1);
-			ImGui::Text("Total: %d", placedConstraints);
-			if (ImGui::Button("Remove constraint", ImVec2{ 0, 0 }))
-			{
-				// The pivot should be inside the object, e.g for a cube it is: side / 2
-				LKLOG_WARN("Clicked removed constraint button");
-				component.removeConstraint(ConstraintType::Pivot);
-			}
-
-			ImGui::EndTable();
-		}
-
-
 		});
 
 		drawComponent<Material>("Material", entity, [](auto& component)

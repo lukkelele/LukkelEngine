@@ -56,12 +56,6 @@ namespace LukkelEngine {
 		void setCollisionFlags(int flags) { m_RigidBody->setCollisionFlags(flags); }
 		void setActivationState(int state) { m_RigidBody->setActivationState(state); }
 
-		btVector3 m_Position{ 0.0f, 0.0f, 0.0f };
-		btVector3 m_Dimensions{ 1.0f, 1.0f, 1.0f };
-		btVector3 m_Inertia{ 0.0f, 0.0f, 0.0f };
-		btVector3 m_LinearVelocity{ 0.0f, 0.0f, 0.0f };
-		btVector3 m_AngularVelocity{ 0.0f, 0.0f, 0.0f };
-
 		const UUID getID() const { return m_ID; }
 		void setID(UUID ID) { m_ID = ID; }
 		bool isAltered = false;
@@ -73,6 +67,12 @@ namespace LukkelEngine {
 		MotionState* m_MotionState = nullptr;
 		Type m_Type = Type::STATIC;
 		UUID m_ID;
+
+		btVector3 m_Position{ 0.0f, 0.0f, 0.0f };
+		btVector3 m_Dimensions{ 1.0f, 1.0f, 1.0f };
+		btVector3 m_Inertia{ 0.0f, 0.0f, 0.0f };
+		btVector3 m_LinearVelocity{ 0.0f, 0.0f, 0.0f };
+		btVector3 m_AngularVelocity{ 0.0f, 0.0f, 0.0f };
 
 		float m_Mass = 1.0f;
 		float m_Friction = 1.0f;

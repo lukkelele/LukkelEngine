@@ -18,6 +18,7 @@ namespace LukkelEngine {
 		btRigidBody* m_Rigidbody = nullptr;
 	};
 
+
 	class LinearVelocityModificationEvent : public RigidBodyEvent
 	{
 	public:

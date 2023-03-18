@@ -15,52 +15,67 @@ namespace LukkelEngine {
 	{
 	public:
 		ConstraintEvent() = default;
-		// ConstraintEvent(RigidBody* rigidbody, btTypedConstraint* constraint, ConstraintType constraintType)
-		ConstraintEvent(RigidBody* rigidbody, Constraint* constraint)
-			: m_RigidBody(rigidbody), m_Constraint(constraint)
+		ConstraintEvent(Constraint& constraint)
+			:  m_Constraint(constraint)
 		{
-			m_ID = m_RigidBody->getID();
+			m_ID = constraint.getID();
+			m_ConstraintType = constraint.getConstraintType();
 		}
 
-		RigidBody& getRigidBody() { return *m_RigidBody; }
+		Constraint& getConstraint() { return m_Constraint; }
 		ConstraintType getConstraintType() const { return m_ConstraintType; }
-		// btTypedConstraint* getConstraint() { return m_Constraint; }
-		Constraint& getConstraint() { return *m_Constraint; }
 		UUID getID() const { return m_ID; }
 
+		// virtual bool handleEvent() = 0;
+
 	protected:
-		RigidBody* m_RigidBody;
 		UUID m_ID;
-		// btTypedConstraint* m_Constraint = nullptr;
+		Constraint m_Constraint;
 		ConstraintType m_ConstraintType = ConstraintType::Null;
-		Constraint* m_Constraint;
 	};
 
 
 	class ConstraintAddedEvent : public ConstraintEvent
 	{
 	public:
-		// ConstraintAddedEvent(RigidBody& rigidbody, btTypedConstraint* constraint, ConstraintType constraintType)
-		ConstraintAddedEvent(RigidBody* rigidbody, Constraint* constraint)
-			: ConstraintEvent(rigidbody, constraint) {}
+		ConstraintAddedEvent(Constraint& constraint)
+			: ConstraintEvent(constraint) {}
 
 		EventType getEventType() const { return EventType::ConstraintAdded; }
 		const char* getName() const { return "ConstraintAddedEvent"; }
+
+		bool handleEvent() override
+		{
+			auto& world = World::getCurrentWorld();
+			world.addConstraint(getConstraint());
+			return true;
+		}
 	};
 
 	class ConstraintRemovedEvent : public ConstraintEvent
 	{
 	public:
-		ConstraintRemovedEvent(RigidBody* rigidbody, Constraint* constraint)
+		ConstraintRemovedEvent(Constraint& constraint)
 		{
-			m_RigidBody = rigidbody;
-			// m_Constraint = constraint->getConstraint();
 			m_Constraint = constraint;
-			m_ConstraintType = constraint->getConstraintType();
+			m_ConstraintType = constraint.getConstraintType();
 		}
 
 		EventType getEventType() const { return EventType::ConstraintRemoved; }
 		const char* getName() const { return "ConstraintRemovedEvent"; }
+
+		bool handleEvent() override
+		{
+			auto& world = World::getCurrentWorld();
+			auto& constraint = getConstraint();
+			auto& rb = constraint.getRigidBody();
+			world.removeConstraint(constraint);
+
+			rb.getRigidBody()->forceActivationState(DISABLE_DEACTIVATION);
+			rb.getRigidBody()->setDeactivationTime(0.0f);
+
+			return true;
+		}
 	};
 
 

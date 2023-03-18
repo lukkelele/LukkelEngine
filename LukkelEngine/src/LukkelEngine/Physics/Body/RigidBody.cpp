@@ -79,11 +79,9 @@ namespace LukkelEngine {
 	void RigidBody::addPivotConstraint(glm::vec3 pivot)
 	{
 		btVector3 p = { pivot.x, pivot.y, pivot.z };
-		btTypedConstraint* pivotConstraint = new btPoint2PointConstraint(*getRigidBody(), p);
-		// The UUID from RigidBody which is synced with the parent Entity is automatically fetched inside the Constraint constructor
 		Constraint* constraint = new PivotConstraint(*this, pivot);
 		m_Constraints.push_back(constraint);
-		LK_WORLD_REGISTER_EVENT(new ConstraintAddedEvent(this, constraint));
+		LK_WORLD_REGISTER_EVENT(new ConstraintAddedEvent(*constraint));
 	}
 
 	void RigidBody::removeConstraint(ConstraintType type)
@@ -93,9 +91,8 @@ namespace LukkelEngine {
 			// If the constraint type matches, remove the constraint
 			if (constraint->getConstraintType() == type)
 			{
-				LKLOG_TRACE("Match found for constraint");
 				auto it = std::find(m_Constraints.begin(), m_Constraints.end(), constraint);
-				LK_WORLD_REGISTER_EVENT(new ConstraintRemovedEvent(this, constraint));
+				LK_WORLD_REGISTER_EVENT(new ConstraintRemovedEvent(*constraint));
 				m_Constraints.erase(it);
 			}
 		}

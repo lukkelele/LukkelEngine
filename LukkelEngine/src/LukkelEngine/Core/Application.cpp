@@ -87,14 +87,6 @@ namespace LukkelEngine {
 
 	void Application::onEvent(Event& e)
 	{
-		EventDispatcher ed(e);
-		/* Handle events */
-		for (auto it = m_LayerStack.rbegin(); it != m_LayerStack.rend(); ++it)
-		{
-			if (e.handled)
-				break;
-			(*it)->onEvent(e);
-		}
 	}
 
 	void Application::resizeWindow(uint16_t width, uint16_t height)

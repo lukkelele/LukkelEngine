@@ -27,53 +27,13 @@ namespace LukkelEngine {
 
 	void World::onUpdate(float ts)
 	{
-		// FIXME: Add proper event handling
-		for (auto& event : m_Events)
-		{
-			if (event->getEventType() == EventType::ConstraintAdded)
-			{
-				ConstraintAddedEvent* conAddEvent = static_cast<ConstraintAddedEvent*>(event);
-				if (!(conAddEvent->handled))
-				{
-					LKLOG_TRACE("Adding: {0}, {1}", conAddEvent->getName(), conAddEvent->getConstraintType());
-					m_DynamicWorld->addConstraint(conAddEvent->getConstraint().getConstraint());
-					conAddEvent->handled = true;
-					auto it = std::find(m_Events.begin(), m_Events.end(), conAddEvent);
-					m_Events.erase(it);
-					LKLOG_INFO("Event handled!");
-				}
-			}
-			if (event->getEventType() == EventType::ConstraintRemoved)
-			{
-				ConstraintRemovedEvent* conRemoveEvent = static_cast<ConstraintRemovedEvent*>(event);
-				if (!(conRemoveEvent->handled))
-				{
-					auto& constraint = conRemoveEvent->getConstraint();
-					auto& rb = conRemoveEvent->getRigidBody();
-					m_DynamicWorld->removeConstraint(constraint.getConstraint());
-
-					rb.getRigidBody()->forceActivationState(DISABLE_DEACTIVATION);
-					rb.getRigidBody()->setDeactivationTime(0.0f);
-					conRemoveEvent->handled = true;
-
-					auto it = std::find(m_Events.begin(), m_Events.end(), conRemoveEvent);
-					m_Events.erase(it);
-					LKLOG_INFO("Event handled!");
-				}
-			}
-
-		}
-
+		handleEvents();
 		if (!m_Paused)
 		{
 			m_DynamicWorld->stepSimulation(ts);
 			m_DynamicWorld->updateAabbs();
 			m_DynamicWorld->computeOverlappingPairs();
 		}
-	}
-
-	void World::onEvent(Event& event)
-	{
 	}
 
 	void World::initPhysics(Scene* scene)
@@ -90,6 +50,24 @@ namespace LukkelEngine {
 		physicsDebugger.setDebugMode(btIDebugDraw::DBG_DrawWireframe + btIDebugDraw::DBG_DrawContactPoints + btIDebugDraw::DBG_DrawAabb);
 		m_DynamicWorld->setDebugDrawer(&physicsDebugger);
 		m_CurrentWorld = this;
+	}
+
+	void World::handleEvents()
+	{
+		for (auto& event : m_Events)
+		{
+			bool handled = event->handleEvent();
+			if (handled) 
+			{
+				auto it = std::find(m_Events.begin(), m_Events.end(), event);
+				m_Events.erase(it);
+				LKLOG_INFO("Event handled!");
+			}
+		}
+	}
+
+	void World::onEvent(Event& event)
+	{
 	}
 
 	void World::shutdownPhysics()
@@ -329,9 +307,18 @@ namespace LukkelEngine {
 
 	void World::addConstraint(btTypedConstraint* constraint, btRigidBody* body)
 	{
-		m_DynamicWorld->addConstraint(constraint, true);
+		m_DynamicWorld->addConstraint(constraint);
 	}
 
+	void World::addConstraint(Constraint& constraint)
+	{
+		m_DynamicWorld->addConstraint(constraint.getConstraint());
+	}
+
+	void World::removeConstraint(Constraint& constraint)
+	{
+		m_DynamicWorld->removeConstraint(constraint.getConstraint());
+	}
 
 	void World::createCollisionObject(btCollisionObject* body)
 	{

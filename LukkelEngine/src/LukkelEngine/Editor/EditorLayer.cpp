@@ -286,20 +286,25 @@ namespace LukkelEngine {
 		if (ImGui::BeginTable("Constraints", 2, constraintFlags))
 		{
 			// Column 0
+			uint8_t placedConstraints = component.getConstraints().size();
+			ImGui::TableSetupColumn("Add", ImGuiTableColumnFlags_WidthFixed, 100.0f);
+			ImGui::TableSetupColumn("Placed", ImGuiTableColumnFlags_WidthFixed, 100.0f);
+			ImGui::TableHeadersRow();
 			ImGui::TableNextRow();
 			ImGui::TableSetColumnIndex(0);
 			if (ImGui::Button("Pivot", ImVec2{ 0, 0 }))
 			{
-				LKLOG_TRACE("ADDED PIVOT");
 				// The pivot should be inside the object, e.g for a cube it is: side / 2
 				component.addPivotConstraint(glm::vec3(0.5f, 0.5f, 0.0f));
 			}
 			// Column 1
-			ImGui::TableSetColumnIndex(1);
+			// ImGui::TableSetColumnIndex(1);
 			if (ImGui::Button("Hinge", ImVec2{ 0, 0 }))
 			{
 				LKLOG_TRACE("ADDED HINGE");
 			}
+			ImGui::TableSetColumnIndex(1);
+			ImGui::Text("Total: %d", placedConstraints);
 
 			ImGui::EndTable();
 		}

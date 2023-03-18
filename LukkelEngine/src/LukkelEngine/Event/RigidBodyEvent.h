@@ -8,47 +8,24 @@
 
 namespace LukkelEngine {
 
-	enum ConstraintType
-	{
-		Null      = -1,
-		Generic   =  0,
-		Pivot     =  1,
-		Slider    =  2,
-		Spherical =  3,
-		Hinge     =  4,
-		ConeTwist =  5
-	};
 
 	class RigidBodyEvent : public Event
 	{
 	public:
-		ConstraintType getConstraintType() const { return m_ConstraintType; }
-		btTypedConstraint* getConstraint() const { return m_Constraint; }
+		btRigidBody* getRigidbody() const { return m_Rigidbody; }
 
 	protected:
-		btTypedConstraint* m_Constraint = nullptr;
-		ConstraintType m_ConstraintType = ConstraintType::Null;
+		btRigidBody* m_Rigidbody = nullptr;
 	};
 
-	class ConstraintAddedEvent : public RigidBodyEvent
+	class LinearVelocityModificationEvent : public RigidBodyEvent
 	{
 	public:
-		ConstraintAddedEvent(btTypedConstraint* constraint, ConstraintType constraintType)	
-		{
-			m_Constraint = constraint;
-			m_ConstraintType = constraintType;
-		}
+		LinearVelocityModificationEvent(btRigidBody* rigidbody, glm::vec3 newVelocity)
+			: m_LinearVelocity(newVelocity) { m_Rigidbody = rigidbody; }
 
-		EventType getEventType() const { return EventType::ConstraintAdded; }
-		const char* getName() const { return "ConstraintAddedEvent"; }
+	private:
+		glm::vec3 m_LinearVelocity{ 0.0f, 0.0f, 0.0f };
 	};
-
-	class ConstraintRemovedEvent : public RigidBodyEvent
-	{
-	public:
-		EventType getEventType() { return EventType::ConstraintRemoved; }
-		const char* getName() { return "ConstraintRemovedEvent"; }
-	};
-
 
 }

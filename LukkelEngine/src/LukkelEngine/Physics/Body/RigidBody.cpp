@@ -1,6 +1,8 @@
 #include "LKpch.h"
 #include "LukkelEngine/Physics/Body/RigidBody.h"
 #include "LukkelEngine/Physics/World.h"
+#include "LukkelEngine/Physics/Body/Constraints.h"
+#include "LukkelEngine/Event/ConstraintEvent.h"
 
 namespace LukkelEngine {
 
@@ -42,10 +44,8 @@ namespace LukkelEngine {
 		m_RigidBody->setCenterOfMassTransform(transform);
 	}
 
-
 	void RigidBody::setLinearVelocity(glm::vec3& linearVelocity)
 	{
-
 		m_LinearVelocity = { linearVelocity.x, linearVelocity.y, linearVelocity.z };
 		m_RigidBody->setLinearVelocity(m_LinearVelocity);
 	}
@@ -80,10 +80,11 @@ namespace LukkelEngine {
 	{
 		btVector3 p = { pivot.x, pivot.y, pivot.z };
 		btTypedConstraint* pivotConstraint = new btPoint2PointConstraint(*getRigidBody(), p);
-		//World::getCurrentWorld().registerEvent(new ConstraintAddedEvent(getRigidBody(), ConstraintType::Pivot));
-		World::getCurrentWorld().registerEvent(new ConstraintAddedEvent(pivotConstraint, ConstraintType::Pivot));
+		// The UUID from RigidBody which is synced with the parent Entity is automatically fetched inside the Constraint constructor
+		Constraint* constraint = new PivotConstraint(*this, pivot);
+		m_Constraints.push_back(constraint);
+		// TODO: Add macro for register event
+		World::getCurrentWorld().registerEvent(new ConstraintAddedEvent(m_ID, pivotConstraint, ConstraintType::Pivot));
 	}
-
-
 
 }

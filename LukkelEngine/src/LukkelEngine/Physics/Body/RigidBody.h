@@ -1,7 +1,7 @@
 #pragma once
 #include "LukkelEngine/Core/Base.h"
+#include "LukkelEngine/Core/UUID.h"
 #include "LukkelEngine/Physics/Body/MotionState.h"
-#include "LukkelEngine/Event/RigidBodyEvent.h"
 
 #include <glm/glm.hpp>
 #include <btBulletDynamicsCommon.h>
@@ -9,6 +9,8 @@
 
 
 namespace LukkelEngine {
+
+	class Constraint;
 
 	class RigidBody
 	{
@@ -40,9 +42,9 @@ namespace LukkelEngine {
 		RigidBody::Type getType() const { return m_Type; }
 
 		void moveBody(glm::vec3 translation);
-
-		// Create template for adding constraints
+		// Constraints
 		void addPivotConstraint(glm::vec3 pivot);
+		std::vector<Constraint*> getConstraints() { return m_Constraints; }
 
 		void setFriction(float f) { m_Friction = f; }
 		void setRestitution(float r) { m_Restitution= r; }
@@ -56,22 +58,24 @@ namespace LukkelEngine {
 		btVector3 m_LinearVelocity{ 0.0f, 0.0f, 0.0f };
 		btVector3 m_AngularVelocity{ 0.0f, 0.0f, 0.0f };
 
-		const uint64_t getID() const { return m_ID; }
-		void setID(uint64_t ID) { m_ID = ID; }
+		const UUID getID() const { return m_ID; }
+		void setID(UUID ID) { m_ID = ID; }
 		bool isAltered = false;
 
 	private:
 		btCollisionShape* m_Shape = nullptr;
 		btRigidBody* m_RigidBody = nullptr;
+		std::vector<Constraint*> m_Constraints;
 		MotionState* m_MotionState = nullptr;
 		Type m_Type = Type::STATIC;
-		uint64_t m_ID;
+		UUID m_ID;
 
 		float m_Mass = 1.0f;
 		float m_Friction = 1.0f;
 		float m_Restitution = 0.20f;
 
 		friend class RigidBodyFactory;
+		friend class Constraint;
 		friend class World;
 	};
 

@@ -4,8 +4,8 @@
 #include "LukkelEngine/Scene/Scene.h"
 #include "LukkelEngine/Scene/Entity.h"
 #include "LukkelEngine/Scene/Components.h"
-
 #include "LukkelEngine/Core/Application.h"
+#include "LukkelEngine/Event/ConstraintEvent.h"
 
 
 namespace LukkelEngine {
@@ -44,6 +44,21 @@ namespace LukkelEngine {
 					LKLOG_INFO("Event handled!");
 				}
 			}
+			if (event->getEventType() == EventType::ConstraintRemoved)
+			{
+				LKLOG_WARN("Handling event!");
+				ConstraintRemovedEvent* conRemoveEvent = static_cast<ConstraintRemovedEvent*>(event);
+				if (!(conRemoveEvent->handled))
+				{
+					m_DynamicWorld->removeConstraint(conRemoveEvent->getConstraint());
+					conRemoveEvent->handled = true;
+					m_HandledEvents.push_back(conRemoveEvent);
+					auto it = std::find(m_Events.begin(), m_Events.end(), conRemoveEvent);
+					m_Events.erase(it);
+					LKLOG_INFO("Event handled!");
+				}
+			}
+
 		}
 
 		if (!m_Paused)

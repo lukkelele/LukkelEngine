@@ -75,13 +75,12 @@ namespace LukkelEngine {
 		if (m_Camera->hasMouseMoved)
 			m_World->mouseMoveCallback(Mouse::getMouseX(), Mouse::getMouseY());
 
-		glm::mat4 viewProj = m_Camera->getViewProjection();
 
 		if (Mouse::isButtonPressed(MouseButton::Button0))
 			m_World->mouseButtonCallback(MouseButton::Button0, 1, Mouse::getMouseX(), Mouse::getMouseY());
 
+		glm::mat4 viewProj = m_Camera->getViewProjection();
 		auto entities = m_Registry.view<Mesh>();
-
 		for (auto& ent : entities)
 		{	
 			Entity entity = { ent, this };

@@ -1,6 +1,5 @@
 #pragma once
 #include "LukkelEngine/Core/Window.h"
-#include "LukkelEngine/Event/ApplicationEvent.h"
 
 namespace LukkelEngine {
 

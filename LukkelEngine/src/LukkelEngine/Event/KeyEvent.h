@@ -1,8 +1,8 @@
 #ifndef _KEY_EVENT_H
 #define _KEY_EVENT_H
-
 #include <LukkelEngine/Event/Event.h>
 #include <LukkelEngine/Input/Keycodes.h>
+
 
 namespace LukkelEngine {
 
@@ -10,7 +10,6 @@ namespace LukkelEngine {
 	{
 	public:
 		KeyCode getKeyCode() const { return m_KeyCode; }
-		EVENT_CLASS_CATEGORY(EventCategoryKeyboard | EventCategoryInput)
 
 	protected:
 		KeyEvent(const KeyCode keycode)
@@ -34,7 +33,6 @@ namespace LukkelEngine {
 			return ss.str();
 		}
 
-		EVENT_CLASS_TYPE(KeyPressed)
 	private:
 		bool m_IsRepeat;
 	};
@@ -52,7 +50,6 @@ namespace LukkelEngine {
 			return ss.str();
 		}
 
-		EVENT_CLASS_TYPE(KeyReleased)
 	};
 
 	class KeyTypedEvent : public KeyEvent
@@ -68,7 +65,6 @@ namespace LukkelEngine {
 			return ss.str();
 		}
 
-		EVENT_CLASS_TYPE(KeyTyped)
 	};
 
 }

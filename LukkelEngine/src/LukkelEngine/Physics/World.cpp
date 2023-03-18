@@ -12,6 +12,7 @@ namespace LukkelEngine {
 
 	PhysicsDebugger physicsDebugger;
 	uint64_t World::s_EntitiesInWorld;
+	World* World::m_CurrentWorld;
 
 	World::World()
 	{
@@ -26,14 +27,35 @@ namespace LukkelEngine {
 
 	void World::onUpdate(float ts)
 	{
-		// If not paused, simulate the world
+		// FIXME: Add proper event handling
+		for (auto& event : m_Events)
+		{
+			if (event->getEventType() == EventType::ConstraintAdded)
+			{
+				LKLOG_WARN("Handling event!");
+				ConstraintAddedEvent* conAddEvent = static_cast<ConstraintAddedEvent*>(event);
+				if (!(conAddEvent->handled))
+				{
+					m_DynamicWorld->addConstraint(conAddEvent->getConstraint());
+					conAddEvent->handled = true;
+					m_HandledEvents.push_back(conAddEvent);
+					auto it = std::find(m_Events.begin(), m_Events.end(), conAddEvent);
+					m_Events.erase(it);
+					LKLOG_INFO("Event handled!");
+				}
+			}
+		}
+
 		if (!m_Paused)
 		{
 			m_DynamicWorld->stepSimulation(ts);
 			m_DynamicWorld->updateAabbs();
 			m_DynamicWorld->computeOverlappingPairs();
 		}
-		// m_DynamicWorld->debugDrawWorld();
+	}
+
+	void World::onEvent(Event& event)
+	{
 	}
 
 	void World::initPhysics(Scene* scene)
@@ -49,6 +71,7 @@ namespace LukkelEngine {
 
 		physicsDebugger.setDebugMode(btIDebugDraw::DBG_DrawWireframe + btIDebugDraw::DBG_DrawContactPoints + btIDebugDraw::DBG_DrawAabb);
 		m_DynamicWorld->setDebugDrawer(&physicsDebugger);
+		m_CurrentWorld = this;
 	}
 
 	void World::shutdownPhysics()
@@ -117,6 +140,12 @@ namespace LukkelEngine {
 	void World::stepSimulation(float ts)
 	{
 		m_DynamicWorld->stepSimulation(ts);
+	}
+
+	void World::registerEvent(Event* event)
+	{
+		LKLOG_INFO("Registering event {0}", event->getName());
+		m_Events.push_back(event);
 	}
 
 	template<typename T>
@@ -283,7 +312,6 @@ namespace LukkelEngine {
 	void World::addConstraint(btTypedConstraint* constraint, btRigidBody* body)
 	{
 		m_DynamicWorld->addConstraint(constraint, true);
-		LKLOG_WARN("New constraint added!");
 	}
 
 
@@ -306,6 +334,12 @@ namespace LukkelEngine {
 				}
 			}
 		}
+	}
+
+	void World::addPivotConstraint(RigidBody& rigidbody, btVector3 pivot)
+	{
+		btTypedConstraint* constraint = new btPoint2PointConstraint(*rigidbody.getRigidBody(), pivot);
+		m_DynamicWorld->addConstraint(constraint);
 	}
 
 }

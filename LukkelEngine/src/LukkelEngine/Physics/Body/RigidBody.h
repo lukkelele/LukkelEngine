@@ -1,10 +1,11 @@
 #pragma once
 #include "LukkelEngine/Core/Base.h"
 #include "LukkelEngine/Physics/Body/MotionState.h"
+#include "LukkelEngine/Event/RigidBodyEvent.h"
 
-#include "glm/glm.hpp"
-#include "btBulletDynamicsCommon.h"
-#include "btBulletCollisionCommon.h"
+#include <glm/glm.hpp>
+#include <btBulletDynamicsCommon.h>
+#include <btBulletCollisionCommon.h>
 
 
 namespace LukkelEngine {
@@ -33,16 +34,16 @@ namespace LukkelEngine {
 		int getShapeType() { return m_RigidBody->getCollisionShape()->getShapeType(); }
 		std::pair<glm::vec3, glm::quat> getPosAndRotation();
 
-		const uint64_t getID() const { return m_ID; }
-		void setID(uint64_t ID) { m_ID = ID; }
-
 		btTransform getWorldTransform();
 		btRigidBody* getRigidBody() { return m_RigidBody; }
 		btCollisionShape* getCollisionShape() { return m_RigidBody->getCollisionShape(); }
 		RigidBody::Type getType() const { return m_Type; }
 
-
 		void moveBody(glm::vec3 translation);
+
+		// Create template for adding constraints
+		void addPivotConstraint(glm::vec3 pivot);
+
 		void setFriction(float f) { m_Friction = f; }
 		void setRestitution(float r) { m_Restitution= r; }
 		void setWorldTransform(glm::mat4& transform);
@@ -55,6 +56,8 @@ namespace LukkelEngine {
 		btVector3 m_LinearVelocity{ 0.0f, 0.0f, 0.0f };
 		btVector3 m_AngularVelocity{ 0.0f, 0.0f, 0.0f };
 
+		const uint64_t getID() const { return m_ID; }
+		void setID(uint64_t ID) { m_ID = ID; }
 		bool isAltered = false;
 
 	private:

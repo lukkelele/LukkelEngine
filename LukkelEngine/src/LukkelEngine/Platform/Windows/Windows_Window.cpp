@@ -65,8 +65,6 @@ namespace LukkelEngine {
 		glfwSetScrollCallback(m_Window, [](GLFWwindow* window, double x, double y)
 		{
 			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
-			MouseScrolledEvent event((float)x, (float)y);
-			data.eventCallback(event);
 		});
 
 		// setInputLock(true);

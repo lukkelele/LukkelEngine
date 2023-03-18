@@ -30,4 +30,9 @@ namespace LukkelEngine {
 		return rigidBody;
 	}
 
+	void RigidBodyFactory::addPivotConstraint(RigidBody& rigidbody, btVector3 pivot)
+	{
+		btTypedConstraint* p2p = new btPoint2PointConstraint(*rigidbody.getRigidBody(), pivot);
+	}
+
 }

@@ -23,9 +23,6 @@ namespace LukkelEngine {
 			glm::vec3 dimensions = rigidbody.getDimensions();
 
 			auto lv = rigidbody.getLinearVelocity();
-			Debugger::printVec3(pos, "Pos");
-			Debugger::printVec3(lv, "Linear velocity");
-			LKLOG_INFO("");
 
 			transformComponent.translation = pos;
 			transformComponent.rotation = rot;

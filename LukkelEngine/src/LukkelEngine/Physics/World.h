@@ -6,6 +6,7 @@
 #include "LukkelEngine/Renderer/Camera.h"
 #include "LukkelEngine/Renderer/Shader.h"
 #include "LukkelEngine/Scene/Entity.h"
+#include "LukkelEngine/Event/Event.h"
 
 #include <btBulletDynamicsCommon.h>
 #include <btBulletCollisionCommon.h>
@@ -41,6 +42,7 @@ namespace LukkelEngine {
 		~World();
 
 		void onUpdate(float ts);
+		void onEvent(Event& event);
 		void initPhysics(Scene* scene);
 		void shutdownPhysics();
 
@@ -55,20 +57,23 @@ namespace LukkelEngine {
 		void removePickConstraint();
 		void createCollisionObject(btCollisionObject* body);
 
-		// TODO: Add quaternion after translation
+		void addPivotConstraint(RigidBody& rigidbody, btVector3 pivot);
+
+		void registerEvent(Event* event); // { m_Events.push_back(event); };
 
 		bool mouseButtonCallback(int button, int state, float x, float y);
 		bool mouseMoveCallback(float x, float y);
 		bool movePickedBody(glm::vec3& rayFrom, glm::vec3& rayTo);
 		std::pair<glm::vec3, glm::vec3> raycast(const Camera& camera);
+		static World& getCurrentWorld() { return *m_CurrentWorld; }
 
 		static btVector3 screenToWorld(float mx, float my, glm::mat4 view, glm::mat4 projection);
 		void resetMousePick();
 
 		std::vector<btTypedConstraint*> constraints;
-		static uint64_t s_EntitiesInWorld;
-
 		void pause(bool paused) { m_Paused = paused; };
+
+		static uint64_t s_EntitiesInWorld;
 
 	private:
 		btDiscreteDynamicsWorld* m_DynamicWorld = nullptr;
@@ -87,9 +92,12 @@ namespace LukkelEngine {
 		btVector3 m_OldPickingPos;
 		btScalar m_OldPickingDist;
 		int m_SavedState;
-
+		
+		std::vector<Event*> m_Events;
+		std::vector<Event*> m_HandledEvents; // Redundant
 		bool m_ConstraintsEnabled = false;
 		bool m_Paused = false;
+		static World* m_CurrentWorld;
 
 		// TODO: Implement an application function to set this automatically and even without 
 		//		 them as members here. Should change on resize events

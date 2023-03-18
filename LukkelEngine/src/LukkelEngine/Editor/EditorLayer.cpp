@@ -72,11 +72,6 @@ namespace LukkelEngine {
 		}
 		ImGui::End();
 
-		if (ImGui::Button("World Physics", buttonSize))
-		{
-
-		}
-
 		ImGui::End(); // Editor Menu
 
 		if (m_SelectedEntity && m_GizmoType != -1)
@@ -183,8 +178,7 @@ namespace LukkelEngine {
 			float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
 			ImGui::Separator();
 			bool open = ImGui::TreeNodeEx((void*)typeid(T).hash_code(), treeNodeFlags, name.c_str());
-			ImGui::PopStyleVar(
-			);
+			ImGui::PopStyleVar();
 			ImGui::SameLine(contentRegionAvailable.x - lineHeight * 0.5f);
 
 			if (ImGui::Button("+", ImVec2{ lineHeight, lineHeight }))
@@ -197,7 +191,6 @@ namespace LukkelEngine {
 			{
 				if (ImGui::MenuItem("Remove component"))
 					removeComponent = true;
-
 				ImGui::EndPopup();
 			}
 
@@ -276,12 +269,41 @@ namespace LukkelEngine {
 		drawComponent<RigidBody>("Rigidbody", entity, [](auto& component)
 		{
 			glm::vec3 lv = component.getLinearVelocity();
-			UI::Property::Vector3Control("Linear Velocity", lv);
-			if (btVector3(lv.x, lv.y, lv.z) != component.m_LinearVelocity)
-				component.setLinearVelocity(lv);
+		UI::Property::Vector3Control("Linear Velocity", lv);
+		if (btVector3(lv.x, lv.y, lv.z) != component.m_LinearVelocity)
+			component.setLinearVelocity(lv);
 
-			if (ImGui::Checkbox("Use physics", &m_SelectedEntity.usePhysics))
-			{ }
+		if (ImGui::Checkbox("Use physics", &m_SelectedEntity.usePhysics)) {}
+
+		float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
+		ImGui::Separator();
+
+		// if (ImGui::Button("Add", ImVec2{ lineHeight, lineHeight }))
+		static ImGuiTableFlags constraintFlags = ImGuiTableFlags_SizingFixedFit | ImGuiTableFlags_RowBg 
+			| ImGuiTableFlags_Borders | ImGuiTableFlags_SizingStretchSame;
+
+		ImGui::Text("Constraints");
+		if (ImGui::BeginTable("Constraints", 2, constraintFlags))
+		{
+			// Column 0
+			ImGui::TableNextRow();
+			ImGui::TableSetColumnIndex(0);
+			if (ImGui::Button("Pivot", ImVec2{ 0, 0 }))
+			{
+				LKLOG_TRACE("ADDED PIVOT");
+				// The pivot should be inside the object, e.g for a cube it is: side / 2
+				component.addPivotConstraint(glm::vec3(0.5f, 0.5f, 0.0f));
+			}
+			// Column 1
+			ImGui::TableSetColumnIndex(1);
+			if (ImGui::Button("Hinge", ImVec2{ 0, 0 }))
+			{
+				LKLOG_TRACE("ADDED HINGE");
+			}
+
+			ImGui::EndTable();
+		}
+
 
 		});
 

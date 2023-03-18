@@ -12,7 +12,6 @@
 
 #include "LukkelEngine/Scene/Scene.h"
 #include "LukkelEngine/Event/Event.h"
-#include "LukkelEngine/Event/ApplicationEvent.h"
 
 
 namespace LukkelEngine {
@@ -54,8 +53,8 @@ namespace LukkelEngine {
 		void pushOverlay(Layer* layer);
 		void popOverlay(Layer* layer);
 
-		bool onWindowClose(WindowCloseEvent& e);
-		bool onWindowResize(WindowResizeEvent& e);
+		// bool onWindowClose(WindowCloseEvent& e);
+		// bool onWindowResize(WindowResizeEvent& e);
 		void resizeWindow(uint16_t width, uint16_t height);
 
 		static Application& get() { return *s_Instance; }

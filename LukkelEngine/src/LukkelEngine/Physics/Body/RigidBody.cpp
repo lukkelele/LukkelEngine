@@ -61,7 +61,9 @@ namespace LukkelEngine {
 			return m_RigidBody->getWorldTransform();
 		}
 		else
+		{
 			LKLOG_CRITICAL("getWorldTransform() -> rigidbody doesn't exist");
+		}
 	}
 
 	std::pair<glm::vec3, glm::quat> RigidBody::getPosAndRotation()
@@ -73,4 +75,15 @@ namespace LukkelEngine {
 		glm::mat4 rot = glm::mat4_cast(glm::quat(rotation.getW(), rotation.getX(), rotation.getY(), rotation.getZ()));
 		return std::make_pair(pos, rot);
 	}
+
+	void RigidBody::addPivotConstraint(glm::vec3 pivot)
+	{
+		btVector3 p = { pivot.x, pivot.y, pivot.z };
+		btTypedConstraint* pivotConstraint = new btPoint2PointConstraint(*getRigidBody(), p);
+		//World::getCurrentWorld().registerEvent(new ConstraintAddedEvent(getRigidBody(), ConstraintType::Pivot));
+		World::getCurrentWorld().registerEvent(new ConstraintAddedEvent(pivotConstraint, ConstraintType::Pivot));
+	}
+
+
+
 }

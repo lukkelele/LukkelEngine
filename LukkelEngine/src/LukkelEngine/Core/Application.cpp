@@ -56,7 +56,6 @@ namespace LukkelEngine {
 		}
 		m_ImGuiLayer->endFrame();
 
-
 		m_Window->onUpdate();
 	}
 
@@ -86,30 +85,9 @@ namespace LukkelEngine {
 		layer->onDetach();
 	}
 
-	bool Application::onWindowClose(WindowCloseEvent& e)
-	{
-		LKLOG_INFO("WINDOW CLOSE EVENT");
-		m_Running = false;
-		return true;
-	}
-
-	bool Application::onWindowResize(WindowResizeEvent& e)
-	{
-		LKLOG_INFO("WINDOW RESIZE EVENT");
-		if (e.getWidth() == 0 || e.getHeight() == 0) {
-			m_Minimized = true;
-			return false;
-		}
-		m_Minimized = false;
-		glViewport(0, 0, e.getWidth(), e.getHeight());
-		return false;
-	}
-
 	void Application::onEvent(Event& e)
 	{
 		EventDispatcher ed(e);
-		ed.dispatch<WindowCloseEvent>(LK_BIND_EVENT_FN(onWindowClose));
-		ed.dispatch<WindowResizeEvent>(LK_BIND_EVENT_FN(onWindowResize));
 		/* Handle events */
 		for (auto it = m_LayerStack.rbegin(); it != m_LayerStack.rend(); ++it)
 		{

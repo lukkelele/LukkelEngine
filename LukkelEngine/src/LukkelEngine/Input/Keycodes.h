@@ -3,10 +3,9 @@
 #include <stdint.h>
 
 namespace LukkelEngine {
-
 	using KeyCode = uint16_t;
-	namespace Key
-	{
+
+	namespace Key {
 		enum : KeyCode
 		{
 			Space = 32,

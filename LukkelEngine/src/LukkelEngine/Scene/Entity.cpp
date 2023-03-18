@@ -13,10 +13,10 @@ namespace LukkelEngine {
 	void Entity::onUpdate(float ts, glm::mat4 viewProj)
 	{
 		// Get updates from rigidbody
-		if (hasComponent<RigidBody>())
+		if (hasComponent<Rigidbody>())
 		{
 			// if the entity has a rigidbody, sync the body with the transform component
-			RigidBody& rigidbody = getComponent<RigidBody>();
+			Rigidbody& rigidbody = getComponent<Rigidbody>();
 			TransformComponent& transformComponent = getComponent<TransformComponent>();
 
 			auto [pos, rot] = rigidbody.getPosAndRotation();

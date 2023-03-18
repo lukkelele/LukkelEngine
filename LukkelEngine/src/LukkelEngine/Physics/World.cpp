@@ -146,20 +146,20 @@ namespace LukkelEngine {
 	}
 
 	template<typename T>
-	void World::addRigidBodyToWorld(T& rigidbody)
+	void World::addRigidbodyToWorld(T& rigidbody)
 	{ 
 	}
 		template<>
-		void World::addRigidBodyToWorld<btRigidBody*>(btRigidBody*& rigidbody)
+		void World::addRigidbodyToWorld<btRigidBody*>(btRigidBody*& rigidbody)
 		{
 			m_DynamicWorld->addRigidBody(rigidbody);
 			s_EntitiesInWorld++;
 		}
 
 		template<>
-		void World::addRigidBodyToWorld<RigidBody>(RigidBody& rigidbody)
+		void World::addRigidbodyToWorld<Rigidbody>(Rigidbody& rigidbody)
 		{
-			m_DynamicWorld->addRigidBody(rigidbody.getRigidBody());
+			m_DynamicWorld->addRigidBody(rigidbody.getRigidbody());
 			s_EntitiesInWorld++;
 		}
 
@@ -342,9 +342,9 @@ namespace LukkelEngine {
 		}
 	}
 
-	void World::addPivotConstraint(RigidBody& rigidbody, btVector3 pivot)
+	void World::addPivotConstraint(Rigidbody& rigidbody, btVector3 pivot)
 	{
-		btTypedConstraint* constraint = new btPoint2PointConstraint(*rigidbody.getRigidBody(), pivot);
+		btTypedConstraint* constraint = new btPoint2PointConstraint(*rigidbody.getRigidbody(), pivot);
 		m_DynamicWorld->addConstraint(constraint);
 	}
 

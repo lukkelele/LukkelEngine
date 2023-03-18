@@ -119,7 +119,6 @@ namespace LukkelEngine {
 	{
 		// static assert	
 	}
-
 		template<>
 		void Scene::onComponentAdded<Mesh>(Entity entity, Mesh& mesh)
 		{
@@ -127,10 +126,10 @@ namespace LukkelEngine {
 		}
 
 		template<>
-		void Scene::onComponentAdded<RigidBody>(Entity entity, RigidBody& rigidbody)
+		void Scene::onComponentAdded<Rigidbody>(Entity entity, Rigidbody& rigidbody)
 		{
-			m_World->addRigidBodyToWorld(rigidbody);
-			LKLOG_INFO("{0} : RigidBodyComponent added!", entity.getName());
+			m_World->addRigidbodyToWorld(rigidbody);
+			LKLOG_INFO("{0} : RigidbodyComponent added!", entity.getName());
 		}
 
 		template<>

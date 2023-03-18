@@ -1,11 +1,12 @@
 #pragma once
-#include "LukkelEngine/Physics/Body/RigidBody.h"
+#include "LukkelEngine/Physics/Body/Rigidbody.h"
 #include "LukkelEngine/Physics/Body/Constraints.h"
 
 #include <imgui/imgui.h>
 #include <imgui/imgui_impl_glfw.h>
 #include <imgui/imgui_impl_opengl3.h>
 #include <imgui/imgui_internal.h>
+#include <format>
 
 
 namespace LukkelEngine::UI {
@@ -46,7 +47,7 @@ namespace LukkelEngine::UI {
 	}
 
 
-	static void ConstraintsMenu(RigidBody& rigidbody)
+	static void ConstraintsMenu(Rigidbody& rigidbody)
 	{
 		float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
 		ImGui::Separator();
@@ -59,31 +60,39 @@ namespace LukkelEngine::UI {
 		if (ImGui::BeginTable("Constraints", 2, constraintFlags))
 		{
 			// Column 0
-			uint8_t placedConstraints = rigidbody.getConstraints().size();
+			auto constraints = rigidbody.getConstraints();
+			uint16_t placedConstraints = constraints.size();
+
 			ImGui::TableSetupColumn("Add", ImGuiTableColumnFlags_WidthFixed, 100.0f);
-			ImGui::TableSetupColumn("Placed", ImGuiTableColumnFlags_WidthFixed, 100.0f);
+			ImGui::TableSetupColumn("Placed", ImGuiTableColumnFlags_WidthFixed, 216.0f);
 			ImGui::TableHeadersRow();
 			ImGui::TableNextRow();
 			ImGui::TableSetColumnIndex(0);
+			// Buttons for different types of constraints
 			if (ImGui::Button("Pivot", ImVec2{ 0, 0 }))
 			{
 				rigidbody.addPivotConstraint(glm::vec3(0.5f, 0.5f, 0.0f));
 			}
-			// Column 1
-			// ImGui::TableSetColumnIndex(1);
 			if (ImGui::Button("Hinge", ImVec2{ 0, 0 }))
 			{
 				LKLOG_TRACE("Clicked HINGE button");
 			}
 
+			// Column 1
 			// Placed Constraints
 			ImGui::TableSetColumnIndex(1);
 			ImGui::Text("Total: %d", placedConstraints);
-			if (ImGui::Button("Remove constraint", ImVec2{ 0, 0 }))
+
+			uint8_t idx = 0;
+			for (auto& constraint : constraints)
 			{
-				// The pivot should be inside the object, e.g for a cube it is: side / 2
-				rigidbody.removeConstraint(ConstraintType::Pivot);
+				char sbuf[40];
+				sprintf(sbuf, "DELETE %s ##%d", constraint->getName(), idx);
+				if (ImGui::Button(sbuf, ImVec2{ 0, 0 }))
+					rigidbody.removeConstraint(constraint);
+				idx++;
 			}
+
 			ImGui::EndTable();
 		}
 

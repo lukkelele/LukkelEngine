@@ -1,7 +1,7 @@
 #include "LKpch.h"
 #include "LukkelEngine/Scene/EntityFactory.h"
 #include "LukkelEngine/Renderer/MeshFactory.h"
-#include "LukkelEngine/Physics/Body/RigidBodyFactory.h"
+#include "LukkelEngine/Physics/Body/RigidbodyFactory.h"
 #include "LukkelEngine/Physics/World.h"
 
 
@@ -18,15 +18,15 @@ namespace LukkelEngine {
 
 		UUID& entityID = entity.getUUID();
 		Mesh& mesh = MeshFactory::createBox(props.dimensions);
-		// RigidBody& rigidbody = RigidBodyFactory::createRigidBody(props.dimensions, props.offset, 
+		// Rigidbody& rigidbody = RigidbodyFactory::createRigidbody(props.dimensions, props.offset, 
 		// 							props.mass, props.bodytype, friction, restitution, inertia);
-		RigidBody& rigidbody = RigidBodyFactory::createRigidBody(entityID, props.dimensions, props.offset, 
+		Rigidbody& rigidbody = RigidbodyFactory::createRigidbody(entityID, props.dimensions, props.offset, 
 									props.mass, props.bodytype, friction, restitution, inertia);
 		Material material;
 		material.setMaterialColor(props.color);
 
 		entity.addComponent<Mesh>(mesh);
-		entity.addComponent<RigidBody>(rigidbody);
+		entity.addComponent<Rigidbody>(rigidbody);
 		entity.addComponent<Material>(material);
 		entity.addComponent<TransformComponent>();
 	}

@@ -3,7 +3,7 @@
 #include "LukkelEngine/Core/Base.h"
 #include "LukkelEngine/Core/UUID.h"
 #include "LukkelEngine/Debug/Debugger.h"
-#include "LukkelEngine/Physics/Body/RigidBody.h"
+#include "LukkelEngine/Physics/Body/Rigidbody.h"
 #include "LukkelEngine/Physics/Body/MotionState.h"
 
 #include <glm/glm.hpp>
@@ -13,21 +13,21 @@
 
 namespace LukkelEngine {
 
-	class RigidBodyFactory
+	class RigidbodyFactory
 	{
 	public:
-		RigidBodyFactory();
-		~RigidBodyFactory() = default;
+		RigidbodyFactory();
+		~RigidbodyFactory() = default;
 		
-		static RigidBody createRigidBody(glm::vec3 dimensions, glm::vec3 offset, float mass,
-										  RigidBody::Type bodyType, float friction = 0.90f,
+		static Rigidbody createRigidbody(glm::vec3 dimensions, glm::vec3 offset, float mass,
+										  Rigidbody::Type bodyType, float friction = 0.90f,
 										  float restitution = 0.30f, glm::vec3 inertia = glm::vec3(0.0f, 0.0f, 0.0f));
 
-		static RigidBody createRigidBody(UUID id, glm::vec3 dimensions, glm::vec3 offset, float mass,
-										  RigidBody::Type bodyType, float friction = 0.90f,
+		static Rigidbody createRigidbody(UUID id, glm::vec3 dimensions, glm::vec3 offset, float mass,
+										  Rigidbody::Type bodyType, float friction = 0.90f,
 										  float restitution = 0.30f, glm::vec3 inertia = glm::vec3(0.0f, 0.0f, 0.0f));
 
-		static void addPivotConstraint(RigidBody& rigidbody, btVector3 pivot);
+		static void addPivotConstraint(Rigidbody& rigidbody, btVector3 pivot);
 	};
 
 }

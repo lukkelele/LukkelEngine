@@ -22,13 +22,15 @@ namespace LukkelEngine {
 	public:
 		virtual ~Constraint() = default;
 
+		virtual const char* getName() { return "Constraint"; };
+
 		btTypedConstraint* getConstraint() const { return m_Constraint; }
 		ConstraintType getConstraintType() const { return m_ConstraintType; }
-		RigidBody& getRigidBody() { return m_RigidBody; }
-		UUID getID() const { return m_RigidBody.getID(); }
+		Rigidbody& getRigidbody() { return m_Rigidbody; }
+		UUID getID() const { return m_Rigidbody.getID(); }
 
 	protected:
-		RigidBody m_RigidBody;
+		Rigidbody m_Rigidbody;
 		btTypedConstraint* m_Constraint = nullptr;
 		ConstraintType m_ConstraintType = Null;
 	};
@@ -37,22 +39,29 @@ namespace LukkelEngine {
 	class PivotConstraint : public Constraint
 	{
 	public:
-		PivotConstraint(RigidBody& rigidbody, glm::vec3 pivot)
+		PivotConstraint(Rigidbody& rigidbody, glm::vec3 pivot)
 			: m_Pivot(pivot)
 		{
 			btVector3 p(pivot.x, pivot.y, pivot.z);
-			m_RigidBody = rigidbody;
-			m_Constraint = new btPoint2PointConstraint(*m_RigidBody.getRigidBody(), p);
+			m_Rigidbody = rigidbody;
+			m_Constraint = new btPoint2PointConstraint(*m_Rigidbody.getRigidbody(), p);
 			m_ConstraintType = ConstraintType::Pivot;
 		}
+		~PivotConstraint() { delete m_Constraint; }
 
-		~PivotConstraint()
-		{
-			delete m_Constraint;
-		}
+		const char* getName() override { return "Pivot"; }
 
 	private:
 		glm::vec3 m_Pivot{0.0f, 0.0f, 0.0f};
+	};
+
+	class Dof6Constraint : public Constraint
+	{
+		Dof6Constraint(Rigidbody& rigidbody)
+		{
+		}
+
+		const char* getName() override { return "Dof6"; }
 	};
 
 }

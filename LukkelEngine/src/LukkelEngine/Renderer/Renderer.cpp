@@ -133,7 +133,7 @@ namespace LukkelEngine {
 
 	void Renderer::drawShape(Entity& entity)
 	{
-		auto body = entity.getComponent<RigidBody>();
+		auto body = entity.getComponent<Rigidbody>();
 		auto shape = body.getCollisionShape();
 		auto shapeType = body.getShapeType();
 		// Box 

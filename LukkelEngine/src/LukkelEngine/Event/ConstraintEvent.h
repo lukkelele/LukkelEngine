@@ -69,11 +69,11 @@ namespace LukkelEngine {
 		{
 			auto& world = World::getCurrentWorld();
 			auto& constraint = getConstraint();
-			auto& rb = constraint.getRigidBody();
+			auto& rb = constraint.getRigidbody();
 			world.removeConstraint(constraint);
 
-			rb.getRigidBody()->forceActivationState(DISABLE_DEACTIVATION);
-			rb.getRigidBody()->setDeactivationTime(0.0f);
+			rb.getRigidbody()->forceActivationState(DISABLE_DEACTIVATION);
+			rb.getRigidbody()->setDeactivationTime(0.0f);
 
 			return true;
 		}

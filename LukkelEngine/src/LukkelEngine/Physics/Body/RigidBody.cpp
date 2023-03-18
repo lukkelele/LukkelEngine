@@ -1,5 +1,5 @@
 #include "LKpch.h"
-#include "LukkelEngine/Physics/Body/RigidBody.h"
+#include "LukkelEngine/Physics/Body/Rigidbody.h"
 #include "LukkelEngine/Physics/World.h"
 #include "LukkelEngine/Physics/Body/Constraints.h"
 #include "LukkelEngine/Event/ConstraintEvent.h"
@@ -7,8 +7,8 @@
 namespace LukkelEngine {
 
 
-	RigidBody::RigidBody(glm::vec3 dimensions, glm::vec3 offset, float mass,
-				  RigidBody::Type bodyType, float friction, float restitution, glm::vec3 inertia)
+	Rigidbody::Rigidbody(glm::vec3 dimensions, glm::vec3 offset, float mass,
+				  Rigidbody::Type bodyType, float friction, float restitution, glm::vec3 inertia)
 	{
 		btVector3 dims{ dimensions.x, dimensions.y, dimensions.z };
 		btVector3 off{ offset.x, offset.y, offset.z };
@@ -23,42 +23,42 @@ namespace LukkelEngine {
 		m_Shape->calculateLocalInertia(m_Mass, m_Inertia);
 		btRigidBody::btRigidBodyConstructionInfo boxBodyConstructionInfo(mass, m_MotionState, m_Shape, m_Inertia);
 
-		m_RigidBody = new btRigidBody(boxBodyConstructionInfo);
-		m_RigidBody->setFriction(m_Friction);
-		m_RigidBody->setRestitution(m_Restitution);
-		m_RigidBody->forceActivationState(DISABLE_DEACTIVATION);
+		m_Rigidbody = new btRigidBody(boxBodyConstructionInfo);
+		m_Rigidbody->setFriction(m_Friction);
+		m_Rigidbody->setRestitution(m_Restitution);
+		m_Rigidbody->forceActivationState(DISABLE_DEACTIVATION);
 	}
 
-	void RigidBody::onUpdate(float ts)
+	void Rigidbody::onUpdate(float ts)
 	{
 	}
 
-	void RigidBody::moveBody(glm::vec3 translation)
+	void Rigidbody::moveBody(glm::vec3 translation)
 	{
 		m_Position = {translation.x, translation.y, translation.z};
 		btTransform transform;
-		btMotionState* motionState = m_RigidBody->getMotionState();
+		btMotionState* motionState = m_Rigidbody->getMotionState();
 		motionState->getWorldTransform(transform);
 		transform.setOrigin(m_Position);
 		motionState->setWorldTransform(transform);
-		m_RigidBody->setCenterOfMassTransform(transform);
+		m_Rigidbody->setCenterOfMassTransform(transform);
 	}
 
-	void RigidBody::setLinearVelocity(glm::vec3& linearVelocity)
+	void Rigidbody::setLinearVelocity(glm::vec3& linearVelocity)
 	{
 		m_LinearVelocity = { linearVelocity.x, linearVelocity.y, linearVelocity.z };
-		m_RigidBody->setLinearVelocity(m_LinearVelocity);
+		m_Rigidbody->setLinearVelocity(m_LinearVelocity);
 	}
 
-	void RigidBody::setWorldTransform(glm::mat4& transform)
+	void Rigidbody::setWorldTransform(glm::mat4& transform)
 	{
 	}
 
-	btTransform RigidBody::getWorldTransform()
+	btTransform Rigidbody::getWorldTransform()
 	{ 
-		if (m_RigidBody)
+		if (m_Rigidbody)
 		{
-			return m_RigidBody->getWorldTransform();
+			return m_Rigidbody->getWorldTransform();
 		}
 		else
 		{
@@ -66,7 +66,7 @@ namespace LukkelEngine {
 		}
 	}
 
-	std::pair<glm::vec3, glm::quat> RigidBody::getPosAndRotation()
+	std::pair<glm::vec3, glm::quat> Rigidbody::getPosAndRotation()
 	{		
 		btTransform transform = getWorldTransform();
 		btVector3 position = transform.getOrigin();
@@ -76,7 +76,7 @@ namespace LukkelEngine {
 		return std::make_pair(pos, rot);
 	}
 
-	void RigidBody::addPivotConstraint(glm::vec3 pivot)
+	void Rigidbody::addPivotConstraint(glm::vec3 pivot)
 	{
 		btVector3 p = { pivot.x, pivot.y, pivot.z };
 		Constraint* constraint = new PivotConstraint(*this, pivot);
@@ -84,18 +84,47 @@ namespace LukkelEngine {
 		LK_WORLD_REGISTER_EVENT(new ConstraintAddedEvent(*constraint));
 	}
 
-	void RigidBody::removeConstraint(ConstraintType type)
+	// void Rigidbody::removeConstraint(ConstraintType type)
+	// {
+	// 	for (auto& constraint : m_Constraints)
+	// 	{
+	// 		// If the constraint type matches, remove the constraint
+	// 		if (constraint->getConstraintType() == type)
+	// 		{
+	// 			auto it = std::find(m_Constraints.begin(), m_Constraints.end(), constraint);
+	// 			LK_WORLD_REGISTER_EVENT(new ConstraintRemovedEvent(*constraint));
+	// 			m_Constraints.erase(it);
+	// 		}
+	//	}
+	// }
+
+	template<typename T>
+	void Rigidbody::removeConstraint(T constraint)
 	{
-		for (auto& constraint : m_Constraints)
+	}
+		template<>
+		void Rigidbody::removeConstraint(Constraint* constraint)
 		{
-			// If the constraint type matches, remove the constraint
-			if (constraint->getConstraintType() == type)
+			auto it = std::find(m_Constraints.begin(), m_Constraints.end(), constraint);
+			LK_WORLD_REGISTER_EVENT(new ConstraintRemovedEvent(*constraint));
+			m_Constraints.erase(it);
+		}
+
+		template<>
+		void Rigidbody::removeConstraint(ConstraintType type)
+		{
+			for (auto& constraint : m_Constraints)
 			{
-				auto it = std::find(m_Constraints.begin(), m_Constraints.end(), constraint);
-				LK_WORLD_REGISTER_EVENT(new ConstraintRemovedEvent(*constraint));
-				m_Constraints.erase(it);
+				// If the constraint type matches, remove the constraint
+				if (constraint->getConstraintType() == type)
+				{
+					auto it = std::find(m_Constraints.begin(), m_Constraints.end(), constraint);
+					LK_WORLD_REGISTER_EVENT(new ConstraintRemovedEvent(*constraint));
+					m_Constraints.erase(it);
+				}
 			}
 		}
-	}
+
+
 
 }

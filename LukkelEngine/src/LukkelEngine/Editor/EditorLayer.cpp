@@ -92,7 +92,7 @@ namespace LukkelEngine {
 			glm::mat4 cameraProj = camera->getProjection();
 
 			TransformComponent& tc = m_SelectedEntity.getComponent<TransformComponent>();
-			RigidBody& rb = m_SelectedEntity.getComponent<RigidBody>();
+			Rigidbody& rb = m_SelectedEntity.getComponent<Rigidbody>();
 			glm::mat4 transform = tc.getTransform();
 
 			ImGuizmo::Manipulate(glm::value_ptr(cameraView), glm::value_ptr(cameraProj), 
@@ -242,7 +242,7 @@ namespace LukkelEngine {
 		if (ImGui::BeginPopup("AddComponent"))
 		{
 			displayAddComponentEntry<Mesh>("Mesh");
-			displayAddComponentEntry<RigidBody>("Rigidbody");
+			displayAddComponentEntry<Rigidbody>("Rigidbody");
 			displayAddComponentEntry<Material>("Material");
 			ImGui::EndPopup();
 		}
@@ -267,7 +267,7 @@ namespace LukkelEngine {
 		});
 
 		// TODO: Selected entities shall have their (if body exists) body put under a constraint
-		drawComponent<RigidBody>("Rigidbody", entity, [](auto& component)
+		drawComponent<Rigidbody>("Rigidbody", entity, [](auto& component)
 		{
 			glm::vec3 lv = component.getLinearVelocity();
 			UI::Property::Vector3Control("Linear Velocity", lv);

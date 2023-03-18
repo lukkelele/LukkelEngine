@@ -50,7 +50,7 @@ namespace LukkelEngine {
 		void stepSimulation(float ts);
 		bool pickBody(const Camera& camera, float distance);
 		template<typename T>
-		void addRigidBodyToWorld(T& rigidbody);
+		void addRigidbodyToWorld(T& rigidbody);
 
 		void addConstraint(btTypedConstraint* constraint, btRigidBody* body);
 		void addConstraint(Constraint& constraint);
@@ -59,7 +59,7 @@ namespace LukkelEngine {
 		void createPickingConstraint(Entity& entity);
 		void removePickConstraint();
 		void createCollisionObject(btCollisionObject* body);
-		void addPivotConstraint(RigidBody& rigidbody, btVector3 pivot);
+		void addPivotConstraint(Rigidbody& rigidbody, btVector3 pivot);
 
 		void registerEvent(Event* event);
 		void handleEvents();

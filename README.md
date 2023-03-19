@@ -28,51 +28,52 @@ and let me tell you, the current implementation surely does **NOT** care about p
 ## Implementation
 <!-- Checklist -->
 :black_square_button: Functionality to load object files<br>
+:black_square_button: Ortographic camera for 2D <br>
 :white_check_mark: 3D Camera with mouse input (interactive first person camera)<br>
 :white_check_mark: Physics (not fully)<br>
-:black_square_button: Manipulation of in world objects (rigid bodies)<br>
-:white_check_mark: Raycasting (I've achieved hit detection)<br>
-:black_square_button: Realtime changes of shaders/textures and manipulation of them<br>
-:black_square_button: Collision system<br>
-
-## Todo
+:white_check_mark: Manipulation of in world objects (rigid bodies)<br>
+:white_check_mark: Raycasting <br>
+:black_square_button: Hot reloading of shaders/textures and manipulation of them during runtime<br>
+:white_check_mark: Collision system<br>
+:white_check_mark: Rigidbody constraints <br>
+:black_square_button: Rigidbody skeleton <br>
+:black_square_button: Base models for interacting with world (player models, projectiles) <br>
 :black_square_button: Objects ready for spawning (e.g cubes, ground objects, spheres)<br>
-:white_check_mark: ImGui menues for individual objects<br>
-:black_square_button: Mesh and body factories<br>
-:black_square_button: Separate files for collision detection/raycasting and other form of in-world interactions<br>
-:black_square_button: Settings menu (mouse sensitivity, camera speed etc..)<br>
-### Upcoming implementations
-:white_check_mark: Template objects ready for spawning (e.g cubes, ground objects, spheres)<br>
-:white_check_mark: Settings menu (mouse sensitivity, camera speed etc..) :custom_arrow_right: more incoming<br>
 :black_square_button: Change name of namespace (not sure yet :custom_arrow_right: LK, LE, LKE, LKEN, etc...)<br>
-:black_square_button: Camera interface to separate the camera system to 2D and 3D<br>
-
-### Needs fixing
-:black_square_button: Memory leak at entity resets from inspector menu<br>
-
-### Might/might not do
-:black_square_button: Vector and matrix classes to abstract **Bullet3** from **GLM**<br>
 
 ---
 ## Engine design
 ### Application
 Main application.<br>
 
-### LukkeLallish (Sandbox)
-Inherits from **Application** and is the current runtime of the engine.
-
-### Renderer
-Abstracted OpenGL to create an API that is way more clean than raw OpenGL calls.<br>
-To be honest, the way that OpenGL works with its context and states is kind of hard to get a grasp on.
-My goal is to have a solid API that takes care of the raw OpenGL without me being forced to use it directly.  
-There are early benchmarks in **Quake 3** that show a quite significant increase in performance for just skipping the 
-state checks that **OpenGL** uses.
-Modern OpenGL is better of course but I'm currently running
-**OpenGL 3.3** so I'll reduce my use of states just as a precaution.
+### LukkeLallish
+Inherits from **Application** and is the current runtime of the engine. It is technically not the 'Sandbox'
+but I do use it as such for now.<br>
+The word *'Lallish'* is a swedish slang for not being serious or playing around. I named it this because I use **LukkeLallish** for 
+testing and playing around with newly added tools and engine implementations.
 
 ---
 
 ## Screenshots
+
+### March 19, 2023
+Improved the UI, added constraints and updated the event handling. I was in dire need to use an event system as the 
+world physics cant really function without it. 
+
+<div align="center">
+	<img align="center" src="/doc/img/lukkelengine-03-19-3.png" width=740 height=440>
+<p align="center">The cyan cube has a pivot constraint that can be added and removed with the UI (constraints menu to the left)</p>
+</div>
+
+<div align="center">
+	<img align="center" src="/doc/img/lukkelengine-03-19-2.png" width=740 height=440>
+<p align="center"></p>
+</div>
+
+<div align="center">
+	<img align="center" src="/doc/img/lukkelengine-03-19-1.png" width=740 height=440>
+<p align="center">Colliding objects are set to the color black whenever a valid detection takes place</p>
+</div>
 
 ### March 12, 2023
 

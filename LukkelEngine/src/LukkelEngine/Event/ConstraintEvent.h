@@ -46,6 +46,7 @@ namespace LukkelEngine {
 		{
 			auto& world = World::getCurrentWorld();
 			world.addConstraint(getConstraint());
+
 			return true;
 		}
 	};

@@ -9,7 +9,7 @@ namespace LukkelEngine {
 	{
 	}
 
-	Rigidbody RigidbodyFactory::createRigidbody(glm::vec3 dimensions, glm::vec3 offset, float mass, Rigidbody::Type bodyType,
+	Rigidbody RigidbodyFactory::createRigidbody(glm::vec3 dimensions, glm::vec3 offset, float mass, Rigidbody::RigidbodyType bodyType,
 												float friction, float restitution, glm::vec3 inertia)
 	{
 		int id = LK_WORLD_ENTITY_COUNT; // Incrementing ID for each present Entity
@@ -18,7 +18,7 @@ namespace LukkelEngine {
 		return rigidBody;
 	}
 
-	Rigidbody RigidbodyFactory::createRigidbody(UUID id, glm::vec3 dimensions, glm::vec3 offset, float mass, Rigidbody::Type bodyType,
+	Rigidbody RigidbodyFactory::createRigidbody(UUID id, glm::vec3 dimensions, glm::vec3 offset, float mass, Rigidbody::RigidbodyType bodyType,
 												float friction, float restitution, glm::vec3 inertia)
 	{
 		Rigidbody rigidBody(dimensions, offset, mass, bodyType, friction, restitution, inertia);

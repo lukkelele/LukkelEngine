@@ -25,6 +25,20 @@ namespace LukkelEngine {
 		m_Texture = create_s_ptr<Texture>(texturePath);
 	}
 
+	void Material::setMaterialColor(glm::vec4 color)
+	{
+		if (color != m_Color)
+		{
+			m_CacheColor = m_Color;
+			m_Color = color;
+		}
+	}
+
+	void Material::setLastMaterialColor()
+	{
+		m_Color = m_CacheColor;
+	}
+
 	void Material::bind()
 	{
 		if (m_Shader) m_Shader->bind();

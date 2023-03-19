@@ -13,14 +13,14 @@ namespace LukkelEngine {
 		glm::vec3 dimensions;
 		glm::vec3 offset;
 		float mass;
-		Rigidbody::Type bodytype;
+		Rigidbody::RigidbodyType bodytype;
 		glm::vec4 color;
 
 		EntityProperties(const std::string& entityName = "Entity",
 			glm::vec3 dims = glm::vec3(1.0f, 1.0f, 1.0f),
 			glm::vec3 off = glm::vec3(0.0f, 0.0f, 0.0f),
 			float mass = 1.0f,
-			Rigidbody::Type bodyType = Rigidbody::Type::STATIC,
+			Rigidbody::RigidbodyType bodyType = Rigidbody::RigidbodyType::STATIC,
 			glm::vec4 color = Color::White)
 			: name(entityName), dimensions(dims), offset(off),
 			  mass(mass), bodytype(bodyType), color(color) 

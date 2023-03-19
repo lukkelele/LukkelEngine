@@ -13,6 +13,7 @@ namespace LukkelEngine {
 		// Physics
 		ConstraintAdded, ConstraintRemoved, ConstraintAltered,
 		RigidbodyAdded, RigidbodyRemoved, RigidbodyAltered,
+		Collision, Separation
 	};
 
 	class Event

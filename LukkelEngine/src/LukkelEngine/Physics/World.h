@@ -24,9 +24,9 @@
 #define LK_WORLD_GRAVITY_SLOWER  btVector3(0.0f, -1.5f, 0.0f)
 #define LK_WORLD_GRAVITY_SLOWEST btVector3(0.0f, -0.5f, 0.0f)
 #define LK_WORLD_GRAVITY_FAST    btVector3(0.0f, -18.0f, 0.0f)
-
 #define LK_WORLD_REGISTER_EVENT(x) World::getCurrentWorld().registerEvent(x)
 #define LK_WORLD_ENTITY_COUNT World::getCurrentWorld().getWorldEntityCount()
+
 
 namespace LukkelEngine {
 
@@ -50,29 +50,26 @@ namespace LukkelEngine {
 		void shutdownPhysics();
 		void stepSimulation(float ts);
 		void pause(bool paused) { m_Paused = paused; };
+		void handleEvents();
+		void registerEvent(Event* event);
 
 		template<typename T>
 		void addRigidbodyToWorld(T& rigidbody);
 
 		bool pickBody(const Camera& camera, float distance);
-		void addConstraint(Constraint& constraint);
-		void removeConstraint(Constraint& constraint);
+		void addConstraint(Constraint& constraint) { m_DynamicWorld->addConstraint(constraint.getConstraint()); }
+		void removeConstraint(Constraint& constraint) { m_DynamicWorld->removeConstraint(constraint.getConstraint()); }
 		void createPickingConstraint(float x, float y);
 		void removePickConstraint();
-		void createCollisionObject(btCollisionObject* body);
-		uint64_t getWorldEntityCount() { return s_EntitiesInWorld; }
-
-		void registerEvent(Event* event);
-		void handleEvents();
-
 		void checkCollisions();
+		uint64_t getWorldEntityCount() { return s_EntitiesInWorld; }
 
 		bool mouseButtonCallback(int button, int state, float x, float y);
 		bool mouseMoveCallback(float x, float y);
 		void resetMousePick();
 
+		static Entity& getEntity(Rigidbody& rigidbody);
 		static World& getCurrentWorld() { return *m_CurrentWorld; }
-		static btVector3 screenToWorld(float mx, float my, glm::mat4 view, glm::mat4 projection);
 
 	private:
 		btDiscreteDynamicsWorld* m_DynamicWorld = nullptr;

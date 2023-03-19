@@ -20,11 +20,11 @@ namespace LukkelEngine {
 		~RigidbodyFactory() = default;
 		
 		static Rigidbody createRigidbody(glm::vec3 dimensions, glm::vec3 offset, float mass,
-										  Rigidbody::Type bodyType, float friction = 0.90f,
+										  Rigidbody::RigidbodyType bodyType, float friction = 0.90f,
 										  float restitution = 0.30f, glm::vec3 inertia = glm::vec3(0.0f, 0.0f, 0.0f));
 
 		static Rigidbody createRigidbody(UUID id, glm::vec3 dimensions, glm::vec3 offset, float mass,
-										  Rigidbody::Type bodyType, float friction = 0.90f,
+										  Rigidbody::RigidbodyType bodyType, float friction = 0.90f,
 										  float restitution = 0.30f, glm::vec3 inertia = glm::vec3(0.0f, 0.0f, 0.0f));
 
 		static void addPivotConstraint(Rigidbody& rigidbody, btVector3 pivot);

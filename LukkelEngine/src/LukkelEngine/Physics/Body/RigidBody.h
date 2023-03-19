@@ -17,7 +17,7 @@ namespace LukkelEngine {
 	class Rigidbody
 	{
 	public:
-		enum Type
+		enum RigidbodyType
 		{ 
 			STATIC = btCollisionObject::CF_STATIC_OBJECT,
 			DYNAMIC = btCollisionObject::CF_DYNAMIC_OBJECT,
@@ -25,7 +25,7 @@ namespace LukkelEngine {
 		};
 
 		Rigidbody() = default;
-		Rigidbody(glm::vec3 dimensions, glm::vec3 offset, float mass, Rigidbody::Type bodyType, 
+		Rigidbody(glm::vec3 dimensions, glm::vec3 offset, float mass, Rigidbody::RigidbodyType bodyType, 
 				  float friction, float restitution, glm::vec3 inertia);
 		Rigidbody(const Rigidbody& other) = default;
 		~Rigidbody() = default;
@@ -41,7 +41,7 @@ namespace LukkelEngine {
 		btTransform getWorldTransform();
 		btRigidBody* getRigidbody() { return m_Rigidbody; }
 		btCollisionShape* getCollisionShape() { return m_Rigidbody->getCollisionShape(); }
-		Rigidbody::Type getType() const { return m_Type; }
+		Rigidbody::RigidbodyType getType() const { return m_Type; }
 
 		void moveBody(glm::vec3 translation);
 		// Constraints
@@ -68,7 +68,7 @@ namespace LukkelEngine {
 		btRigidBody* m_Rigidbody = nullptr;
 		std::vector<Constraint*> m_Constraints;
 		MotionState* m_MotionState = nullptr;
-		Type m_Type = Type::STATIC;
+		RigidbodyType m_Type = RigidbodyType::STATIC;
 		UUID m_ID;
 
 		btVector3 m_Position{ 0.0f, 0.0f, 0.0f };

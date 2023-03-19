@@ -33,7 +33,9 @@ namespace LukkelEngine {
 		s_ptr<Shader> getShader() const { return m_Shader; }
 
 		glm::vec4 getMaterialColor() const { return m_Color; }
-		void setMaterialColor(glm::vec4 color) { m_Color = color; }
+		glm::vec4 getCachedMaterialColor() const { return m_CacheColor; }
+		void setMaterialColor(glm::vec4 color);
+		void setLastMaterialColor();
 		
 		template<typename T>
 		void set(const std::string& uniform, T& value);
@@ -41,7 +43,8 @@ namespace LukkelEngine {
 	protected:
 		s_ptr<Shader> m_Shader = nullptr;
 		s_ptr<Texture> m_Texture = nullptr;
-		glm::vec4 m_Color{ 1.0f, 1.0f, 1.0f, 1.0f };
+		glm::vec4 m_Color = Color::White;
+		glm::vec4 m_CacheColor = Color::White;
 	};
 
 }

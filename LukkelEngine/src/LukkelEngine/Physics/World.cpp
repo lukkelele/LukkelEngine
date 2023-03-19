@@ -6,6 +6,7 @@
 #include "LukkelEngine/Scene/Components.h"
 #include "LukkelEngine/Core/Application.h"
 #include "LukkelEngine/Event/ConstraintEvent.h"
+#include "LukkelEngine/Event/CollisionEvent.h"
 
 
 namespace LukkelEngine {
@@ -191,7 +192,6 @@ namespace LukkelEngine {
 			if (button == 0)
 			{
 				bool bodyIsPicked = pickBody(*m_Scene->getCamera(), distance);
-				LKLOG_INFO("bodyIsPicked -> {0}", bodyIsPicked);
 				if (bodyIsPicked)
 				{
 					LKLOG_CRITICAL("Body picked -> {0}", m_PickedEntity.getName());
@@ -207,60 +207,8 @@ namespace LukkelEngine {
 		return false;
 	}
 
-	btVector3 World::screenToWorld(float mx, float my, glm::mat4 view, glm::mat4 projection)
-	{
-		// Get the viewport dimensions
-		GLint viewport[4];
-		glGetIntegerv(GL_VIEWPORT, viewport);
-
-		// Calculate the mouse position in normalized device coordinates
-		float ndcX = (2.0f * mx) / viewport[2] - 1.0f;
-		float ndcY = 1.0f - (2.0f * my) / viewport[3];
-		glm::vec4 ndcPos = glm::vec4(ndcX, ndcY, 0.0f, 1.0f);
-
-		// Convert from normalized device coordinates to world coordinates
-		glm::vec4 clipPos = glm::vec4(ndcPos.x, ndcPos.y, -1.0f, 1.0f);
-		glm::vec4 eyePos = glm::inverse(projection) * clipPos;
-		eyePos = glm::vec4(eyePos.x, eyePos.y, -1.0f, 0.0f);
-		glm::vec4 worldPos = glm::inverse(view) * eyePos;
-
-		return btVector3(worldPos.x, worldPos.y, worldPos.z);
-	}
-
-
 	void World::createPickingConstraint(float x, float y)
 	{
-	}
-
-	void World::addConstraint(Constraint& constraint)
-	{
-		m_DynamicWorld->addConstraint(constraint.getConstraint());
-	}
-
-	void World::removeConstraint(Constraint& constraint)
-	{
-		m_DynamicWorld->removeConstraint(constraint.getConstraint());
-	}
-
-	void World::createCollisionObject(btCollisionObject* body)
-	{
-		if (body->getUserIndex() < 0)
-		{
-			btCollisionShape* shape = body->getCollisionShape();
-			btTransform startTransform = body->getWorldTransform();
-			int graphicsShapeId = shape->getUserIndex();
-			if (graphicsShapeId >= 0)
-			{
-				btVector3 localScaling(1, 1, 1);
-
-				btSoftBody* softBody = btSoftBody::upcast(body);
-				if (softBody)
-				{
-					// ASSERTION HERE
-					LKLOG_INFO("SOFTBODY CREATED");
-				}
-			}
-		}
 	}
 
 	void World::checkCollisions()
@@ -269,9 +217,8 @@ namespace LukkelEngine {
 
 		if (m_Dispatcher)
 		{
-			for (int i = 0; i < m_Dispatcher->getNumManifolds(); i++)
+			for (int i = 0; i < m_Dispatcher->getNumManifolds(); ++i)
 			{
-				LKLOG_WARN("Creating manifold by index");
 				btPersistentManifold* manifold = m_Dispatcher->getManifoldByIndexInternal(i);
 
 				if (manifold->getNumContacts() > 0)
@@ -286,35 +233,38 @@ namespace LukkelEngine {
 					uint64_t id2 = (uint64_t)sortedBody2->getUserPointer();
 					Entity entity1 = m_Scene->getEntityWithUUID(id1);
 					Entity entity2 = m_Scene->getEntityWithUUID(id2);
-					LKLOG_TRACE("Entity 1 name: {0}", entity1.getName());
-					LKLOG_TRACE("Entity 2 name: {0}", entity2.getName());
-					// LKLOG_TRACE("Collision ID 1: {0}", id1);
-					// LKLOG_TRACE("Collision ID 2: {0}", id2);
+
 					CollisionPair pair = std::make_pair(sortedBody1, sortedBody2);
-					// CollisionPair entityPair = std::make_pair(entity1, entity2);
-					// collisionPairs.insert(entityPair);
 					collisionPairs.insert(pair);
 
 					// If the collision pair is only found at the last insertion, then it is a new collision
+					// COLLISION EVENT
 					if (m_LastCollisionPairs.find(pair) == m_LastCollisionPairs.end())
-					{ 
-						// Trigger collision event
-					}
+						registerEvent(new CollisionEvent(pair.first, pair.second));
 				}
 			}
+
 			CollisionPairs removedPairs;
 
 			std::set_difference(m_LastCollisionPairs.begin(), m_LastCollisionPairs.end(),
-				collisionPairs.begin(), collisionPairs.end(), std::inserter(removedPairs, removedPairs.begin()));
+									collisionPairs.begin(), collisionPairs.end(),
+										std::inserter(removedPairs, removedPairs.begin()));
 
 			// Iterate through removed pairs and trigger separation events
-			for (CollisionPairs::const_iterator iter = removedPairs.begin(); iter != removedPairs.end(); iter++)
-			{
-				LKLOG_TRACE("Trigger Separation Event");
-			}
+			// SEPARATION EVENT
+			for (CollisionPairs::const_iterator iter = removedPairs.begin(); iter != removedPairs.end(); ++iter)
+				registerEvent(new SeparationEvent((const btRigidBody*)iter->first, (const btRigidBody*)iter->second));
 
 			m_LastCollisionPairs = collisionPairs;
 		}
+	}
+
+
+	Entity& World::getEntity(Rigidbody& rigidbody)
+	{
+		auto currentScene = Scene::getActiveScene();
+		Entity& entity = currentScene->getEntityWithUUID(rigidbody.getID());
+		return entity;
 	}
 
 }

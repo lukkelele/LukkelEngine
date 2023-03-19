@@ -9,6 +9,9 @@
 #include "entt/entt.hpp"
 #include "LukkelEngine/Debug/Debugger.h"
 
+#define getEntityWithRigidbody(rb) Scene::getActiveScene()->getEntityWithUUID((uint64_t)rb->getUserPointer())
+
+
 namespace LukkelEngine {
 
 	class Entity;
@@ -39,7 +42,10 @@ namespace LukkelEngine {
 		template<typename T>
 		void onComponentAdded(Entity entity, T& component);
 
+		static Scene* getActiveScene() { return s_ActiveScene; }
+
 	public:
+		static Scene* s_ActiveScene;
 		bool m_IsRunning = false;
 		bool m_Paused = false;
 		int m_Frames = 0;

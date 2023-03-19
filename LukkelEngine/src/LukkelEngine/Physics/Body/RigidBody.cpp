@@ -8,10 +8,11 @@
 namespace LukkelEngine {
 
 	Rigidbody::Rigidbody(glm::vec3 dimensions, glm::vec3 offset, float mass,
-				  Rigidbody::Type bodyType, float friction, float restitution, glm::vec3 inertia)
+				  Rigidbody::RigidbodyType bodyType, float friction, float restitution, glm::vec3 inertia)
 	{
 		btVector3 dims{ dimensions.x, dimensions.y, dimensions.z };
 		btVector3 off{ offset.x, offset.y, offset.z };
+		m_Type = bodyType;
 		m_Dimensions = dims;
 		m_Shape = new btBoxShape(dims);
 		btTransform transform;

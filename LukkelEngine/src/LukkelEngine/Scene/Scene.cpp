@@ -9,6 +9,8 @@
 
 namespace LukkelEngine {
 
+	Scene* Scene::s_ActiveScene;
+
 	Scene::Scene()
 	{
 		m_Camera = create_s_ptr<SceneCamera>(45.0f, 0.010f, 1000.0f);
@@ -17,6 +19,8 @@ namespace LukkelEngine {
 
 		m_World = create_s_ptr<World>();
 		m_World->initPhysics(this);
+
+		s_ActiveScene = this;
 	}
 	
 	Scene::~Scene()

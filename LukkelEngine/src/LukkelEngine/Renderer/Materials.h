@@ -11,7 +11,6 @@ namespace LukkelEngine {
 			DebugMaterial()
 			{
 				m_Shader = create_s_ptr<Shader>("assets/shaders/flat.shader");
-				LKLOG_WARN("Assigned DebugMaterial -> shader");
 			}
 			~DebugMaterial() = default;
 

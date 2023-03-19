@@ -8,9 +8,10 @@
 namespace LukkelEngine {
 
 
-	void EntityFactory::createBox(EntityProperties::Box props, Scene& scene)
+	void EntityFactory::createCube(EntityProperties::Cube props)
 	{
-		Entity entity = scene.createEntity(props.name);
+		auto scene = Scene::getActiveScene();
+		Entity entity = scene->createEntity(props.name);
 		std::string shaderPath = "assets/shaders/flat.shader";
 		glm::vec3 inertia(0.0f, 0.0f, 0.0f);
 		float restitution = 0.3f;
@@ -18,7 +19,7 @@ namespace LukkelEngine {
 
 		UUID& entityID = entity.getUUID();
 		Mesh& mesh = MeshFactory::createBox(props.dimensions);
-		Rigidbody& rigidbody = RigidbodyFactory::createRigidbody(entityID, Rigidbody::Shape::Box, props.bodytype, props.dimensions, props.offset, 
+		Rigidbody& rigidbody = RigidbodyFactory::createRigidbody(entityID, Rigidbody::Shape::Cube, props.bodytype, props.dimensions, props.offset, 
 											props.mass, friction, restitution, inertia);
 
 		Material material;
@@ -30,9 +31,10 @@ namespace LukkelEngine {
 		entity.addComponent<TransformComponent>();
 	}
 
-	void EntityFactory::createSphere(EntityProperties::Sphere props, Scene& scene)
+	void EntityFactory::createSphere(EntityProperties::Sphere props)
 	{
-		Entity entity = scene.createEntity(props.name);
+		auto scene = Scene::getActiveScene();
+		Entity entity = scene->createEntity(props.name);
 		std::string shaderPath = "assets/shaders/flat.shader";
 		glm::vec3 inertia(0.0f, 0.0f, 0.0f);
 		float restitution = 0.3f;

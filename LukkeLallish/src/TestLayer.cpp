@@ -26,15 +26,15 @@ void TestLayer::onAttach()
 	glm::vec3 groundOffset{ 0.0f, -6.0f, 0.0f };
 	glm::vec3 groundDims{ 50.0f, 2.0f, 50.0f };
 
-	EntityProperties::Box cubeProps("Cube", boxDims, boxOffset, 5.0f, Rigidbody::Type::DYNAMIC, Color::Cyan);
-	EntityProperties::Box smallerCubeProps("Smaller Cube", smallerBoxDims, smallerBoxOffset, 3.0f, Rigidbody::Type::DYNAMIC, Color::Red);
-	EntityProperties::Box groundProps("Ground", groundDims, groundOffset, 0.0f, Rigidbody::Type::STATIC, Color::Gray);
+	EntityProperties::Cube cubeProps("Cube", Rigidbody::Type::DYNAMIC, boxDims, boxOffset, 5.0f, Color::Cyan);
+	EntityProperties::Cube smallerCubeProps("Smaller Cube", Rigidbody::Type::DYNAMIC, smallerBoxDims, smallerBoxOffset, 3.0f, Color::Red);
+	EntityProperties::Cube groundProps("Ground", Rigidbody::Type::STATIC, groundDims, groundOffset, 0.0f, Color::Gray);
 
-	EntityProperties::Sphere ballProps("Ball", 3.0f, groundOffset, 0.0f, Rigidbody::Type::DYNAMIC, Color::White);
+	EntityProperties::Sphere ballProps("Ball", Rigidbody::Type::DYNAMIC, 3.0f, groundOffset, 0.0f, Color::White);
 
-	EntityFactory::createBox(groundProps, *m_Scene);
-	EntityFactory::createBox(cubeProps, *m_Scene);
-	EntityFactory::createBox(smallerCubeProps, *m_Scene);
+	EntityFactory::createCube(groundProps);
+	EntityFactory::createCube(cubeProps);
+	EntityFactory::createCube(smallerCubeProps);
 	// m_Scene->pause(true);
 }
 

@@ -9,7 +9,7 @@ namespace LukkelEngine {
 
 	namespace EntityProperties {
 
-		struct Box
+		struct Cube
 		{
 			std::string name;
 			glm::vec3 dimensions;
@@ -18,11 +18,11 @@ namespace LukkelEngine {
 			Rigidbody::Type bodytype;
 			glm::vec4 color;
 
-			Box(const std::string& entityName = "Entity",
+			Cube(const std::string& entityName = "Entity",
+				Rigidbody::Type bodyType = Rigidbody::Type::STATIC,
 				glm::vec3 dims = glm::vec3(1.0f, 1.0f, 1.0f),
 				glm::vec3 off = glm::vec3(0.0f, 0.0f, 0.0f),
 				float mass = 1.0f,
-				Rigidbody::Type bodyType = Rigidbody::Type::STATIC,
 				glm::vec4 color = Color::White)
 				: name(entityName), dimensions(dims), offset(off),
 				  mass(mass), bodytype(bodyType), color(color) 
@@ -38,9 +38,9 @@ namespace LukkelEngine {
 			Rigidbody::Type bodytype;
 			glm::vec4 color;
 
-			Sphere(const std::string& entityName = "Entity", float radius = 1.0f,
+			Sphere(const std::string& entityName = "Entity", 
+				Rigidbody::Type bodyType = Rigidbody::Type::STATIC, float radius = 1.0f,
 				glm::vec3 off = glm::vec3(0.0f, 0.0f, 0.0f), float mass = 1.0f,
-				Rigidbody::Type bodyType = Rigidbody::Type::STATIC,
 				glm::vec4 color = Color::White)
 				: name(entityName), radius(radius), offset(off),
 				  mass(mass), bodytype(bodyType), color(color) 
@@ -54,9 +54,8 @@ namespace LukkelEngine {
 		EntityFactory() = default;
 		~EntityFactory() = default;
 
-		// static Entity createBox(glm::vec3& dims, glm::vec3& offset, const std::string& name, Rigidbody::Type bodytype, Scene& scene);
-		static void createBox(EntityProperties::Box props, Scene& scene);
-		static void createSphere(EntityProperties::Sphere props, Scene& scene);
+		static void createCube(EntityProperties::Cube props);
+		static void createSphere(EntityProperties::Sphere props);
 	};
 
 }

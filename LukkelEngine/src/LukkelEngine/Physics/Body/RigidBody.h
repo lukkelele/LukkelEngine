@@ -19,7 +19,7 @@ namespace LukkelEngine {
 	public:
 		enum class Shape 
 		{ 
-			Box = 1, 
+			Cube = 1, 
 			Sphere = 2 
 		};
 
@@ -66,7 +66,6 @@ namespace LukkelEngine {
 
 		const UUID getID() const { return m_ID; }
 		void setID(UUID ID) { m_ID = ID; }
-		// void setUserPointer(uint64_t ptr) { m_Rigidbody->setUserPointer((void*)(ptr)); }
 		void setUserPointer(Entity* entity) { m_Rigidbody->setUserPointer((void*)(&entity)); }
 
 	private:
@@ -75,7 +74,7 @@ namespace LukkelEngine {
 		std::vector<Constraint*> m_Constraints;
 		MotionState* m_MotionState = nullptr;
 		Type m_Type = Type::STATIC;
-		Shape m_Bodyshape = Shape::Box;
+		Shape m_Bodyshape = Shape::Cube;
 		UUID m_ID;
 
 		btVector3 m_Position{ 0.0f, 0.0f, 0.0f };

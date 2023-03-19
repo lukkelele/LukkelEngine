@@ -9,19 +9,11 @@ namespace LukkelEngine {
 	{
 	}
 
-	Rigidbody RigidbodyFactory::createRigidbody(glm::vec3 dimensions, glm::vec3 offset, float mass, Rigidbody::RigidbodyType bodyType,
+	Rigidbody RigidbodyFactory::createRigidbody(UUID id, Rigidbody::Shape shape, Rigidbody::Type bodyType,
+												glm::vec3 dimensions, glm::vec3 offset, float mass,
 												float friction, float restitution, glm::vec3 inertia)
 	{
-		int id = LK_WORLD_ENTITY_COUNT; // Incrementing ID for each present Entity
-		Rigidbody rigidBody(dimensions, offset, mass, bodyType, friction, restitution, inertia);
-		rigidBody.setCollisionFlags(bodyType);
-		return rigidBody;
-	}
-
-	Rigidbody RigidbodyFactory::createRigidbody(UUID id, glm::vec3 dimensions, glm::vec3 offset, float mass, Rigidbody::RigidbodyType bodyType,
-												float friction, float restitution, glm::vec3 inertia)
-	{
-		Rigidbody rigidBody(dimensions, offset, mass, bodyType, friction, restitution, inertia);
+		Rigidbody rigidBody(shape, bodyType, dimensions, offset, mass, friction, restitution, inertia);
 		rigidBody.setID(id);
 		rigidBody.m_Rigidbody->setUserIndex(id);
 		// Set up user pointer with the UUID to sync the entity id with the rigid body

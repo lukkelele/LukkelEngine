@@ -57,7 +57,7 @@ namespace LukkelEngine {
 			auto type1 = entity1.getComponent<Rigidbody>().getType();
 			auto type2 = entity2.getComponent<Rigidbody>().getType();
 
-			if (type1 != Rigidbody::STATIC && type2 != Rigidbody::STATIC)
+			if (type1 != Rigidbody::Type::STATIC && type2 != Rigidbody::Type::STATIC)
 			{
 				// LKLOG_TRACE("(Material 1) Cached -> ({0}, {1}, {2})", color1.x, color1.y, color1.z);
 				// LKLOG_TRACE("(Material 2) Cached -> ({0}, {1}, {2})", color2.x, color2.y, color2.z);
@@ -95,7 +95,7 @@ namespace LukkelEngine {
 			auto type2 = entity2.getComponent<Rigidbody>().getType();
 
 			// Revert the colors
-			if (type1 != Rigidbody::STATIC && type2 != Rigidbody::STATIC)
+			if (type1 != Rigidbody::Type::STATIC && type2 != Rigidbody::Type::STATIC)
 			{
 				if (material1.getMaterialColor() == m_CollisionColor) material1.setLastMaterialColor();
 				if (material2.getMaterialColor() == m_CollisionColor) material2.setLastMaterialColor();

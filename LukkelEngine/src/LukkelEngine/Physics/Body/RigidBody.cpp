@@ -7,8 +7,9 @@
 
 namespace LukkelEngine {
 
-	Rigidbody::Rigidbody(glm::vec3 dimensions, glm::vec3 offset, float mass,
-				  Rigidbody::RigidbodyType bodyType, float friction, float restitution, glm::vec3 inertia)
+	Rigidbody::Rigidbody(Rigidbody::Shape shape, Rigidbody::Type bodyType, 
+						 glm::vec3 dimensions, glm::vec3 offset, float mass,
+						 float friction, float restitution, glm::vec3 inertia)
 	{
 		btVector3 dims{ dimensions.x, dimensions.y, dimensions.z };
 		btVector3 off{ offset.x, offset.y, offset.z };
@@ -104,7 +105,7 @@ namespace LukkelEngine {
 		}
 
 		template<>
-		void Rigidbody::removeConstraint(ConstraintType type)
+		void Rigidbody::removeConstraint(Constraint::Type type)
 		{
 			for (auto& constraint : m_Constraints)
 			{

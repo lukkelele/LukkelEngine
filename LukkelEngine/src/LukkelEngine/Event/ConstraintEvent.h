@@ -23,13 +23,13 @@ namespace LukkelEngine {
 		}
 
 		Constraint& getConstraint() { return m_Constraint; }
-		ConstraintType getConstraintType() const { return m_ConstraintType; }
+		Constraint::Type getConstraintType() const { return m_ConstraintType; }
 		UUID getID() const { return m_ID; }
 
 	protected:
 		UUID m_ID;
 		Constraint m_Constraint;
-		ConstraintType m_ConstraintType = ConstraintType::Null;
+		Constraint::Type m_ConstraintType = Constraint::Type::Null;
 	};
 
 

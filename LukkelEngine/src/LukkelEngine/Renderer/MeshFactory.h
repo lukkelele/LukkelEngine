@@ -7,6 +7,7 @@
 
 namespace LukkelEngine {
 
+
 	class MeshFactory
 	{
 	public:
@@ -14,9 +15,9 @@ namespace LukkelEngine {
 		~MeshFactory() = default;
 
 		static Mesh createBox(glm::vec3& side);
-		// static Mesh createMesh(float vertices[], unsigned int indices[]);
-		// static Mesh createSphere(float radius);
+		static Mesh createSphere(float radius);
 
-
+	private:
+		
 	};
 }

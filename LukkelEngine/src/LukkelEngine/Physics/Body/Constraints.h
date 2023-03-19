@@ -6,33 +6,35 @@
 
 namespace LukkelEngine {
 
-	enum ConstraintType
-	{
-		Null      = -1,
-		Generic   =  0,
-		Pivot     =  1,
-		Slider    =  2,
-		Spherical =  3,
-		Hinge     =  4,
-		ConeTwist =  5
-	};
 
 	class Constraint
 	{
 	public:
+
+		enum class Type
+		{
+			Null      = -1,
+			Generic   =  0,
+			Pivot     =  1,
+			Slider    =  2,
+			Spherical =  3,
+			Hinge     =  4,
+			ConeTwist =  5
+		};
+
 		virtual ~Constraint() = default;
 
 		virtual const char* getName() { return "Constraint"; };
 
 		btTypedConstraint* getConstraint() const { return m_Constraint; }
-		ConstraintType getConstraintType() const { return m_ConstraintType; }
+		Type getConstraintType() const { return m_ConstraintType; }
 		Rigidbody& getRigidbody() { return m_Rigidbody; }
 		UUID getID() const { return m_Rigidbody.getID(); }
 
 	protected:
 		Rigidbody m_Rigidbody;
 		btTypedConstraint* m_Constraint = nullptr;
-		ConstraintType m_ConstraintType = Null;
+		Type m_ConstraintType = Type::Null;
 	};
 
 	
@@ -45,7 +47,7 @@ namespace LukkelEngine {
 			btVector3 p(pivot.x, pivot.y, pivot.z);
 			m_Rigidbody = rigidbody;
 			m_Constraint = new btPoint2PointConstraint(*m_Rigidbody.getRigidbody(), p);
-			m_ConstraintType = ConstraintType::Pivot;
+			m_ConstraintType = Type::Pivot;
 		}
 		~PivotConstraint() { delete m_Constraint; }
 

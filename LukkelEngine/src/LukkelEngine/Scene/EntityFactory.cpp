@@ -8,7 +8,7 @@
 namespace LukkelEngine {
 
 
-	void EntityFactory::createBox(EntityProperties props, Scene& scene)
+	void EntityFactory::createBox(EntityProperties::Box props, Scene& scene)
 	{
 		Entity entity = scene.createEntity(props.name);
 		std::string shaderPath = "assets/shaders/flat.shader";
@@ -18,8 +18,8 @@ namespace LukkelEngine {
 
 		UUID& entityID = entity.getUUID();
 		Mesh& mesh = MeshFactory::createBox(props.dimensions);
-		Rigidbody& rigidbody = RigidbodyFactory::createRigidbody(entityID, props.dimensions, props.offset, 
-									props.mass, props.bodytype, friction, restitution, inertia);
+		Rigidbody& rigidbody = RigidbodyFactory::createRigidbody(entityID, Rigidbody::Shape::Box, props.bodytype, props.dimensions, props.offset, 
+											props.mass, friction, restitution, inertia);
 
 		Material material;
 		material.setMaterialColor(props.color);
@@ -29,5 +29,28 @@ namespace LukkelEngine {
 		entity.addComponent<Material>(material);
 		entity.addComponent<TransformComponent>();
 	}
+
+	void EntityFactory::createSphere(EntityProperties::Sphere props, Scene& scene)
+	{
+		Entity entity = scene.createEntity(props.name);
+		std::string shaderPath = "assets/shaders/flat.shader";
+		glm::vec3 inertia(0.0f, 0.0f, 0.0f);
+		float restitution = 0.3f;
+		float friction = 1.0f;
+
+		// UUID& entityID = entity.getUUID();
+		// Mesh& mesh = MeshFactory::createSphere(props.radius);
+		// Rigidbody& rigidbody = RigidbodyFactory::createRigidbody(entityID, props.dimensions, props.offset, 
+		// 									  props.mass, props.bodytype, friction, restitution, inertia);
+
+		// Material material;
+		// material.setMaterialColor(props.color);
+
+		// entity.addComponent<Mesh>(mesh);
+		// entity.addComponent<Rigidbody>(rigidbody);
+		// entity.addComponent<Material>(material);
+		// entity.addComponent<TransformComponent>();
+	}
+
 
 }

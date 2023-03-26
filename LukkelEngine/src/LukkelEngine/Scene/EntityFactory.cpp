@@ -1,8 +1,9 @@
 #include "LKpch.h"
 #include "LukkelEngine/Scene/EntityFactory.h"
 #include "LukkelEngine/Renderer/MeshFactory.h"
-#include "LukkelEngine/Physics/Body/RigidbodyFactory.h"
+#include "LukkelEngine/Physics/RigidbodyFactory.h"
 #include "LukkelEngine/Physics/World.h"
+#include "LukkelEngine/Physics/BoxColliderShape.h"
 
 
 namespace LukkelEngine {
@@ -19,14 +20,17 @@ namespace LukkelEngine {
 
 		UUID& entityID = entity.getUUID();
 		Mesh& mesh = MeshFactory::CreateCube(props.dimensions);
-		Rigidbody& rigidbody = RigidbodyFactory::createRigidbody(entityID, Rigidbody::Shape::Cube, props.bodytype, props.dimensions, props.offset, 
+		Rigidbody& rigidbody = RigidbodyFactory::CreateRigidbody(entityID, Rigidbody::Shape::Cube, props.rigidbodyType, props.dimensions, props.offset, 
 											props.mass, friction, restitution, inertia);
 
+		BoxColliderShape& boxColliderShape = BoxColliderShape(entityID, props.dimensions, props.offset, 
+			props.mass, inertia, props.rigidbodyType);
 		Material material;
 		material.SetMaterialColor(props.color);
 
 		entity.AddComponent<Mesh>(mesh);
-		entity.AddComponent<Rigidbody>(rigidbody);
+		// entity.AddComponent<Rigidbody>(rigidbody);
+		entity.AddComponent<BoxColliderShape>(boxColliderShape);
 		entity.AddComponent<Material>(material);
 		entity.AddComponent<TransformComponent>();
 	}
@@ -42,7 +46,7 @@ namespace LukkelEngine {
 
 		// UUID& entityID = entity.getUUID();
 		// Mesh& mesh = MeshFactory::CreateSphere(props.radius);
-		// Rigidbody& rigidbody = RigidbodyFactory::createRigidbody(entityID, props.dimensions, props.offset, 
+		// Rigidbody& rigidbody = RigidbodyFactory::CreateRigidbody(entityID, props.dimensions, props.offset, 
 		// 									  props.mass, props.bodytype, friction, restitution, inertia);
 
 		// Material material;

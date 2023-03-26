@@ -1,6 +1,6 @@
 #pragma once
 #include "LukkelEngine/Renderer/Mesh.h"
-#include "LukkelEngine/Physics/Body/RigidBody.h"
+#include "LukkelEngine/Physics/RigidBody.h"
 #include "LukkelEngine/Renderer/Material.h"
 #include "LukkelEngine/Scene/Scene.h"
 #include "LukkelEngine/Scene/Components.h"

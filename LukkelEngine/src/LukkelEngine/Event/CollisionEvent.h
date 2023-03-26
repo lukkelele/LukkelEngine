@@ -1,7 +1,7 @@
 #pragma once
 #include "LukkelEngine/Event/Event.h"
-#include "LukkelEngine/Physics/Body/Constraints.h"
-#include "LukkelEngine/Physics/Body/Rigidbody.h"
+#include "LukkelEngine/Physics/Constraints.h"
+#include "LukkelEngine/Physics/Rigidbody.h"
 #include "LukkelEngine/Physics/World.h"
 
 #include <glm/glm.hpp>
@@ -56,6 +56,7 @@ namespace LukkelEngine {
 			// If the body is not of a static type
 			auto type1 = entity1.GetComponent<Rigidbody>().GetType();
 			auto type2 = entity2.GetComponent<Rigidbody>().GetType();
+			LKLOG_WARN("Type 1: {0}\nType 2: {1}", type1, type2);
 
 			if (type1 != Rigidbody::Type::STATIC && type2 != Rigidbody::Type::STATIC)
 			{

@@ -1,7 +1,7 @@
 #include "LKpch.h"
-#include "LukkelEngine/Physics/Body/Rigidbody.h"
 #include "LukkelEngine/Physics/World.h"
-#include "LukkelEngine/Physics/Body/Constraints.h"
+#include "LukkelEngine/Physics/Rigidbody.h"
+#include "LukkelEngine/Physics/Constraints.h"
 #include "LukkelEngine/Event/ConstraintEvent.h"
 #include "LukkelEngine/Scene/Entity.h"
 
@@ -30,6 +30,8 @@ namespace LukkelEngine {
 		m_Rigidbody->setRestitution(m_Restitution);
 		m_Rigidbody->forceActivationState(DISABLE_DEACTIVATION);
 	}
+
+
 
 	void Rigidbody::OnUpdate(float ts)
 	{

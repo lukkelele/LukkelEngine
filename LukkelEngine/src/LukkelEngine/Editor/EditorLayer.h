@@ -3,7 +3,7 @@
 #include "LukkelEngine/Scene/Entity.h"
 #include "LukkelEngine/Scene/Components.h"
 #include "LukkelEngine/Renderer/Mesh.h"
-#include "LukkelEngine/Physics/Body/RigidBody.h"
+#include "LukkelEngine/Physics/RigidBody.h"
 #include "LukkelEngine/Renderer/Material.h"
 #include "LukkelEngine/UI/Property.h"
 #include "LukkelEngine/UI/Widgets.h"

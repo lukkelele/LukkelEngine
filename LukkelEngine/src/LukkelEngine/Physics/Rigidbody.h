@@ -1,7 +1,7 @@
 #pragma once
 #include "LukkelEngine/Core/Base.h"
 #include "LukkelEngine/Core/UUID.h"
-#include "LukkelEngine/Physics/Body/MotionState.h"
+#include "LukkelEngine/Physics/MotionState.h"
 
 #include <glm/glm.hpp>
 #include <btBulletDynamicsCommon.h>
@@ -17,6 +17,8 @@ namespace LukkelEngine {
 	class Rigidbody
 	{
 	public:
+
+		// TODO: Refactor away
 		enum class Shape 
 		{ 
 			Cube = 1, 
@@ -30,9 +32,10 @@ namespace LukkelEngine {
 			KINEMATIC = btCollisionObject::CF_KINEMATIC_OBJECT
 		};
 
+
 		Rigidbody() = default;
-		Rigidbody(Shape shape, Type bodyType, glm::vec3 dimensions, glm::vec3 offset, float mass, 
-				  float friction, float restitution, glm::vec3 inertia);
+		Rigidbody(Shape shape, Type type, glm::vec3 dimensions, glm::vec3 offset, float mass, 
+			float friction, float restitution, glm::vec3 inertia);
 		Rigidbody(const Rigidbody& other) = default;
 		~Rigidbody() = default;
 
@@ -47,7 +50,7 @@ namespace LukkelEngine {
 		btTransform GetWorldTransform();
 		btRigidBody* GetRigidbody() { return m_Rigidbody; }
 		btCollisionShape* GetCollisionShape() { return m_Rigidbody->getCollisionShape(); }
-		Rigidbody::Type GetType() const { return m_Type; }
+		Type& GetType() { return m_Type; }
 
 		void MoveBody(glm::vec3 translation);
 		// Constraints
@@ -71,9 +74,9 @@ namespace LukkelEngine {
 	private:
 		btCollisionShape* m_Shape = nullptr;
 		btRigidBody* m_Rigidbody = nullptr;
+		Type m_Type = Type::STATIC;
 		std::vector<Constraint*> m_Constraints;
 		MotionState* m_MotionState = nullptr;
-		Type m_Type = Type::STATIC;
 		Shape m_Bodyshape = Shape::Cube;
 		UUID m_ID;
 

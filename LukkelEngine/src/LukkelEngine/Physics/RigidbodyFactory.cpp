@@ -1,5 +1,5 @@
 #include "LKpch.h"
-#include "LukkelEngine/Physics/Body/RigidbodyFactory.h"
+#include "LukkelEngine/Physics/RigidbodyFactory.h"
 #include "LukkelEngine/Physics/World.h"
 
 
@@ -9,7 +9,7 @@ namespace LukkelEngine {
 	{
 	}
 
-	Rigidbody RigidbodyFactory::createRigidbody(UUID id, Rigidbody::Shape shape, Rigidbody::Type bodyType,
+	Rigidbody RigidbodyFactory::CreateRigidbody(UUID id, Rigidbody::Shape shape, Rigidbody::Type bodyType,
 												glm::vec3 dimensions, glm::vec3 offset, float mass,
 												float friction, float restitution, glm::vec3 inertia)
 	{

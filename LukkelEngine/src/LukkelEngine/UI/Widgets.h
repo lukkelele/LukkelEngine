@@ -1,6 +1,6 @@
 #pragma once
-#include "LukkelEngine/Physics/Body/Rigidbody.h"
-#include "LukkelEngine/Physics/Body/Constraints.h"
+#include "LukkelEngine/Physics/Rigidbody.h"
+#include "LukkelEngine/Physics/Constraints.h"
 
 #include <imgui/imgui.h>
 #include <imgui/imgui_impl_glfw.h>

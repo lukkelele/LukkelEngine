@@ -5,8 +5,9 @@
 #include "LukkelEngine/Core/UUID.h"
 #include "LukkelEngine/Renderer/Mesh.h"
 #include "LukkelEngine/Renderer/Material.h"
-#include "LukkelEngine/Physics/Body/RigidBody.h"
+#include "LukkelEngine/Physics/RigidBody.h"
 #include "LukkelEngine/Scene/SceneCamera.h"
+#include "LukkelEngine/Physics/BoxColliderShape.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -79,6 +80,6 @@ namespace LukkelEngine{
 	};
 
 	using AllComponents =
-		ComponentGroup<IDComponent, TagComponent, Mesh, RigidBody>;
+		ComponentGroup<IDComponent, TagComponent, Mesh, BoxColliderShape>;
 
 }

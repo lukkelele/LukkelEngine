@@ -130,6 +130,14 @@ namespace LukkelEngine {
 		}
 
 		template<>
+		void Scene::OnComponentAdded<BoxColliderShape>(Entity entity, BoxColliderShape& boxColliderShape)
+		{
+			// TODO: OnComponentRemoval -> remove rigidbody
+			entity.AddComponent<Rigidbody>(boxColliderShape.GetRigidbody());
+			LKLOG_INFO("{0} : BoxColliderShape added!", entity.GetName());
+		}
+
+		template<>
 		void Scene::OnComponentAdded<Rigidbody>(Entity entity, Rigidbody& rigidbody)
 		{
 			m_World->AddRigidbodyToWorld(rigidbody);

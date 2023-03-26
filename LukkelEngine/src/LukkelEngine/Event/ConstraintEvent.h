@@ -1,6 +1,6 @@
 #pragma once
 #include "LukkelEngine/Event/Event.h"
-#include "LukkelEngine/Physics/Body/Constraints.h"
+#include "LukkelEngine/Physics/Constraints.h"
 #include "LukkelEngine/Core/UUID.h"
 
 #include <glm/glm.hpp>

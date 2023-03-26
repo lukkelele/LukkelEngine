@@ -15,17 +15,17 @@ namespace LukkelEngine {
 			glm::vec3 dimensions;
 			glm::vec3 offset;
 			float mass;
-			Rigidbody::Type bodytype;
+			Rigidbody::Type rigidbodyType;
 			glm::vec4 color;
 
 			Cube(const std::string& entityName = "Entity",
-				Rigidbody::Type bodyType = Rigidbody::Type::STATIC,
+				Rigidbody::Type rigidbodyType = Rigidbody::Type::STATIC,
 				glm::vec3 dims = glm::vec3(1.0f, 1.0f, 1.0f),
 				glm::vec3 off = glm::vec3(0.0f, 0.0f, 0.0f),
 				float mass = 1.0f,
 				glm::vec4 color = Color::White)
 				: name(entityName), dimensions(dims), offset(off),
-				  mass(mass), bodytype(bodyType), color(color) 
+				  mass(mass), rigidbodyType(rigidbodyType), color(color) 
 			{}
 		};
 

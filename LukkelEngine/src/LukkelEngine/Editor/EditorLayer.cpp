@@ -1,7 +1,7 @@
 #include "LKpch.h"
 #include "LukkelEngine/Editor/EditorLayer.h"
 #include "LukkelEngine/Physics/World.h"
-#include "LukkelEngine/Physics/Body/Constraints.h"
+#include "LukkelEngine/Physics/Constraints.h"
 #include "LukkelEngine/Math/Math.h"
 
 #include <imgui/imgui.h>
@@ -34,20 +34,6 @@ namespace LukkelEngine {
 
 			if (ImGui::IsMouseDown(0) && ImGui::IsWindowHovered())
 				m_SelectedEntity = {};
-
-			// Right click on blank space to get popup menu
-			// if (ImGui::BeginPopupContextWindow(0, 1, false)) // id, mouse button, if on item (bool)
-			// {
-			// 	// if (ImGui::MenuItem("New entity"))
-			// 	// 	m_Scene->CreateEntity("Empty Entity");
-			// 	// else if (ImGui::MenuItem("New Cube"))
-			// 	// 	// Spawner::CreateCube(*m_Scene, "Cube");
-			// 	// 	void;
-			// 	// else if (ImGui::MenuItem("New floor (ground object)"))
-			// 	// 	void;
-			// 	// 	// Spawner::createGround(*m_Scene, "Floor");
-			// 	ImGui::EndPopup();
-			// }
 		}
 
 		ImGui::Begin("Properties");
@@ -242,7 +228,7 @@ namespace LukkelEngine {
 		if (ImGui::BeginPopup("AddComponent"))
 		{
 			DisplayAddComponentEntry<Mesh>("Mesh");
-			DisplayAddComponentEntry<Rigidbody>("Rigidbody");
+			// DisplayAddComponentEntry<Rigidbody>("Rigidbody");
 			DisplayAddComponentEntry<Material>("Material");
 			ImGui::EndPopup();
 		}
@@ -267,17 +253,19 @@ namespace LukkelEngine {
 		});
 
 		// TODO: Selected entities shall have their (if body exists) body put under a constraint
-		DrawComponent<Rigidbody>("Rigidbody", entity, [](auto& component)
+		if (entity.HasComponent<ColliderShape>())
 		{
-			glm::vec3 lv = component.GetLinearVelocity();
-			UI::Property::Vector3Control("Linear Velocity", lv);
-			if (lv != component.GetLinearVelocity())
-				component.SetLinearVelocity(lv);
+			DrawComponent<Rigidbody>("Rigidbody", entity, [](auto& component)
+			{
+				glm::vec3 lv = component.GetLinearVelocity();
+				UI::Property::Vector3Control("Linear Velocity", lv);
 
+				if (lv != component.GetLinearVelocity())
+					component.SetLinearVelocity(lv);
 
-			UI::ConstraintsMenu(component);
-
-		});
+				UI::ConstraintsMenu(component);
+			});
+		}
 
 		DrawComponent<Material>("Material", entity, [](auto& component)
 		{

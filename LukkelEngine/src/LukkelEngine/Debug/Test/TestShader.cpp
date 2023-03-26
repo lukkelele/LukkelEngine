@@ -11,12 +11,12 @@ namespace LukkelEngine {
 			m_VBO = std::make_unique<VertexBuffer>(rectangle, 8 * sizeof(float));
 			m_IBO = std::make_unique<IndexBuffer>(rect_indices, 3);
 			VertexBufferLayout layout;
-			layout.push<float>(2);
-			m_VAO->addBuffer(*m_VBO, layout);
+			layout.Push<float>(2);
+			m_VAO->AddBuffer(*m_VBO, layout);
 
 			m_Shader = std::make_unique<Shader>("assets/shaders/basic2.shader");
-			m_Shader->bind();
-			m_Shader->setUniform4f("u_Color", 0.5f, 0.1f, 0.5f, 1.0f);
+			m_Shader->Bind();
+			m_Shader->SetUniform4f("u_Color", 0.5f, 0.1f, 0.5f, 1.0f);
 		}
 
 		TestShader::~TestShader(){}
@@ -27,13 +27,13 @@ namespace LukkelEngine {
 				inc = -inc;
 			c += inc;
 
-			m_Shader->bind();
-			m_Shader->setUniform4f("u_Color", c, 0.35, c, 1.0);
-			m_Renderer->draw(*m_VAO, *m_IBO, *m_Shader);
+			m_Shader->Bind();
+			m_Shader->SetUniform4f("u_Color", c, 0.35, c, 1.0);
+			m_Renderer->Draw(*m_VAO, *m_IBO, *m_Shader);
 		}
 
-		void TestShader::onImGuiRender(){}
-		void TestShader::onUpdate(float freq){}
+		void TestShader::OnImGuiRender(){}
+		void TestShader::OnUpdate(float freq){}
 
 	}
 

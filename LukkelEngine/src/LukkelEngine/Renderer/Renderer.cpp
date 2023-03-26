@@ -7,66 +7,66 @@ namespace LukkelEngine {
 	LK_DRAW_MODE Renderer::s_DrawMode;
 	glm::vec4 Renderer::s_BackgroundColor = Color::DarkGray;
 
-	void Renderer::clear() const
+	void Renderer::Clear() const
 	{
 		auto c = s_BackgroundColor;
 		glClearColor(c.x, c.y, c.z, c.w);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
 
-	void Renderer::draw(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const
+	void Renderer::Draw(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const
 	{
-		shader.bind();
-		va.bind();
-		ib.bind();
-		glDrawElements(s_DrawMode, ib.getCount(), GL_UNSIGNED_INT, nullptr);
+		shader.Bind();
+		va.Bind();
+		ib.Bind();
+		glDrawElements(s_DrawMode, ib.GetCount(), GL_UNSIGNED_INT, nullptr);
 	}
 
-	void Renderer::draw(Mesh& mesh) const
+	void Renderer::Draw(Mesh& mesh) const
 	{
-		mesh.bind();
-		unsigned int count = mesh.getIndexBuffer()->getCount();
+		mesh.Bind();
+		unsigned int count = mesh.GetIndexBuffer()->GetCount();
 		glDrawElements(s_DrawMode, count, GL_UNSIGNED_INT, nullptr);
 	}
 
-	void Renderer::drawWireframe(Entity& entity, glm::vec4 color) const
+	void Renderer::DrawWireframe(Entity& entity, glm::vec4 color) const
 	{
-		Mesh& mesh = entity.getComponent<Mesh>();
-		Material& material = entity.getComponent<Material>();
-		mesh.bind();
-		material.bind();
-		auto oldColor = material.getMaterialColor();
-		material.setMaterialColor(color);
-		unsigned int count = mesh.getIndexBuffer()->getCount();
+		Mesh& mesh = entity.GetComponent<Mesh>();
+		Material& material = entity.GetComponent<Material>();
+		mesh.Bind();
+		material.Bind();
+		auto oldColor = material.GetMaterialColor();
+		material.SetMaterialColor(color);
+		unsigned int count = mesh.GetIndexBuffer()->GetCount();
 		glDrawElements(GL_LINES, count, GL_UNSIGNED_INT, nullptr);
-		material.setMaterialColor(oldColor);
+		material.SetMaterialColor(oldColor);
 	}
 
 	// Remove me
-	void Renderer::drawTriangles(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const
+	void Renderer::DrawTriangles(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const
 	{
-		shader.bind();
-		va.bind();
-		ib.bind();
-		GLCall(glDrawElements(GL_TRIANGLES, ib.getCount(), GL_UNSIGNED_INT, nullptr));
+		shader.Bind();
+		va.Bind();
+		ib.Bind();
+		GLCall(glDrawElements(GL_TRIANGLES, ib.GetCount(), GL_UNSIGNED_INT, nullptr));
 	}
 
-	void Renderer::drawLines(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const
+	void Renderer::DrawLines(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const
 	{
-		shader.bind();
-		va.bind();
-		ib.bind();
-		glDrawElements(GL_LINES, ib.getCount(), GL_UNSIGNED_INT, nullptr);
+		shader.Bind();
+		va.Bind();
+		ib.Bind();
+		glDrawElements(GL_LINES, ib.GetCount(), GL_UNSIGNED_INT, nullptr);
 	}
 
-	void Renderer::drawIndexed(const s_ptr<VertexArray>& va)
+	void Renderer::DrawIndexed(const s_ptr<VertexArray>& va)
 	{
-		va->bind();
-		unsigned int count = va->getIndexBuffer()->getCount();
+		va->Bind();
+		unsigned int count = va->GetIndexBuffer()->GetCount();
 		glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
 	}
 
-	void Renderer::drawLine(const glm::vec3& p0, const glm::vec3& p1, const glm::vec4& color)
+	void Renderer::DrawLine(const glm::vec3& p0, const glm::vec3& p1, const glm::vec4& color)
 	{
 		float Line[] = {
 			p0.x, p0.y, p0.z,
@@ -80,14 +80,14 @@ namespace LukkelEngine {
 		Shader shader("assets/shaders/basic.shader");
 
 		VertexBufferLayout layout;
-		layout.push<float>(3);
-		va.addBuffer(vb, layout);
+		layout.Push<float>(3);
+		va.AddBuffer(vb, layout);
 
 		glDrawElements(GL_LINES, 2, GL_UNSIGNED_INT, nullptr);
 	}
 
 	// FIXME: This is not synced with the rest of the scaling
-	void Renderer::drawBox(btVector3& halfSize)
+	void Renderer::DrawCube(btVector3& halfSize)
 	{
 		// Get the width, height and depth
 		float w = halfSize.x(), h = halfSize.y(), d = halfSize.z();
@@ -122,35 +122,35 @@ namespace LukkelEngine {
 		IndexBuffer ib(indices, 36 * sizeof(unsigned int));
 		Shader shader("assets/shaders/basic.shader");
 		// Black wireframe
-		shader.setUniform4f("u_Color", 0.0f, 0.0f, 0.0f, 1.0f);
+		shader.SetUniform4f("u_Color", 0.0f, 0.0f, 0.0f, 1.0f);
 
 		VertexBufferLayout layout;
-		layout.push<float>(3);
-		va.addBuffer(vb, layout);
+		layout.Push<float>(3);
+		va.AddBuffer(vb, layout);
 
-		glDrawElements(GL_LINES, ib.getCount(), GL_UNSIGNED_INT, nullptr);
+		glDrawElements(GL_LINES, ib.GetCount(), GL_UNSIGNED_INT, nullptr);
 	}
 
-	void Renderer::drawShape(Entity& entity)
+	void Renderer::DrawShape(Entity& entity)
 	{
-		auto body = entity.getComponent<Rigidbody>();
-		auto shape = body.getCollisionShape();
-		auto shapeType = body.getShapeType();
+		auto body = entity.GetComponent<Rigidbody>();
+		auto shape = body.GetCollisionShape();
+		auto shapeType = body.GetShapeType();
 		// Box 
 		if (shapeType == BOX_SHAPE_PROXYTYPE)
 		{
 			const btBoxShape* box = static_cast<const btBoxShape*>(shape);
 			btVector3 halfSize = box->getHalfExtentsWithMargin();
-			drawBox(halfSize);
+			DrawCube(halfSize);
 		}
 	}
 
-	void Renderer::onWindowResize(uint16_t width, uint16_t height)
+	void Renderer::OnWindowResize(uint16_t width, uint16_t height)
 	{
 		glViewport(0, 0, width, height);
 	}
 
-	void Renderer::setDrawMode(LK_DRAW_MODE drawMode)
+	void Renderer::SetDrawMode(LK_DRAW_MODE drawMode)
 	{
 		s_DrawMode = drawMode;
 	}

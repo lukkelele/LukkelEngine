@@ -9,7 +9,7 @@ namespace LukkelEngine {
 	public:
 		MotionState(const btTransform &transform) : btDefaultMotionState(transform) {}
 
-		void getWorldTransformOpenGL(btScalar* transform) {
+		void GetWorldTransformOpenGL(btScalar* transform) {
 			btTransform trans;
 			getWorldTransform(trans);
 			trans.getOpenGLMatrix(transform);

@@ -3,7 +3,7 @@
 
 namespace LukkelEngine::Utils::File {
 
-	bool readFile(std::string file, std::string& fileContents, bool addLineTerminator) {
+	bool ReadFile(std::string file, std::string& fileContents, bool addLineTerminator) {
 		std::ifstream f(file);
 		std::string currentLine;
 		std::string allFileContent;
@@ -24,7 +24,7 @@ namespace LukkelEngine::Utils::File {
 		}
 	}
 
-	long getLastModificationTime(std::string file) {
+	long GetLastModificationTime(std::string file) {
 		struct stat fileInfo;
 		stat(file.c_str(), &fileInfo);
 		return fileInfo.st_mtime;

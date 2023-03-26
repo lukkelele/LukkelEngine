@@ -14,7 +14,7 @@ namespace LukkelEngine {
 		{
 		}
 
-		void TestClearColor::onUpdate(float deltaTime)
+		void TestClearColor::OnUpdate(float deltaTime)
 		{
 		}
 
@@ -24,7 +24,7 @@ namespace LukkelEngine {
 			GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 		}
 
-		void TestClearColor::onImGuiRender()
+		void TestClearColor::OnImGuiRender()
 		{
 			ImGui::ColorEdit4("Clear Color", m_clearColor);
 		}

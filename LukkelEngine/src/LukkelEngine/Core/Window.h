@@ -24,20 +24,21 @@ namespace LukkelEngine {
 
 		using EventCallbackFn = std::function<void(Event&)>;
 
-		virtual void onUpdate() = 0;
-		virtual uint16_t getWidth() = 0;
-		virtual uint16_t getHeight() = 0;
+		virtual void OnUpdate() = 0;
+		virtual uint16_t GetWidth() = 0;
+		virtual uint16_t GetHeight() = 0;
 
 		// virtual void setInputLock(bool enabled = true) = 0;
-		virtual void setVSync(bool enabled) = 0;
-		virtual bool isVSync() const = 0;
+		virtual void SetVSync(bool enabled) = 0;
+		virtual bool IsVSync() const = 0;
 
-		virtual GLFWwindow* getWindow() const = 0;
-		static s_ptr<Window> create(WindowProps& props = WindowProps());
+		virtual GLFWwindow* GetWindow() const = 0;
+		static s_ptr<Window> Create(WindowProps& props = WindowProps());
 
 		/* Static for platform independent window creation */
-		virtual void setEventCallback(const EventCallbackFn& callback) = 0;
+		virtual void SetEventCallback(const EventCallbackFn& callback) = 0;
 
+	protected:
 		float m_ViewportWidth, m_ViewportHeight;
 	};
 }

@@ -16,14 +16,14 @@ namespace LukkelEngine {
 
 		VertexBufferLayout layout;
 		for (int num : vertbufLayout)
-			layout.push<float>(num);
-		m_VAO->addBuffer(*m_VBO, layout);
+			layout.Push<float>(num);
+		m_VAO->AddBuffer(*m_VBO, layout);
 	}
 
-	void Mesh::bind()
+	void Mesh::Bind()
 	{
-		m_VAO->bind();
-		m_IBO->bind();
+		m_VAO->Bind();
+		m_IBO->Bind();
 	}
 
 }

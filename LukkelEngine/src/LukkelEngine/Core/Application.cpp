@@ -9,13 +9,13 @@ namespace LukkelEngine {
 	{
 		s_Instance = this;
 		Renderer::s_DrawMode = LK_DRAW_TRIANGLES;
-		LukkeLog::init("LukkelEngine.log", "App", "Client");
+		LukkeLog::Init("LukkelEngine.log", "App", "Client");
 		LKLOG_TRACE("Starting application");
 
 		WindowProps properties = WindowProps(details.title, details.width, details.height);
-		m_Window = Window::create(properties);
-		m_ImGuiLayer = new ImGuiLayer(m_Window->getWindow());
-		m_Window->setEventCallback(LK_BIND_EVENT_FN(Application::onEvent));
+		m_Window = Window::Create(properties);
+		m_ImGuiLayer = new ImGuiLayer(m_Window->GetWindow());
+		m_Window->SetEventCallback(LK_BIND_EVENT_FN(Application::OnEvent));
 
 		m_Timer; // Start the timer
 	}
@@ -27,69 +27,69 @@ namespace LukkelEngine {
 	}
 
 	// TODO: Need close event on window to change boolean member
-	void Application::run()
+	void Application::Run()
 	{
 		// while (m_Running)
-		while (!glfwWindowShouldClose(m_Window->getWindow()))
+		while (!glfwWindowShouldClose(m_Window->GetWindow()))
 		{
 			float deltaTime = m_Timer.getDeltaTime();
-			onUpdate(deltaTime);
+			OnUpdate(deltaTime);
 		}
 	}
 
-	void Application::onUpdate(float ts)
+	void Application::OnUpdate(float ts)
 	{
-		m_Renderer->clear();
+		m_Renderer->Clear();
 
-		for (auto it = m_LayerStack.rbegin(); it != m_LayerStack.rend(); ++it) 
+		for (auto it = m_LayerStack.rBegin(); it != m_LayerStack.rEnd(); ++it) 
 		{
 			Layer* currentLayer = *it;
-			currentLayer->onUpdate(ts);
+			currentLayer->OnUpdate(ts);
 		}
 
 		// Update ImGui
-		m_ImGuiLayer->beginFrame();
-		for (auto it = m_LayerStack.rbegin(); it != m_LayerStack.rend(); ++it) 
+		m_ImGuiLayer->BeginFrame();
+		for (auto it = m_LayerStack.rBegin(); it != m_LayerStack.rEnd(); ++it) 
 		{
 			Layer* currentLayer = *it;
-			currentLayer->onImGuiRender();
+			currentLayer->OnImGuiRender();
 		}
-		m_ImGuiLayer->endFrame();
+		m_ImGuiLayer->EndFrame();
 
-		m_Window->onUpdate();
+		m_Window->OnUpdate();
 	}
 
-	void Application::pushLayer(Layer* layer)
+	void Application::PushLayer(Layer* layer)
 	{
-		LKLOG_INFO("Pushing layer -> {0}", layer->getName());
-		m_LayerStack.pushLayer(layer);
-		layer->onAttach();
+		LKLOG_INFO("Pushing layer -> {0}", layer->GetName());
+		m_LayerStack.PushLayer(layer);
+		layer->OnAttach();
 	}
 
-	void Application::pushOverlay(Layer* layer)
+	void Application::PushOverlay(Layer* layer)
 	{
-		LKLOG_INFO("Pushing overlay -> {0}", layer->getName());
-		m_LayerStack.pushOverlay(layer);
-		layer->onAttach();
+		LKLOG_INFO("Pushing overlay -> {0}", layer->GetName());
+		m_LayerStack.PushOverlay(layer);
+		layer->OnAttach();
 	}
 
-	void Application::popLayer(Layer* layer)
+	void Application::PopLayer(Layer* layer)
 	{
-		m_LayerStack.popLayer(layer);
-		layer->onDetach();
+		m_LayerStack.PopLayer(layer);
+		layer->OnDetach();
 	}
 
-	void Application::popOverlay(Layer* layer)
+	void Application::PopOverlay(Layer* layer)
 	{
-		m_LayerStack.popOverlay(layer);
-		layer->onDetach();
+		m_LayerStack.PopOverlay(layer);
+		layer->OnDetach();
 	}
 
-	void Application::onEvent(Event& e)
+	void Application::OnEvent(Event& e)
 	{
 	}
 
-	void Application::resizeWindow(uint16_t width, uint16_t height)
+	void Application::ResizeWindow(uint16_t width, uint16_t height)
 	{
 		glViewport(0, 0, width, height);
 	}

@@ -10,7 +10,7 @@ namespace LukkelEngine {
 
 		}
 
-		void TestMenu::onImGuiRender()
+		void TestMenu::OnImGuiRender()
 		{
 			for (auto& test : m_tests)
 			{

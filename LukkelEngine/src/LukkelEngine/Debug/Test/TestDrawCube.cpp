@@ -46,8 +46,8 @@ namespace LukkelEngine {
 			m_VBO = std::make_unique<VertexBuffer>(cube, countCubeVertices * sizeof(float));
 			m_IBO = std::make_unique<IndexBuffer>(cubeIndices, 50 * sizeof(float));
 			VertexBufferLayout layout;
-			layout.push<float>(3);
-			m_VAO->addBuffer(*m_VBO, layout);
+			layout.Push<float>(3);
+			m_VAO->AddBuffer(*m_VBO, layout);
 
 			m_Shader = std::make_unique<Shader>("assets/shaders/default3D.shader");
 		}
@@ -56,16 +56,16 @@ namespace LukkelEngine {
 		{
 		}
 
-		void TestDrawCube::onUpdate(float deltaTime)
+		void TestDrawCube::OnUpdate(float deltaTime)
 		{
 		}
 
 		void TestDrawCube::onRender()
 		{
-			m_Renderer->draw(*m_VAO, *m_IBO, *m_Shader);
+			m_Renderer->Draw(*m_VAO, *m_IBO, *m_Shader);
 		}
 
-		void TestDrawCube::onImGuiRender()
+		void TestDrawCube::OnImGuiRender()
 		{
 		}
 

@@ -42,26 +42,26 @@ namespace LukkelEngine {
 			INFO, TRACE, WARN, ERR, CRITICAL
 		};
 
-		static void init(std::string logfileName = "LukkeLog.log",
+		static void Init(std::string logfileName = "LukkeLog.log",
 						 std::string coreLoggerName = "CORE",
 						 std::string clientLoggerName = "CLIENT");
 
-		static std::shared_ptr<spdlog::logger>& getCoreLogger() { return s_CoreLogger; }
-		static std::shared_ptr<spdlog::logger>& getClientLogger() { return s_ClientLogger; }
+		static std::shared_ptr<spdlog::logger>& GetCoreLogger() { return s_CoreLogger; }
+		static std::shared_ptr<spdlog::logger>& GetClientLogger() { return s_ClientLogger; }
 
-		static void printVec3(glm::vec3& vector);
+		static void PrintVec3(glm::vec3& vector);
 
 		template<typename... ARGS>
-		static void printMessage(LK_ASSERT_LEVEL level, ARGS&&... args);
+		static void PrintMessage(LK_ASSERT_LEVEL level, ARGS&&... args);
 
 
 	};
 
 	// FIXME: fmt::v9::format error when trying to parse passed __VA_ARGS__
 	template<typename... ARGS>
-	void LukkeLog::printMessage(LK_ASSERT_LEVEL level, ARGS&&... args)
+	void LukkeLog::PrintMessage(LK_ASSERT_LEVEL level, ARGS&&... args)
 	{
-		auto logger = getCoreLogger();
+		auto logger = GetCoreLogger();
 		// auto str = fmt::format(std::forward<ARGS>(args)...);
 		switch (level)
 		{
@@ -78,18 +78,18 @@ namespace LukkelEngine {
 }
 
 /* Core log macros */
-#define LKLOG_INFO(...)    				::LukkelEngine::LukkeLog::getCoreLogger()->trace(__VA_ARGS__)
-#define LKLOG_TRACE(...)     			::LukkelEngine::LukkeLog::getCoreLogger()->debug(__VA_ARGS__)
-#define LKLOG_WARN(...)     			::LukkelEngine::LukkeLog::getCoreLogger()->warn(__VA_ARGS__)
-#define LKLOG_ERROR(...)    			::LukkelEngine::LukkeLog::getCoreLogger()->error(__VA_ARGS__)
-#define LKLOG_CRITICAL(...) 			::LukkelEngine::LukkeLog::getCoreLogger()->critical(__VA_ARGS__)
+#define LKLOG_INFO(...)    				::LukkelEngine::LukkeLog::GetCoreLogger()->trace(__VA_ARGS__)
+#define LKLOG_TRACE(...)     			::LukkelEngine::LukkeLog::GetCoreLogger()->debug(__VA_ARGS__)
+#define LKLOG_WARN(...)     			::LukkelEngine::LukkeLog::GetCoreLogger()->warn(__VA_ARGS__)
+#define LKLOG_ERROR(...)    			::LukkelEngine::LukkeLog::GetCoreLogger()->error(__VA_ARGS__)
+#define LKLOG_CRITICAL(...) 			::LukkelEngine::LukkeLog::GetCoreLogger()->critical(__VA_ARGS__)
 
 /* Client log macros */
-#define LKLOG_CLIENT_INFO(...)			::LukkelEngine::LukkeLog::getClientLogger()->trace(__VA_ARGS__)
-#define LKLOG_CLIENT_TRACE(...)         ::LukkelEngine::LukkeLog::getClientLogger()->debug(__VA_ARGS__)
-#define LKLOG_CLIENT_WARN(...)          ::LukkelEngine::LukkeLog::getClientLogger()->warn(__VA_ARGS__)
-#define LKLOG_CLIENT_ERROR(...)         ::LukkelEngine::LukkeLog::getClientLogger()->error(__VA_ARGS__)
-#define LKLOG_CLIENT_CRITICAL(...)      ::LukkelEngine::LukkeLog::getClientLogger()->critical(__VA_ARGS__)
+#define LKLOG_CLIENT_INFO(...)			::LukkelEngine::LukkeLog::GetClientLogger()->trace(__VA_ARGS__)
+#define LKLOG_CLIENT_TRACE(...)         ::LukkelEngine::LukkeLog::GetClientLogger()->debug(__VA_ARGS__)
+#define LKLOG_CLIENT_WARN(...)          ::LukkelEngine::LukkeLog::GetClientLogger()->warn(__VA_ARGS__)
+#define LKLOG_CLIENT_ERROR(...)         ::LukkelEngine::LukkeLog::GetClientLogger()->error(__VA_ARGS__)
+#define LKLOG_CLIENT_CRITICAL(...)      ::LukkelEngine::LukkeLog::GetClientLogger()->critical(__VA_ARGS__)
 
 
 #endif /* _LUKKELOG_H */

@@ -13,7 +13,7 @@ namespace LukkelEngine {
 		FirstPerson::FirstPerson(FirstPersonProperties& props, Scene& scene)
 			: m_Props(props)
 		{
-			Entity entity = scene.createEntity(props.name);
+			Entity entity = scene.CreateEntity(props.name);
 		}
 
 	}

@@ -24,8 +24,8 @@
 #define LK_WORLD_GRAVITY_SLOWER  btVector3(0.0f, -1.5f, 0.0f)
 #define LK_WORLD_GRAVITY_SLOWEST btVector3(0.0f, -0.5f, 0.0f)
 #define LK_WORLD_GRAVITY_FAST    btVector3(0.0f, -18.0f, 0.0f)
-#define LK_WORLD_REGISTER_EVENT(x) World::getCurrentWorld().registerEvent(x)
-#define LK_WORLD_ENTITY_COUNT World::getCurrentWorld().getWorldEntityCount()
+#define LK_WORLD_REGISTER_EVENT(x) World::GetCurrentWorld().RegisterEvent(x)
+#define LK_WORLD_ENTITY_COUNT World::GetCurrentWorld().getWorldEntityCount()
 
 
 namespace LukkelEngine {
@@ -44,32 +44,32 @@ namespace LukkelEngine {
 		World();
 		~World();
 
-		void onUpdate(float ts);
-		void onEvent(Event& event);
-		void initPhysics(Scene* scene);
-		void shutdownPhysics();
-		void stepSimulation(float ts);
-		void pause(bool paused) { m_Paused = paused; };
-		void handleEvents();
-		void registerEvent(Event* event);
+		void OnUpdate(float ts);
+		void OnEvent(Event& event);
+		void InitPhysics(Scene* scene);
+		void ShutdownPhysics();
+		void StepSimulation(float ts);
+		void Pause(bool paused) { m_Paused = paused; };
+		void HandleEvents();
+		void RegisterEvent(Event* event);
 
 		template<typename T>
-		void addRigidbodyToWorld(T& rigidbody);
+		void AddRigidbodyToWorld(T& rigidbody);
 
-		bool pickBody(const Camera& camera, float distance);
-		void addConstraint(Constraint& constraint) { m_DynamicWorld->addConstraint(constraint.getConstraint()); }
-		void removeConstraint(Constraint& constraint) { m_DynamicWorld->removeConstraint(constraint.getConstraint()); }
-		void createPickingConstraint(float x, float y);
-		void removePickConstraint();
-		void checkCollisions();
+		bool PickBody(const Camera& camera, float distance);
+		void AddConstraint(Constraint& constraint) { m_DynamicWorld->addConstraint(constraint.getConstraint()); }
+		void RemoveConstraint(Constraint& constraint) { m_DynamicWorld->removeConstraint(constraint.getConstraint()); }
+		void CreatePickingConstraint(float x, float y);
+		void RemovePickConstraint();
+		void CheckCollisions();
 		uint64_t getWorldEntityCount() { return s_EntitiesInWorld; }
 
-		bool mouseButtonCallback(int button, int state, float x, float y);
-		bool mouseMoveCallback(float x, float y);
-		void resetMousePick();
+		bool MouseButtonCallback(int button, int state, float x, float y);
+		bool MouseMoveCallback(float x, float y);
+		void ResetMousePick();
 
-		static Entity& getEntity(Rigidbody& rigidbody);
-		static World& getCurrentWorld() { return *m_CurrentWorld; }
+		static Entity& GetEntity(Rigidbody& rigidbody);
+		static World& GetCurrentWorld() { return *m_CurrentWorld; }
 
 	private:
 		btDiscreteDynamicsWorld* m_DynamicWorld = nullptr;

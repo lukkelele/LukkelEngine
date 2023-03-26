@@ -23,7 +23,7 @@ namespace LukkelEngine::Geometry {
 		int getSectorCount() const { return m_SectorCount; }
 		int getStackCount() const { return m_StackCount; }
 		int getUpAxis() const { return m_UpAxis; }
-		void create(float radius, int sectorCount, int stackCount, bool smooth=true, int up=3);
+		void Create(float radius, int sectorCount, int stackCount, bool smooth=true, int up=3);
 		void setRadius(float radius);
 		void setSectorCount(int sectorCount);
 		void setStackCount(int stackCount);

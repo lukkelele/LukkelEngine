@@ -24,12 +24,12 @@ int main()
 
 	// This will later be added in application as a 'New' scene button or just loading an old one
 	s_ptr<Scene>scene = std::make_shared<Scene>();
-	app.setScene(scene);
+	app.SetScene(scene);
 
 	TestLayer layer;
-	app.pushLayer(&layer);
+	app.PushLayer(&layer);
 
-	app.run();
+	app.Run();
 
 	return 0;
 }

@@ -50,7 +50,7 @@ namespace LukkelEngine{
 		TransformComponent(const glm::vec3& translation)
 			: translation(translation) {}
 
-		glm::mat4 getTransform() const
+		glm::mat4 GetTransform() const
 		{
 			return glm::translate(glm::mat4(1.0f), translation)
 				 * glm::toMat4(rotation)

@@ -21,39 +21,39 @@ namespace LukkelEngine {
 		Camera(float FOV, float nearPlane, float farPlane);
 		virtual ~Camera() = default;
 
-		virtual void onUpdate(float ts) {}
-		virtual void onImGuiRender();
+		virtual void OnUpdate(float ts) {}
+		virtual void OnImGuiRender();
 
-		const glm::vec3& getPosition() const { return m_Position; }
-	    glm::mat4 getView() const { return m_View; }
-	    glm::mat4 getProjection() const { return m_Projection; }
-	    glm::mat4 getViewProjection() const { return m_ViewProjection; }
-		glm::quat getOrientation() const;
-		glm::vec3 getDirection();
-		glm::vec3 calculatePosition() const;
-		glm::mat4& getInverseViewProjection() { return m_InverseViewProjection; }
-		glm::vec3 getRightDirection() const;
-		glm::vec3 getForwardDirection() const;
-		glm::vec3 getUpDirection() const;
+		const glm::vec3& GetPosition() const { return m_Position; }
+	    glm::mat4 GetView() const { return m_View; }
+	    glm::mat4 GetProjection() const { return m_Projection; }
+	    glm::mat4 GetViewProjection() const { return m_ViewProjection; }
+		glm::quat GetOrientation() const;
+		glm::vec3 GetDirection();
+		glm::vec3 CalculatePosition() const;
+		glm::mat4& GetInverseViewProjection() { return m_InverseViewProjection; }
+		glm::vec3 GetRightDirection() const;
+		glm::vec3 GetForwardDirection() const;
+		glm::vec3 GetUpDirection() const;
 
-		const float getScreenWidth() const { return m_ViewportWidth; }
-		const float getScreenHeight() const { return m_ViewportHeight; }
+		const float GetScreenWidth() const { return m_ViewportWidth; }
+		const float GetScreenHeight() const { return m_ViewportHeight; }
 
-		float getFOV() const { return m_FOV; }
-		float getNearClip() const { return m_NearPlane; }
-		float getFarClip() const { return m_FarPlane; }
-		float getRotation() { return glm::radians(m_Rotation); }
+		float GetFOV() const { return m_FOV; }
+		float GetNearClip() const { return m_NearPlane; }
+		float GetFarClip() const { return m_FarPlane; }
+		float GetRotation() { return glm::radians(m_Rotation); }
 
-		void setPosition(glm::vec3& pos) { m_Position = pos; }
-		void setRotation(float rot) { m_Rotation = rot; }
-		void setFOV(float FOV) { m_FOV = FOV; updateProjection(); }
-		void setNearClip(float nearClip) { m_NearPlane = nearClip; }
-		void setFarClip(float farClip) { m_FarPlane = farClip; }
-		void setScene(Scene* scene) { m_Scene = scene; }
+		void SetPosition(glm::vec3& pos) { m_Position = pos; }
+		void SetRotation(float rot) { m_Rotation = rot; }
+		void SetFOV(float FOV) { m_FOV = FOV; UpdateProjection(); }
+		void SetNearClip(float nearClip) { m_NearPlane = nearClip; }
+		void SetFarClip(float farClip) { m_FarPlane = farClip; }
+		void SetScene(Scene* scene) { m_Scene = scene; }
 
-		void updateView();
-		void updateProjection();
-		void updateMousePosition();
+		void UpdateView();
+		void UpdateProjection();
+		void UpdateMousePosition();
 
 		bool hasMouseMoved;
 

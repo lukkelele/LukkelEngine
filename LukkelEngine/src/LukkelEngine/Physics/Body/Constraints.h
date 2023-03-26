@@ -24,12 +24,12 @@ namespace LukkelEngine {
 
 		virtual ~Constraint() = default;
 
-		virtual const char* getName() { return "Constraint"; };
+		virtual const char* GetName() { return "Constraint"; };
 
 		btTypedConstraint* getConstraint() const { return m_Constraint; }
-		Type getConstraintType() const { return m_ConstraintType; }
-		Rigidbody& getRigidbody() { return m_Rigidbody; }
-		UUID getID() const { return m_Rigidbody.getID(); }
+		Type GetConstraintType() const { return m_ConstraintType; }
+		Rigidbody& GetRigidbody() { return m_Rigidbody; }
+		UUID GetID() const { return m_Rigidbody.GetID(); }
 
 	protected:
 		Rigidbody m_Rigidbody;
@@ -46,12 +46,12 @@ namespace LukkelEngine {
 		{
 			btVector3 p(pivot.x, pivot.y, pivot.z);
 			m_Rigidbody = rigidbody;
-			m_Constraint = new btPoint2PointConstraint(*m_Rigidbody.getRigidbody(), p);
+			m_Constraint = new btPoint2PointConstraint(*m_Rigidbody.GetRigidbody(), p);
 			m_ConstraintType = Type::Pivot;
 		}
 		~PivotConstraint() { delete m_Constraint; }
 
-		const char* getName() override { return "Pivot"; }
+		const char* GetName() override { return "Pivot"; }
 
 	private:
 		glm::vec3 m_Pivot{0.0f, 0.0f, 0.0f};
@@ -69,7 +69,7 @@ namespace LukkelEngine {
 			btTransform p;
 			p.setIdentity();
 			p.setOrigin(btPivot);
-			btGeneric6DofConstraint* dof6 = new btGeneric6DofConstraint(*m_Rigidbody.getRigidbody(), p, referenceB);
+			btGeneric6DofConstraint* dof6 = new btGeneric6DofConstraint(*m_Rigidbody.GetRigidbody(), p, referenceB);
 
 			if (angularMotion)
 			{
@@ -96,7 +96,7 @@ namespace LukkelEngine {
 
 		~Dof6Constraint() { delete m_Constraint; }
 
-		const char* getName() override { return "Dof6"; }
+		const char* GetName() override { return "Dof6"; }
 	};
 
 }

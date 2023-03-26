@@ -186,7 +186,7 @@ namespace LukkelEngine::UI {
 			ImVec2 buttonSize = { lineHeight + 20.0f, lineHeight };
 
 			static int currentItemIndex = 0;
-			glm::vec4 currentColor = material.getMaterialColor();
+			glm::vec4 currentColor = material.GetMaterialColor();
 			std::string title = "Colors";
 
 			ImGui::PushID(title.c_str());
@@ -214,7 +214,7 @@ namespace LukkelEngine::UI {
 			ImGui::PushFont(boldFont);
 
 			if (ImGui::Button("Apply", buttonSize))
-				material.setMaterialColor(currentColor);
+				material.SetMaterialColor(currentColor);
 
 			ImGui::PopFont();
 			ImGui::PopStyleColor(1);

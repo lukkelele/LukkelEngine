@@ -54,8 +54,8 @@ namespace LukkelEngine {
 		EntityFactory() = default;
 		~EntityFactory() = default;
 
-		static void createCube(EntityProperties::Cube props);
-		static void createSphere(EntityProperties::Sphere props);
+		static void CreateCube(EntityProperties::Cube props);
+		static void CreateSphere(EntityProperties::Sphere props);
 	};
 
 }

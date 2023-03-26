@@ -24,9 +24,9 @@ namespace LukkelEngine {
 			std::unique_ptr<Shader> m_Shader;
 			std::unique_ptr<Renderer> m_Renderer;
 
-			void onUpdate(float deltaTime) override;
+			void OnUpdate(float deltaTime) override;
 			void onRender() override;
-			void onImGuiRender() override;
+			void OnImGuiRender() override;
 
 		private:
 		};

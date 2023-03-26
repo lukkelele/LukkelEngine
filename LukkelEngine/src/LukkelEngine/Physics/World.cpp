@@ -22,22 +22,22 @@ namespace LukkelEngine {
 
 	World::~World()
 	{
-		shutdownPhysics();
+		ShutdownPhysics();
 	}
 
-	void World::onUpdate(float ts)
+	void World::OnUpdate(float ts)
 	{
-		handleEvents();
+		HandleEvents();
 		if (!m_Paused)
 		{
-			checkCollisions();
+			CheckCollisions();
 			m_DynamicWorld->stepSimulation(ts);
 			m_DynamicWorld->updateAabbs();
 			m_DynamicWorld->computeOverlappingPairs();
 		}
 	}
 
-	void World::initPhysics(Scene* scene)
+	void World::InitPhysics(Scene* scene)
 	{
 		m_BroadphaseInterface = new btDbvtBroadphase();
 		m_CollisionConfig = new btDefaultCollisionConfiguration();
@@ -53,11 +53,11 @@ namespace LukkelEngine {
 		m_CurrentWorld = this;
 	}
 
-	void World::handleEvents()
+	void World::HandleEvents()
 	{
 		for (auto& event : m_Events)
 		{
-			bool handled = event->handleEvent();
+			bool handled = event->HandleEvent();
 			if (handled) 
 			{
 				auto it = std::find(m_Events.begin(), m_Events.end(), event);
@@ -68,11 +68,11 @@ namespace LukkelEngine {
 		}
 	}
 
-	void World::onEvent(Event& event)
+	void World::OnEvent(Event& event)
 	{
 	}
 
-	void World::shutdownPhysics()
+	void World::ShutdownPhysics()
 	{
 		delete m_DynamicWorld;
 		delete m_BroadphaseInterface;
@@ -81,7 +81,7 @@ namespace LukkelEngine {
 		delete m_SequentialConstraintSolver;
 	}
 
-	bool World::pickBody(const Camera& camera, float distance)
+	bool World::PickBody(const Camera& camera, float distance)
 	{
 		// Cast ray
 		auto [rayFrom, rayDir] = CollisionDetector::Raycast(camera);
@@ -133,37 +133,37 @@ namespace LukkelEngine {
 		}
 	}
 
-	void World::stepSimulation(float ts)
+	void World::StepSimulation(float ts)
 	{
 		m_DynamicWorld->stepSimulation(ts);
 	}
 
-	void World::registerEvent(Event* event)
+	void World::RegisterEvent(Event* event)
 	{
-		LKLOG_INFO("Registering event {0}", event->getName());
+		LKLOG_INFO("Registering event {0}", event->GetName());
 		m_Events.push_back(event);
 	}
 
 	template<typename T>
-	void World::addRigidbodyToWorld(T& rigidbody)
+	void World::AddRigidbodyToWorld(T& rigidbody)
 	{ 
 	}
 		template<>
-		void World::addRigidbodyToWorld<btRigidBody*>(btRigidBody*& rigidbody)
+		void World::AddRigidbodyToWorld<btRigidBody*>(btRigidBody*& rigidbody)
 		{
 			m_DynamicWorld->addRigidBody(rigidbody);
 			s_EntitiesInWorld++;
 		}
 
 		template<>
-		void World::addRigidbodyToWorld<Rigidbody>(Rigidbody& rigidbody)
+		void World::AddRigidbodyToWorld<Rigidbody>(Rigidbody& rigidbody)
 		{
-			m_DynamicWorld->addRigidBody(rigidbody.getRigidbody());
+			m_DynamicWorld->addRigidBody(rigidbody.GetRigidbody());
 			s_EntitiesInWorld++;
 		}
 
 
-	void World::removePickConstraint()
+	void World::RemovePickConstraint()
 	{
 		if (m_PickedConstraint)
 		{
@@ -177,24 +177,24 @@ namespace LukkelEngine {
 		}
 	}
 
-	void World::resetMousePick()
+	void World::ResetMousePick()
 	{
 		m_PickedBody = nullptr;
 		m_PickedEntity = {};
 		EditorLayer::m_SelectedEntity = {};
 	}
 
-	bool World::mouseButtonCallback(int button, int state, float x, float y)
+	bool World::MouseButtonCallback(int button, int state, float x, float y)
 	{
 		float distance = 800.0f;
 		if (state == 1)
 		{
 			if (button == 0)
 			{
-				bool bodyIsPicked = pickBody(*m_Scene->getCamera(), distance);
+				bool bodyIsPicked = PickBody(*m_Scene->getCamera(), distance);
 				if (bodyIsPicked)
 				{
-					LKLOG_CRITICAL("Body picked -> {0}", m_PickedEntity.getName());
+					LKLOG_CRITICAL("Body picked -> {0}", m_PickedEntity.GetName());
 				}
 			}
 		}
@@ -202,16 +202,16 @@ namespace LukkelEngine {
 		return false;
 	}
 
-	bool World::mouseMoveCallback(float x, float y)
+	bool World::MouseMoveCallback(float x, float y)
 	{
 		return false;
 	}
 
-	void World::createPickingConstraint(float x, float y)
+	void World::CreatePickingConstraint(float x, float y)
 	{
 	}
 
-	void World::checkCollisions()
+	void World::CheckCollisions()
 	{
 		CollisionPairs collisionPairs;
 
@@ -240,7 +240,7 @@ namespace LukkelEngine {
 					// If the collision pair is only found at the last insertion, then it is a new collision
 					// COLLISION EVENT
 					if (m_LastCollisionPairs.find(pair) == m_LastCollisionPairs.end())
-						registerEvent(new CollisionEvent(pair.first, pair.second));
+						RegisterEvent(new CollisionEvent(pair.first, pair.second));
 				}
 			}
 
@@ -253,17 +253,17 @@ namespace LukkelEngine {
 			// Iterate through removed pairs and trigger separation events
 			// SEPARATION EVENT
 			for (CollisionPairs::const_iterator iter = removedPairs.begin(); iter != removedPairs.end(); ++iter)
-				registerEvent(new SeparationEvent((const btRigidBody*)iter->first, (const btRigidBody*)iter->second));
+				RegisterEvent(new SeparationEvent((const btRigidBody*)iter->first, (const btRigidBody*)iter->second));
 
 			m_LastCollisionPairs = collisionPairs;
 		}
 	}
 
 
-	Entity& World::getEntity(Rigidbody& rigidbody)
+	Entity& World::GetEntity(Rigidbody& rigidbody)
 	{
-		auto currentScene = Scene::getActiveScene();
-		Entity& entity = currentScene->getEntityWithUUID(rigidbody.getID());
+		auto currentScene = Scene::GetActiveScene();
+		Entity& entity = currentScene->getEntityWithUUID(rigidbody.GetID());
 		return entity;
 	}
 

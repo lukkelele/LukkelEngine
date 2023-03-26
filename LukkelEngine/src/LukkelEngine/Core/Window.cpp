@@ -9,7 +9,7 @@
 
 namespace LukkelEngine {
 
-	s_ptr<Window> Window::create(WindowProps& props)
+	s_ptr<Window> Window::Create(WindowProps& props)
 	{
 		#ifdef LK_PLATFORM_WINDOWS
 			return std::make_shared<Windows_Window>(props);

@@ -16,17 +16,16 @@ namespace LukkelEngine {
 		GLCall(glDeleteBuffers(1, &m_Count));
 	}
 
-	void VertexBuffer::bind() const
+	void VertexBuffer::Bind() const
 	{
 		GLCall(glBindBuffer(GL_ARRAY_BUFFER, m_Count));
 
 	}
 
-	void VertexBuffer::unbind() const
+	void VertexBuffer::Unbind() const
 	{
 		GLCall(glBindBuffer(GL_ARRAY_BUFFER, 0));
 
 	}
-
 
 }

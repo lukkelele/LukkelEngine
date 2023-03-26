@@ -22,10 +22,10 @@ namespace LukkelEngine {
 		~Debugger() = default;
 
 		template<typename T>
-		static void printVec2(T vector, const std::string = "");
+		static void PrintVec2(T vector, const std::string = "");
 
 		template<typename T>
-		static void printVec3(T vector, const std::string = "");
+		static void PrintVec3(T vector, const std::string = "");
 	};
 
 }

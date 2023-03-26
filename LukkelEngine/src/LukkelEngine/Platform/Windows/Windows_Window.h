@@ -9,17 +9,17 @@ namespace LukkelEngine {
 		Windows_Window(WindowProps& properties);
 		virtual ~Windows_Window(); // virtual deconstructor for derived class
 
-		inline uint16_t getWidth() override { return m_Data.width; }
-		inline uint16_t getHeight() override { return m_Data.height; }
-		GLFWwindow* getWindow() const override;
+		inline uint16_t GetWidth() override { return m_Data.width; }
+		inline uint16_t GetHeight() override { return m_Data.height; }
+		GLFWwindow* GetWindow() const override;
 
-		void onUpdate() override;
-		void setEventCallback(const EventCallbackFn& callback) override { m_Data.eventCallback = callback; }
-		void setVSync(bool enabled) override;
-		bool isVSync() const override;
+		void OnUpdate() override;
+		void SetEventCallback(const EventCallbackFn& callback) override { m_Data.eventCallback = callback; }
+		void SetVSync(bool enabled) override;
+		bool IsVSync() const override;
 
-		void init(WindowProps& properties);
-		void exit();
+		void Init(WindowProps& properties);
+		void Exit();
 
 	// FIXME: set private 
 	public:
@@ -29,7 +29,7 @@ namespace LukkelEngine {
 		{
 			std::string title;
 			uint16_t width, height;
-			bool VSync;
+			bool vsync;
 			EventCallbackFn eventCallback;
 		};
 		WindowData m_Data;

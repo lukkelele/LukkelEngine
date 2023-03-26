@@ -16,13 +16,13 @@ namespace LukkelEngine {
 			Converter() = default;
 			~Converter() = default;
 
-			// float* convertVectorToFloatArray(const std::vector<glm::vec3>& vector)
-			static std::vector<float> convertVectorToFloatVector(const std::vector<Vertex>& vector);
-			static float* convertVectorToFloatArray(const std::vector<Vertex>& vector);
+			// float* ConvertVectorToFloatArray(const std::vector<glm::vec3>& vector)
+			static std::vector<float> ConvertVectorToFloatVector(const std::vector<Vertex>& vector);
+			static float* ConvertVectorToFloatArray(const std::vector<Vertex>& vector);
 
 		};
 
-		std::vector<float> Converter::convertVectorToFloatVector(const std::vector<Vertex>& vector)
+		std::vector<float> Converter::ConvertVectorToFloatVector(const std::vector<Vertex>& vector)
 		{
 			std::vector<float> floatVector;
 			for (const auto& v : vector)
@@ -34,7 +34,7 @@ namespace LukkelEngine {
 			return floatVector;
 		}
 
-		float* Converter::convertVectorToFloatArray(const std::vector<Vertex>& vector)
+		float* Converter::ConvertVectorToFloatArray(const std::vector<Vertex>& vector)
 		{
 			// Vertex is 15 elements total
 			const int numElements = vector.size() * ( 3 * 4 + 2);

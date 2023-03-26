@@ -19,12 +19,12 @@ namespace LukkelEngine {
 
 	std::pair<glm::vec3, glm::vec3> CollisionDetector::Raycast(const Camera& camera)
 	{
-		auto [mouseX, mouseY] = Mouse::getMousePosition();
+		auto [mouseX, mouseY] = Mouse::GetMousePosition();
 		auto& cam = camera;
-		auto screenWidth = cam.getScreenWidth();
-		auto screenHeight = cam.getScreenHeight();
-		auto projection = cam.getProjection();
-		auto view = cam.getView();
+		auto screenWidth = cam.GetScreenWidth();
+		auto screenHeight = cam.GetScreenHeight();
+		auto projection = cam.GetProjection();
+		auto view = cam.GetView();
 
 		// Lock the ray to the middle of the screen, need to fix the GLFW cursor pos 
 		mouseX = screenWidth / 2;

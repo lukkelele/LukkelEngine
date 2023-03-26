@@ -18,15 +18,15 @@ namespace LukkelEngine {
 		ImGuiLayer(GLFWwindow* window);
 		~ImGuiLayer() = default;
 
-		void onUpdate(float ts);
+		void OnUpdate(float ts);
 
-		void beginFrame();
-		void endFrame();
-		void beginViewport();
-		void endViewport();
+		void BeginFrame();
+		void EndFrame();
+		void BeginViewport();
+		void EndViewport();
 
-		void setDarkTheme();
-		void setLightTheme();
+		void SetDarkTheme();
+		void SetLightTheme();
 
 	private:
 		GLFWwindow* m_WindowContext = nullptr;

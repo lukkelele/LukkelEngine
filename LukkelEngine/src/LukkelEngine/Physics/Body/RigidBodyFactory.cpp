@@ -14,18 +14,19 @@ namespace LukkelEngine {
 												float friction, float restitution, glm::vec3 inertia)
 	{
 		Rigidbody rigidBody(shape, bodyType, dimensions, offset, mass, friction, restitution, inertia);
-		rigidBody.setID(id);
+		rigidBody.SetID(id);
 		rigidBody.m_Rigidbody->setUserIndex(id);
 		// Set up user pointer with the UUID to sync the entity id with the rigid body
+		// rigidBody.SetUserPointer((void*)((uint64_t)id)); // FIXME
 		rigidBody.m_Rigidbody->setUserPointer((void*)((uint64_t)id));
 		LKLOG_INFO("Rigidbody ID: {0}", id);
-		rigidBody.setCollisionFlags(bodyType);
+		rigidBody.SetCollisionFlags(bodyType);
 		return rigidBody;
 	}
 
-	void RigidbodyFactory::addPivotConstraint(Rigidbody& rigidbody, btVector3 pivot)
+	void RigidbodyFactory::AddPivotConstraint(Rigidbody& rigidbody, btVector3 pivot)
 	{
-		btTypedConstraint* p2p = new btPoint2PointConstraint(*rigidbody.getRigidbody(), pivot);
+		btTypedConstraint* p2p = new btPoint2PointConstraint(*rigidbody.GetRigidbody(), pivot);
 	}
 
 }

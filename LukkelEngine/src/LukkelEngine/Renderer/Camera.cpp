@@ -11,7 +11,7 @@ namespace LukkelEngine {
 		: m_FOV(FOV), m_NearPlane(nearPlane), m_FarPlane(farPlane)
 	{
 		LKLOG_INFO("FPS Camera created | FOV: {0}", m_FOV);
-		const glm::quat orientation = getOrientation();
+		const glm::quat orientation = GetOrientation();
 
 		m_Yaw = 3.0f * glm::pi<float>() / 4.0f;
 		m_Pitch = glm::pi<float>() / 4.0f;
@@ -21,60 +21,60 @@ namespace LukkelEngine {
 		m_ViewProjection = m_Projection * m_View;
 	}
 
-	glm::quat Camera::getOrientation() const
+	glm::quat Camera::GetOrientation() const
 	{
 		return glm::quat(glm::vec3(m_Pitch, m_Yaw, 0.0f));
 	}
 
-	void Camera::updateProjection()
+	void Camera::UpdateProjection()
 	{
 		m_Projection = glm::perspectiveFov(glm::radians(m_FOV), (float)m_ViewportWidth, (float)m_ViewportHeight, m_NearPlane, m_FarPlane);
 	}
 
-	void Camera::updateView()
+	void Camera::UpdateView()
 	{
 		m_View = glm::lookAt(m_Position, m_Position + m_ForwardDirection, glm::vec3(0.0f, 1.0f, 0.0f));
 	}
 
-	void Camera::updateMousePosition()
+	void Camera::UpdateMousePosition()
 	{
-		const glm::vec2& mousePos { Mouse::getMouseX(), Mouse::getMouseY() };
+		const glm::vec2& mousePos { Mouse::GetMouseX(), Mouse::GetMouseY() };
 		m_MouseDelta = (mousePos - m_MousePos);
 		m_MousePos = mousePos;
 
-		if (Keyboard::isKeyPressed(Key::Escape))
+		if (Keyboard::IsKeyPressed(Key::Escape))
 			m_MouseEnabled = false;
 	}
 
-	glm::vec3 Camera::getUpDirection() const
+	glm::vec3 Camera::GetUpDirection() const
 	{
-		return glm::rotate(getOrientation(), glm::vec3(0.0f, 1.0f, 0.0f));
+		return glm::rotate(GetOrientation(), glm::vec3(0.0f, 1.0f, 0.0f));
 	}
 
-	glm::vec3 Camera::getRightDirection() const
+	glm::vec3 Camera::GetRightDirection() const
 	{
-		return glm::rotate(getOrientation(), glm::vec3(1.0f, 0.0f, 0.0f));
+		return glm::rotate(GetOrientation(), glm::vec3(1.0f, 0.0f, 0.0f));
 	}
 
-	glm::vec3 Camera::getForwardDirection() const
+	glm::vec3 Camera::GetForwardDirection() const
 	{
-		return glm::rotate(getOrientation(), glm::vec3(0.0f, 0.0f, -1.0f));
+		return glm::rotate(GetOrientation(), glm::vec3(0.0f, 0.0f, -1.0f));
 	}
 
-	glm::vec3 Camera::getDirection()
+	glm::vec3 Camera::GetDirection()
 	{
-		glm::vec3 lookAt = m_Position + getForwardDirection();
+		glm::vec3 lookAt = m_Position + GetForwardDirection();
 		m_Direction = glm::normalize(lookAt - m_Position);
 		return m_Direction;
 	}
 
-	glm::vec3 Camera::calculatePosition() const
+	glm::vec3 Camera::CalculatePosition() const
 	{
-		return m_Origin - getForwardDirection() * m_Distance;
+		return m_Origin - GetForwardDirection() * m_Distance;
 	}
 
 	// Basic Camera settings
-	void Camera::onImGuiRender()
+	void Camera::OnImGuiRender()
 	{
 	 	 ImGui::Begin("Camera settings");
 
@@ -91,12 +91,12 @@ namespace LukkelEngine {
 
 		 // Sliders
 	 	 ImGui::SliderFloat("Camera speed", &m_TravelSpeed, 0.010f, 2.0f);
-		 float fov = getFOV();
+		 float fov = GetFOV();
 	 	 ImGui::SliderFloat("FOV", &fov, 40.0f, 105.0f);
-		 setFOV(fov);
-		 glm::vec3 pos = getPosition();
+		 SetFOV(fov);
+		 glm::vec3 pos = GetPosition();
 	 	 ImGui::SliderFloat3("Camera position", &pos.x, -50.0f, 50.0f);
-		 setPosition(pos);
+		 SetPosition(pos);
 
 		 ImGui::End();
 	}

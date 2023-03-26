@@ -25,7 +25,7 @@ namespace LukkelEngine {
 		m_Texture = create_s_ptr<Texture>(texturePath);
 	}
 
-	void Material::setMaterialColor(glm::vec4 color)
+	void Material::SetMaterialColor(glm::vec4 color)
 	{
 		if (color != m_Color)
 		{
@@ -34,37 +34,37 @@ namespace LukkelEngine {
 		}
 	}
 
-	void Material::setLastMaterialColor()
+	void Material::SetLastMaterialColor()
 	{
 		m_Color = m_CacheColor;
 	}
 
-	void Material::bind()
+	void Material::Bind()
 	{
-		if (m_Shader) m_Shader->bind();
-		if (m_Texture) m_Texture->bind();
+		if (m_Shader) m_Shader->Bind();
+		if (m_Texture) m_Texture->Bind();
 	}
 
-	void Material::unbind()
+	void Material::Unbind()
 	{
-		if (m_Shader) m_Shader->unbind();
-		if (m_Texture) m_Texture->unbind();
+		if (m_Shader) m_Shader->Unbind();
+		if (m_Texture) m_Texture->Unbind();
 	}
 
 	template<typename T>
-	void Material::set(const std::string& uniform, T& value)
+	void Material::Set(const std::string& uniform, T& value)
 	{
 	}
 		template<>
-		void Material::set(const std::string& uniform, glm::vec4& value)
+		void Material::Set(const std::string& uniform, glm::vec4& value)
 		{
-			m_Shader->setUniform4f(uniform, value.x, value.y, value.z, value.w);
+			m_Shader->SetUniform4f(uniform, value.x, value.y, value.z, value.w);
 		}
 
 		template<>
-		void Material::set(const std::string& uniform, glm::mat4& value)
+		void Material::Set(const std::string& uniform, glm::mat4& value)
 		{
-			m_Shader->setUniformMat4f(uniform, value);
+			m_Shader->SetUniformMat4f(uniform, value);
 		}
 
 }

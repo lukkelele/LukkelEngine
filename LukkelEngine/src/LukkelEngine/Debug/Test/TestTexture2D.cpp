@@ -31,10 +31,10 @@ namespace LukkelEngine {
 			m_VAO = std::make_unique<VertexArray>();
 			m_VertexBuffer = std::make_unique<VertexBuffer>(positions, 4*4* sizeof(float));
 			VertexBufferLayout layout;
-			layout.push<float>(2);
-			layout.push<float>(2);
+			layout.Push<float>(2);
+			layout.Push<float>(2);
 
-			m_VAO->addBuffer(*m_VertexBuffer, layout);
+			m_VAO->AddBuffer(*m_VertexBuffer, layout);
 			m_IBO = std::make_unique<IndexBuffer>(indices, 6);
 
 			// Shader creation
@@ -44,34 +44,34 @@ namespace LukkelEngine {
 
 		TestTexture2D::~TestTexture2D()
 		{
-			m_Shader->unbind();
+			m_Shader->Unbind();
 		}
 
-		void TestTexture2D::onUpdate(float deltaTime)
+		void TestTexture2D::OnUpdate(float deltaTime)
 		{
 		}
 
 		void TestTexture2D::onRender()
 		{
-			m_Texture->bind();
+			m_Texture->Bind();
 			{	// One operation
 				glm::mat4 model = glm::translate(glm::mat4(1.0f), m_TranslationA);
 				glm::mat4 mvp = m_Proj * m_View * model;
-				m_Shader->bind();
-				m_Shader->setUniformMat4f("u_MVP", mvp); // pass matrices here
-				m_Renderer->draw(*m_VAO, *m_IBO, *m_Shader);
+				m_Shader->Bind();
+				m_Shader->SetUniformMat4f("u_MVP", mvp); // pass matrices here
+				m_Renderer->Draw(*m_VAO, *m_IBO, *m_Shader);
 			}
 			{   // Second operation
 				glm::mat4 model = glm::translate(glm::mat4(1.0f), m_TranslationB);
 				glm::mat4 mvp = m_Proj * m_View * model;
-				m_Shader->bind();
-				m_Shader->setUniformMat4f("u_MVP", mvp); // pass matrices here
-				m_Renderer->draw(*m_VAO, *m_IBO, *m_Shader);
+				m_Shader->Bind();
+				m_Shader->SetUniformMat4f("u_MVP", mvp); // pass matrices here
+				m_Renderer->Draw(*m_VAO, *m_IBO, *m_Shader);
 			}
 
 		}
 
-		void TestTexture2D::onImGuiRender()
+		void TestTexture2D::OnImGuiRender()
 		{
 			/* Sliders and text */
 			ImGui::SliderFloat3("Translation A", &m_TranslationA.x, 0.0f, 960.0f); 

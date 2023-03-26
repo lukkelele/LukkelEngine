@@ -1,10 +1,10 @@
 #pragma once
-
 #include "LukkelEngine/Core/Base.h"
-#include <LukkelEngine/Core/LKErrorHandler.h>
+#include "LukkelEngine/Core/LKErrorHandler.h"
 #include "LukkelEngine/Renderer/VertexBuffer.h"
 #include "LukkelEngine/Renderer/VertexBufferLayout.h"
 #include "LukkelEngine/Renderer/IndexBuffer.h"
+
 
 namespace LukkelEngine {
 
@@ -20,11 +20,11 @@ namespace LukkelEngine {
 		VertexArray();
 		~VertexArray();
 
-		void bind() const;
-		void unbind() const;
-		void addBuffer(const VertexBuffer& vb, const VertexBufferLayout& layout);
-		std::vector<s_ptr<VertexBuffer>>& getVertexBuffers() { return m_VertexBuffers;  }
-		s_ptr<IndexBuffer>& getIndexBuffer() { return m_IndexBuffer; }
+		void Bind() const;
+		void Unbind() const;
+		void AddBuffer(const VertexBuffer& vb, const VertexBufferLayout& layout);
+		std::vector<s_ptr<VertexBuffer>>& GetVertexBuffers() { return m_VertexBuffers;  }
+		s_ptr<IndexBuffer>& GetIndexBuffer() { return m_IndexBuffer; }
 
 	};
 

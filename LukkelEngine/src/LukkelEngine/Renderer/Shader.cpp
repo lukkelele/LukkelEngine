@@ -6,15 +6,15 @@ namespace LukkelEngine {
 	Shader::Shader(const std::string& filePath)
 		: m_FilePath(filePath)   // keep for debug purposes
 	{
-		ShaderProgramSource source = parseShader(filePath);
-		m_RendererID = createShader(source.VertexSource, source.FragmentSource);
+		ShaderProgramSource source = ParseShader(filePath);
+		m_RendererID = CreateShader(source.VertexSource, source.FragmentSource);
 	}
 
 	Shader::Shader(const std::string& vertexPath, const std::string& fragmentPath)
 		: m_VertexPath(vertexPath), m_FragmentPath(fragmentPath)
 	{
-		ShaderProgramSource source = parseShaders(vertexPath, fragmentPath);
-		m_RendererID = createShader(source.VertexSource, source.FragmentSource);
+		ShaderProgramSource source = ParseShaders(vertexPath, fragmentPath);
+		m_RendererID = CreateShader(source.VertexSource, source.FragmentSource);
 	}
 
 	Shader::~Shader()
@@ -22,38 +22,38 @@ namespace LukkelEngine {
 		GLCall(glDeleteProgram(m_RendererID));	// successful if m_RendererID isn't 0
 	}
 
-	void Shader::bind() const
+	void Shader::Bind() const
 	{
 		GLCall(glUseProgram(m_RendererID));
 	}
 
-	void Shader::unbind() const
+	void Shader::Unbind() const
 	{
 		GLCall(glUseProgram(0));
 	}
 
-	void Shader::setUniform1i(const std::string& name, int value)
+	void Shader::SetUniform1i(const std::string& name, int value)
 	{
-		GLCall(glUniform1i(getUniformLocation(name), value));
+		GLCall(glUniform1i(GetUniformLocation(name), value));
 	}
 
-	void Shader::setUniform1f(const std::string& name, float value)
+	void Shader::SetUniform1f(const std::string& name, float value)
 	{
-		GLCall(glUniform1f(getUniformLocation(name), value));
+		GLCall(glUniform1f(GetUniformLocation(name), value));
 	}
 
-	void Shader::setUniform4f(const std::string& name, float v0, float v1, float v2, float v3)
+	void Shader::SetUniform4f(const std::string& name, float v0, float v1, float v2, float v3)
 	{
-		int location = getUniformLocation(name);
+		int location = GetUniformLocation(name);
 		GLCall(glUniform4f(location, v0, v1, v2, v3));
 	}
 
-	void Shader::setUniformMat4f(const std::string& name, const glm::mat4& matrix)
+	void Shader::SetUniformMat4f(const std::string& name, const glm::mat4& matrix)
 	{
-		GLCall(glUniformMatrix4fv(getUniformLocation(name), 1, GL_FALSE, &matrix[0][0]));
+		GLCall(glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, &matrix[0][0]));
 	}
 
-	int Shader::getUniformLocation(const std::string& name)
+	int Shader::GetUniformLocation(const std::string& name)
 	{
 		if (m_UniformLocationCache.find(name) != m_UniformLocationCache.end())
 			return m_UniformLocationCache[name];
@@ -66,11 +66,11 @@ namespace LukkelEngine {
 		return location;
 	}
 
-	unsigned int Shader::createShader(const std::string& vertexShader, const std::string& fragmentShader)
+	unsigned int Shader::CreateShader(const std::string& vertexShader, const std::string& fragmentShader)
 	{
 		unsigned int program = glCreateProgram();
-		unsigned int vs = compileShader(GL_VERTEX_SHADER, vertexShader);
-		unsigned int fs = compileShader(GL_FRAGMENT_SHADER, fragmentShader);
+		unsigned int vs = CompileShader(GL_VERTEX_SHADER, vertexShader);
+		unsigned int fs = CompileShader(GL_FRAGMENT_SHADER, fragmentShader);
 		
 		glAttachShader(program, vs);
 		glAttachShader(program, fs);
@@ -84,7 +84,7 @@ namespace LukkelEngine {
 		return program;
 	}
 
-	ShaderProgramSource Shader::parseShader(const std::string& filepath)
+	ShaderProgramSource Shader::ParseShader(const std::string& filepath)
 	{
 		enum class ShaderType
 		{
@@ -117,7 +117,7 @@ namespace LukkelEngine {
 		return { ss[0].str(), ss[1].str() };
 	}
 
-	ShaderProgramSource Shader::parseShaders(const std::string& vertexPath, const std::string& fragmentPath)
+	ShaderProgramSource Shader::ParseShaders(const std::string& vertexPath, const std::string& fragmentPath)
 	{
 		enum class ShaderType
 		{
@@ -146,7 +146,7 @@ namespace LukkelEngine {
 		return { ss[0].str(), ss[1].str() };
 	}
 
-	unsigned int Shader::compileShader(unsigned int type, const std::string& source)
+	unsigned int Shader::CompileShader(unsigned int type, const std::string& source)
 	{
 		unsigned int id = glCreateShader(type);
 		const char* src = source.c_str();   // &source[0] 

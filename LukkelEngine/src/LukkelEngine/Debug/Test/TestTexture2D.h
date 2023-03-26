@@ -22,9 +22,9 @@ namespace LukkelEngine {
 			TestTexture2D();
 			~TestTexture2D();
 
-			void onUpdate(float deltaTime) override;
+			void OnUpdate(float deltaTime) override;
 			void onRender() override;
-			void onImGuiRender() override;
+			void OnImGuiRender() override;
 
 		private:
 			std::unique_ptr<VertexArray> m_VAO;

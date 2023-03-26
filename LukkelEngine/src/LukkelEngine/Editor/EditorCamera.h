@@ -11,8 +11,8 @@ namespace LukkelEngine {
 		EditorCamera(float FOV, float nearPlane, float farPlane);
 		~EditorCamera() = default;
 
-		void onUpdate(float ts) override;
-		void onImGuiRender() override;
+		void OnUpdate(float ts) override;
+		void OnImGuiRender() override;
 
 	};
 

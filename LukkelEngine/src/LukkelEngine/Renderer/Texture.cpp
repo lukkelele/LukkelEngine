@@ -32,13 +32,13 @@ namespace LukkelEngine {
 		GLCall(glDeleteTextures(1, &m_RendererID));
 	}
 
-	void Texture::bind(unsigned int slot /*= 0*/) const
+	void Texture::Bind(unsigned int slot /*= 0*/) const
 	{
 		GLCall(glActiveTexture(GL_TEXTURE0 + slot));
 		GLCall(glBindTexture(GL_TEXTURE_2D, m_RendererID));
 	}
 
-	void Texture::unbind() const
+	void Texture::Unbind() const
 	{
 		GLCall(glBindTexture(GL_TEXTURE_2D, 0));
 	}

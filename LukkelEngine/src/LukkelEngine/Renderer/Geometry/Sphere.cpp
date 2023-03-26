@@ -10,7 +10,7 @@ namespace LukkelEngine::Geometry {
 	}
 
 
-	void Sphere::create(float radius, int sectors, int stacks, bool smooth, int up)
+	void Sphere::Create(float radius, int sectors, int stacks, bool smooth, int up)
 	{
 		if(radius > 0) 
 			this->m_Radius = radius;

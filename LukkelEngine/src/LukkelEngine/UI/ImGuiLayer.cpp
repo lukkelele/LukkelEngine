@@ -20,10 +20,10 @@ namespace LukkelEngine {
 		ImGui_ImplGlfw_InitForOpenGL(m_WindowContext, true);
 		ImGui_ImplOpenGL3_Init("#version 330");
 
-		setDarkTheme();
+		SetDarkTheme();
 	}
 
-	void ImGuiLayer::beginFrame()
+	void ImGuiLayer::BeginFrame()
 	{
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
@@ -31,20 +31,20 @@ namespace LukkelEngine {
 		ImGuizmo::BeginFrame();
 
 		// Viewport context
-		beginViewport();
+		BeginViewport();
 
 		// Sidebars
 		UI::SideBar(UI::Dir::LEFT, 450.0f);
 		UI::SideBar(UI::Dir::RIGHT, 360.0f);
 	}
 
-	void ImGuiLayer::endFrame()
+	void ImGuiLayer::EndFrame()
 	{
-		endViewport();
+		EndViewport();
 
 		ImGuiIO& io = ImGui::GetIO();
-		Application& app = Application::get();
-		io.DisplaySize = ImVec2((float)app.getViewportWidth(), (float)app.getViewportHeight());
+		Application& app = Application::Get();
+		io.DisplaySize = ImVec2((float)app.GetViewportWidth(), (float)app.GetViewportHeight());
 
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -58,7 +58,7 @@ namespace LukkelEngine {
 		}
 	}
 
-	void ImGuiLayer::beginViewport()
+	void ImGuiLayer::BeginViewport()
 	{
 		ImGuiTreeNodeFlags windowFlags = ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoDocking
 			| ImGuiWindowFlags_NoInputs | ImGuiWindowFlags_NoDecoration;
@@ -70,16 +70,16 @@ namespace LukkelEngine {
 		ImGui::Begin("Viewport", (bool*)true, windowFlags); // TODO: Change bool pointer to a state check for window active or not
 	}
 
-	void ImGuiLayer::endViewport()
+	void ImGuiLayer::EndViewport()
 	{
 		ImGui::End();
 	}
 
-	void ImGuiLayer::onUpdate(float ts)
+	void ImGuiLayer::OnUpdate(float ts)
 	{
 	}
 
-	void ImGuiLayer::setDarkTheme()
+	void ImGuiLayer::SetDarkTheme()
 	{
 		// Setup ImGui
 		ImGui::StyleColorsDark();

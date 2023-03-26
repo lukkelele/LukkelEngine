@@ -23,16 +23,16 @@ namespace LukkelEngine {
 		EditorLayer(s_ptr<Scene> scene);
 		~EditorLayer() = default;
 
-		void onImGuiRender();
-		void drawEntityNode(Entity entity);
-		void drawComponents(Entity entity);
-		void selectEntity(Entity& entity);
+		void OnImGuiRender();
+		void DrawEntityNode(Entity entity);
+		void DrawComponents(Entity entity);
+		void SelectEntity(Entity& entity);
 
 		template<typename T, typename UIFunction>
-		static void drawComponent(const std::string& name, Entity entity, UIFunction uiFunction);
+		static void DrawComponent(const std::string& name, Entity entity, UIFunction uiFunction);
 
 		template<typename T>
-		void displayAddComponentEntry(const std::string& entryName);
+		void DisplayAddComponentEntry(const std::string& entryName);
 
 	private:
 		s_ptr<Scene> m_Scene = nullptr;

@@ -5,7 +5,7 @@
 namespace LukkelEngine {
 
 	// TODO: Decide if to use the passed 'side' or just stick to -1.0 <-> 1.0 and scale accordingly
-	Mesh MeshFactory::createBox(glm::vec3& side)
+	Mesh MeshFactory::CreateCube(glm::vec3& side)
 	{
 		float vertices[9 * 8] = {
 			// Positions (x,y,z)  Texture coords     Color
@@ -47,7 +47,7 @@ namespace LukkelEngine {
 		return mesh;
 	}
 
-	Mesh MeshFactory::createSphere(float radius)
+	Mesh MeshFactory::CreateSphere(float radius)
 	{
 		 float vertices[9 * 8] = {
 			// Positions (x,y,z)  Texture coords     Color

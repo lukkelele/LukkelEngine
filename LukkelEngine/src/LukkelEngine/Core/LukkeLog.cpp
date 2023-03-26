@@ -6,7 +6,7 @@ namespace LukkelEngine {
 	std::shared_ptr<spdlog::logger> LukkeLog::s_CoreLogger;
 	std::shared_ptr<spdlog::logger> LukkeLog::s_ClientLogger;
 
-	void LukkeLog::init(std::string logfilename,
+	void LukkeLog::Init(std::string logfilename,
 		           std::string coreLoggerName,
 			       std::string clientLoggerName)
 	{

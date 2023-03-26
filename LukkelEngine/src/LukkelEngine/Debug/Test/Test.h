@@ -12,9 +12,9 @@ namespace LukkelEngine {
 			Test() {}
 			virtual ~Test() {}
 
-			virtual void onUpdate(float deltaTime) {}
+			virtual void OnUpdate(float deltaTime) {}
 			virtual void onRender() {}
-			virtual void onImGuiRender() {}
+			virtual void OnImGuiRender() {}
 		};
 
 
@@ -23,7 +23,7 @@ namespace LukkelEngine {
 		public:
 			TestMenu(Test*& currentTestPointer);
 
-			virtual void onImGuiRender() override;
+			virtual void OnImGuiRender() override;
 
 			template<typename T>
 			void registerTest(const std::string& name)

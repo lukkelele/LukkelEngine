@@ -19,44 +19,44 @@ namespace LukkelEngine {
 		Entity(const Entity& other) = default;
 		~Entity() {}
 
-		void onUpdate(float ts, glm::mat4 viewProj);
+		void OnUpdate(float ts, glm::mat4 viewProj);
 
 		template<typename T, typename... ARGS>
-		T& addComponent(ARGS&&... args)
+		T& AddComponent(ARGS&&... args)
 		{
 			T& component = m_Scene->m_Registry.emplace<T>(m_EntityHandle, std::forward<ARGS>(args)...);
-			m_Scene->onComponentAdded<T>(*this, component);
+			m_Scene->OnComponentAdded<T>(*this, component);
 			return component;
 		}
 
 		template<typename T>
-		bool hasComponent()
+		bool HasComponent()
 		{
 			return m_Scene->m_Registry.all_of<T>(m_EntityHandle);
 		}
 
 		template<typename T>
-		T& getComponent()
+		T& GetComponent()
 		{
-			if (hasComponent<T>())
+			if (HasComponent<T>())
 				return m_Scene->m_Registry.get<T>(m_EntityHandle);
 		}
 
 		template<typename T>
-		void removeComponent()
+		void RemoveComponent()
 		{
 			m_Scene->m_Registry.remove<T>(m_EntityHandle);
 		}
 
 		// template<typename T>
 		template<typename T, typename... ARGS>
-		void addExistingComponent(T) 
+		void AddExistingComponent(T) 
 		{
 			m_Scene->m_Registry.emplace<T>(m_EntityHandle, std::forward<ARGS>(args)...);
 		}
 
-		UUID getUUID() { return getComponent<IDComponent>().ID; }
-		const std::string& getName() { return getComponent<TagComponent>().tag; }
+		UUID getUUID() { return GetComponent<IDComponent>().ID; }
+		const std::string& GetName() { return GetComponent<TagComponent>().tag; }
 
 		operator bool() const { return m_EntityHandle != entt::null; }
 		operator entt::entity() const { return m_EntityHandle; }
@@ -64,14 +64,11 @@ namespace LukkelEngine {
 		bool operator==(const Entity& other) const { return m_EntityHandle == other.m_EntityHandle && m_Scene == other.m_Scene; }
 		bool operator!=(const Entity& other) const { return !(*this == other); }
 
-		void setScale(glm::vec3 scale) { m_Scale = scale; }
-		glm::vec3 getScale() const { return m_Scale; }
-
-		glm::vec3 m_Scale{ 1.0f, 1.0f, 1.0f };
+		// void SetScale(glm::vec3 scale) { m_Scale = scale; }
+		// glm::vec3 GetScale() const { return m_Scale; }
+		// glm::vec3 m_Scale{ 1.0f, 1.0f, 1.0f };
 
 		bool isSelected = false;
-		bool usePhysics = true;
-		bool isSynced = true;
 
 	private:
 		entt::entity m_EntityHandle{ entt::null };

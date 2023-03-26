@@ -14,8 +14,8 @@ namespace LukkelEngine {
 		}
 
 		operator float() const { return m_Time; }
-		float getSeconds() const { return m_Time; }
-		float getMilliSeconds() const { return m_Time * 1000.0f; }
+		float GetSeconds() const { return m_Time; }
+		float GetMilliSeconds() const { return m_Time * 1000.0f; }
 
 	private:
 		float m_Time;

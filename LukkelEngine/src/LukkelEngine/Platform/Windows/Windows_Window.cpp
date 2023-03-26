@@ -12,7 +12,7 @@ namespace LukkelEngine {
 	
 	Windows_Window::Windows_Window(WindowProps& props)
 	{
-		init(props);
+		Init(props);
 	}
 
 	Windows_Window::~Windows_Window()
@@ -20,7 +20,7 @@ namespace LukkelEngine {
 		glfwTerminate();
 	}
 
-	void Windows_Window::init(WindowProps& props)
+	void Windows_Window::Init(WindowProps& props)
 	{
 		glfwInit();
 		// Set core profile instead of compability one
@@ -54,7 +54,7 @@ namespace LukkelEngine {
 				GLFW_initialized = true;
 			}
 		}
-		setVSync(true);
+		SetVSync(true);
 		glEnable(GL_BLEND);
 		glEnable(GL_DEPTH_TEST);
 		glEnable(GL_LINE_SMOOTH);
@@ -75,33 +75,33 @@ namespace LukkelEngine {
 		glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	}
 		
-	void Windows_Window::exit()
+	void Windows_Window::Exit()
 	{
 		GLCall(glfwDestroyWindow(m_Window));
 	}
 
-	void Windows_Window::onUpdate()
+	void Windows_Window::OnUpdate()
 	{
 		GLCall(glfwPollEvents());
 		GLCall(glfwSwapBuffers(m_Window));
 	}
 
-	void Windows_Window::setVSync(bool enabled)
+	void Windows_Window::SetVSync(bool enabled)
 	{
 		if (enabled) {
 			glfwSwapInterval(1);
 		} else {
 			glfwSwapInterval(0);
 		}
-		m_Data.VSync = enabled;
+		m_Data.vsync = enabled;
 	}
 
-	bool Windows_Window::isVSync() const
+	bool Windows_Window::IsVSync() const
 	{
-		return m_Data.VSync;
+		return m_Data.vsync;
 	}
 
-	GLFWwindow* Windows_Window::getWindow() const { return m_Window; }
+	GLFWwindow* Windows_Window::GetWindow() const { return m_Window; }
 
 }
 

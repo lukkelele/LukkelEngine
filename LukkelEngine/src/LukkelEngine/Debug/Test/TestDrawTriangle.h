@@ -24,9 +24,9 @@ namespace LukkelEngine {
 			unsigned int m_FragmentShader;
 			unsigned int m_Shader;
 
-			void onUpdate(float deltaTime) override;
+			void OnUpdate(float deltaTime) override;
 			void onRender() override;
-			void onImGuiRender() override;
+			void OnImGuiRender() override;
 		};
 
 	}

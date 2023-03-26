@@ -11,7 +11,7 @@ namespace LukkelEngine {
 		unsigned int count;
 		unsigned char normalized;
 
-		static unsigned int getSizeOfType(unsigned int type)
+		static unsigned int GetSizeOfType(unsigned int type)
 		{
 			switch (type)
 			{
@@ -37,34 +37,34 @@ namespace LukkelEngine {
 
 
 		template<typename T>
-		void push(unsigned int count)
+		void Push(unsigned int count)
 		{
 			// static_assert(false); // FIXME
 		}
 
 		template<>
-		void push<float>(unsigned int count)
+		void Push<float>(unsigned int count)
 		{
 			m_Elements.push_back({GL_FLOAT , count, GL_FALSE});
-			m_Stride += count * VertexBufferElement::getSizeOfType(GL_FLOAT);
+			m_Stride += count * VertexBufferElement::GetSizeOfType(GL_FLOAT);
 		}
 
 		template<>
-		void push<unsigned int>(unsigned int count)
+		void Push<unsigned int>(unsigned int count)
 		{
 			m_Elements.push_back({GL_UNSIGNED_INT, count, GL_FALSE});
-			m_Stride += count * VertexBufferElement::getSizeOfType(GL_UNSIGNED_INT);
+			m_Stride += count * VertexBufferElement::GetSizeOfType(GL_UNSIGNED_INT);
 		}
 
 		template<>
-		void push<unsigned char>(unsigned int count)
+		void Push<unsigned char>(unsigned int count)
 		{
 			m_Elements.push_back({GL_UNSIGNED_BYTE, count, GL_TRUE});
-			m_Stride += count * VertexBufferElement::getSizeOfType(GL_UNSIGNED_BYTE);
+			m_Stride += count * VertexBufferElement::GetSizeOfType(GL_UNSIGNED_BYTE);
 		}
 
-		inline const std::vector<VertexBufferElement> getElements() const& { return m_Elements; }
-		inline unsigned int getStride() const { return m_Stride;  }
+		inline const std::vector<VertexBufferElement> GetElements() const& { return m_Elements; }
+		inline unsigned int GetStride() const { return m_Stride;  }
 	};
 
 }

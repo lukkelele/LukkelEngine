@@ -62,7 +62,7 @@ namespace LukkelEngine {
 
 		TestDrawTriangle::~TestDrawTriangle() {}
 
-		void TestDrawTriangle::onImGuiRender()
+		void TestDrawTriangle::OnImGuiRender()
 		{
 
 		}
@@ -76,7 +76,7 @@ namespace LukkelEngine {
 			glDrawArrays(GL_TRIANGLES, 0, 3);
 		}
 
-		void TestDrawTriangle::onUpdate(float deltaTime)
+		void TestDrawTriangle::OnUpdate(float deltaTime)
 		{
 
 		}

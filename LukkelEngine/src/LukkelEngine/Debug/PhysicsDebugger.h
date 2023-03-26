@@ -28,11 +28,11 @@ namespace LukkelEngine {
 		virtual void	drawContactPoint(const btVector3& PointOnB, const btVector3& normalOnB, btScalar distance, int lifeTime, const btVector3& color);
 		virtual void	draw3dText(const btVector3& location, const char* textString);
 		virtual void	setDebugMode(int debugMode);
-		virtual int		getDebugMode() const { return m_debugMode; }
+		virtual int		getDebugMode() const { return m_DebugMode; }
 		virtual void	reportErrorWarning(const char* warningString);
 
 	private:
-		int m_debugMode;
+		int m_DebugMode;
 	};
 
 }

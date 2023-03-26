@@ -17,7 +17,7 @@
 namespace LukkelEngine {
 
 	PhysicsDebugger::PhysicsDebugger()
-		:m_debugMode(0)
+		:m_DebugMode(0)
 	{
 	}
 
@@ -32,7 +32,7 @@ namespace LukkelEngine {
 		glm::vec4 colors = { result.x(), result.y(), result.z(), alpha };
 		glm::vec3 p0(from.x(), from.y(), from.z());
 		glm::vec3 p1(to.x(), to.y(), to.z());
-		Renderer::drawLine(p0, p1, colors);
+		Renderer::DrawLine(p0, p1, colors);
 	}
 
 	void PhysicsDebugger::drawSphere(const btVector3& p, btScalar radius, const btVector3& color)
@@ -46,7 +46,7 @@ namespace LukkelEngine {
 
 	void PhysicsDebugger::setDebugMode(int debugMode)
 	{
-		m_debugMode = debugMode;
+		m_DebugMode = debugMode;
 	}
 
 	void	PhysicsDebugger::draw3dText(const btVector3& location, const char* textString)

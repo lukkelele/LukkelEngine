@@ -60,7 +60,7 @@ namespace LukkelEngine::UI {
 		if (ImGui::BeginTable("Constraints", 2, constraintFlags))
 		{
 			// Column 0
-			auto constraints = rigidbody.getConstraints();
+			auto constraints = rigidbody.GetConstraints();
 			uint16_t placedConstraints = constraints.size();
 
 			ImGui::TableSetupColumn("Add", ImGuiTableColumnFlags_WidthFixed, 100.0f);
@@ -71,13 +71,13 @@ namespace LukkelEngine::UI {
 
 			// Buttons for different types of constraints
 			if (ImGui::Button("Pivot", ImVec2{ 0, 0 }))
-				rigidbody.addPivotConstraint(glm::vec3(0.5f, 0.5f, 0.0f));
+				rigidbody.AddPivotConstraint(glm::vec3(0.5f, 0.5f, 0.0f));
 
 			if (ImGui::Button("Hinge", ImVec2{ 0, 0 }))
 				LKLOG_TRACE("Clicked HINGE button");
 			
 			if (ImGui::Button("Dof6", ImVec2{ 0, 0 }))
-				rigidbody.addDof6Constraint(glm::vec3(0.5f, 0.5f, 0.0f));
+				rigidbody.AddDof6Constraint(glm::vec3(0.5f, 0.5f, 0.0f));
 
 
 			// Column 1
@@ -89,9 +89,9 @@ namespace LukkelEngine::UI {
 			for (auto& constraint : constraints)
 			{
 				char sbuf[40];
-				sprintf(sbuf, "DELETE %s ##%d", constraint->getName(), idx);
+				sprintf(sbuf, "DELETE %s ##%d", constraint->GetName(), idx);
 				if (ImGui::Button(sbuf, ImVec2{ 0, 0 }))
-					rigidbody.removeConstraint(constraint);
+					rigidbody.RemoveConstraint(constraint);
 				idx++;
 			}
 

@@ -1,8 +1,7 @@
-#ifndef _MOUSE_EVENT_H
-#define _MOUSE_EVENT_H
-
+#pragma once
 #include <LukkelEngine/Event/Event.h>
 #include <LukkelEngine/Input/MouseCodes.h>
+
 
 namespace LukkelEngine {
 
@@ -15,7 +14,7 @@ namespace LukkelEngine {
 		float getX() const { return m_MouseX; }
 		float getY() const { return m_MouseY; }
 
-		std::string toString() const override
+		std::string ToString() const override
 		{
 			std::stringstream ss;
 			ss << "MouseMovedEvent: " << m_MouseX << ", " << m_MouseY;
@@ -32,13 +31,13 @@ namespace LukkelEngine {
 		MouseScrolledEvent(const float xOffset, const float yOffset)
 			: m_XOffset(xOffset), m_YOffset(yOffset) {}
 
-		float getXOffset() const { return m_XOffset; }
-		float getYOffset() const { return m_YOffset; }
+		float GetXOffset() const { return m_XOffset; }
+		float GetYOffset() const { return m_YOffset; }
 
-		std::string toString() const override
+		std::string ToString() const override
 		{
 			std::stringstream ss;
-			ss << "MouseScrolledEvent: " << getXOffset() << ", " << getYOffset();
+			ss << "MouseScrolledEvent: " << GetXOffset() << ", " << GetYOffset();
 			return ss.str();
 		}
 
@@ -49,7 +48,7 @@ namespace LukkelEngine {
 	class MouseButtonEvent : public Event
 	{
 	public:
-		MouseCode getMouseButton() const { return m_Button; }
+		MouseCode GetMouseButton() const { return m_Button; }
 
 	protected:
 		MouseButtonEvent(const MouseCode button)
@@ -64,7 +63,7 @@ namespace LukkelEngine {
 		MouseButtonPressedEvent(const MouseCode button)
 			: MouseButtonEvent(button) {}
 
-		std::string toString() const override
+		std::string ToString() const override
 		{
 			std::stringstream ss;
 			ss << "MouseButtonPressedEvent: " << m_Button;
@@ -79,7 +78,7 @@ namespace LukkelEngine {
 		MouseButtonReleasedEvent(const MouseCode button)
 			: MouseButtonEvent(button) {}
 
-		std::string toString() const override
+		std::string ToString() const override
 		{
 			std::stringstream ss;
 			ss << "MouseButtonReleasedEvent: " << m_Button;
@@ -88,5 +87,3 @@ namespace LukkelEngine {
 	};
 
 }
-
-#endif /* _MOUSE_EVENT_H */

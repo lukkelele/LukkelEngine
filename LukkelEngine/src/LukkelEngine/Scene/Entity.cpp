@@ -10,30 +10,30 @@ namespace LukkelEngine {
 	 {
 	 }
 
-	void Entity::onUpdate(float ts, glm::mat4 viewProj)
+	void Entity::OnUpdate(float ts, glm::mat4 viewProj)
 	{
 		// Get updates from rigidbody
-		if (hasComponent<Rigidbody>())
+		if (HasComponent<Rigidbody>())
 		{
 			// if the entity has a rigidbody, sync the body with the transform component
-			Rigidbody& rigidbody = getComponent<Rigidbody>();
-			TransformComponent& transformComponent = getComponent<TransformComponent>();
+			Rigidbody& rigidbody = GetComponent<Rigidbody>();
+			TransformComponent& transformComponent = GetComponent<TransformComponent>();
 
-			auto [pos, rot] = rigidbody.getPosAndRotation();
-			glm::vec3 dimensions = rigidbody.getDimensions();
+			auto [pos, rot] = rigidbody.GetPosAndRotation();
+			glm::vec3 dimensions = rigidbody.GetDimensions();
 
-			auto lv = rigidbody.getLinearVelocity();
+			auto lv = rigidbody.GetLinearVelocity();
 
 			transformComponent.translation = pos;
 			transformComponent.rotation = rot;
 			transformComponent.scale = dimensions;
 
-			glm::mat4 model = transformComponent.getTransform();
-			Material& material = getComponent<Material>();
-			material.bind();
-			material.set("u_ViewProj", viewProj);
-			material.set("u_Model", model);
-			material.set("u_Color", material.getMaterialColor());
+			glm::mat4 model = transformComponent.GetTransform();
+			Material& material = GetComponent<Material>();
+			material.Bind();
+			material.Set("u_ViewProj", viewProj);
+			material.Set("u_Model", model);
+			material.Set("u_Color", material.GetMaterialColor());
 		}
 	}
 

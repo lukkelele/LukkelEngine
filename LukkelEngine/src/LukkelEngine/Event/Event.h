@@ -23,9 +23,9 @@ namespace LukkelEngine {
 
 		bool handled = false;
 
-		virtual EventType getEventType() const = 0;
-		virtual const char* getName() const = 0;
-		virtual std::string toString() const { return getName(); }
-		virtual bool handleEvent() = 0;
+		virtual EventType GetEventType() const = 0;
+		virtual const char* GetName() const = 0;
+		virtual std::string ToString() const { return GetName(); }
+		virtual bool HandleEvent() = 0;
 	};
 }

@@ -18,29 +18,29 @@ namespace LukkelEngine {
 	}
 
 	/* Adds buffer and configures appropriate layout */
-	void VertexArray::addBuffer(const VertexBuffer& vb, const VertexBufferLayout& layout)
+	void VertexArray::AddBuffer(const VertexBuffer& vb, const VertexBufferLayout& layout)
 	{ 
-		bind();
-		vb.bind();
-		const auto& elements = layout.getElements();
+		Bind();
+		vb.Bind();
+		const auto& elements = layout.GetElements();
 		unsigned int offset = 0;
 		for (unsigned int i = 0 ; i < elements.size(); i++) {
 			const auto& element = elements[i];
 			GLCall(glEnableVertexAttribArray(i));
 			GLCall(glVertexAttribPointer(i, element.count, element.type, element.normalized, 
-											layout.getStride(), (const void*) offset));
-			offset += element.count * VertexBufferElement::getSizeOfType(element.type);
+											layout.GetStride(), (const void*) offset));
+			offset += element.count * VertexBufferElement::GetSizeOfType(element.type);
 		}
 	}
 
 	/* Bind vertex array */
-	void VertexArray::bind() const
+	void VertexArray::Bind() const
 	{
 		GLCall(glBindVertexArray(m_RendererID));
 	}
 
 	/* Unbind vertex array */
-	void VertexArray::unbind() const
+	void VertexArray::Unbind() const
 	{
 		GLCall(glBindVertexArray(0));
 	}

@@ -12,10 +12,10 @@ TestLayer::TestLayer()
 {
 }
 
-void TestLayer::onAttach()
+void TestLayer::OnAttach()
 {
 	using namespace LukkelEngine;
-	m_Scene = Application::get().getScene();
+	m_Scene = Application::Get().GetScene();
 	m_EditorLayer = create_s_ptr<EditorLayer>(m_Scene);
 	
 	glm::vec3 boxDims{ 2.0f, 2.0f, 2.0f };
@@ -32,29 +32,29 @@ void TestLayer::onAttach()
 
 	EntityProperties::Sphere ballProps("Ball", Rigidbody::Type::DYNAMIC, 3.0f, groundOffset, 0.0f, Color::White);
 
-	EntityFactory::createCube(groundProps);
-	EntityFactory::createCube(cubeProps);
-	EntityFactory::createCube(smallerCubeProps);
+	EntityFactory::CreateCube(groundProps);
+	EntityFactory::CreateCube(cubeProps);
+	EntityFactory::CreateCube(smallerCubeProps);
 	// m_Scene->pause(true);
 }
 
-void TestLayer::onUpdate(float ts)
+void TestLayer::OnUpdate(float ts)
 {			
-	m_Scene->onUpdate(ts); // Fix the speed issue when using ts
+	m_Scene->OnUpdate(ts); // Fix the speed issue when using ts
 }
 
-void TestLayer::onImGuiRender()
+void TestLayer::OnImGuiRender()
 {
 	if (m_EditorLayer)
-		m_EditorLayer->onImGuiRender();
+		m_EditorLayer->OnImGuiRender();
 	if (m_Scene)
-		m_Scene->onImGuiRender();
+		m_Scene->OnImGuiRender();
 }
 
-void TestLayer::onEvent(LukkelEngine::Event& e)
+void TestLayer::OnEvent(LukkelEngine::Event& e)
 {
 }
 
-void TestLayer::onDetach()
+void TestLayer::OnDetach()
 {
 }

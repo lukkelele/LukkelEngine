@@ -28,17 +28,17 @@ namespace LukkelEngine {
 		Material(const std::string& vertexPath, const std::string& fragmentPath, const std::string& texturePath);
 		virtual ~Material() = default;
 
-		void bind();
-		void unbind();
-		s_ptr<Shader> getShader() const { return m_Shader; }
+		void Bind();
+		void Unbind();
+		s_ptr<Shader> GetShader() const { return m_Shader; }
 
-		glm::vec4 getMaterialColor() const { return m_Color; }
-		glm::vec4 getCachedMaterialColor() const { return m_CacheColor; }
-		void setMaterialColor(glm::vec4 color);
-		void setLastMaterialColor();
+		glm::vec4 GetMaterialColor() const { return m_Color; }
+		glm::vec4 GetCachedMaterialColor() const { return m_CacheColor; }
+		void SetMaterialColor(glm::vec4 color);
+		void SetLastMaterialColor();
 		
 		template<typename T>
-		void set(const std::string& uniform, T& value);
+		void Set(const std::string& uniform, T& value);
 
 	protected:
 		s_ptr<Shader> m_Shader = nullptr;

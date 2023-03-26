@@ -12,7 +12,7 @@ namespace LukkelEngine {
 	class RigidbodyEvent : public Event
 	{
 	public:
-		btRigidBody* getRigidbody() const { return m_Rigidbody; }
+		btRigidBody* GetRigidbody() const { return m_Rigidbody; }
 
 	protected:
 		btRigidBody* m_Rigidbody = nullptr;

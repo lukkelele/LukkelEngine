@@ -24,7 +24,7 @@ namespace LukkelEngine {
 										 float friction = 0.90f, float restitution = 0.30f,
 										 glm::vec3 inertia = glm::vec3(0.0f, 0.0f, 0.0f));
 
-		static void addPivotConstraint(Rigidbody& rigidbody, btVector3 pivot);
+		static void AddPivotConstraint(Rigidbody& rigidbody, btVector3 pivot);
 	};
 
 }

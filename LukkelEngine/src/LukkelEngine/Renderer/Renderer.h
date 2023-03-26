@@ -26,25 +26,25 @@ namespace LukkelEngine {
 	class Renderer
 	{
 	public:
-		void clear() const;
+		void Clear() const;
 
-		void draw(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const;
-		void draw(Mesh& mesh) const;
-		void drawTriangles(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const;
-		void drawLines(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const;
-		void drawIndexed(const s_ptr<VertexArray>& va);
+		void Draw(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const;
+		void Draw(Mesh& mesh) const;
+		void DrawTriangles(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const;
+		void DrawLines(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const;
+		void DrawIndexed(const s_ptr<VertexArray>& va);
 
 		// Static because debugging for raycast
-		static void drawLine(const glm::vec3& p1, const glm::vec3& p2, const glm::vec4& color = glm::vec4(1.0f));
-		void drawLine(const glm::vec3& p1, const glm::vec3& p2, const glm::mat4& viewProj, const glm::vec4& color = glm::vec4(1.0f));
-		void drawWireframe(Entity& entity, glm::vec4 color) const;
+		static void DrawLine(const glm::vec3& p1, const glm::vec3& p2, const glm::vec4& color = glm::vec4(1.0f));
+		void DrawLine(const glm::vec3& p1, const glm::vec3& p2, const glm::mat4& viewProj, const glm::vec4& color = glm::vec4(1.0f));
+		void DrawWireframe(Entity& entity, glm::vec4 color) const;
 
-		void drawBox(btVector3& halfSize);
-		void drawShape(Entity& entity);
+		void DrawCube(btVector3& halfSize);
+		void DrawShape(Entity& entity);
 
-		void setDrawMode(LK_DRAW_MODE drawMode);
+		void SetDrawMode(LK_DRAW_MODE drawMode);
 
-		static void onWindowResize(uint16_t width, uint16_t height);
+		static void OnWindowResize(uint16_t width, uint16_t height);
 
 		static LK_DRAW_MODE s_DrawMode;
 		static glm::vec4 s_BackgroundColor;

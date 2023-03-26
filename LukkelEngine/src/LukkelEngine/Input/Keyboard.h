@@ -11,6 +11,6 @@ namespace LukkelEngine {
 	class Keyboard
 	{
 	public:
-		static bool isKeyPressed(KeyCode key);
+		static bool IsKeyPressed(KeyCode key);
 	};
 }

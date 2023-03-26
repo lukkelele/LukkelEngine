@@ -20,7 +20,7 @@ namespace LukkelEngine {
 	{
 	}
 
-	void EditorLayer::onImGuiRender()
+	void EditorLayer::OnImGuiRender()
 	{
 		ImGui::Begin("Editor menu");
 
@@ -29,7 +29,7 @@ namespace LukkelEngine {
 			m_Scene->m_Registry.each([&](auto entityID)
 			{
 				Entity entity{ entityID, m_Scene.get() };
-				drawEntityNode(entity);
+				DrawEntityNode(entity);
 			});
 
 			if (ImGui::IsMouseDown(0) && ImGui::IsWindowHovered())
@@ -39,9 +39,9 @@ namespace LukkelEngine {
 			// if (ImGui::BeginPopupContextWindow(0, 1, false)) // id, mouse button, if on item (bool)
 			// {
 			// 	// if (ImGui::MenuItem("New entity"))
-			// 	// 	m_Scene->createEntity("Empty Entity");
+			// 	// 	m_Scene->CreateEntity("Empty Entity");
 			// 	// else if (ImGui::MenuItem("New Cube"))
-			// 	// 	// Spawner::createCube(*m_Scene, "Cube");
+			// 	// 	// Spawner::CreateCube(*m_Scene, "Cube");
 			// 	// 	void;
 			// 	// else if (ImGui::MenuItem("New floor (ground object)"))
 			// 	// 	void;
@@ -53,7 +53,7 @@ namespace LukkelEngine {
 		ImGui::Begin("Properties");
 		if (m_SelectedEntity)
 		{
-			drawComponents(m_SelectedEntity);
+			DrawComponents(m_SelectedEntity);
 		}
 		ImGui::End(); // Properties
 
@@ -88,12 +88,12 @@ namespace LukkelEngine {
 			// This should get the current primary camera, use this for now
 			auto camera = m_Scene->getCamera();
 			// Get camera view by inversing the camera transform
-			glm::mat4 cameraView = camera->getView();
-			glm::mat4 cameraProj = camera->getProjection();
+			glm::mat4 cameraView = camera->GetView();
+			glm::mat4 cameraProj = camera->GetProjection();
 
-			TransformComponent& tc = m_SelectedEntity.getComponent<TransformComponent>();
-			Rigidbody& rb = m_SelectedEntity.getComponent<Rigidbody>();
-			glm::mat4 transform = tc.getTransform();
+			TransformComponent& tc = m_SelectedEntity.GetComponent<TransformComponent>();
+			Rigidbody& rb = m_SelectedEntity.GetComponent<Rigidbody>();
+			glm::mat4 transform = tc.GetTransform();
 
 			ImGuizmo::Manipulate(glm::value_ptr(cameraView), glm::value_ptr(cameraProj), 
 				(ImGuizmo::OPERATION)m_GizmoType, ImGuizmo::LOCAL, glm::value_ptr(transform));
@@ -102,26 +102,26 @@ namespace LukkelEngine {
 			{
 				glm::vec3 translation, scale;
 				glm::quat rotation;
-				Math::decomposeTransform(transform, translation, rotation, scale);
+				Math::DecomposeTransform(transform, translation, rotation, scale);
 
 				tc.translation = translation;
 				tc.rotation = rotation;
 				tc.scale = scale;
 				// Needs to be synced as the body is constantly affected by its environment
-				rb.moveBody(translation);
+				rb.MoveBody(translation);
 			}
 		}
 	}
 
-	void EditorLayer::selectEntity(Entity& entity)
+	void EditorLayer::SelectEntity(Entity& entity)
 	{
 		if (m_SelectedEntity != entity)
 			m_SelectedEntity = entity;
 	}
 
-	void EditorLayer::drawEntityNode(Entity entity)
+	void EditorLayer::DrawEntityNode(Entity entity)
 	{
-		auto& tag = entity.getComponent<TagComponent>().tag;
+		auto& tag = entity.GetComponent<TagComponent>().tag;
 
 		ImGuiTreeNodeFlags flags = ((m_SelectedEntity == entity) ? ImGuiTreeNodeFlags_Selected : 0) | ImGuiTreeNodeFlags_OpenOnArrow;
 		flags |= ImGuiTreeNodeFlags_SpanAvailWidth;
@@ -156,7 +156,7 @@ namespace LukkelEngine {
 
 		if (entityDeleted)
 		{
-			m_Scene->destroyEntity(entity);
+			m_Scene->DestroyEntity(entity);
 				if (m_SelectedEntity == entity)
 					m_SelectedEntity = {};
 		}
@@ -164,15 +164,15 @@ namespace LukkelEngine {
 	}
 
 	template<typename T, typename UIFunction>
-	void EditorLayer::drawComponent(const std::string& name, Entity entity, UIFunction uiFunction)
+	void EditorLayer::DrawComponent(const std::string& name, Entity entity, UIFunction uiFunction)
 	{
 		const ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags_DefaultOpen 
 			| ImGuiTreeNodeFlags_Framed | ImGuiTreeNodeFlags_SpanAvailWidth
 			| ImGuiTreeNodeFlags_AllowItemOverlap | ImGuiTreeNodeFlags_FramePadding;
 
-		if (entity.hasComponent<T>())
+		if (entity.HasComponent<T>())
 		{
-			auto& component = entity.getComponent<T>();
+			auto& component = entity.GetComponent<T>();
 			ImVec2 contentRegionAvailable = ImGui::GetContentRegionAvail();
 
 			ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2{ 4, 4 });
@@ -202,28 +202,28 @@ namespace LukkelEngine {
 			}
 
 			if (removeComponent)
-				entity.removeComponent<T>();
+				entity.RemoveComponent<T>();
 		}
 	}
 
 	template<typename T>
-	void EditorLayer::displayAddComponentEntry(const std::string& entryName)
+	void EditorLayer::DisplayAddComponentEntry(const std::string& entryName)
 	{
-		if (!m_SelectedEntity.hasComponent<T>())
+		if (!m_SelectedEntity.HasComponent<T>())
 		{
 			if (ImGui::MenuItem(entryName.c_str()))
 			{
-				m_SelectedEntity.addComponent<T>();
+				m_SelectedEntity.AddComponent<T>();
 				ImGui::CloseCurrentPopup();
 			}
 		}
 	}
 
-	void EditorLayer::drawComponents(Entity entity)
+	void EditorLayer::DrawComponents(Entity entity)
 	{
-		if (entity.hasComponent<TagComponent>())
+		if (entity.HasComponent<TagComponent>())
 		{
-			auto& tag = entity.getComponent<TagComponent>().tag;
+			auto& tag = entity.GetComponent<TagComponent>().tag;
 
 			char buffer[256];
 			memset(buffer, 0, sizeof(buffer));
@@ -241,19 +241,19 @@ namespace LukkelEngine {
 
 		if (ImGui::BeginPopup("AddComponent"))
 		{
-			displayAddComponentEntry<Mesh>("Mesh");
-			displayAddComponentEntry<Rigidbody>("Rigidbody");
-			displayAddComponentEntry<Material>("Material");
+			DisplayAddComponentEntry<Mesh>("Mesh");
+			DisplayAddComponentEntry<Rigidbody>("Rigidbody");
+			DisplayAddComponentEntry<Material>("Material");
 			ImGui::EndPopup();
 		}
 		ImGui::PopItemWidth();
 
-		drawComponent<Mesh>("Mesh", entity, [](auto& component)
+		DrawComponent<Mesh>("Mesh", entity, [](auto& component)
 		{
 
 		});
 
-		drawComponent<TransformComponent>("Transform", entity, [&entity](auto& component)
+		DrawComponent<TransformComponent>("Transform", entity, [&entity](auto& component)
 		{
 			/* Translation / Position */
 			glm::vec3 translation = component.translation;
@@ -267,24 +267,22 @@ namespace LukkelEngine {
 		});
 
 		// TODO: Selected entities shall have their (if body exists) body put under a constraint
-		drawComponent<Rigidbody>("Rigidbody", entity, [](auto& component)
+		DrawComponent<Rigidbody>("Rigidbody", entity, [](auto& component)
 		{
-			glm::vec3 lv = component.getLinearVelocity();
+			glm::vec3 lv = component.GetLinearVelocity();
 			UI::Property::Vector3Control("Linear Velocity", lv);
-			if (lv != component.getLinearVelocity())
-				component.setLinearVelocity(lv);
+			if (lv != component.GetLinearVelocity())
+				component.SetLinearVelocity(lv);
 
-			if (ImGui::Checkbox("Use physics", &m_SelectedEntity.usePhysics)) {}
 
 			UI::ConstraintsMenu(component);
 
 		});
 
-		drawComponent<Material>("Material", entity, [](auto& component)
+		DrawComponent<Material>("Material", entity, [](auto& component)
 		{
 			UI::Property::ColorMenu(component);
 		});
-
 
 	}
 

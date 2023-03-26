@@ -18,13 +18,13 @@ namespace LukkelEngine {
 		ConstraintEvent(Constraint& constraint)
 			:  m_Constraint(constraint)
 		{
-			m_ID = constraint.getID();
-			m_ConstraintType = constraint.getConstraintType();
+			m_ID = constraint.GetID();
+			m_ConstraintType = constraint.GetConstraintType();
 		}
 
 		Constraint& getConstraint() { return m_Constraint; }
-		Constraint::Type getConstraintType() const { return m_ConstraintType; }
-		UUID getID() const { return m_ID; }
+		Constraint::Type GetConstraintType() const { return m_ConstraintType; }
+		UUID GetID() const { return m_ID; }
 
 	protected:
 		UUID m_ID;
@@ -39,13 +39,13 @@ namespace LukkelEngine {
 		ConstraintAddedEvent(Constraint& constraint)
 			: ConstraintEvent(constraint) {}
 
-		EventType getEventType() const { return EventType::ConstraintAdded; }
-		const char* getName() const { return "ConstraintAddedEvent"; }
+		EventType GetEventType() const { return EventType::ConstraintAdded; }
+		const char* GetName() const { return "ConstraintAddedEvent"; }
 
-		bool handleEvent() override
+		bool HandleEvent() override
 		{
-			auto& world = World::getCurrentWorld();
-			world.addConstraint(getConstraint());
+			auto& world = World::GetCurrentWorld();
+			world.AddConstraint(getConstraint());
 
 			return true;
 		}
@@ -57,22 +57,22 @@ namespace LukkelEngine {
 		ConstraintRemovedEvent(Constraint& constraint)
 		{
 			m_Constraint = constraint;
-			m_ConstraintType = constraint.getConstraintType();
+			m_ConstraintType = constraint.GetConstraintType();
 		}
 		~ConstraintRemovedEvent() {}
 
-		EventType getEventType() const { return EventType::ConstraintRemoved; }
-		const char* getName() const { return "ConstraintRemovedEvent"; }
+		EventType GetEventType() const { return EventType::ConstraintRemoved; }
+		const char* GetName() const { return "ConstraintRemovedEvent"; }
 
-		bool handleEvent() override
+		bool HandleEvent() override
 		{
-			auto& world = World::getCurrentWorld();
+			auto& world = World::GetCurrentWorld();
 			auto& constraint = getConstraint();
-			auto& rb = constraint.getRigidbody();
-			world.removeConstraint(constraint);
+			auto& rb = constraint.GetRigidbody();
+			world.RemoveConstraint(constraint);
 
-			rb.getRigidbody()->forceActivationState(DISABLE_DEACTIVATION);
-			rb.getRigidbody()->setDeactivationTime(0.0f);
+			rb.GetRigidbody()->forceActivationState(DISABLE_DEACTIVATION);
+			rb.GetRigidbody()->setDeactivationTime(0.0f);
 
 			return true;
 		}

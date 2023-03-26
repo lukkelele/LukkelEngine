@@ -35,7 +35,7 @@
 /* Assertion for debugging */
 #ifdef LK_ASSERTS_ENABLED
 	// #define LK_ASSERT(x) if (!(x)) __debugbreak();
-	#define LK_ASSERT_MESSAGE(...) ::LukkelEngine::LukkeLog::printMessage(::LukkelEngine::LukkeLog::LK_ASSERT_LEVEL::CRITICAL, __VA_ARGS__)
+	#define LK_ASSERT_MESSAGE(...) ::LukkelEngine::LukkeLog::PrintMessage(::LukkelEngine::LukkeLog::LK_ASSERT_LEVEL::CRITICAL, __VA_ARGS__)
 	#define LK_ASSERT(condition, ...) { if (!(condition)) { LK_ASSERT_MESSAGE(__VA_ARGS__); LK_DEBUGBREAK; } }
 #else
 	#define LK_ASSERT(...)

@@ -16,11 +16,11 @@ namespace LukkelEngine {
 		Texture(const std::string& path);
 		~Texture();
 
-		void bind(unsigned int slot = 0) const;
-		void unbind() const;
+		void Bind(unsigned int slot = 0) const;
+		void Unbind() const;
 
-		inline int getWidth() const { return m_width; }
-		inline int getHeight() const { return m_height; }
+		inline int GetWidth() const { return m_width; }
+		inline int GetHeight() const { return m_height; }
 	};
 
 }

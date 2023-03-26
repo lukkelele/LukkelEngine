@@ -36,37 +36,37 @@ namespace LukkelEngine {
 		Rigidbody(const Rigidbody& other) = default;
 		~Rigidbody() = default;
 
-		void onUpdate(float ts);
-		glm::vec3 getPosition() { return glm::vec3(m_Position.getX(), m_Position.getY(), m_Position.getZ()); }
-		glm::vec3 getDimensions() { return glm::vec3(m_Dimensions.getX(), m_Dimensions.getY(), m_Dimensions.getZ()); }
-		glm::vec3 getLinearVelocity() const { return glm::vec3(m_LinearVelocity.x(), m_LinearVelocity.y(), m_LinearVelocity.z()); }
-		void setLinearVelocity(glm::vec3& linearVelocity);
-		int getShapeType() { return m_Rigidbody->getCollisionShape()->getShapeType(); }
-		std::pair<glm::vec3, glm::quat> getPosAndRotation();
+		void OnUpdate(float ts);
+		glm::vec3 GetPosition() { return glm::vec3(m_Position.getX(), m_Position.getY(), m_Position.getZ()); }
+		glm::vec3 GetDimensions() { return glm::vec3(m_Dimensions.getX(), m_Dimensions.getY(), m_Dimensions.getZ()); }
+		glm::vec3 GetLinearVelocity() const { return glm::vec3(m_LinearVelocity.x(), m_LinearVelocity.y(), m_LinearVelocity.z()); }
+		void SetLinearVelocity(glm::vec3& linearVelocity);
+		int GetShapeType() { return m_Rigidbody->getCollisionShape()->getShapeType(); }
+		std::pair<glm::vec3, glm::quat> GetPosAndRotation();
 
-		btTransform getWorldTransform();
-		btRigidBody* getRigidbody() { return m_Rigidbody; }
-		btCollisionShape* getCollisionShape() { return m_Rigidbody->getCollisionShape(); }
-		Rigidbody::Type getType() const { return m_Type; }
+		btTransform GetWorldTransform();
+		btRigidBody* GetRigidbody() { return m_Rigidbody; }
+		btCollisionShape* GetCollisionShape() { return m_Rigidbody->getCollisionShape(); }
+		Rigidbody::Type GetType() const { return m_Type; }
 
-		void moveBody(glm::vec3 translation);
+		void MoveBody(glm::vec3 translation);
 		// Constraints
-		void addPivotConstraint(glm::vec3 pivot);
-		void addDof6Constraint(glm::vec3 pivot, float cfm = 0.50f, float erp = 0.50f, bool angularMotion = true, bool referenceB = false);
-		std::vector<Constraint*> getConstraints() { return m_Constraints; }
+		void AddPivotConstraint(glm::vec3 pivot);
+		void AddDof6Constraint(glm::vec3 pivot, float cfm = 0.50f, float erp = 0.50f, bool angularMotion = true, bool referenceB = false);
+		std::vector<Constraint*> GetConstraints() { return m_Constraints; }
 
 		template<typename T>
-		void removeConstraint(T constraint);
+		void RemoveConstraint(T constraint);
 
-		void setFriction(float f) { m_Friction = f; }
-		void setRestitution(float r) { m_Restitution= r; }
-		void setWorldTransform(glm::mat4& transform);
-		void setCollisionFlags(int flags) { m_Rigidbody->setCollisionFlags(flags); }
-		void setActivationState(int state) { m_Rigidbody->setActivationState(state); }
+		void SetFriction(float f) { m_Friction = f; }
+		void SetRestitution(float r) { m_Restitution= r; }
+		void SetWorldTransform(glm::mat4& transform);
+		void SetCollisionFlags(int flags) { m_Rigidbody->setCollisionFlags(flags); }
+		void SetActivationState(int state) { m_Rigidbody->setActivationState(state); }
 
-		const UUID getID() const { return m_ID; }
-		void setID(UUID ID) { m_ID = ID; }
-		void setUserPointer(Entity* entity) { m_Rigidbody->setUserPointer((void*)(&entity)); }
+		const UUID GetID() const { return m_ID; }
+		void SetID(UUID& ID) { m_ID = ID; }
+		void SetUserPointer(Entity* entity) { m_Rigidbody->setUserPointer((void*)(&entity)); }
 
 	private:
 		btCollisionShape* m_Shape = nullptr;

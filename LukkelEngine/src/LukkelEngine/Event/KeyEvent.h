@@ -21,12 +21,12 @@ namespace LukkelEngine {
 	class KeyPressedEvent : public KeyEvent
 	{
 	public:
-		KeyPressedEvent(const KeyCode keycode, bool isRepeat = false)
-			: KeyEvent(keycode), m_IsRepeat(isRepeat) {}
+		KeyPressedEvent(const KeyCode keycode, bool IsRepeat = false)
+			: KeyEvent(keycode), m_IsRepeat(IsRepeat) {}
 
-		bool isRepeat() const { return m_IsRepeat; }
+		bool IsRepeat() const { return m_IsRepeat; }
 
-		std::string toString() const override
+		std::string ToString() const override
 		{
 			std::stringstream ss;
 			ss << "KeyPressedEvent: " << m_KeyCode << " (repeat = " << m_IsRepeat << ")";
@@ -43,7 +43,7 @@ namespace LukkelEngine {
 		KeyReleasedEvent(const KeyCode keycode)
 			: KeyEvent(keycode) {}
 
-		std::string toString() const override
+		std::string ToString() const override
 		{
 			std::stringstream ss;
 			ss << "KeyReleasedEvent: " << m_KeyCode;
@@ -58,7 +58,7 @@ namespace LukkelEngine {
 		KeyTypedEvent(const KeyCode keycode)
 			: KeyEvent(keycode) {}
 
-		std::string toString() const override
+		std::string ToString() const override
 		{
 			std::stringstream ss;
 			ss << "KeyTypedEvent: " << m_KeyCode;

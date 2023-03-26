@@ -33,31 +33,30 @@ namespace LukkelEngine {
 		Application(const ApplicationDetails& details = ApplicationDetails());
 		~Application();
 
-		void run();
-		void onUpdate(float ts = 1.0f);
-		void shutdown();
-		void onEvent(Event& e);
+		void Run();
+		void OnUpdate(float ts = 1.0f);
+		void Shutdown();
+		void OnEvent(Event& e);
 
-		GLFWwindow* getGLFWwindow() const { return m_Window->getWindow(); }
-		s_ptr<Window> getWindow() const { return m_Window; }
-		// s_ptr<FpsCamera> getCamera() const { return m_Scene->getCamera(); }
-		s_ptr<Camera> getCamera() const { return m_Scene->getCamera(); }
-		s_ptr<Scene> getScene() const { return m_Scene; }
-		void setScene(s_ptr<Scene>& scene) { m_Scene = scene; }
+		GLFWwindow* GetGLFWwindow() const { return m_Window->GetWindow(); }
+		s_ptr<Window> GetWindow() const { return m_Window; }
+		s_ptr<Camera> GetCamera() const { return m_Scene->getCamera(); }
+		s_ptr<Scene> GetScene() const { return m_Scene; }
+		void SetScene(s_ptr<Scene>& scene) { m_Scene = scene; }
 
-		int getViewportWidth() { return m_Details.width; }
-		int getViewportHeight() { return m_Details.height; }
+		int GetViewportWidth() { return m_Details.width; }
+		int GetViewportHeight() { return m_Details.height; }
 
-		void pushLayer(Layer* layer);
-		void popLayer(Layer* layer);
-		void pushOverlay(Layer* layer);
-		void popOverlay(Layer* layer);
+		void PushLayer(Layer* layer);
+		void PopLayer(Layer* layer);
+		void PushOverlay(Layer* layer);
+		void PopOverlay(Layer* layer);
 
 		// bool onWindowClose(WindowCloseEvent& e);
 		// bool onWindowResize(WindowResizeEvent& e);
-		void resizeWindow(uint16_t width, uint16_t height);
+		void ResizeWindow(uint16_t width, uint16_t height);
 
-		static Application& get() { return *s_Instance; }
+		static Application& Get() { return *s_Instance; }
 
 	private:
 		ApplicationDetails m_Details;

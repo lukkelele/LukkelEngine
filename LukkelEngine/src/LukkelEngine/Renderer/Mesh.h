@@ -26,10 +26,10 @@ namespace LukkelEngine {
 		Mesh(float vertices[], unsigned int indices[], std::vector<int> vertbufLayout, unsigned int vertCount, unsigned int indexCount);
 		~Mesh() = default;
 
-		void bind();
-		s_ptr<IndexBuffer> getIndexBuffer() { return m_IBO; }
-		s_ptr<VertexArray> getVertexArray() const { return m_VAO; }
-		s_ptr<VertexBuffer> getVertexBuffer() const { return m_VBO; }
+		void Bind();
+		s_ptr<IndexBuffer> GetIndexBuffer() { return m_IBO; }
+		s_ptr<VertexArray> GetVertexArray() const { return m_VAO; }
+		s_ptr<VertexBuffer> GetVertexBuffer() const { return m_VBO; }
 
 	private:
 		s_ptr<VertexArray> m_VAO;

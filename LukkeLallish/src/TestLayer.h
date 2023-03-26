@@ -9,12 +9,12 @@ public:
 	TestLayer();
 	~TestLayer() = default;
 
-	virtual void onAttach() override;
-	virtual void onDetach() override;
+	void OnAttach() override;
+	void OnDetach() override;
 
-	void onUpdate(float ts) override;
-	virtual void onImGuiRender() override;
-	void onEvent(LukkelEngine::Event& e) override;
+	void OnUpdate(float ts) override;
+	void OnImGuiRender() override;
+	void OnEvent(LukkelEngine::Event& e) override;
 
 	float r = 0.0f;
 	float b = 0.5f;

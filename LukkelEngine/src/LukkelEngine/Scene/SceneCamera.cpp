@@ -11,7 +11,7 @@ namespace LukkelEngine {
 		m_NearPlane = nearPlane;
 		m_FarPlane = farPlane;
 		LKLOG_INFO("FPS Camera created | FOV: {0}", m_FOV);
-		const glm::quat orientation = getOrientation();
+		const glm::quat orientation = GetOrientation();
 
 		m_Yaw = 3.0f * glm::pi<float>() / 4.0f;
 		m_Pitch = glm::pi<float>() / 4.0f;
@@ -20,55 +20,55 @@ namespace LukkelEngine {
 		m_View = glm::translate(glm::mat4(1.0f), m_Position) * glm::toMat4(orientation);
 		m_ViewProjection = m_Projection * m_View;
 
-		auto mousePos = Mouse::getMousePosition();
+		auto mousePos = Mouse::GetMousePosition();
 		m_InitialMousePos = { mousePos.first, mousePos.second };
 	}
 
 
-	void SceneCamera::onUpdate(float ts)
+	void SceneCamera::OnUpdate(float ts)
 	{
 		hasMouseMoved = false;
 
 		if (m_KeyboardEnabled)
 		{
 			// WASD
-			if (Keyboard::isKeyPressed(Key::W))
+			if (Keyboard::IsKeyPressed(Key::W))
 				m_Position += m_ForwardDirection * ts * m_TravelSpeed;
-			if (Keyboard::isKeyPressed(Key::S))
+			if (Keyboard::IsKeyPressed(Key::S))
 				m_Position -= m_ForwardDirection * ts * m_TravelSpeed;
-			if (Keyboard::isKeyPressed(Key::A))
+			if (Keyboard::IsKeyPressed(Key::A))
 				m_Position -= m_RightDirection * ts * m_TravelSpeed;
-			if (Keyboard::isKeyPressed(Key::D))
+			if (Keyboard::IsKeyPressed(Key::D))
 				m_Position += m_RightDirection * ts * m_TravelSpeed;
 		}
 
 		const float distance = glm::distance(m_Origin, m_Position);
-		m_Origin = m_Position + getForwardDirection() * distance;
+		m_Origin = m_Position + GetForwardDirection() * distance;
 		m_Distance = distance;
 		
 
 		// Release mouse focus
-		if (Keyboard::isKeyPressed(Key::Escape))
+		if (Keyboard::IsKeyPressed(Key::Escape))
 		{
 			if (m_MouseEnabled)
 			{
-				glfwSetInputMode(Application::get().getWindow()->getWindow(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+				glfwSetInputMode(Application::Get().GetWindow()->GetWindow(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 				m_MouseEnabled = false;
 			}
 		}
 		// Reinstate mouse focus
-		else if (Keyboard::isKeyPressed(Key::G))
+		else if (Keyboard::IsKeyPressed(Key::G))
 		{
 			if (!m_MouseEnabled)
 			{
 				// Application::get().getWindow()->setInputLock(true);
-				glfwSetInputMode(Application::get().getWindow()->getWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+				glfwSetInputMode(Application::Get().GetWindow()->GetWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 				m_MouseEnabled = true;
 			}
 		}
 
 		m_RightDirection = glm::cross(m_ForwardDirection, m_UpDirection);
-		updateMousePosition();
+		UpdateMousePosition();
 		// If the mouse has moved since last frame, update camera rotation
 		if (m_MouseEnabled)
 		{
@@ -87,8 +87,8 @@ namespace LukkelEngine {
 
 		}
 
-		updateProjection();
-		updateView();
+		UpdateProjection();
+		UpdateView();
 		m_InverseView = glm::inverse(m_View);
 		m_InverseProjection = glm::inverse(m_Projection);
 		m_InverseViewProjection = m_InverseProjection * m_InverseView;
@@ -96,7 +96,7 @@ namespace LukkelEngine {
 	}
 
 
-	void SceneCamera::onImGuiRender()
+	void SceneCamera::OnImGuiRender()
 	{
 	 	ImGui::Begin("Scene Camera");
 
@@ -113,9 +113,9 @@ namespace LukkelEngine {
 	 	ImGui::Separator();
 		// Sliders
 	 	ImGui::SliderFloat("Camera speed", &m_TravelSpeed, 0.010f, 2.0f);
-		float fov = getFOV();
+		float fov = GetFOV();
 	 	ImGui::SliderFloat("FOV", &fov, 40.0f, 105.0f);
-		setFOV(fov);
+		SetFOV(fov);
 	 	ImGui::SliderFloat3("Camera position", &m_Position.x, -50.0f, 50.0f);
 
 		ImGui::End();

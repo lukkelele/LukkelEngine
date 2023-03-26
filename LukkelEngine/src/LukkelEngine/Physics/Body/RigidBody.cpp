@@ -21,7 +21,7 @@ namespace LukkelEngine {
 		transform.setOrigin(off);
 
 		m_MotionState = new MotionState(transform);
-		m_MotionState->setWorldTransform(transform);
+		m_MotionState->getWorldTransform(transform);
 		m_Shape->calculateLocalInertia(m_Mass, m_Inertia);
 		btRigidBody::btRigidBodyConstructionInfo boxBodyConstructionInfo(mass, m_MotionState, m_Shape, m_Inertia);
 
@@ -31,11 +31,11 @@ namespace LukkelEngine {
 		m_Rigidbody->forceActivationState(DISABLE_DEACTIVATION);
 	}
 
-	void Rigidbody::onUpdate(float ts)
+	void Rigidbody::OnUpdate(float ts)
 	{
 	}
 
-	void Rigidbody::moveBody(glm::vec3 translation)
+	void Rigidbody::MoveBody(glm::vec3 translation)
 	{
 		m_Position = {translation.x, translation.y, translation.z};
 		btTransform transform;
@@ -46,17 +46,17 @@ namespace LukkelEngine {
 		m_Rigidbody->setCenterOfMassTransform(transform);
 	}
 
-	void Rigidbody::setLinearVelocity(glm::vec3& linearVelocity)
+	void Rigidbody::SetLinearVelocity(glm::vec3& linearVelocity)
 	{
 		m_LinearVelocity = { linearVelocity.x, linearVelocity.y, linearVelocity.z };
 		m_Rigidbody->setLinearVelocity(m_LinearVelocity);
 	}
 
-	void Rigidbody::setWorldTransform(glm::mat4& transform)
+	void Rigidbody::SetWorldTransform(glm::mat4& transform)
 	{
 	}
 
-	btTransform Rigidbody::getWorldTransform()
+	btTransform Rigidbody::GetWorldTransform()
 	{ 
 		if (m_Rigidbody)
 		{
@@ -68,9 +68,9 @@ namespace LukkelEngine {
 		}
 	}
 
-	std::pair<glm::vec3, glm::quat> Rigidbody::getPosAndRotation()
+	std::pair<glm::vec3, glm::quat> Rigidbody::GetPosAndRotation()
 	{		
-		btTransform transform = getWorldTransform();
+		btTransform transform = GetWorldTransform();
 		btVector3 position = transform.getOrigin();
 		btQuaternion rotation = transform.getRotation();
 		glm::vec3 pos(position.x(), position.y(), position.z());
@@ -78,14 +78,14 @@ namespace LukkelEngine {
 		return std::make_pair(pos, rot);
 	}
 
-	void Rigidbody::addPivotConstraint(glm::vec3 pivot)
+	void Rigidbody::AddPivotConstraint(glm::vec3 pivot)
 	{
 		Constraint* constraint = new PivotConstraint(*this, pivot);
 		m_Constraints.push_back(constraint);
 		LK_WORLD_REGISTER_EVENT(new ConstraintAddedEvent(*constraint));
 	}
 
-	void Rigidbody::addDof6Constraint(glm::vec3 pivot, float cfm, float erp, bool angularMotion, bool referenceB)
+	void Rigidbody::AddDof6Constraint(glm::vec3 pivot, float cfm, float erp, bool angularMotion, bool referenceB)
 	{
 		Constraint* constraint = new Dof6Constraint(*this, pivot, cfm, erp, angularMotion, referenceB);
 		m_Constraints.push_back(constraint);
@@ -93,11 +93,11 @@ namespace LukkelEngine {
 	}
 
 	template<typename T>
-	void Rigidbody::removeConstraint(T constraint)
+	void Rigidbody::RemoveConstraint(T constraint)
 	{
 	}
 		template<>
-		void Rigidbody::removeConstraint(Constraint* constraint)
+		void Rigidbody::RemoveConstraint(Constraint* constraint)
 		{
 			auto it = std::find(m_Constraints.begin(), m_Constraints.end(), constraint);
 			LK_WORLD_REGISTER_EVENT(new ConstraintRemovedEvent(*constraint));
@@ -105,12 +105,12 @@ namespace LukkelEngine {
 		}
 
 		template<>
-		void Rigidbody::removeConstraint(Constraint::Type type)
+		void Rigidbody::RemoveConstraint(Constraint::Type type)
 		{
 			for (auto& constraint : m_Constraints)
 			{
 				// If the constraint type matches, remove the constraint
-				if (constraint->getConstraintType() == type)
+				if (constraint->GetConstraintType() == type)
 				{
 					auto it = std::find(m_Constraints.begin(), m_Constraints.end(), constraint);
 					LK_WORLD_REGISTER_EVENT(new ConstraintRemovedEvent(*constraint));

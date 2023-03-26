@@ -18,41 +18,41 @@ namespace LukkelEngine {
 	LayerStack::~LayerStack()
 	{
 		for (Layer* layer : m_Layers) {
-			layer->onDetach();
+			layer->OnDetach();
 			// delete layer; // FIXME -> heap bug
 		}
 	}
 
 	/* Push layer to the front of the queue */
-	void LayerStack::pushLayer(Layer* layer)
+	void LayerStack::PushLayer(Layer* layer)
 	{
 		m_Layers.emplace(m_Layers.begin() + m_LayerInsertIndex, layer);
 		m_LayerInsertIndex++;
 	}
 
 	/* Push overlay to the back of the queue */
-	void LayerStack::pushOverlay(Layer* overlay)
+	void LayerStack::PushOverlay(Layer* overlay)
 	{
 		m_Layers.emplace_back(overlay);
 	}
 
 	/* Pop layer */
-	void LayerStack::popLayer(Layer* layer)
+	void LayerStack::PopLayer(Layer* layer)
 	{
 		auto it = std::find(m_Layers.begin(), m_Layers.begin() + m_LayerInsertIndex, layer);
 		if (it != m_Layers.begin() + m_LayerInsertIndex) {
-			layer->onDetach();
+			layer->OnDetach();
 			m_Layers.erase(it);
 			m_LayerInsertIndex--;
 		}
 	}
 
 	/* Pop overlay */
-	void LayerStack::popOverlay(Layer* overlay)
+	void LayerStack::PopOverlay(Layer* overlay)
 	{   /* Start iterator on .begin() and index count to make sure overlays are targeted */
 		auto it = std::find(m_Layers.begin() + m_LayerInsertIndex, m_Layers.end(), overlay);
 		if (it != m_Layers.end()) {
-			overlay->onDetach();
+			overlay->OnDetach();
 			m_Layers.erase(it);
 		}
 	}

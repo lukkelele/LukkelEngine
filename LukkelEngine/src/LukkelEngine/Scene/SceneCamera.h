@@ -22,8 +22,8 @@ namespace LukkelEngine {
 		SceneCamera(float FOV, float nearPlane, float farPlane);
 		~SceneCamera() = default;
 
-		void onUpdate(float ts) override;
-		void onImGuiRender() override;
+		void OnUpdate(float ts) override;
+		void OnImGuiRender() override;
 
 	public:
 		float m_TravelSpeed = 0.10f;

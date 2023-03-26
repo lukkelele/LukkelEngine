@@ -14,8 +14,8 @@ namespace LukkelEngine {
 		MeshFactory() = default;
 		~MeshFactory() = default;
 
-		static Mesh createBox(glm::vec3& side);
-		static Mesh createSphere(float radius);
+		static Mesh CreateCube(glm::vec3& side);
+		static Mesh CreateSphere(float radius);
 
 	private:
 		

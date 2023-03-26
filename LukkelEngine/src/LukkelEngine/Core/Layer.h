@@ -12,13 +12,13 @@ namespace LukkelEngine {
 		Layer(const std::string& name = "Layer");
 		virtual ~Layer() = default;
 
-		virtual void onAttach() {}
-		virtual void onDetach() {}
-		virtual void onUpdate(float ts) {}
-		virtual void onImGuiRender() {}
-		virtual void onEvent(Event& event) {}
+		virtual void OnAttach() {}
+		virtual void OnDetach() {}
+		virtual void OnUpdate(float ts) {}
+		virtual void OnImGuiRender() {}
+		virtual void OnEvent(Event& event) {}
 
-		const std::string& getName() const { return m_Name; }
+		const std::string& GetName() const { return m_Name; }
 
 	protected:
 		std::string m_Name;

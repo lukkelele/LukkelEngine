@@ -1,27 +1,5 @@
 # LukkelEngine :vertical_traffic_light:
-> Graphics Engine written in C++<br>
-
-This is a project for me to improve at writing C++ code (or code in general).  
-<br>
-Combined with my severe dissapointment in the gaming world with games running horribly bad on high-end hardware
-(I'm looking at you, **Battlefield 2042**)
-made me think that a game engine would be a fun starting project to begin working on.  
-I'm very new to graphics programming in general so this has been an adventure to say the least.  
-<br>
-I'm by no means that great of a programmer to solve all the problems and implement all the features
-a game engine requires. 
-I've promised myself to not spend too much time being stuck as that has been the main cause for me to quit projects in the past.
-So if I see myself getting stuck for too long, I check out some real good implementations and try to see how I can change
-my current one into something similar.<br>
-The ECS system is one great example. My initial implementation made me realize quite 
-quickly that I was in dire need of something else than the code I implemented as it got really hard to follow.<br>
-
-
-As I am doing this project I'm reading game architecture and other graphics programming books to learn as much as possible.<br>
-The base layout of the engine is bound to change because the more I learn the more I will want to change things. Also because I have performance in mind 
-and let me tell you, the current implementation surely does **NOT** care about performance. I'll do it in this order:<br>
-1. Make it work
-2. Make it better
+> Graphics Engine written in C++17<br>
 
 ---
 
@@ -42,12 +20,8 @@ and let me tell you, the current implementation surely does **NOT** care about p
 :black_square_button: Change name of namespace (not sure yet :custom_arrow_right: LK, LE, LKE, LKEN, etc...)<br>
 
 ---
-## Engine design
-### Application
-Main application.<br>
-
-### LukkeLallish
-Inherits from **Application** and is the current runtime of the engine. It is technically not the 'Sandbox'
+## LukkeLallish
+Runtime of the engine. It is technically not the 'Sandbox'
 but I do use it as such for now.<br>
 The word *'Lallish'* is a swedish slang for not being serious or playing around. I named it this because I use **LukkeLallish** for 
 testing and playing around with newly added tools and engine implementations.
